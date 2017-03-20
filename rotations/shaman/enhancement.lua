@@ -1,6 +1,7 @@
 local _, Zylla = ...
 local GUI = {
 }
+
 local exeOnLoad = function()
 	 Zylla.ExeOnLoad()
 
@@ -73,8 +74,8 @@ local Ranged = {
 
 local Keybinds = {
 	-- Pause
-	{'%pause', 'keybind(alt)'}
-	{'Lightning Surge Totem', 'keybind(lcontrol)' , 'cursor.ground'},
+	{'%pause', 'keybind(alt)'},
+	{'Lightning Surge Totem', 'keybind(lcontrol)' , 'cursor.ground'}
 }
 
 local inCombat = {

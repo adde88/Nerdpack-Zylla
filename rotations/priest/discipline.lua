@@ -15,9 +15,11 @@ local GUI = {
 	{type = 'checkbox', text = 'Power Word: Barrier enabled', key = 'kPWB', default = false}
 
 }
+
 local exeOnLoad = function()
 	Zylla.ExeOnLoad()
 end
+
 --[[
 UNIT.lastgcd(SPELL)
 UNIT.area(HEALTH, DISTANCE).heal>= #
@@ -46,6 +48,7 @@ local Keybinds = {
 	{'Power Word: Barrier', 'keybind(lalt)&UI(kPWB)', 'cursor.ground'} --Power Word: Barrier.
 }
 
+--[[
 function Ato.Buff(eval, args)
    local spell = NeP.Engine:Spell(args)
     if not spell then return end
@@ -59,6 +62,7 @@ function Ato.Buff(eval, args)
         end
     end
 end
+]]--
 
 local Keybinds = {
 	{'%pause', 'keybind(shift)'}, -- Pause.
@@ -88,8 +92,8 @@ local Tank = {
 
 local Lowest = {
 	{'Plea', '!lowest.buff(Atonement)&lowest.health<=90', 'lowest'}, --Plea for an instant Atonement.
-	-{'Plea', '!lowest2.buff(Atonement)&lowest.health<=90', 'lowest2'},
-	-{'Plea', '!lowest3.buff(Atonement)&lowest.health<=90', 'lowest3'},
+	--{'Plea', '!lowest2.buff(Atonement)&lowest.health<=90', 'lowest2'},
+	--{'Plea', '!lowest3.buff(Atonement)&lowest.health<=90', 'lowest3'},
 	{'Power Word: Shield', 'lowest.health<=90||player.buff(Rapture)&!lowest.buff(Power Word: Shield)', 'lowest'}, --Power Word: Shield Use to absorb low to moderate damage and to apply Atonement.
 	{'Shadow Mend', 'lowest.health<=60', 'lowest'}, --Shadow Mend for a decent direct heal.
 	{'Penance', 'lowest.health<=80&talent(1,1)', 'lowest'}, -- Penance (if talent "Penitent" selected)

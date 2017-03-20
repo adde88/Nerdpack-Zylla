@@ -14,7 +14,6 @@ end
 local _Zylla = {
 	{'@Zylla.Targeting()', {'!target.alive&toggle(AutoTarget)'}},
 	--{'Charge', 'target.range>8&target.range<=25&target.infront'},
-
 }
 
 local PreCombat = {

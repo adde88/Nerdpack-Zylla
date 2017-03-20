@@ -39,7 +39,7 @@ local Keybinds = {
 }
 
 local inCombat = {
-	{_Zylla}'
+	{_Zylla},
 	{Keybinds},
 	{Survival, 'player.health<100'},
 	{Cooldowns, 'toggle(cooldowns)'},

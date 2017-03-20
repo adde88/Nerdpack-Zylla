@@ -3,6 +3,7 @@ local _, Zylla = ...
 local GUI = {
 
 }
+
 local exeOnLoad = function()
 	 Zylla.ExeOnLoad()
 
@@ -12,6 +13,7 @@ local exeOnLoad = function()
 	print("|cffADFF2F --- |r")
 	print("|cffADFF2F --- |rThis rotation does not work at the moment!|")
 	print("|cffADFF2F ---------------------------------------------------------------------------|r")
+end
 
 local _Zylla = {
 	{'@Zylla.Targeting()', {'!target.alive&toggle(AutoTarget)'}},
