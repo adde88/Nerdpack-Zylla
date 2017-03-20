@@ -1,0 +1,5 @@
+<Bindings>
+    <Binding name="Opener" description="Toggle ON/OFF" header="NEP_ZYLLA" category="NerdPack-Zylla">
+        NeP.Interface:toggleToggle('xopener')
+    </Binding>
+</Bindings>

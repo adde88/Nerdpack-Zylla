@@ -1,0 +1,166 @@
+local _, Zylla = ...
+
+local GUI = {
+
+}
+
+local exeOnLoad = function()
+	 Zylla.ExeOnLoad()
+
+	print('|cffADFF2F ----------------------------------------------------------------------|r')
+	print('|cffADFF2F --- |rHUNTER |cffADFF2FMarksmanship |r')
+	print('|cffADFF2F --- |rRecommended Talents: 1/1 - 2/1 - 3/X - 4/3 - 5/X - 6/2 - 7/1')
+	print('|cffADFF2F ----------------------------------------------------------------------|r')
+
+		NeP.Interface:AddToggle({
+			key = 'xBarrage',
+			name = 'Barrage',
+			text = 'ON/OFF using Barrage in rotation if you have talent',
+			icon = 'Interface\\Icons\\Ability_Hunter_RapidRegeneration',
+		})
+end
+
+local _Zylla = {
+	{'@Zylla.Targeting()', {'!target.alive&toggle(AutoTarget)'}},
+}
+
+local PreCombat = {
+	{'Volley', '!player.buff(Volley)&talent(6,3)'},
+}
+
+local Cooldowns = {
+	{'Trueshot', 'xtime<5||player.buff(Bloodlust)||target.time_to_die>={180-artifact(Quick Shot).rank*10+15}||player.buff(Bullseye).stack>25||target.time_to_die<16'},
+}
+
+local TargetDie = {
+	{'Marked Shot'},
+	{'Windburst'},
+	{'Aimed Shot', 'target.debuff(Vulnerable).remains>action(Aimed Shot).execute_time&target.time_to_die>action(Aimed Shot).execute_time'},
+	{'Sidewinders'},
+	{'Aimed Shot'},
+	{'Arcane Shot'},
+}
+
+local TrueshotAoE = {
+	{'Marked Shot'},
+	{'Barrage', '!talent(4,3)&toggle(xBarrage)'},
+	{'Piercing Shot'},
+	{'Explosive Shot', 'talent(4,1)&target.area(8).enemies>=3'},
+	{'Aimed Shot', '{!talent(4,3)||talent(7,3)}&target.area(8).enemies=1&player.buff(Lock and Load)&action(Aimed Shot).execute_time<target.debuff(Vulnerable).remains'},
+	{'Multi-Shot'},
+}
+
+local Non_Patient_Sniper = {
+	{'Windburst'},
+	{'Piercing Shot', 'talent(7,2)&player.focus>=100&target.area(8).enemies>=3&target.debuff(Vulnerable)'},
+	{'Sentinel', '!target.debuff(Hunter\'s Mark)&player.focus>30&!player.buff(Trueshot)'},
+	{'Sidewinders', 'target.debuff(Vulnerable).remains<gcd&xtime>6'},
+	{'Aimed Shot', 'player.buff(Lock and Load)&player.area(50).enemies.infront<3'},
+	{'Marked Shot'},
+	{'Explosive Shot', 'talent(4,1)&target.area(8).enemies>=3'},
+	{'Sidewinders', '{{player.buff(Marking Targets)||player.buff(Trueshot)}&focus.deficit>70}||action(Sidewinders).charges>=1.9'},
+	{'Arcane Shot', '!variable.use_multishot&{player.buff(Marking Targets)||{talent(1,2)&{!player.buff(Steady Focus)||player.buff(Steady Focus).remains<2}}}'},
+	{'Multi-Shot', 'variable.use_multishot&{player.buff(Marking Targets)||{talent(1,2)&{!player.buff(Steady Focus)||player.buff(Steady Focus).remains<2}}}'},
+	{'Aimed Shot', '!talent(7,2)||{talent(7,2)&cooldown(Piercing Shot).remains>3}'},
+	{'Arcane Shot', '!variable.use_multishot'},
+	{'Multi-Shot', 'variable.use_multishot'},
+}
+	
+local Opener = {
+		{'A Murder of Crows'},
+		{'True Shot'},
+		{'Piercing Shot', 'target.debuff(Vulnerable)'},
+		{'Explosive Shot', 'talent(4,1)&target.area(8).enemies>=3'},
+		{'Barrage', '!talent(4,3)&toggle(xBarrage)'},
+		{'Arcane Shot', 'line_cd(Arcane Shot)>16&!talent(4,3)'},
+		{'Sidewinders', '{!player.buff(Marking Targets)&player.buff(Trueshot).remains<2}||{Action(Sidewinders).charges>=1.9&player.focus<80}'},
+		{'Marked Shot'},
+		{'Barrage', 'player.buff(Bloodlust)&toggle(xBarrage)'},
+		{'Aimed Shot', '{player.buff(Lock and Load)&action(Aimed Shot).execute_time<target.debuff(Vulnerable).remains}||player.focus>90&!talent(4,3)&talent(7,3)'},
+		{'Aimed Shot', 'player.buff(Lock and Load)&action(Aimed Shot).execute_time<target.debuff(Vulnerable).remains'},
+		{'Black Arrow'},
+		{'Barrage', 'toggle(xBarrage)'},
+		{'Arcane Shot'},
+		{'Aimed Shot', 'action(Aimed Shot).execute_time<target.debuff(Vulnerable).remains'},
+		{'Sidewinders'},
+		{'Aimed Shot'},
+		--{'#142173', '!player.debuff(Temptation)&equipped(142173)'},
+}
+
+local Patient_Sniper = {
+		{'Marked Shot', '{talent(7,1)&talent(6,2)&player.area(50).enemies.infront>2}||target.debuff(Hunter\'s Mark).remains<2||{{target.debuff(Vulnerable)||talent(7,1)}&target.debuff(Vulnerable).remains<gcd)}'},
+		{'Windburst', 'talent(7,1)&{!target.debuff(Hunter\'s Mark)||{target.debuff(Hunter\'s Mark).remains>action(Windburst).execute_time&focus+{focus.regen*target.debuff(Hunter\'s Mark).remains}>=50}}||player.buff(Trueshot)'},
+		{'Sidewinders', 'player.buff(Trueshot)&{{!player.buff(Marking Targets&player.buff(Trueshot).remains<2)}||{action(Sidewinders).charges>=1.9&{focus.deficit>70||player.area(50).enemies.infront>1}}}'},
+		{'Multi-Shot', 'modifier.player.buff(Marking Targets)&!target.debuff(Hunter\'s Mark)&variable.use_multishot&focus.deficit>2*target.area(8).enemies+gcd*focus.regen'},
+		{'Aimed Shot', 'player.buff(Lock and Load)&player.buff(Trueshot)&target.debuff(Vulnerable).remains>action(Aimed Shot).execute_time'},
+		{'Marked Shot', 'player.buff(Trueshot)&!talent(7,1)'},
+		{'Arcane Shot', 'player.buff(Trueshot)'},
+		{'Aimed Shot', '!target.debuff(Hunter\'s Mark)&target.debuff(Vulnerable).remains>action(Aimed Shot).execute_time'},
+		{'Aimed Shot', 'talent(7,1)&target.debuff(Hunter\'s Mark).remains>action(Aimed Shot).execute_time&target.debuff(Vulnerable).remains>action(Aimed Shot).execute_time&{player.buff(Lock and Load)||{player.focus+target.debuff(Hunter\'s Mark).remains*focus.regen>=80&player.focus+focus.regen*target.debuff(Vulnerable).remains>=80}}&{!talent(7,2)||{talent(7,2)&cooldown(Piercing Shot).remains>5}||player.focus>120}'},
+		{'Aimed Shot', '!talent(7,1)&target.debuff(Hunter\'s Mark).remains>action(Aimed Shot).execute_time&target.debuff(Vulnerable).remains>action(Aimed Shot).execute_time&{player.buff(Lock and Load)||{player.buff(Trueshot)&player.focus>=80}||{!player.buff(Trueshot)&player.focus+target.debuff(Hunter\'s Mark).remains*focus.regen>=80&player.focus+focus.regen*target.debuff(Vulnerable).remains>=80}}&{!talent(7,2)||{talent(7,2)&cooldown(Piercing Shot).remains>5}||player.focus>120}'},
+		{'Windburst', '!talent(7,1)&player.focus>80{!target.debuff(Hunter\'s Mark)||{target.debuff(Hunter\'s Mark).remains>action(Windburst).execute_time&focus+{focus.regen*target.debuff(Hunter\'s Mark).remains}>=50}}'},
+		{'Marked Shot', '{talent(7,1)&player.area(50).enemies.infront>1}||focus.deficit<50||player.buff(Trueshot)||{player.buff(Marking Targets)&{!talent(7,1)||cooldown(Sidewinders).charges>=1.2}}'},
+		{'Piercing Shot', 'talent(7,2)&player.focus>80&target.area(8).enemies>=3&target.debuff(Vulnerable)'},
+		{'Sidewinders', 'variable.safe_to_build&{{player.buff(Trueshot)&focus.deficit>70}||action(Sidewinders).charges>=1.9}'},
+		{'Sidewinders', '{player.buff(Marking Targets)&!target.debuff(Hunter\'s Mark)&!player.buff(Trueshot)}||{cooldown(Sidewinders).charges>1&target.time_to_die<11}'},
+		{'Arcane Shot', 'variable.safe_to_build&!variable.use_multishot&focus.deficit>5+gcd*focus.regen'},
+		{'Multi-Shot', 'variable.safe_to_build&variable.use_multishot&focus.deficit>2*target.area(8).enemies+gcd*focus.regen'},
+		{'Aimed Shot', '!target.debuff(Vulnerable)&focus>80&cooldown(Windburst).remains>focus.time_to_max'},
+}
+
+ local xCombat = {
+	 	{'Arcane Torrent', 'focus.deficit>=30&{!talent(7,1)||cooldown(Sidewinders).charges<2}'},
+	 	{'Blood Fury'},
+	 	{'Berserking'},
+	 	{Opener, 'player.area(50).enemies=1&xtime<=15'},
+	 	{'A Murder of Crows', '{target.time_to_die>=75||target.health<20&target.boss}&{!target.debuff(Hunter\'s Mark)||{target.debuff(Hunter\'s Mark).remains>action(A Murder of Crows).execute_time&target.debuff(Vulnerable).remains>target.action(A Murder of Crows).execute_time&focus+{focus.regen*target.debuff(Vulnerable).remains}>=60&focus+{focus.regen*target.debuff(Hunter\'s Mark).remains}>=60}}'},
+	 	{Cooldowns, 'toggle(cooldowns)'},
+	 	{TrueshotAoE, '{target.time_to_die>={180-artifact(Quick Shot).rank*10+15}||target.health<20&target.boss}&{!target.debuff(Hunter\'s Mark)||{target.debuff(Hunter\'s Mark).remains>action(A Murder of Crows).execute_time&target.debuff(Vulnerable).remains>target.action(A Murder of Crows).execute_time&focus+{focus.regen*target.debuff(Vulnerable).remains}>=60&focus+{focus.regen*target.debuff(Hunter\'s Mark).remains}>=60}}'},
+	 	{'Black Arrow', '!target.debuff(Hunter\'s Mark)||{target.debuff(Hunter\'s Mark).remains>action(Black Arrow).execute_time&target.debuff(Vulnerable).remains>target.action(Black Arrow).execute_time&focus+{focus.regen*target.debuff(Vulnerable).remains}>=70&focus+{focus.regen*target.debuff(Hunter\'s Mark).remains}>=70}}'},
+	 	{'Barrage', 'toggle(xBarrage)'},
+	 	{TargetDie},
+	 	{Patient_Sniper},
+		{Non_Patient_Sniper},
+}
+
+local Keybinds = {
+	-- Pause
+	{'%pause', 'keybind(lshift)'},
+	{'Binding Shot', 'keybind(lalt)', 'mouseover.ground'},
+	{'Tar Trap', 'keybind(lcontrol)', 'mouseover.ground'},
+	{'Freezing Trap', 'keybind(ralt)', 'mouseover.ground'},
+}
+
+local Survival = {
+	{'Exhilaration', 'player.health<66'},
+	{'#127834', 'player.health<42'},
+	{'#5512', 'player.health<38'},
+	{'Aspect of the Turtle', 'player.health<25'},
+	{'Feign Death', 'player.health<19&equipped(137064)'},
+}
+
+local Interrupts = {
+	{'Counter Shot'},
+}
+
+local inCombat = {
+	--{'#142173', '!player.debuff(Temptation)&equipped(142173)'},
+	{Keybinds},
+	{Survival},
+	{Interrupts, 'target.interruptAt(50)&toggle(interrupts)&target.infront&target.range<=50'},
+	{Cooldowns, 'toggle(cooldowns)'},
+	{xCombat,'target.range<50&target.infront'},
+}
+
+local outCombat = {
+	{Keybinds},
+	{PreCombat}
+}
+
+NeP.CR:Add(254, {
+	name = '[|cff'..Zylla.addonColor..'ZYLLA|r] HUNTER - Marksmanship',
+	  ic = inCombat,
+	 ooc = outCombat,
+	 gui = GUI,
+	load = exeOnLoad
+})

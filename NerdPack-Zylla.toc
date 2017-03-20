@@ -1,0 +1,7 @@
+## Title: |r[|cffADFF2FZylla's|r] Combat Routines
+## Notes: Custom Combat Routines for NerdPack
+## Interface: 70100
+## Author: Zylla
+## Dependencies: NerdPack
+
+Zylla.xml
