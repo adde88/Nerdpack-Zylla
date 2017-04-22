@@ -13,7 +13,7 @@ local exeOnLoad = function()
 end
 
 local _Zylla = {
-	{'@Zylla.Targeting()', {'!target.alive&toggle(AutoTarget)'}},
+	{'@Zylla.Targeting()', {'!target.alive&UI(kAutoTarget)'}},
 }
 
 local xCombat = {
@@ -40,7 +40,7 @@ local inCombat = {
 	{_Zylla},
 	{Keybinds},
 	{Survival, 'player.health<100'},
-	{Cooldowns, 'toggle(cooldowns)'},
+	{Cooldowns, 'toggle(Cooldowns)'},
 	{xCombat, {'target.range<40', 'target.infront'}}
 }
 

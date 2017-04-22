@@ -14,7 +14,7 @@ local exeOnLoad = function()
 end
 
 local _Zylla = {
-	{'@Zylla.Targeting()', {'!target.alive&toggle(AutoTarget)'}},
+	{'@Zylla.Targeting()', {'!target.alive&UI(kAutoTarget)'}},
 	--{'Charge', 'target.range>8&target.range<=25&target.infront'},
 }
 
@@ -57,7 +57,7 @@ local Opener = {
 }
 
 local Util = {
-	{Cooldowns, 'toggle(cooldowns)'},
+	{Cooldowns, 'toggle(Cooldowns)'},
 	--{'Hamstring', 'player.buff(Battle Cry)&talent(6,1)&!target.debuff(Hamstring)'},	--waste of player.rage i would say unless ... it's PvP, maybe?
 	{'Rend', 'talent(3,2)&target.debuff(Rend).remains<gcd'},
 	--# The tl;dr of this line is to spam focused player.rage inside battle cry, the added nonsense is to help modeling the difficulty of timing focused player.rage immediately after mortal strike.
@@ -142,10 +142,10 @@ local Interrupts = {
 
 local inCombat = {
 	{Keybinds},
-	{Interrupts, 'target.interruptAt(50)&toggle(interrupts)&target.infront&target.range<=8'},
+	{Interrupts, 'target.interruptAt(50)&toggle(Interrupts)&target.infront&target.range<=8'},
 	{_Zylla},
 	{Survival, 'player.health<100'},
-	{Cooldowns, 'toggle(cooldowns)&target.range<8'},
+	{Cooldowns, 'toggle(Cooldowns)&target.range<8'},
 	{Util, 'target.range<8'},
 	{Cleave, 'toggle(aoe)&player.area(8).enemies>=2&talent(1,3)'},
 	{AoE, 'toggle(aoe)&player.area(8).enemies>=5&!talent(1,3)'},

@@ -8,21 +8,21 @@ local exeOnLoad = function()
 	 Zylla.ExeOnLoad()
 
 	print('|cffADFF2F ----------------------------------------------------------------------|r')
-	print('|cffADFF2F --- |rHUNTER |cffADFF2FInterrups, keybinds, and heals ONLY! |r')
+	print('|cffADFF2F --- |rHunter |cffADFF2FInterrups, keybinds, and heals ONLY! |r')
 	print('|cffADFF2F ----------------------------------------------------------------------|r')
 
 end
 
 local _Zylla = {
 -- Some non-SiMC stuffs
-	{'@Zylla.Targeting()', {'!target.alive&toggle(AutoTarget)'}},
+	{'@Zylla.Targeting()', {'!target.alive&UI(kAutoTarget)'}},
 
 }
 
 local Survival = {
 	{'Exhilaration', 'player.health<66'},
-	{'#127834', 'player.health<42'},
-	{'#5512', 'player.health<38'},
+	{'#Ancient Healing Potion', 'player.health<42'},
+	{'#Healthstone', 'player.health<38'},
 	{'Aspect of the Turtle', 'player.health<22'},
 }
 
@@ -41,7 +41,7 @@ local Keybinds = {
 local inCombat = {
 	{Keybinds},
 	{Survival, 'player.health<100'},
-	{Interrupts, 'target.interruptAt(50)&toggle(interrupts)&target.infront&target.range<=50'},
+	{Interrupts, 'target.interruptAt(50)&toggle(Interrupts)&target.infront&target.range<=50'},
 }
 
 local outCombat = {
@@ -49,7 +49,7 @@ local outCombat = {
 }
 
 NeP.CR:Add(3, {
-	name = '[|cff'..Zylla.addonColor..'ZYLLA|r] HUNTER - Interrupts, heals, keybinds',
+	name = '[|cff'..Zylla.addonColor..'Zylla|r] Hunter - Interrupts, heals, keybinds',
 	  ic = inCombat,
 	 ooc = outCombat,
 	 gui = GUI,

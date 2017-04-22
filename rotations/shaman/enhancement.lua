@@ -13,7 +13,7 @@ local exeOnLoad = function()
 end
 
 local _Zylla = {
-	{'@Zylla.Targeting()', {'!target.alive&toggle(AutoTarget)'}},
+	{'@Zylla.Targeting()', {'!target.alive&UI(kAutoTarget)'}},
 }
 
 local PreCombat = {
@@ -37,7 +37,7 @@ local xCombat = {
 	{'Healing Surge', 'player.health<=70&player.maelstrom>=20', 'player'},
 	--# Executed every time the actor is available.
 	--# Bloodlust casting behavior mirrors the simulator settings for proxy bloodlust. See options 'bloodlust_percent', and 'bloodlust_time'.
-	{'Feral Spirit', 'toggle(cooldowns)'},
+	{'Feral Spirit', 'toggle(Cooldowns)'},
 	{'Crash Lightning', 'artifact(Alpha Wolf).enabled&prev_gcd(Feral Spirit)'},
 	{'Berserking', 'player.buff(Ascendance)||!talent(7,1)||player.level<100'},
 	{'Blood Fury'},
@@ -81,9 +81,9 @@ local Keybinds = {
 local inCombat = {
 	{_Zylla},
 	{Keybinds},
-	{Interrupts, 'target.interruptAt(50)&toggle(interrupts)&target.infront&target.range<=30'},
+	{Interrupts, 'target.interruptAt(50)&toggle(Interrupts)&target.infront&target.range<=30'},
 	{Survival, 'player.health<100'},
-	{Cooldowns, 'toggle(cooldowns)'},
+	{Cooldowns, 'toggle(Cooldowns)'},
 	{AoE, {'toggle(AoE)', 'player.area(8).enemies>=3'}},
 	{xCombat, 'target.range<8&target.infront'},
 	{Ranged, 'target.range>8&target.range<40&target.infront'}

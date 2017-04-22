@@ -13,7 +13,7 @@ end
 
 local _Zylla = {
 	-- some non-SiMC stuffs
-	{'@Zylla.Targeting()', {'!target.alive&toggle(AutoTarget)'}},
+	{'@Zylla.Targeting()', {'!target.alive&UI(kAutoTarget)'}},
 }
 
 local PreCombat = {
@@ -66,7 +66,7 @@ local Keybinds = {
 local inCombat = {
 	{Keybinds},
 	{Survival, 'player.health<100'},
-	{Cooldowns, 'toggle(cooldowns)'},
+	{Cooldowns, 'toggle(Cooldowns)'},
 	{'Bear Form', 'form~=1'},
 	{xCombat, 'target.range<8&target.infront'}
 }

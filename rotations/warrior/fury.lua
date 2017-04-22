@@ -12,7 +12,7 @@ local exeOnLoad = function()
 end
 
 local _Zylla = {
-	{'@Zylla.Targeting()', {'!target.alive&toggle(AutoTarget)'}},
+	{'@Zylla.Targeting()', {'!target.alive&UI(kAutoTarget)'}},
 	--{'Charge', 'target.range>8&target.range<=25&target.infront'},
 }
 
@@ -95,10 +95,10 @@ local Interrupts = {
 
 local inCombat = {
 	{Keybinds},
-	{Interrupts, 'target.interruptAt(50)&toggle(interrupts)&target.infront&target.range<=8'},
+	{Interrupts, 'target.interruptAt(50)&toggle(Interrupts)&target.infront&target.range<=8'},
 	{_Zylla},
 	{Survival, 'player.health<100'},
-	{Cooldowns, 'toggle(cooldowns)&target.range<8'},
+	{Cooldowns, 'toggle(Cooldowns)&target.range<8'},
 	{TwoTargets, 'toggle(aoe)&{player.area(8).enemies=2||player.area(8).enemies=3}'},
 	{AoE, 'toggle(aoe)&player.area(8).enemies>3'},
 	{ST, 'target.range<8&target.infront'}

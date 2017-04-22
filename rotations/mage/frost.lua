@@ -5,7 +5,7 @@ local exeOnLoad = function()
 	 Zylla.ExeOnLoad()
 
 	print('|cffADFF2F ----------------------------------------------------------------------|r')
-	print('|cffADFF2F --- |rMAGE |cffADFF2FFrost |r')
+	print('|cffADFF2F --- |rMage |cffADFF2FFrost |r')
 	print('|cffADFF2F ----------------------------------------------------------------------|r')
 	print('|cffADFF2F --- |cffADFF2FVERSION 1 : RoF+IN+CS|r')
 	print('|cffADFF2F --- |rRecommended Talents: 1/1 - 2/1 - 3/2 - 4/1 - 5/1 - 6/1 - 7/3')
@@ -17,7 +17,7 @@ local exeOnLoad = function()
 end
 
 local _Zylla = {
-	{'@Zylla.Targeting()', {'!target.alive&toggle(AutoTarget)'}},
+	{'@Zylla.Targeting()', {'!target.alive&UI(kAutoTarget)'}},
 }
 
 local PreCombat = {
@@ -36,7 +36,7 @@ local Cooldowns = {
 
 local xCombat = {
 	{'Ice Lance', '!player.buff(Fingers of Frost)&prev_gcd(Flurry)'},
-	{Cooldowns, 'toggle(cooldowns)'},
+	{Cooldowns, 'toggle(Cooldowns)'},
 	{'Blizzard', 'player.buff(Potion of Deadly Grace)&!target.debuff(Water Jet)'},
 	{'!Ice Nova', 'target.debuff(Winter\'s Chill)'},
 	{'Frostbolt', 'target.debuff(Water Jet).remains>action(Frostbolt).cast_time&player.buff(Fingers of Frost).stack<2'},
@@ -76,7 +76,7 @@ local Survival = {
 local inCombat = {
 	{_Zylla},
 	{Keybinds},
-	{Interrupts, 'target.interruptAt(50)&toggle(interrupts)&target.infront&target.range<40'},
+	{Interrupts, 'target.interruptAt(50)&toggle(Interrupts)&target.infront&target.range<40'},
 	{Survival, 'player.health<100'},
 	{xCombat, 'target.range<40&target.infront'}
 }

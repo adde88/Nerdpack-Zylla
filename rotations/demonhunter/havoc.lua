@@ -11,7 +11,7 @@ local exeOnLoad = function()
 end
 
 local _Zylla = {
-	{'@Zylla.Targeting()', {'!target.alive&toggle(AutoTarget)'}},
+	{'@Zylla.Targeting()', {'!target.alive&UI(kAutoTarget)'}},
 }
 
 local Survival = {
@@ -35,7 +35,7 @@ local inCombat = {
 	{Keybinds},
 	{Survival, 'player.health<100'},
 	{Interrupts, 'target.interruptAt(50)'},
-	{Cooldowns, 'toggle(cooldowns)'},
+	{Cooldowns, 'toggle(Cooldowns)'},
 	{'Vengeful Retreat', {'target.range<=6', 'player.spell(Fel Rush).charges>=2', 'player.fury<=85'}},
 	{'Fel Rush', {'player.spell(Fel Rush).charges>=2', 'target.range>5'}},
 	{'Blade Dance', {'toggle(AoE)', 'player.area(8).enemies>=4'}},

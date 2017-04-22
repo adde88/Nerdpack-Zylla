@@ -8,14 +8,14 @@ local exeOnLoad = function()
 	 Zylla.ExeOnLoad()
 
 	print('|cffADFF2F ----------------------------------------------------------------------|r')
-	print('|cffADFF2F --- |rHUNTER |cffADFF2FSurvival |r')
-	print('|cffADFF2F --- |WARNING: in development!')
+	print('|cffADFF2F --- |rHunter |cffADFF2FSurvival |r')
+	print('|cffADFF2F --- |WARNING: This rotation is in development, and it\'s not complete!')
 	print('|cffADFF2F ----------------------------------------------------------------------|r')
 	
 end
 
 local _Zylla = {
-	{'@Zylla.Targeting()', '!target.alive&toggle(AutoTarget)'},
+	{'@Zylla.Targeting()', {'!target.alive&UI(kAutoTarget)'}},
 }
 
 local PreCombat = {
@@ -24,8 +24,8 @@ local PreCombat = {
 
 local Survival = {
 	{'Exhilaration', 'player.health<66'},
-	{'#127834', 'player.health<42'},
-	{'#5512', 'player.health<38'},
+	{'#Ancient Healing Potion', 'player.health<42'},
+	{'#Healthstone', 'player.health<38'},
 	{'Aspect of the Turtle', 'player.health<22'},
 	{'Feign Death', 'player.health<19&equipped(137064)'},
 }
@@ -38,9 +38,9 @@ local Pet = {
 
 local Keybinds = {
 	{'%pause', 'keybind(lshift)'},
-	{'Explosive Trap', 'keybind(lalt)', 'mouseover.ground'},
-	{'Tar Trap', 'keybind(lcontrol)', 'mouseover.ground'},
-	{'Freezing Trap', 'keybind(ralt)', 'mouseover.ground'},
+	{'Explosive Trap', 'keybind(lalt)', 'cursor.ground'},
+	{'Tar Trap', 'keybind(lcontrol)', 'cursor.ground'},
+	{'Freezing Trap', 'keybind(ralt)', 'cursor.ground'},
 }
 
 local Interrupts = {
@@ -70,8 +70,8 @@ local RangedMok = {
 }
 
 local Moknathal = {
-	{'Aspect of the Eagle', 'toggle(cooldowns)&player.buff(Mongoose Fury)&player.buff(Mongoose Fury).remains>6&cooldown(Mongoose Bite).charges>=2'},
-	{'Snake Hunter', 'toggle(cooldowns)&talent(2,3)&cooldown(Mongoose Bite).charges<=0&player.buff(Mongoose Fury.remains>3*gcd'},
+	{'Aspect of the Eagle', 'toggle(Cooldowns)&player.buff(Mongoose Fury)&player.buff(Mongoose Fury).remains>6&cooldown(Mongoose Bite).charges>=2'},
+	{'Snake Hunter', 'toggle(Cooldowns)&talent(2,3)&cooldown(Mongoose Bite).charges<=0&player.buff(Mongoose Fury.remains>3*gcd'},
 	{'Flanking Strike', 'player.focus>75'},
 	{'Flanking Strike', 'cooldown(Mongoose Bite).charges<=0&player.buff(Aspect of the Eagle).duration>=gcd&player.focus>75'},
 	{'Lacerate', 'player.focus>60&player.buff(Mongoose Fury).duration>=gcd&target.dot(Lacerate)<=3&cooldown(Mongoose Bite).charges>=0&player.buff(Mongoose Fury).stack<4'},
@@ -89,8 +89,8 @@ local Moknathal = {
 }
 
 local Nomok = {
-	{'Aspect of the Eagle', 'toggle(cooldowns)&player.buff(Mongoose Fury)&player.buff(Mongoose Fury).duration>6&cooldown(Mongoose Bite).charges>=2'},
-	{'Snake Hunter', 'toggle(cooldowns)&talent(2,3)&action(Mongoose Bite).charges<=0&player.buff(Mongoose Fury).remains>3*gcd'},
+	{'Aspect of the Eagle', 'toggle(Cooldowns)&player.buff(Mongoose Fury)&player.buff(Mongoose Fury).duration>6&cooldown(Mongoose Bite).charges>=2'},
+	{'Snake Hunter', 'toggle(Cooldowns)&talent(2,3)&action(Mongoose Bite).charges<=0&player.buff(Mongoose Fury).remains>3*gcd'},
 	{'Flanking Strike', 'cooldown(Mongoose Bite).charges<2&player.buff(Mongoose Fury).remains>(1+action(Mongoose Bite).charges*gcd)'},
 	{'Flanking Strike', 'cooldown(Mongoose Bite).charges<=0&player.buff(Aspect of the Eagle).remains>=gcd'},
 	{'Flanking Strike', 'talent(1,1)&cooldown(Mongoose Bite).charges<3'},
@@ -139,7 +139,7 @@ local inCombat = {
 	{'Mongoose Bite', 'lastcast(Mongoose Bite)'},
 	{Keybinds},
 	{Survival, 'player.health<100'},
-	{Interrupts, 'target.interruptAt(50)&toggle(interrupts)&target.infront&target.range<=5'},
+	{Interrupts, 'target.interruptAt(50)&toggle(Interrupts)&target.infront&target.range<=5'},
 	{Pet, 'pet.exists&pet.alive'},
 	{AoE, 'toggle(AoE)&player.area(8).enemies>=3'},
 	{Melee, 'target.range<8&target.infront'},
@@ -152,7 +152,7 @@ local outCombat = {
 }
 
 NeP.CR:Add(255, {
-	name = '[|cff'..Zylla.addonColor..'ZYLLA|r] Hunter - Survival',
+	name = '[|cff'..Zylla.addonColor..'Zylla|r] Hunter - Survival (DEV)',
 	  ic = inCombat,
 	 ooc = outCombat,
 	 gui = GUI,

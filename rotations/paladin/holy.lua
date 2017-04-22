@@ -93,7 +93,7 @@ end
 
 local _Zylla = {
 -- some non-SiMC stuffs
-	{'@Zylla.Targeting()', {'!target.alive&toggle(AutoTarget)'}},
+	{'@Zylla.Targeting()', {'!target.alive&UI(kAutoTarget)'}},
 
 }
 
@@ -353,4 +353,4 @@ local outCombat = {
 	{TopUp, 'keybind(lalt)'},
 }
 
-NeP.CR:Add(65, '[|cff'..Zylla.addonColor..'Gabbz Holy Paladin V2', inCombat, outCombat, exeOnLoad, GUI)
+NeP.CR:Add(65, '[|cff'..Zylla.addonColor..'ZYLLA\'s|r] PALADIN - Holy V2', inCombat, outCombat, exeOnLoad, GUI)

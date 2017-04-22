@@ -7,8 +7,8 @@ local _, Zylla = ...
 	{type = 'checkbox', text = 'Pause enabled', key = 'kP', default = true},
 	{type = 'checkbox', text = 'Auto-Target Enemies', key = 'kAutoTarget', default = true},
 	{type = 'checkbox', text = 'Intercept enabled', key = 'kIntercept', default = false},
-	{type = 'checkbox', text = 'Use trinket #1', key = 'kTrinket1', default = true},
-	{type = 'checkbox', text = 'Use trinket #2', key = 'kTrinket2', default = true}} 
+	{type = 'checkbox', text = 'Use trinket #1', key = 'kT1', default = true},
+	{type = 'checkbox', text = 'Use trinket #2', key = 'kT2', default = true}} 
 
 local exeOnLoad = function()
 	Zylla.ExeOnLoad()
@@ -52,9 +52,8 @@ local Interrupts = {
 }
 
 local Trinkets = {
-	--# Executed every time the actor is available.
-	{"#trinket1", 'UI(kTrinket1)'},
-	{"#trinket2", 'UI(kTrinket2)'}
+	{'#trinket1', 'UI(kT1)'},
+	{'#trinket2', 'UI(kT2)'}
 }
 
 local Cooldowns = {
@@ -102,8 +101,8 @@ local ST = {
 
 local inCombat = {
 	{Keybinds},
-	{Interrupts, 'target.interruptAt(50)&toggle(interrupts)'},
-	{Cooldowns, 'toggle(cooldowns)'},
+	{Interrupts, 'target.interruptAt(50)&toggle(Interrupts)'},
+	{Cooldowns, 'toggle(Cooldowns)'},
 	{Trinkets},
 	{_Zylla},
 	{ST, 'target.range<8&target.infront'},

@@ -119,7 +119,7 @@ local inCombat = {
 		{'%dispelall'},
 		{'Arcane Torrent', 'player.mana<50'},
 		{Keybinds},
-		{Cooldowns, 'toggle(cooldowns)'},
+		{Cooldowns, 'toggle(Cooldowns)'},
 		{Tank, 'tank.health<100'},
 		{Lowest, 'lowest.health<100'},
 		--{Player, 'player.health<100'},

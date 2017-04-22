@@ -13,7 +13,7 @@ end
 
 local _Zylla = {
 	-- some non-SiMC stuffs
-	{'@Zylla.Targeting()', {'!target.alive&toggle(AutoTarget)'}},
+	{'@Zylla.Targeting()', {'!target.alive&UI(kAutoTarget)'}},
 }
 
 
@@ -63,7 +63,7 @@ local Stealthed = {
 }
 
 local xCombat = {
-	{Cooldowns, 'toggle(cooldowns)'},
+	{Cooldowns, 'toggle(Cooldowns)'},
 	--# Fully switch to the Stealthed Rotation {by doing so, it forces pooling if nothing is available}
 	{Stealthed, 'stealthed||player.buff(Shadowmeld)'},
 	{Finishers, 'combo_points>=5||{combo_points>=4&player.area(10).enemies>=3&player.area(10).enemies<=4}'},
@@ -90,7 +90,7 @@ local Survival ={
 local inCombat = {
 	{_Zylla},
 	{Keybinds},
-	{Interrupts, 'target.interruptAt(47)&toggle(interrupts)&target.infront&target.range<8'},
+	{Interrupts, 'target.interruptAt(47)&toggle(Interrupts)&target.infront&target.range<8'},
 	{Survival, 'player.health<100'},
 	{xCombat, 'target.range<8&target.infront'},
 }

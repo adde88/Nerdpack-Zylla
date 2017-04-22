@@ -59,14 +59,10 @@ local Swipe = {
 
 local PreCombat = {
 	{'Travel Form', '!indoors&!player.buff(Travel Form)&!player.buff(Prowl)&{!target.enemy||target.enemy&!target.alive}'},
-	--{'', ''},
-	--{'', ''},
-	--{'', ''},
 	{Regrowth, 'talent(7,2)&target.enemy&target.alive&!player.buff(Prowl)&!prev(Regrowth)&player.buff(Bloodtalons).stack<2'},
 	{'Cat Form', '!player.buff(Cat Form)&!player.buff(Travel Form)'},
  	{'Prowl', '!player.buff(Prowl)&target.enemy&target.alive'},
  	{'Rake', 'player.buff(Prowl)&target.range<5&target.infront'},
-	--{'', ''},
 }
 
 local SBT_Opener = {
@@ -101,7 +97,7 @@ local Finisher = {
 
 local Generator = {
 	{'Brutal Slash', 'talent(7,1)&combo_points<5'},
-	{'!Ashamane\'s Frenzy', 'combo_points<=2&toggle(cooldowns)&{player.buff(Bloodtalons)||!talent(7,2)}&{player.buff(Savage Roar)||!talent(5,3)}'},
+	{'!Ashamane\'s Frenzy', 'combo_points<=2&toggle(Cooldowns)&{player.buff(Bloodtalons)||!talent(7,2)}&{player.buff(Savage Roar)||!talent(5,3)}'},
 	--{'Elune\'s Guidance', 'talent(6,3)&{combo_points=0&player.energy<action(Ferocious Bite).cost+25-energy.regen*cooldown(Elune\'s Guidance).remains}'},
 	--{'Elune\'s Guidance', 'talent(6,3)&{combo_points=0&player.energy>=action(Ferocious Bite).cost+25}'},
 	{Thrash, 'talent(7,1)&player.area(8).enemies>=9'},
@@ -141,10 +137,10 @@ local Survival = {
 
 local inCombat = {
 	{Keybinds},
-	{Interrupts, 'target.interruptAt(43)&toggle(interrupts)&target.infront&target.range<=8'},
+	{Interrupts, 'target.interruptAt(43)&toggle(Interrupts)&target.infront&target.range<=8'},
 	{Survival, 'player.health<100'},
 	{'Cat Form', '!player.buff(Frenzied Regeneration)&{!player.buff(Cat Form)&{!player.buff(Travel Form)||player.area(8).enemies>=1}}'},
-	{Cooldowns, '!player.buff(Frenzied Regeneration)&toggle(cooldowns)'},
+	{Cooldowns, '!player.buff(Frenzied Regeneration)&toggle(Cooldowns)'},
 	{Moonfire, 'talent(1,3)&target.range>8&target.range<=40&target.infront&!player.buff(Prowl)&!target.debuff(Moonfire)'},
 	{xCombat, '!player.buff(Frenzied Regeneration)&target.range<8&target.infront'},
 }

@@ -19,7 +19,7 @@ end
 
 local _Zylla = {
 	-- some non-SiMC stuffs
-	{'@Zylla.Targeting()', {'!target.alive&toggle(AutoTarget)'}},
+	{'@Zylla.Targeting()', {'!target.alive&UI(kAutoTarget)'}},
 	{'%taunt(Hand of Reckoning)', 'toggle(AutoTaunt)'}
 }
 
@@ -85,7 +85,7 @@ local inCombat = {
 	{Keybinds},
 	{_Zylla},
 	--{Survival, 'player.health<100'},
-	{Interrupts, 'target.interruptAt(50)&toggle(interrupts)&target.infront&target.range<=8'},
+	{Interrupts, 'target.interruptAt(50)&toggle(Interrupts)&target.infront&target.range<=8'},
 	{Cooldowns, 'toggle(Cooldowns)'},
 	{AoE, 'toggle(AoE)&player.area(8).enemies>=3'},
 	{ST, 'target.infront'}
@@ -97,7 +97,7 @@ local outCombat = {
 }
 
 NeP.CR:Add(66, {
-	name = '[|cff'..Zylla.addonColor..'ZYLLA|r] PALADIN - Protection',
+	name = '[|cff'..Zylla.addonColor..'ZYLLA\'s|r] PALADIN - Protection',
 	  ic = inCombat,
 	 ooc = outCombat,
 	 gui = GUI,

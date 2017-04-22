@@ -47,12 +47,12 @@ local Cooldowns = {
 local xCombat = {
 	{'Divine Storm', 'target.debuff(Judgment)&player.area(6).enemies>=2&player.buff(Divine Purpose)&player.buff(Divine Purpose).remains<gcd*2'},
 	{'Divine Storm', 'target.debuff(Judgment)&player.area(6).enemies>=2&holy_power>=5&player.buff(Divine Purpose)'},
-	{'Divine Storm', 'target.debuff(Judgment)&player.area(6).enemies>=2&holy_power>=5&{{talent(7,2)&!toggle(cooldowns)}||!talent(7,2)||cooldown(Crusade).remains>gcd*3}'},
+	{'Divine Storm', 'target.debuff(Judgment)&player.area(6).enemies>=2&holy_power>=5&{{talent(7,2)&!toggle(Cooldowns)}||!talent(7,2)||cooldown(Crusade).remains>gcd*3}'},
 	{'Justicar\'s Vengeance', 'target.debuff(Judgment)&player.buff(Divine Purpose)&player.buff(Divine Purpose).remains<gcd*2&!equipped(Whisper of the Nathrezim)'},
 	{'Justicar\'s Vengeance', 'target.debuff(Judgment)&holy_power>=5&player.buff(Divine Purpose)&!equipped(Whisper of the Nathrezim)'},
 	{'Templar\'s Verdict', 'target.debuff(Judgment)&player.buff(Divine Purpose)&player.buff(Divine Purpose).remains<gcd*2'},
 	{'Templar\'s Verdict', 'target.debuff(Judgment)&holy_power>=5&player.buff(Divine Purpose)'},
-	{'Templar\'s Verdict', 'target.debuff(Judgment)&holy_power>=5&{{talent(7,2)&!toggle(cooldowns)}||!talent(7,2)||cooldown(Crusade).remains>gcd*3}'},
+	{'Templar\'s Verdict', 'target.debuff(Judgment)&holy_power>=5&{{talent(7,2)&!toggle(Cooldowns)}||!talent(7,2)||cooldown(Crusade).remains>gcd*3}'},
 	{'Divine Storm', 'target.debuff(Judgment)&holy_power>=3&player.area(6).enemies>=2&{cooldown(Wake of Ashes).remains<gcd*2&artifact(Wake of Ashes).enabled||player.buff(Whisper of the Nathrezim)&player.buff(Whisper of the Nathrezim).remains<gcd}&{!talent(7,2)||cooldown(Crusade).remains>gcd*4}'},
 	{'Justicar\'s Vengeance', 'target.debuff(Judgment)&holy_power>=3&player.buff(Divine Purpose)&cooldown(Wake of Ashes).remains<gcd*2&artifact(Wake of Ashes).enabled&!equipped(Whisper of the Nathrezim)'},
 	{'Templar\'s Verdict', 'target.debuff(Judgment)&holy_power>=3&{cooldown(Wake of Ashes).remains<gcd*2&artifact(Wake of Ashes).enabled||player.buff(Whisper of the Nathrezim).remains<gcd}&{!talent(7,2)||cooldown(Crusade).remains>gcd*4}'},
@@ -63,16 +63,16 @@ local xCombat = {
 	{'Judgment', 'holy_power>=3||{{cooldown(Zeal).charges<=1.67||cooldown(Crusader Strike).charges<=1.67}&cooldown(Blade of Justice).remains>gcd}||{talent(2,3)&target.health>50}'},
 	{'Consecration', 'talent(1,3)'},
 	{'Divine Storm', 'target.debuff(Judgment)&player.area(6).enemies>=2&player.buff(Divine Purpose)'},
-	{'Divine Storm', 'target.debuff(Judgment)&player.area(6).enemies>=2&player.buff(The Fires of Justice)&{{talent(7,2)&!toggle(cooldowns)}||!talent(7,2)||cooldown(Crusade).remains>gcd*3}'},
-	{'Divine Storm', 'target.debuff(Judgment)&player.area(6).enemies>=2&{holy_power>=4||{{cooldown(Zeal).charges<=1.34||cooldown(Crusader Strike).charges<=1.34}&cooldown(Blade of Justice).remains>gcd}}&{{talent(7,2)&!toggle(cooldowns)}||!talent(7,2)||cooldown(Crusade).remains>gcd*4}'},
+	{'Divine Storm', 'target.debuff(Judgment)&player.area(6).enemies>=2&player.buff(The Fires of Justice)&{{talent(7,2)&!toggle(Cooldowns)}||!talent(7,2)||cooldown(Crusade).remains>gcd*3}'},
+	{'Divine Storm', 'target.debuff(Judgment)&player.area(6).enemies>=2&{holy_power>=4||{{cooldown(Zeal).charges<=1.34||cooldown(Crusader Strike).charges<=1.34}&cooldown(Blade of Justice).remains>gcd}}&{{talent(7,2)&!toggle(Cooldowns)}||!talent(7,2)||cooldown(Crusade).remains>gcd*4}'},
 	{'Justicar\'s Vengeance', 'target.debuff(Judgment)&player.buff(Divine Purpose)&!equipped(Whisper of the Nathrezim)'},
 	{'Templar\'s Verdict', 'target.debuff(Judgment)&player.buff(Divine Purpose)'},
-	{'Templar\'s Verdict', 'target.debuff(Judgment)&player.buff(The Fires of Justice)&{{talent(7,2)&!toggle(cooldowns)}||!talent(7,2)||cooldown(Crusade).remains>gcd*3}'},
-	{'Templar\'s Verdict', 'target.debuff(Judgment)&{holy_power>=4||{{cooldown(Zeal).charges<=1.34||cooldown(Crusader Strike).charges<=1.34}&cooldown(Blade of Justice).remains>gcd}}&{{talent(7,2)&!toggle(cooldowns)}||!talent(7,2)||cooldown(Crusade).remains>gcd*4}'},
+	{'Templar\'s Verdict', 'target.debuff(Judgment)&player.buff(The Fires of Justice)&{{talent(7,2)&!toggle(Cooldowns)}||!talent(7,2)||cooldown(Crusade).remains>gcd*3}'},
+	{'Templar\'s Verdict', 'target.debuff(Judgment)&{holy_power>=4||{{cooldown(Zeal).charges<=1.34||cooldown(Crusader Strike).charges<=1.34}&cooldown(Blade of Justice).remains>gcd}}&{{talent(7,2)&!toggle(Cooldowns)}||!talent(7,2)||cooldown(Crusade).remains>gcd*4}'},
 	{'Zeal', 'talent(2,2)&holy_power<=4'},
 	{'Crusader Strike', 'holy_power<=4'},
-	{'Divine Storm', 'target.debuff(Judgment)&holy_power>=3&player.area(6).enemies>=2&{{talent(7,2)&!toggle(cooldowns)}||!talent(7,2)||cooldown(Crusade).remains>gcd*5}'},
-	{'Templar\'s Verdict', 'target.debuff(Judgment)&holy_power>=3&{{talent(7,2)&!toggle(cooldowns)}||!talent(7,2)||cooldown(Crusade).remains>gcd*5}'},
+	{'Divine Storm', 'target.debuff(Judgment)&holy_power>=3&player.area(6).enemies>=2&{{talent(7,2)&!toggle(Cooldowns)}||!talent(7,2)||cooldown(Crusade).remains>gcd*5}'},
+	{'Templar\'s Verdict', 'target.debuff(Judgment)&holy_power>=3&{{talent(7,2)&!toggle(Cooldowns)}||!talent(7,2)||cooldown(Crusade).remains>gcd*5}'},
 }
 
 local Util = {
@@ -89,9 +89,9 @@ local Util = {
 local inCombat = {
 	{Util},
 	{Keybinds},
-	{Interrupts, 'target.interruptAt(50)&toggle(interrupts)&target.infront&target.range<=8'},
+	{Interrupts, 'target.interruptAt(50)&toggle(Interrupts)&target.infront&target.range<=8'},
 	{Survival, 'player.health<100'},
-	{Cooldowns, 'toggle(cooldowns)'},
+	{Cooldowns, 'toggle(Cooldowns)'},
 	{xCombat, 'target.range<8&target.infront'},
 }
 
