@@ -6,7 +6,7 @@ local GUI = {
 	{type = 'text', 	text = 'Left Ctrl: Tar Trap', align = 'center'},
 	{type = 'text', 	text = 'Left Alt: Binding Shot', align = 'center'},
 	{type = 'text', 	text = 'Right Alt: Freezing Trap', align = 'center'},
-	{type = 'checkbox', text = 'Pause Enabled', key = 'kP', default = true},
+	{type = 'checkbox', text = 'Pause Enabled', key = 'kPause', default = true},
 	{type = 'checkbox', text = 'Auto-Target Enemies', key = 'kAutoTarget', default = true},
 	{type = 'checkbox', text = 'Summon Pet', key = 'kPet', default = false},
 	{type = 'checkbox', text = 'Barrage Enabled', key = 'kBarrage', default = true},
@@ -39,7 +39,7 @@ local PreCombat = {
 
 local Keybinds = {
 	-- Pause
-	{'%pause', 'keybind(lshift)&UI(kP)'},
+	{'%pause', 'keybind(lshift)&UI(kPause)'},
 	{'Binding Shot', 'keybind(lalt)', 'cursor.ground'},
 	{'Tar Trap', 'keybind(lcontrol)', 'cursor.ground'},
 	{'Freezing Trap', 'keybind(ralt)', 'cursor.ground'},

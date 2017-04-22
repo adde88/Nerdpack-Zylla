@@ -4,7 +4,7 @@ local _, Zylla = ...
 	{type = 'header', 	text = 'Keybinds', align = 'center'},
 	{type = 'text', 	text = 'Left Shift: Pause', align = 'center'},
 	{type = 'text', 	text = 'Left Ctrl: Heroic Leap', align = 'center'},
-	{type = 'checkbox', text = 'Pause enabled', key = 'kP', default = true},
+	{type = 'checkbox', text = 'Pause enabled', key = 'kPause', default = true},
 	{type = 'checkbox', text = 'Auto-Target Enemies', key = 'kAutoTarget', default = true},
 	{type = 'checkbox', text = 'Intercept enabled', key = 'kIntercept', default = false},
 	{type = 'checkbox', text = 'Use trinket #1', key = 'kT1', default = true},
@@ -40,7 +40,7 @@ local _Zylla = {
 
 local Keybinds = {
 	-- Pause
-	{'%pause', 'keybind(alt)&UI(kP)'},
+	{'%pause', 'keybind(alt)&UI(kPause)'},
 	{'Heroic Leap', 'keybind(lcontrol)' , 'cursor.ground'}
 }
 

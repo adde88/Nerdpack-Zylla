@@ -10,7 +10,7 @@ local GUI = {
 	{type = 'text', 	text = 'Left Shift: Pause', align = 'center'},
 	{type = 'text', 	text = 'Left Ctrl: Mass Dispel', align = 'center'},
 	{type = 'text', 	text = 'Left Alt: Power Word: Barrier', align = 'center'},
-	{type = 'checkbox', text = 'Pause enabled', key = 'kP', default = false},
+	{type = 'checkbox', text = 'Pause enabled', key = 'kPause', default = false},
 	{type = 'checkbox', text = 'Mass Dispel enabled', key = 'kMD', default = false},
 	{type = 'checkbox', text = 'Power Word: Barrier enabled', key = 'kPWB', default = false}
 
@@ -43,7 +43,7 @@ NeP.FakeUnits:Add('lnbuff', function(num, buff)
 end)
 
 local Keybinds = {
-	{'%pause', 'keybind(lshift)& UI(kP)'}, -- Pause.
+	{'%pause', 'keybind(lshift)& UI(kPause)'}, -- Pause.
 	{'Mass Dispel', 'keybind(lctrl)&UI(kMD)', 'cursor.ground'}, --Mass Dispel.
 	{'Power Word: Barrier', 'keybind(lalt)&UI(kPWB)', 'cursor.ground'} --Power Word: Barrier.
 }

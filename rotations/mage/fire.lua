@@ -6,7 +6,7 @@ local GUI = {
 	{type = 'text', 	text = 'Left Ctrl:  Flamestrike (Target Ground)', align = 'center'},
 	{type = 'text', 	text = 'Left Alt:  Rune of Power', align = 'center'},
 	{type = 'text', 	text = 'Right Alt:  ', align = 'center'},
-	{type = 'checkbox', text = 'Pause Enabled', key = 'kP', default = true},
+	{type = 'checkbox', text = 'Pause Enabled', key = 'kPause', default = true},
 	{type = 'checkbox', text = 'Auto-Target Enemies', key = 'kAutoTarget', default = true},
 	{type = 'checkbox', text = 'Combustion Enabled', key = 'kCombustion', default = true},
    	{type = 'checkbox', text = 'Cinderstorm Enabled', key = 'kCinderstorm', default = true},
@@ -29,7 +29,7 @@ local _Zylla = {
 }
 
 local Keybinds = {
-	{'%pause', 'keybind(lshift))&UI(kP)'},
+	{'%pause', 'keybind(lshift))&UI(kPause)'},
 	{'Rune of Power', 'keybind(lalt)'},
 	{'Flamestrike', 'keybind(lcontrol)', 'target.ground'},
 }
