@@ -8,6 +8,7 @@ local GUI = {
 	{type = 'text', 	text = 'Right Alt: Freezing Trap', align = 'center'},
 	{type = 'checkbox', text = 'Pause Enabled', key = 'kP', default = true},
 	{type = 'checkbox', text = 'Auto-Target Enemies', key = 'kAutoTarget', default = true},
+	{type = 'checkbox', text = 'Summon Pet', key = 'kPet', default = false},
 	{type = 'checkbox', text = 'Barrage Enabled', key = 'kBarrage', default = false},
    	{type = 'checkbox', text = 'Volley Enabled', key = 'kVolley', default = true},
 	{type = 'checkbox', text = 'Misdirect Focus/Pet', key = 'kMisdirect', default = true},
