@@ -1,6 +1,13 @@
 local _, Zylla = ...
 local GUI = {
-}
+	{type = 'header', 	text = 'Keybinds', align = 'center'},
+	{type = 'text', 	text = 'Left Shift: Pause', align = 'center'},
+	{type = 'text', 	text = 'Left Ctrl: ', align = 'center'},
+	{type = 'text', 	text = 'Left Alt: ', align = 'center'},
+	{type = 'text', 	text = 'Right Alt: ', align = 'center'},
+	{type = 'checkbox', text = 'Pause Enabled', key = 'kPause', default = true},
+	{type = 'checkbox', text = 'Auto-Target Enemies', key = 'kAutoTarget', default = true},
+} 
 
 local exeOnLoad = function()
 	 Zylla.ExeOnLoad()
@@ -13,7 +20,8 @@ local exeOnLoad = function()
 end
 
 local _Zylla = {
-	{'@Zylla.Targeting()', {'!target.alive&UI(kAutoTarget)'}},
+	{"/targetenemy [noexists]", "!target.exists" },
+    {"/targetenemy [dead][noharm]", "target.dead" },
 }
 
 local xCombat = {
@@ -23,7 +31,7 @@ local xCombat = {
 
 local Keybinds = {
 	-- Pause
-	{'%pause', 'keybind(alt)'},
+	-- {'%pause', 'keybind(alt)'},
 }
 
 local Survival = {
@@ -37,7 +45,7 @@ local Cooldowns = {
 }
 
 local inCombat = {
-	{_Zylla},
+	{_Zylla, 'UI(kAutoTarget)'},
 	{Keybinds},
 	{Survival, 'player.health<100'},
 	{Cooldowns, 'toggle(Cooldowns)'},

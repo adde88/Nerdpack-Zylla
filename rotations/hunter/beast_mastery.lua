@@ -13,7 +13,8 @@ local GUI = {
    	{type = 'checkbox', text = 'Volley Enabled', key = 'kVolley', default = true},
 	{type = 'checkbox', text = 'Misdirect Focus/Pet', key = 'kMisdirect', default = true},
 	{type = 'checkbox', text = 'Use Trinket #1', key = 'kT1', default = false},
-	{type = 'checkbox', text = 'Use Trinket #2', key = 'kT2', default = false}
+	{type = 'checkbox', text = 'Use Trinket #2', key = 'kT2', default = false},
+	{type = 'checkbox', text = 'Ring of Collapsing Futures', key = 'kRoCF', default = true}
 } 
 
 local exeOnLoad = function()
@@ -27,18 +28,25 @@ local exeOnLoad = function()
 end
 
 local _Zylla = {
-	{'@Zylla.Targeting()', {'!target.alive&UI(kAutoTarget)'}},
+	{"/targetenemy [noexists]", "!target.exists" },
+    {"/targetenemy [dead][noharm]", "target.dead" },
 }
 
 local PreCombat = {
-	{'/cast Call Pet 1', '!pet.exists&!pet.dead&UI(kPet)'},
+	{'/cast Call Pet 1', '!pet.exists&UI(kPet)'},
+	{'Heart of the Phoenix', '!player.debuff(Weakened Heart)&pet.dead&UI(kPet)'},
 	{'Revive Pet', 'pet.dead&UI(kPet)'},
 	{'Volley', 'talent(6,3)&!player.buff(Volley)&UI(kVolley)'},
 	{'Volley', 'talent(6,3)&player.buff(Volley)&!UI(kVolley)'},
 }
 
+local Util = {
+	-- ETC.
+	-- {'%pause' , 'player.debuff(200904)||player.debuff(Sapped Soul)'}, -- Vault of the Wardens, Sapped Soul
+}
+
 local Keybinds = {
-	{'%pause', 'keybind(lshift)&UI(kPause)'},
+	-- {'%pause', 'keybind(lshift)&UI(kPause)'},
 	{'Binding Shot', 'keybind(lalt)', 'cursor.ground'},
 	{'Tar Trap', 'keybind(lcontrol)', 'cursor.ground'},
 	{'Freezing Trap', 'keybind(ralt)', 'cursor.ground'},
@@ -47,6 +55,7 @@ local Keybinds = {
 local Trinkets = {
 	{'#trinket1', 'UI(kT1)'},
 	{'#trinket2', 'UI(kT2)'},
+	{'#Ring of Collapsing Futures', 'equipped(142173)&!player.debuff(Temptation)&UI(kRoCF)', 'target.enemy'},
 }
 
 local Survival = {
@@ -57,7 +66,6 @@ local Survival = {
 	{'Feign Death', 'player.health<19&equipped(137064)'},
 }
 
-
 local Cooldowns = {
 	{'Bestial Wrath'},
 	{'Titan\'s Thunder', 'cooldown(Dire Beast).remains>=3||player.buff(Bestial Wrath)&player.buff(Dire Beast)'},
@@ -65,14 +73,6 @@ local Cooldowns = {
 
 local Interrupts = {
 	{'Counter Shot'},
-}
-
-local xPetCombat = {
-	{'!Kill Command'},
-	{'Mend Pet', 'pet.exists&pet.alive&pet.health<100&!pet.buff(Mend Pet)'},
-	{'/cast Call Pet 1', '!pet.exists&!pet.dead&UI(kPet)'},
-	{'Revive Pet', 'pet.dead&UI(kPet)'},
-	{'/cast [@focus, help] [@pet, nodead, exists] Misdirection', 'cooldown(Misdirection).remains<=gcd&toggle(xMisdirect)'},
 }
 
 local xCombat = {
@@ -91,7 +91,26 @@ local xCombat = {
 	{'Volley', 'talent(6,3)&!player.buff(Volley)&UI(kVolley)'},
 }
 
+local xPetCombat = {
+	--{'/petassist' },
+	{'!Kill Command'},
+	{'Mend Pet', 'pet.exists&pet.alive&pet.health<100&!pet.buff(Mend Pet)'},
+	{'/cast Call Pet 1', '!pet.exists&UI(kPet)'},
+	{'Heart of the Phoenix', '!player.debuff(Weakened Heart)&pet.dead&UI(kPet)'},
+	{'Revive Pet', 'pet.dead&UI(kPet)'},
+	{'/cast [@focus, help] [@pet, nodead, exists] Misdirection', 'cooldown(Misdirection).remains<=gcd&toggle(xMisdirect)'},
+}
+
+local xPvP = {
+	{'Gladiator\'s Medallion', 'spell.exists(208683)&{player.state.incapacitate||player.state.stun||player.state.fear||player.state.horror||player.state.sleep||player.state.charm}'},
+	{'Viper Sting', 'spell.exists(Viper Sting)&target.range<40&target.health<80'},
+	{'Scorpid Sting', 'spell.exists(Scorpid Sting)&target.range<8'},
+	{'Spider Sting', 'spell.exists(Spider Sting)&target.range<40'},
+}
+
 local inCombat = {
+	{_Zylla, 'UI(kAutoTarget)'},
+	{Util},
 	{Keybinds},
 	{Trinkets},
 	{Survival, 'player.health<100'},
@@ -99,6 +118,7 @@ local inCombat = {
 	{Interrupts, 'target.interruptAt(50)&toggle(Interrupts)&target.infront&target.range<=40'},
 	{xCombat, 'target.range<40&target.infront'},
 	{xPetCombat},
+	{xPvP, 'target.player'},
 }
 
 local outCombat = {
@@ -107,11 +127,9 @@ local outCombat = {
 }
 
 NeP.CR:Add(253, {
-
 	name = '[|cff'..Zylla.addonColor..'Zylla|r] Hunter - Beast Mastery',
 	  ic = inCombat,
 	 ooc = outCombat,
 	 gui = GUI,
 	load = exeOnLoad
-	
 })

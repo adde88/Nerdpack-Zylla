@@ -24,8 +24,9 @@ local exeOnLoad = function()
 
 end
 
-local _Zylla = { 
-	{'@Zylla.Targeting()', {'!target.alive&UI(kAutoTarget)'}},
+local _Zylla = {
+	{"/targetenemy [noexists]", "!target.exists" },
+    {"/targetenemy [dead][noharm]", "target.dead" },
 }
 
 local Keybinds = {

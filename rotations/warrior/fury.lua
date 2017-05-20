@@ -1,6 +1,15 @@
 local _, Zylla = ...
 local GUI = {
-}
+	--KEYBINDS
+	{type = 'header', 	text = 'Keybinds', align = 'center'},
+	{type = 'text', 	text = 'Left Shift: Pause', align = 'center'},
+	{type = 'text', 	text = 'Left Ctrl: Heroic Leap', align = 'center'},
+	{type = 'checkbox', text = 'Pause enabled', key = 'kPause', default = true},
+	{type = 'checkbox', text = 'Auto-Target Enemies', key = 'kAutoTarget', default = true},
+	{type = 'checkbox', text = 'Use trinket #1', key = 'kT1', default = true},
+	{type = 'checkbox', text = 'Use trinket #2', key = 'kT2', default = true}
+}
+
 local exeOnLoad = function()
 	 Zylla.ExeOnLoad()
 
@@ -12,8 +21,13 @@ local exeOnLoad = function()
 end
 
 local _Zylla = {
-	{'@Zylla.Targeting()', {'!target.alive&UI(kAutoTarget)'}},
-	--{'Charge', 'target.range>8&target.range<=25&target.infront'},
+	{"/targetenemy [noexists]", "!target.exists" },
+    {"/targetenemy [dead][noharm]", "target.dead" },
+}
+
+local Util = {
+	-- ETC.
+	-- {'%pause' , 'player.debuff(200904)||player.debuff(Sapped Soul)'}, -- Vault of the Wardens, Sapped Soul
 }
 
 local PreCombat = {
@@ -84,7 +98,7 @@ local TwoTargets = {
 
 local Keybinds = {
 	-- Pause
-	{'%pause', 'keybind(alt)'},
+	-- {'%pause', 'keybind(lshift)&UI(kPause)'},
 	{'Heroic Leap', 'keybind(lcontrol)' , 'cursor.ground'}
 }
 
@@ -96,7 +110,7 @@ local Interrupts = {
 local inCombat = {
 	{Keybinds},
 	{Interrupts, 'target.interruptAt(50)&toggle(Interrupts)&target.infront&target.range<=8'},
-	{_Zylla},
+	{_Zylla, 'UI(kAutoTarget)'},
 	{Survival, 'player.health<100'},
 	{Cooldowns, 'toggle(Cooldowns)&target.range<8'},
 	{TwoTargets, 'toggle(aoe)&{player.area(8).enemies=2||player.area(8).enemies=3}'},

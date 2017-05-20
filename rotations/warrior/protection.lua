@@ -1,5 +1,6 @@
 local _, Zylla = ...
-local GUI = {
+
+local GUI = {
 	--KEYBINDS
 	{type = 'header', 	text = 'Keybinds', align = 'center'},
 	{type = 'text', 	text = 'Left Shift: Pause', align = 'center'},
@@ -8,7 +9,8 @@ local _, Zylla = ...
 	{type = 'checkbox', text = 'Auto-Target Enemies', key = 'kAutoTarget', default = true},
 	{type = 'checkbox', text = 'Intercept enabled', key = 'kIntercept', default = false},
 	{type = 'checkbox', text = 'Use trinket #1', key = 'kT1', default = true},
-	{type = 'checkbox', text = 'Use trinket #2', key = 'kT2', default = true}} 
+	{type = 'checkbox', text = 'Use trinket #2', key = 'kT2', default = true}
+} 
 
 local exeOnLoad = function()
 	Zylla.ExeOnLoad()
@@ -17,19 +19,19 @@ local exeOnLoad = function()
 	print("|cffADFF2F --- |rWARRIOR |cffADFF2FProtection |r")
 	print("|cffADFF2F --- |rRecommended Talents: 1/1 - 2/1 - 3/2 - 4/2 - 5/3 - 6/1 - 7/2")
 	print("|cffADFF2F ----------------------------------------------------------------------|r")
---[[
+	--[[
 	NeP.Interface:AddToggle({
 		key = 'AutoTaunt',
 		name = 'Auto Taunt',
 		text = 'Automatically taunt nearby enemies.',
 		icon = 'Interface\\Icons\\spell_nature_shamanrage',
 	})
-]]--
+	]]--
 end
 
 local _Zylla = {
-	-- some non-SiMC stuffs
-	{'Zylla.Targeting()', {'!target.alive&UI(kAutoTarget)'}},
+	{"/targetenemy [noexists]", "!target.exists" },
+    {"/targetenemy [dead][noharm]", "target.dead" },
 	--{'@Zylla.Taunt(Taunt)', 'toggle(AutoTaunt)'},
 	--{'%taunt(Taunt)', 'toggle(AutoTaunt)'},
 	{'Impending Victory', '{!player.buff(Victorious)&player.rage>10&player.health<=85}||{player.buff(Victorious)&player.health<=70}'},
@@ -38,9 +40,14 @@ local _Zylla = {
 	{'Intercept', 'target.range>8&target.range<25&target.enemy&!prev_gcd(Heroic Leap)&UI(kIntercept)&target.alive'},
 }
 
+local Util = {
+	-- ETC.
+	-- {'%pause' , 'player.debuff(200904)||player.debuff(Sapped Soul)'}, -- Vault of the Wardens, Sapped Soul
+}
+
 local Keybinds = {
 	-- Pause
-	{'%pause', 'keybind(alt)&UI(kPause)'},
+	-- {'%pause', 'keybind(lshift)&UI(kPause)'},
 	{'Heroic Leap', 'keybind(lcontrol)' , 'cursor.ground'}
 }
 
@@ -67,7 +74,7 @@ local PreCombat = {
 }
 
 local Something = {
-	--# Same skills in same order in both parts of rotation... placed them here :)
+	--# Same skills in same order in both parts of the rotation... placed them here :)
 	{'Focused Rage', 'talent(3,2)&player.buff(Ultimatum)&!talent(6,1)'},
 	{'Battle Cry', '{talent(6,1)&talent(3,2)&spell(Shield Slam).cooldown<=4.5-gcd}||!talent(6,1)'},
 	{'Demoralizing Shout', 'talent(6,3)&player.buff(Battle Cry)'},
@@ -76,7 +83,7 @@ local Something = {
 
 local AoE = {
 	{Something},
-	{'Neltharion\'s Fury', 'artifact(Neltharion\'s Fury).equipped&player.buff(Battle Cry)&xmoving=0&player.area(8).enemies>=3'},
+	{'Neltharion\'s Fury', 'player.buff(Battle Cry)&xmoving=0&player.area(8).enemies>=3'},
 	{'Shield Slam', '!{spell(Shield Block).cooldown<=gcd*2&!player.buff(Shield Block)&talent(7,2)}'},
 	{'Revenge'},
 	{'Thunder Clap', 'player.area(6).enemies>=3'},
@@ -92,7 +99,7 @@ local ST = {
 	{'Last Stand', 'player.incdmg(2.5)>player.health.max*0.50&!spell(Shield Wall).cooldown'},
 	{AoE, 'toggle(aoe)&player.area(8).enemies>=2'},
 	{Something},
-	{'Neltharion\'s Fury', 'artifact(Neltharion\'s Fury).equipped&player.incdmg(2.5)>player.health.max*0.20&!player.buff(Shield Block)'},
+	{'Neltharion\'s Fury', 'player.incdmg(2.5)>player.health.max*0.20&!player.buff(Shield Block)'},
 	{'Shield Slam', '!{spell(Shield Block).cooldown<=gcd&!player.buff(Shield Block)&talent(7,2)}||{player.buff(Vengeance: Ignore Pain)&player.buff(Ignore Pain).duration<=gcd*2&player.rage<13}||{!player.buff(Vengeance: Ignore Pain)&player.buff(Ignore Pain).duration<=gcd*2&player.rage<20}||'},
 	{'Shield Slam', '!talent(7,2)'},
 	{'Revenge', 'spell(Shield Slam).cooldown<=gcd*2||player.rage<=5'},
@@ -100,11 +107,12 @@ local ST = {
 }
 
 local inCombat = {
+	{_Zylla, 'UI(kAutoTarget)'},
+	{Util},
 	{Keybinds},
 	{Interrupts, 'target.interruptAt(50)&toggle(Interrupts)'},
 	{Cooldowns, 'toggle(Cooldowns)'},
 	{Trinkets},
-	{_Zylla},
 	{ST, 'target.range<8&target.infront'},
 }
 

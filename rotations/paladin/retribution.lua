@@ -1,6 +1,14 @@
 local _, Zylla = ...
 local GUI = {
-}
+	{type = 'header', 	text = 'Keybinds', align = 'center'},
+	{type = 'text', 	text = 'Left Shift: Pause', align = 'center'},
+	{type = 'text', 	text = 'Left Ctrl: ', align = 'center'},
+	{type = 'text', 	text = 'Left Alt: ', align = 'center'},
+	{type = 'text', 	text = 'Right Alt: ', align = 'center'},
+	{type = 'checkbox', text = 'Pause Enabled', key = 'kPause', default = true},
+	{type = 'checkbox', text = 'Auto-Target Enemies', key = 'kAutoTarget', default = true},
+} 
+
 local exeOnLoad = function()
 	 Zylla.ExeOnLoad()
 
@@ -11,20 +19,25 @@ local exeOnLoad = function()
 
 end
 
+local _Zylla = {
+	{"/targetenemy [noexists]", "!target.exists" },
+    {"/targetenemy [dead][noharm]", "target.dead" },
+}
 
 local PreCombat = {
 	{'Greater Blessing of Wisdom', '!player.buff(Greater Blessing of Wisdom)', 'player'},
 	{'Greater Blessing of Might', '!player.buff(Greater Blessing of Might)', 'player'},
-	{'Greater Blessing of Kings', '!player.buff(Greater Blessing of Kings)', 'player'}
+	{'Greater Blessing of Kings', '!player.buff(Greater Blessing of Kings)', 'player'},
+	{'Flash of Light', 'player.health<=75'},
 }
 
 local Keybinds = {
 	-- Pause
-	{'%pause', 'keybind(alt)'}
+	{'%pause', 'keybind(alt)&UI(kPause)'}
 }
 local Survival = {
 	{'Lay on Hands', 'player.health<=20'},
-	--{'Flash of Light', 'player.health<=40'},
+	{'Flash of Light', 'player.health<=40'},
 }
 
 local Interrupts = {
@@ -76,17 +89,13 @@ local xCombat = {
 }
 
 local Util = {
-	-- Add stuff that should be done part of encounter, dont cast while, dont attack, dont etc
-	--BOSS
-	{ '%pause' , 'player.debuff(200904)' },			--Sapped Soul
-	{ '%pause' , 'player.debuff(Sapped Soul)' }, 	--Sapped Soul
-	-- FREEDOOM! --Should add a toggle for this
-	{ 'Blessing of Freedom', 'player.state.stun' },
-	{ 'Blessing of Freedom', 'player.state.root' },
-	{ 'Blessing of Freedom', 'player.state.snare' },
+	-- ETC.
+	-- {'%pause' , 'player.debuff(200904)||player.debuff(Sapped Soul)'}, -- Vault of the Wardens, Sapped Soul
+	{'Blessing of Freedom', 'player.state.stun||player.state.root||player.state.snare'},
 }
 
 local inCombat = {
+	{_Zylla, 'UI(kAutoTarget)'},
 	{Util},
 	{Keybinds},
 	{Interrupts, 'target.interruptAt(50)&toggle(Interrupts)&target.infront&target.range<=8'},

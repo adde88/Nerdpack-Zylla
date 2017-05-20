@@ -31,6 +31,7 @@ local GUI = {
 	{type = 'checkbox', text = 'L-Alt: Earthbind Totem @ Cursor', key = 'K_ET', default = true},
 	{type = 'ruler'},{type = 'spacer'},
 }
+
 local exeOnLoad = function()
 	Zylla.ExeOnLoad()
 
@@ -52,7 +53,8 @@ local exeOnLoad = function()
 end
 
 local _Zylla = {
-	{'@Zylla.Targeting()', {'!target.alive&UI(kAutoTarget)'}},
+	{"/targetenemy [noexists]", "!target.exists" },
+    {"/targetenemy [dead][noharm]", "target.dead" },
 }
 
 local Survival = {

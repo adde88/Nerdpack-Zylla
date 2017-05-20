@@ -1,8 +1,21 @@
 local _, Zylla = ...
 
 local GUI = {
-
-} 
+	{type = 'header', 	text = 'Keybinds', align = 'center'},
+	{type = 'text', 	text = 'Left Shift: Pause', align = 'center'},
+	{type = 'text', 	text = 'Left Ctrl: Tar Trap', align = 'center'},
+	{type = 'text', 	text = 'Left Alt: Binding Shot', align = 'center'},
+	{type = 'text', 	text = 'Right Alt: Freezing Trap', align = 'center'},
+	{type = 'checkbox', text = 'Pause Enabled', key = 'kPause', default = true},
+	{type = 'checkbox', text = 'Auto-Target Enemies', key = 'kAutoTarget', default = true},
+	{type = 'checkbox', text = 'Summon Pet', key = 'kPet', default = true},
+	{type = 'checkbox', text = 'Barrage Enabled', key = 'kBarrage', default = false},
+   	{type = 'checkbox', text = 'Volley Enabled', key = 'kVolley', default = true},
+	{type = 'checkbox', text = 'Misdirect Focus/Pet', key = 'kMisdirect', default = true},
+	{type = 'checkbox', text = 'Use Trinket #1', key = 'kT1', default = false},
+	{type = 'checkbox', text = 'Use Trinket #2', key = 'kT2', default = false},
+	{type = 'checkbox', text = 'Ring of Collapsing Futures', key = 'kRoCF', default = true}
+}
 
 local exeOnLoad = function()
 	 Zylla.ExeOnLoad()
@@ -15,7 +28,8 @@ local exeOnLoad = function()
 end
 
 local _Zylla = {
-	{'@Zylla.Targeting()', {'!target.alive&UI(kAutoTarget)'}},
+	{"/targetenemy [noexists]", "!target.exists" },
+    {"/targetenemy [dead][noharm]", "target.dead" },
 }
 
 local PreCombat = {
@@ -136,6 +150,7 @@ local Melee = {
 }
 
 local inCombat = {
+	{_Zylla, 'UI(kAutoTarget)'},
 	{'Mongoose Bite', 'lastcast(Mongoose Bite)'},
 	{Keybinds},
 	{Survival, 'player.health<100'},

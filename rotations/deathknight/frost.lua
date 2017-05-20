@@ -1,6 +1,15 @@
 local _, Zylla = ...
-local GUI = {
-}
+
+local GUI = {
+	{type = 'header', 	text = 'Keybinds', align = 'center'},
+	{type = 'text', 	text = 'Left Shift: Pause', align = 'center'},
+	{type = 'text', 	text = 'Left Ctrl: ', align = 'center'},
+	{type = 'text', 	text = 'Left Alt: ', align = 'center'},
+	{type = 'text', 	text = 'Right Alt: ', align = 'center'},
+	{type = 'checkbox', text = 'Pause Enabled', key = 'kPause', default = true},
+	{type = 'checkbox', text = 'Auto-Target Enemies', key = 'kAutoTarget', default = true},
+} 
+
 local exeOnLoad = function()
 	 Zylla.ExeOnLoad()
 
@@ -20,7 +29,8 @@ local exeOnLoad = function()
 end
 
 local _Zylla = {
-	{'@Zylla.Targeting()', {'!target.alive&UI(kAutoTarget)'}},
+	{"/targetenemy [noexists]", "!target.exists" },
+    {"/targetenemy [dead][noharm]", "target.dead" },
 }
 
 local PreCombat = {
@@ -112,8 +122,8 @@ local MACHINEGUN = {
 	{'Frost Strike', 'player.buff(Obliteration)&!player.buff(Killing Machine)'},
 	{'Remorseless Winter', 'player.area(8).enemies>=2||talent(6,3)'},
 	{'Remorseless Winter'},
-	--{'Obliterate', '!talent(6,1)&player.buff(Killing Machine)'},
-	--{'Obliterate', 'talent(6,1)&!player.buff(Killing Machine)'},
+	{'Obliterate', '!talent(6,1)&player.buff(Killing Machine)'},
+	{'Obliterate', 'talent(6,1)&!player.buff(Killing Machine)'},
 	{'Frostscythe', 'talent(6,1)&talent(2,2)'},
 }
 
@@ -126,7 +136,7 @@ local xCombat = {
 
 local Keybinds = {
 	-- Pause
-	{'%pause', 'keybind(alt)'},
+	-- {'%pause', 'keybind(alt)'},
 }
 
 local Interrupts = {
@@ -137,7 +147,7 @@ local Interrupts = {
 local inCombat = {
 	{Keybinds},
 	{Interrupts, 'target.interruptAt(50)&toggle(Interrupts)&target.infront&target.range<=15'},
-	{_Zylla},
+	{_Zylla, 'UI(kAutoTarget)'},
 	{Survival, 'player.health<100'},
 	{Cooldowns, 'toggle(Cooldowns)&target.range<8'},
 	{MACHINEGUN, 'toggle(xMACHINEGUN)&target.range<8&target.infront'},

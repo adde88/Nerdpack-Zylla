@@ -9,9 +9,9 @@ local GUI = {
 	{type = 'checkbox', text = 'Pause Enabled', key = 'kPause', default = true},
 	{type = 'checkbox', text = 'Auto-Target Enemies', key = 'kAutoTarget', default = true},
 	{type = 'checkbox', text = 'Summon Pet', key = 'kPet', default = false},
-	{type = 'checkbox', text = 'Barrage Enabled', key = 'kBarrage', default = true},
+	{type = 'checkbox', text = 'Barrage Enabled', key = 'kBarrage', default = false},
    	{type = 'checkbox', text = 'Volley Enabled', key = 'kVolley', default = true},
-	{type = 'checkbox', text = 'Misdirect Focus/Pet', key = 'kMisdirect', default = true},
+	{type = 'checkbox', text = 'Misdirect Focus/Pet', key = 'kMisdirect', default = false},
 	{type = 'checkbox', text = 'Use Trinket #1', key = 'kT1', default = false},
 	{type = 'checkbox', text = 'Use Trinket #2', key = 'kT2', default = false}
 } 
@@ -27,7 +27,8 @@ local exeOnLoad = function()
 end
 
 local _Zylla = {
-	{'@Zylla.Targeting()', {'!target.alive&UI(kAutoTarget)'}},
+	{"/targetenemy [noexists]", "!target.exists" },
+    {"/targetenemy [dead][noharm]", "target.dead" },
 }
 
 local PreCombat = {
@@ -39,7 +40,7 @@ local PreCombat = {
 
 local Keybinds = {
 	-- Pause
-	{'%pause', 'keybind(lshift)&UI(kPause)'},
+	-- {'%pause', 'keybind(lshift)&UI(kPause)'},
 	{'Binding Shot', 'keybind(lalt)', 'cursor.ground'},
 	{'Tar Trap', 'keybind(lcontrol)', 'cursor.ground'},
 	{'Freezing Trap', 'keybind(ralt)', 'cursor.ground'},

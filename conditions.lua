@@ -1,7 +1,7 @@
 local _, Zylla = ...
 
 --------------------------------------------------------------------------------
----------------------------------ARTIFACT---------------------------------------
+---------------------------------CUSTOM ARTIFACT CONDITIONS---------------------
 --------------------------------------------------------------------------------
 
 local LAD = LibStub('LibArtifactData-1.0')
@@ -107,12 +107,17 @@ NeP.DSL:Register('artifact.equipped', function(_, spell)
 end)
 
 --------------------------------------------------------------------------------
------------------------------------MISC-----------------------------------------
+-----------------------------------MISC CONDITIONS------------------------------
 --------------------------------------------------------------------------------
 
---NeP.DSL:Register('equipped', function(target, item)
--- if IsEquippedItem(item) then return true else return false end
---end)
+NeP.DSL:Register('equipped', function(target, item)
+ if IsEquippedItem(item) then return true else return false end
+end)
+
+--/dump NeP.DSL:Get('map_area_id')()
+NeP.DSL:Register('map_area_id', function()
+    return  GetCurrentMapAreaID()
+end)
 
 --/dump NeP.DSL:Get('casting.left')('player', 'Fireball')
 NeP.DSL:Register('casting.left', function(target, spell)
@@ -128,14 +133,12 @@ NeP.DSL:Register('pet_range', function()
     return NeP.DSL:Get('petrange')('target')
 end)
 
-
-
 --/dump NeP.DSL:Get('indoors')()
 NeP.DSL:Register('indoors', function()
     return IsIndoors()
 end)
 --------------------------------------------------------------------------------
---------------------------------SIMC STUFFS-------------------------------------
+--------------------------------SimulationCraft CONDITIONS----------------------
 --------------------------------------------------------------------------------
 
 NeP.DSL:Register('xmoving', function()
@@ -585,7 +588,7 @@ NeP.DSL:Register('line_cd', function(_, spell)
 end)
 
 --------------------------------------------------------------------------------
----------------------------------PROT WAR---------------------------------------
+---------------------------------PROT WARRIOR CONDITIONS------------------------
 --------------------------------------------------------------------------------
 
 --UnitBuff(Unit,GetSpellInfo(SpellID))
@@ -608,7 +611,7 @@ NeP.DSL:Register('ignorepain_max', function()
 end)
 
 --------------------------------------------------------------------------------
----------------------------------FERAL------------------------------------------
+---------------------------------FERAL DRUID CONDITIONS-------------------------
 --------------------------------------------------------------------------------
 
 local DotTicks = {
@@ -674,7 +677,7 @@ NeP.DSL:Register('f_test', function()
 end)
 
 --------------------------------------------------------------------------------
---------------------------------WARLOCK-----------------------------------------
+--------------------------------WARLOCK CONDITIONS------------------------------
 --------------------------------------------------------------------------------
 
 --/dump NeP.DSL:Get('warlock.remaining_duration')('Dreadstalker')
@@ -722,7 +725,7 @@ NeP.DSL:Register('soul_shard', function()
 end)
 
 --------------------------------------------------------------------------------
--------------------------------- PRIEST ----------------------------------------
+-------------------------------- PRIEST CONDITIONS------------------------------
 --------------------------------------------------------------------------------
 
 --actions+=/variable,op=set,name=actors_fight_time_mod,value=0
@@ -815,7 +818,7 @@ end)
 --/dump (NeP.DSL:Get('insanity')('player') - (NeP.DSL:Get('current_insanity_drain')() * NeP.DSL:Get('gcd.max')()) + 90)<100
 
 --------------------------------------------------------------------------------
---------------------------------- ROGUE ----------------------------------------
+--------------------------------- ROGUE CONDITIONS------------------------------
 --------------------------------------------------------------------------------
 
 NeP.DSL:Register('parser_bypass2', function()
@@ -843,6 +846,7 @@ NeP.DSL:Register('stealthed', function()
         return false
     end
 end)
+
 --/dump NeP.DSL:Get('variable.ssw_er')()
 NeP.DSL:Register('variable.ssw_er', function()
     --actions=variable,name=ssw_er,value=equipped.shadow_satyrs_walk*(10+floor(target.distance*0.5))
@@ -908,27 +912,27 @@ NeP.DSL:Register('RtB', function()
     elseif int == 2 or int == 3 or ((bearing or shark) and ((UnitBuff("player", GetSpellInfo(13750)) or UnitDebuff("player", GetSpellInfo(202665))))) then
         return true --"Keep."
 
-            --[[
-      -- If only True Bearing
-    elseif bearing then
-      return true --"Keep. AR/Curse if ready."
-      --]]
+    --[[
+	If only True Bearing
+	elseif bearing then
+	return true --"Keep. AR/Curse if ready."
+    --]]
 
-            -- If only Shark or True Bearing and CDs ready
+	-- If only Shark or True Bearing and CDs ready
     elseif (bearing or shark) and ((GetSpellCooldown(13750) == 0) or (GetSpellCooldown(202665) == 0)) then
         return true --"AR/Curse NOW and keep!"
 
-            --if we have only ONE bad buff BUT AR/curse is active:
+	--if we have only ONE bad buff BUT AR/curse is active:
     elseif int ==1 and ((UnitBuff("player", GetSpellInfo(13750)) or UnitDebuff("player", GetSpellInfo(202665)))) then
         return true
 
-            -- If only one bad buff:
-    else return false --"Reroll now!"
+	-- If only one bad buff:
+    else return false	--"Reroll now!"
     end
 end)
 
 --------------------------------------------------------------------------------
---------------------------------- HUNTER ---------------------------------------
+--------------------------------- HUNTER CONDITIONS-----------------------------
 --------------------------------------------------------------------------------
 
 --/dump NeP.DSL:Get('variable.safe_to_build')()
@@ -968,17 +972,17 @@ end)
 --/dump NeP.DSL:Get('tttlz')()
 NeP.DSL:Register('tttlz', function()
     return Zylla.TTTL_table
-  end)
+end)
 
 --/dump NeP.DSL:Get('dist')('player', 'target')
 NeP.DSL:Register('dist', function(unit1, unit2)
     return Zylla.ComputeDistance(unit1, unit2)
-  end)
+end)
 
 --/dump NeP.DSL:Get('tttlz.wipe')()
 NeP.DSL:Register('tttlz.wipe', function()
     return wipe(Zylla.TTTL_table)
-  end)
+end)
 --]]
 
 --------------------------------------------------------------------------------

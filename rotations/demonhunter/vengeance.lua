@@ -14,11 +14,12 @@ local exeOnLoad = function()
 end
 
 local _Zylla = {
-	{'@Zylla.Targeting()', {'!target.alive&toggle(AutoTarget)'}},
+	{"/targetenemy [noexists]", "!target.exists" },
+    {"/targetenemy [dead][noharm]", "target.dead" },
 }
 
 local Keybinds = {
-	{'%pause', 'keybind(lshift)'},
+	--{'%pause', 'keybind(lshift)'},
 	{'Sigil of Flame', 'keybind(lalt)', 'cursor.ground'},
 	{'Infernal Strike', 'keybind(lcontrol)', 'cursor.ground'},
 }
@@ -57,7 +58,7 @@ local Ranged = {
 
 local inCombat = {
 	{Keybinds},
-	{_Zylla},
+	--{_Zylla, 'UI(kAutoTarget)'},
 	{Interrupts, 'target.interruptAt(50)&toggle(Interrupts)&target.infront'},
 	{Ranged, 'target.range>8&target.range<=30'},
 	{ST, 'target.infront&target.range<=8'}

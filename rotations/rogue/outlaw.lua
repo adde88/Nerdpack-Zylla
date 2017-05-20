@@ -1,6 +1,14 @@
 local _, Zylla = ...
 local GUI = {
-}
+	{type = 'header', 	text = 'Keybinds', align = 'center'},
+	{type = 'text', 	text = 'Left Shift: Pause', align = 'center'},
+	{type = 'text', 	text = 'Left Ctrl: ', align = 'center'},
+	{type = 'text', 	text = 'Left Alt: ', align = 'center'},
+	{type = 'text', 	text = 'Right Alt: ', align = 'center'},
+	{type = 'checkbox', text = 'Pause Enabled', key = 'kPause', default = true},
+	{type = 'checkbox', text = 'Auto-Target Enemies', key = 'kAutoTarget', default = true},
+} 
+
 local exeOnLoad = function()
 	 Zylla.ExeOnLoad()
 
@@ -10,6 +18,11 @@ local exeOnLoad = function()
 	print("|cffFFFF00 ----------------------------------------------------------------------|r")
 
 end
+
+local _Zylla = {
+	{"/targetenemy [noexists]", "!target.exists" },
+    {"/targetenemy [dead][noharm]", "target.dead" },
+}
 
 local Interrupts = {
 	{'Kick'},
@@ -47,7 +60,6 @@ local cds = {
 	{'Adrenaline Rush', 'energy.deficit>0'},
 	{'Marked for Death', 'combo_points<=5&player.energy>=26'},
 	{'Curse of the Dreadblades', 'combo_points.deficit>=4&{!talent(1,1)||target.debuff(Ghostly Strike)}'},
-
 }
 
 local xCombat = {
@@ -87,6 +99,7 @@ local Keybinds = {
 
 
 local inCombat = {
+	{_Zylla, 'UI(kAutoTarget)'},
 	{Keybinds},
 	{Interrupts, 'target.interruptAt(46)&toggle(Interrupts)&target.infront&target.range<8'},
 	{Survival, 'player.health<100'},

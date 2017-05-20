@@ -1,6 +1,14 @@
 local _, Zylla = ...
 local GUI = {
-} 
+	{type = 'header', 	text = 'Keybinds', align = 'center'},
+	{type = 'text', 	text = 'Left Shift: Pause', align = 'center'},
+	{type = 'text', 	text = 'Left Ctrl: ', align = 'center'},
+	{type = 'text', 	text = 'Left Alt: ', align = 'center'},
+	{type = 'text', 	text = 'Right Alt: ', align = 'center'},
+	{type = 'checkbox', text = 'Pause Enabled', key = 'kPause', default = true},
+	{type = 'checkbox', text = 'Auto-Target Enemies', key = 'kAutoTarget', default = true},
+} 
+
 local exeOnLoad = function()
 	 Zylla.ExeOnLoad()
 
@@ -18,9 +26,8 @@ local exeOnLoad = function()
 end
 
 local _Zylla = {
-	-- some non-SiMC stuffs
-	{'@Zylla.Targeting()', {'!target.alive&UI(kAutoTarget)'}},
-	{'%taunt(Hand of Reckoning)', 'toggle(AutoTaunt)'}
+	{"/targetenemy [noexists]", "!target.exists" },
+    {"/targetenemy [dead][noharm]", "target.dead" },
 }
 
 local Keybinds = {
@@ -83,7 +90,7 @@ local ST = {
 
 local inCombat = {
 	{Keybinds},
-	{_Zylla},
+	{_Zylla, 'UI(kAutoTarget)'},
 	--{Survival, 'player.health<100'},
 	{Interrupts, 'target.interruptAt(50)&toggle(Interrupts)&target.infront&target.range<=8'},
 	{Cooldowns, 'toggle(Cooldowns)'},

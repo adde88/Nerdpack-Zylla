@@ -5,11 +5,11 @@ local _, Zylla = ...
 local GUI = {
 	{type = 'header', 	text = 'Keybinds', align = 'center'},
 	{type = 'text', 	text = 'Shift: Pause, | Ctrl: DPS,  | Alt: Top Up ', align = 'center'},
-
 	{type = 'header', 	text = 'Generic', align = 'center'},
 	{type = 'spinner', 	text = 'DPS while lowest health%', 	key = 'G_DPS', 	default = 70},
 	{type = 'spinner', 	text = 'Critical health%', 			key = 'G_CHP', 	default = 30},
-	{type = 'dropdown',text = 'Beacon Logic', key = 'G_Beacon', list = {
+	{type = 'dropdown',text = 'Beacon Logic', key = 'G_Beacon', list =
+	{
 		{text = 'Manual', key = 'BeaconManual'},
 		{text = 'Lowest Tank', key = 'BeaconLowestTank'},
 		{text = 'Focus Tank', key = 'BeaconFocusTank'},
@@ -70,10 +70,7 @@ local GUI = {
 	{type = 'spinner', 	text = 'Bestow Faith (Health %)', 				key = 'L_BF', 	default = 80},
 	{type = 'spinner', 	text = 'Flash of Light (Health %)', 			key = 'L_FoL', 	default = 70},
 	{type = 'spinner', 	text = 'Holy Light (Health %)', 				key = 'L_HL', 	default = 90},
-	
-	
 }
-
 
 local exeOnLoad = function()
 	 Zylla.ExeOnLoad()
@@ -85,16 +82,15 @@ local exeOnLoad = function()
 
 	NeP.Interface:AddToggle({
 		key = 'dps',
-		name = 'dps',
+		name = 'DPS',
 		text = 'DPS while healing',
 		icon = 'Interface\\Icons\\spell_nature_shamanrage.png',
 	})
 end
 
 local _Zylla = {
--- some non-SiMC stuffs
-	{'@Zylla.Targeting()', {'!target.alive&UI(kAutoTarget)'}},
-
+	{"/targetenemy [noexists]", "!target.exists" },
+    {"/targetenemy [dead][noharm]", "target.dead" },
 }
 
 local Util = {
@@ -108,6 +104,7 @@ local Util = {
 	{ 'Blessing of Freedom', 'player.state.root' }, 
 	{ 'Blessing of Freedom', 'player.state.snare' }, 
 }
+
 -- Cast that should be interrupted
 local Interrupts = {			-- No interrupt as Holy, but we can stun them
 	{ 'Hammer of Justice', nil, 'target'},

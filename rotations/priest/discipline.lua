@@ -1,7 +1,18 @@
 local _, Zylla = ...
 
 local GUI = {
+	{type = 'header', 	text = 'Keybinds', align = 'center'},
+	{type = 'text', 	text = 'Left Shift: Pause', align = 'center'},
+	{type = 'text', 	text = 'Left Ctrl: ', align = 'center'},
+	{type = 'text', 	text = 'Left Alt: ', align = 'center'},
+	{type = 'text', 	text = 'Right Alt: ', align = 'center'},
+	{type = 'checkbox', text = 'Pause Enabled', key = 'kPause', default = true},
+	{type = 'checkbox', text = 'Auto-Target Enemies', key = 'kAutoTarget', default = true},
+} 
 
+local _Zylla = {
+	{"/targetenemy [noexists]", "!target.exists" },
+    {"/targetenemy [dead][noharm]", "target.dead" },
 }
 
 local GUI = {
@@ -43,7 +54,7 @@ NeP.FakeUnits:Add('lnbuff', function(num, buff)
 end)
 
 local Keybinds = {
-	{'%pause', 'keybind(lshift)& UI(kPause)'}, -- Pause.
+	--{'%pause', 'keybind(lshift)&UI(kPause)'}, -- Pause.
 	{'Mass Dispel', 'keybind(lctrl)&UI(kMD)', 'cursor.ground'}, --Mass Dispel.
 	{'Power Word: Barrier', 'keybind(lalt)&UI(kPWB)', 'cursor.ground'} --Power Word: Barrier.
 }
