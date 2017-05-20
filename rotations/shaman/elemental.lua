@@ -3,6 +3,7 @@ local _, Zylla = ...
 local GUI = {
 	-- GUI Survival
 	{type = 'header', text = 'Survival', align = 'center'},
+	{type = 'checkbox', text = 'Auto-Target Enemies', key = 'kAutoTarget', default = true},
 	{type = 'checkbox', text = 'Enable Astral Shift', key = 'S_ASE', default = true},
 	{type = 'spinner', text = '', key = 'S_AS', default = 40},
 	{type = 'checkbox', text = 'Enable Healing Surge', key = 'S_HSGE', default = true},
@@ -226,6 +227,7 @@ local ASSingle = {
 }
 
 local inCombat = {
+	{_Zylla, 'UI(kAutoTarget)'},
 	{Keybinds, '{!moving||moving}'},
 	{Dispel, '{!moving||moving}&toggle(yuPS)&spell(Cleanse Spirit).cooldown=0'},
 	{Survival, '{!moving||moving}'},
