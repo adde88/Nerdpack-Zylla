@@ -20,7 +20,8 @@ local exeOnLoad = function()
 	print('|cffADFF2F --- |rDRUID |cffADFF2FFeral |r')
 	print('|cffADFF2F --- |rRecommended Talents: 1/3 - 2/3 - 3/2 - 4/3 - 5/3 - 6/2 - 7/2')
 	print('|cffADFF2F ----------------------------------------------------------------------|r')
-
+	print('|')
+	print('| This routine does not work at the moment...')
 end
 
 local _Zylla = {
