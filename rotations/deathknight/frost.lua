@@ -29,17 +29,15 @@ local exeOnLoad = function()
 end
 
 local _Zylla = {
-	{"/targetenemy [noexists]", "!target.exists" },
-    {"/targetenemy [dead][noharm]", "target.dead" },
+    {"/targetenemy [dead][noharm]", "target.dead||!target.exists" },
 }
 
 local PreCombat = {
 
 }
 
-
 local Survival = {
- {'Death Strike', 'player.health<=80&player.buff(Dark Succor)'},
+	{'Death Strike', 'player.health<=80&player.buff(Dark Succor)'},
 }
 
 local BoS_check = {
@@ -136,7 +134,7 @@ local xCombat = {
 
 local Keybinds = {
 	-- Pause
-	-- {'%pause', 'keybind(alt)'},
+	{'%pause', 'keybind(lshift)&UI(kPause)'},
 }
 
 local Interrupts = {

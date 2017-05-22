@@ -30,10 +30,7 @@ local exeOnLoad = function()
 end
 
 local _Zylla = {
-	{"/targetenemy [noexists]", "!target.exists" },
-    {"/targetenemy [dead][noharm]", "target.dead" },
-	--{'@Zylla.Taunt(Taunt)', 'toggle(AutoTaunt)'},
-	--{'%taunt(Taunt)', 'toggle(AutoTaunt)'},
+    {"/targetenemy [dead][noharm]", "UI(kAutoTarget)&{target.dead||!target.exists}" },
 	{'Impending Victory', '{!player.buff(Victorious)&player.rage>10&player.health<=85}||{player.buff(Victorious)&player.health<=70}'},
 	{'Heroic Throw', 'target.range>8&target.range<=30&target.infront'},
 	{'Shockwave', 'player.area(6).enemies>=3'},
@@ -42,12 +39,12 @@ local _Zylla = {
 
 local Util = {
 	-- ETC.
-	-- {'%pause' , 'player.debuff(200904)||player.debuff(Sapped Soul)'}, -- Vault of the Wardens, Sapped Soul
+	{'%pause' , 'player.debuff(200904)||player.debuff(Sapped Soul)'}, -- Vault of the Wardens, Sapped Soul
 }
 
 local Keybinds = {
 	-- Pause
-	-- {'%pause', 'keybind(lshift)&UI(kPause)'},
+	{'%pause', 'keybind(lshift)&UI(kPause)'},
 	{'Heroic Leap', 'keybind(lcontrol)' , 'cursor.ground'}
 }
 

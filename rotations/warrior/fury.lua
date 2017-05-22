@@ -21,13 +21,12 @@ local exeOnLoad = function()
 end
 
 local _Zylla = {
-	{"/targetenemy [noexists]", "!target.exists" },
-    {"/targetenemy [dead][noharm]", "target.dead" },
+    {"/targetenemy [dead][noharm]", "target.dead||!target.exists" },
 }
 
 local Util = {
 	-- ETC.
-	-- {'%pause' , 'player.debuff(200904)||player.debuff(Sapped Soul)'}, -- Vault of the Wardens, Sapped Soul
+	{'%pause' , 'player.debuff(200904)||player.debuff(Sapped Soul)'}, -- Vault of the Wardens, Sapped Soul
 }
 
 local PreCombat = {
@@ -98,7 +97,7 @@ local TwoTargets = {
 
 local Keybinds = {
 	-- Pause
-	-- {'%pause', 'keybind(lshift)&UI(kPause)'},
+	{'%pause', 'keybind(lshift)&UI(kPause)'},
 	{'Heroic Leap', 'keybind(lcontrol)' , 'cursor.ground'}
 }
 

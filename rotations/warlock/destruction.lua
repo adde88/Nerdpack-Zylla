@@ -10,8 +10,7 @@ local _, Zylla = ...
 } 
 
 local _Zylla = {
-	{"/targetenemy [noexists]", "!target.exists" },
-    {"/targetenemy [dead][noharm]", "target.dead" },
+    {"/targetenemy [dead][noharm]", "target.dead||!target.exists" },
 }
 
 local Survival = {
@@ -33,7 +32,7 @@ local ST = {
 
 local Keybinds = {
 	-- Pause
-	-- {'%pause', 'keybind(alt)'},
+	{'%pause', 'keybind(lshift)&UI(kPause)'},
 }
 
 local inCombat = {

@@ -21,8 +21,7 @@ local exeOnLoad = function()
 end
 
 local _Zylla = {
-	{"/targetenemy [noexists]", "!target.exists" },
-    {"/targetenemy [dead][noharm]", "target.dead" },
+    {"/targetenemy [dead][noharm]", "target.dead||!target.exists" },
 }
 
 local PreCombat = {
@@ -64,7 +63,7 @@ local Opener = {
 }
 
 local Util = {
-	-- {'%pause' , 'player.debuff(200904)||player.debuff(Sapped Soul)'}, -- Vault of the Wardens, Sapped Soul
+	{'%pause' , 'player.debuff(200904)||player.debuff(Sapped Soul)'}, -- Vault of the Wardens, Sapped Soul
 	{Cooldowns, 'toggle(Cooldowns)'},
 	--{'Hamstring', 'player.buff(Battle Cry)&talent(6,1)&!target.debuff(Hamstring)'},	--waste of player.rage i would say unless ... it's PvP, maybe?
 	{'Rend', 'talent(3,2)&target.debuff(Rend).remains<gcd'},
@@ -139,7 +138,7 @@ local ST = {
 
 local Keybinds = {
 	-- Pause
-	-- {'%pause', 'keybind(lshift)&UI(kPause)'},
+	{'%pause', 'keybind(lshift)&UI(kPause)'},
 	{'Heroic Leap', 'keybind(lcontrol)' , 'cursor.ground'}
 }
 

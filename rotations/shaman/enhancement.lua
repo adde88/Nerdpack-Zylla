@@ -20,8 +20,7 @@ local exeOnLoad = function()
 end
 
 local _Zylla = {
-	{"/targetenemy [noexists]", "!target.exists" },
-    {"/targetenemy [dead][noharm]", "target.dead" },
+    {"/targetenemy [dead][noharm]", "target.dead||!target.exists" },
 }
 
 local PreCombat = {
@@ -82,7 +81,7 @@ local Ranged = {
 
 local Keybinds = {
 	-- Pause
-	-- {'%pause', 'keybind(alt)'},
+	{'%pause', 'keybind(lshift)&UI(kPause)'},
 	{'Lightning Surge Totem', 'keybind(lcontrol)' , 'cursor.ground'}
 }
 

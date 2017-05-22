@@ -1,8 +1,5 @@
 local _, Zylla = ...
 local GUI = {
-} 
-
-local GUI = {
 	{type = 'header', 	text = 'Keybinds', align = 'center'},
 	{type = 'text', 	text = 'Shift: Pause, | Ctrl: DPS,  | Alt: Top Up ', align = 'center'},
 	{type = 'header', 	text = 'Generic', align = 'center'},
@@ -89,8 +86,7 @@ local exeOnLoad = function()
 end
 
 local _Zylla = {
-	{"/targetenemy [noexists]", "!target.exists" },
-    {"/targetenemy [dead][noharm]", "target.dead" },
+    {"/targetenemy [dead][noharm]", "target.dead||!target.exists" },
 }
 
 local Util = {
@@ -335,7 +331,7 @@ local HealingN = {
 
 
 local Keybinds = {
-	{'%pause', 'keybind(shift)'},
+	{'%pause', 'keybind(lshift)&UI(kPause)'},
 }
 
 local inCombat = {

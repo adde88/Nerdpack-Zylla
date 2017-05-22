@@ -20,8 +20,7 @@ local exeOnLoad = function()
 end
 
 local _Zylla = {
-	{"/targetenemy [noexists]", "!target.exists" },
-    {"/targetenemy [dead][noharm]", "target.dead" },
+    {"/targetenemy [dead][noharm]", "target.dead||!target.exists" },
 }
 
 local PreCombat = {
@@ -68,7 +67,7 @@ local xCombat = {
 
 local Keybinds = {
 	-- Pause
-	-- {'%pause', 'keybind(alt)'},
+	{'%pause', 'keybind(lshift)&UI(kPause)'},
 }
 
 local inCombat = {

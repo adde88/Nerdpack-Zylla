@@ -20,8 +20,7 @@ local exeOnLoad = function()
 end
 
 local _Zylla = {
-	{"/targetenemy [noexists]", "!target.exists" },
-    {"/targetenemy [dead][noharm]", "target.dead" },
+    {"/targetenemy [dead][noharm]", "target.dead||!target.exists" },
 }
 
 local PreCombat = {
@@ -33,7 +32,7 @@ local PreCombat = {
 
 local Keybinds = {
 	-- Pause
-	{'%pause', 'keybind(alt)&UI(kPause)'}
+	{'%pause', 'keybind(lshift)&UI(kPause)'},
 }
 local Survival = {
 	{'Lay on Hands', 'player.health<=20'},
@@ -90,7 +89,7 @@ local xCombat = {
 
 local Util = {
 	-- ETC.
-	-- {'%pause' , 'player.debuff(200904)||player.debuff(Sapped Soul)'}, -- Vault of the Wardens, Sapped Soul
+	{'%pause' , 'player.debuff(200904)||player.debuff(Sapped Soul)'}, -- Vault of the Wardens, Sapped Soul
 	{'Blessing of Freedom', 'player.state.stun||player.state.root||player.state.snare'},
 }
 

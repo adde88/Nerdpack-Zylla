@@ -28,12 +28,11 @@ local exeOnLoad = function()
 end
 
 local _Zylla = {
-	{"/targetenemy [noexists]", "!target.exists" },
-    {"/targetenemy [dead][noharm]", "target.dead" },
+    {"/targetenemy [dead][noharm]", "target.dead||!target.exists" },
 }
 
 local PreCombat = {
-	{'/cast Call Pet 1', '!pet.exists&UI(kPet)'},
+	{'/cast Call Pet 2', '!pet.exists&UI(kPet)'},
 	{'Heart of the Phoenix', '!player.debuff(Weakened Heart)&pet.dead&UI(kPet)'},
 	{'Revive Pet', 'pet.dead&UI(kPet)'},
 	{'Volley', 'talent(6,3)&!player.buff(Volley)&UI(kVolley)'},
@@ -42,11 +41,11 @@ local PreCombat = {
 
 local Util = {
 	-- ETC.
-	-- {'%pause' , 'player.debuff(200904)||player.debuff(Sapped Soul)'}, -- Vault of the Wardens, Sapped Soul
+	{'%pause' , 'player.debuff(200904)||player.debuff(Sapped Soul)'}, -- Vault of the Wardens, Sapped Soul
 }
 
 local Keybinds = {
-	-- {'%pause', 'keybind(lshift)&UI(kPause)'},
+	{'%pause', 'keybind(lshift)&UI(kPause)'},
 	{'Binding Shot', 'keybind(lalt)', 'cursor.ground'},
 	{'Tar Trap', 'keybind(lcontrol)', 'cursor.ground'},
 	{'Freezing Trap', 'keybind(ralt)', 'cursor.ground'},
@@ -95,7 +94,7 @@ local xPetCombat = {
 	--{'/petassist' },
 	{'!Kill Command'},
 	{'Mend Pet', 'pet.exists&pet.alive&pet.health<100&!pet.buff(Mend Pet)'},
-	{'/cast Call Pet 1', '!pet.exists&UI(kPet)'},
+	{'/cast Call Pet 2', '!pet.exists&UI(kPet)'},
 	{'Heart of the Phoenix', '!player.debuff(Weakened Heart)&pet.dead&UI(kPet)'},
 	{'Revive Pet', 'pet.dead&UI(kPet)'},
 	{'/cast [@focus, help] [@pet, nodead, exists] Misdirection', 'cooldown(Misdirection).remains<=gcd&toggle(xMisdirect)'},

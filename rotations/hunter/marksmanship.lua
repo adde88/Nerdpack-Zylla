@@ -27,8 +27,7 @@ local exeOnLoad = function()
 end
 
 local _Zylla = {
-	{"/targetenemy [noexists]", "!target.exists" },
-    {"/targetenemy [dead][noharm]", "target.dead" },
+    {"/targetenemy [dead][noharm]", "target.dead||!target.exists" },
 }
 
 local PreCombat = {
@@ -40,7 +39,7 @@ local PreCombat = {
 
 local Keybinds = {
 	-- Pause
-	-- {'%pause', 'keybind(lshift)&UI(kPause)'},
+	{'%pause', 'keybind(lshift)&UI(kPause)'},
 	{'Binding Shot', 'keybind(lalt)', 'cursor.ground'},
 	{'Tar Trap', 'keybind(lcontrol)', 'cursor.ground'},
 	{'Freezing Trap', 'keybind(ralt)', 'cursor.ground'},

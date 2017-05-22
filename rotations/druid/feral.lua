@@ -24,8 +24,7 @@ local exeOnLoad = function()
 end
 
 local _Zylla = {
-	{"/targetenemy [noexists]", "!target.exists" },
-    {"/targetenemy [dead][noharm]", "target.dead" },
+    {"/targetenemy [dead][noharm]", "target.dead||!target.exists" },
 }
 
 -- Pool START
@@ -137,7 +136,7 @@ local xCombat = {
 
 local Keybinds = {
 	-- Pause
-	{'%pause', 'keybind(shift)'},
+	{'%pause', 'keybind(lshift)&UI(kPause)'},
 }
 
 local Interrupts = {

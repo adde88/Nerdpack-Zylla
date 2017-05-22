@@ -20,8 +20,7 @@ local exeOnLoad = function()
 end
 
 local _Zylla = {
-	{"/targetenemy [noexists]", "!target.exists" },
-    {"/targetenemy [dead][noharm]", "target.dead" },
+    {"/targetenemy [dead][noharm]", "target.dead||!target.exists" },
 }
 
 local PreCombat = {
@@ -75,7 +74,7 @@ local xCombat = {
 
 local Keybinds = {
 	-- Pause
-	-- {'%pause', 'keybind(alt)'},
+	{'%pause', 'keybind(lshift)&UI(kPause)'},
 }
 
 local Interrupts = {
@@ -106,7 +105,7 @@ local outCombat = {
 }
 
 NeP.CR:Add(266, {
-	name = '[|cff'..Zylla.addonColor..'Zylla\'s|r] WARLOCK - Demonology',
+	name = '[|cff'..Zylla.addonColor..'Zylla\'s|r] Warlock - Demonology',
 	  ic = inCombat,
 	 ooc = outCombat,
 	 gui = GUI,

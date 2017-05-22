@@ -20,18 +20,17 @@ local exeOnLoad = function()
 end
 
 local _Zylla = {
-	{"/targetenemy [noexists]", "!target.exists" },
-    {"/targetenemy [dead][noharm]", "target.dead" },
+    {"/targetenemy [dead][noharm]", "target.dead||!target.exists" },
 }
 
 local xCombat = {
-{'Corruption', '!target.dot(Corruption).ticking'},
-{'Drain Life'},
+	{'Corruption', '!target.dot(Corruption).ticking'},
+	{'Drain Life'},
 }
 
 local Keybinds = {
 	-- Pause
-	-- {'%pause', 'keybind(alt)'},
+	{'%pause', 'keybind(lshift)&UI(kPause)'},
 }
 
 local Survival = {
@@ -58,7 +57,7 @@ local outCombat = {
 }
 
 NeP.CR:Add(265, {
-	name = '[|cff'..Zylla.addonColor..'Zylla\'s|r] WARLOCK - Affliction',
+	name = '[|cff'..Zylla.addonColor..'Zylla\'s|r] Warlock - Affliction',
 	  ic = inCombat,
 	 ooc = outCombat,
 	 gui = GUI,
