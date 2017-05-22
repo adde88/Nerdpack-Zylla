@@ -12,7 +12,7 @@ local GUI = {
 
 local _Zylla = {
     {"/targetenemy [dead][noharm]", "target.dead||!target.exists" },
-}
+} 
 
 local GUI = {
 	--KEYBINDS
@@ -53,7 +53,7 @@ NeP.FakeUnits:Add('lnbuff', function(num, buff)
 end)
 
 local Keybinds = {
-	--{'%pause', 'keybind(lshift)&UI(kPause)'}, -- Pause.
+	{'%pause', 'keybind(lshift)&UI(kPause)'}, -- Pause.
 	{'Mass Dispel', 'keybind(lctrl)&UI(kMD)', 'cursor.ground'}, --Mass Dispel.
 	{'Power Word: Barrier', 'keybind(lalt)&UI(kPWB)', 'cursor.ground'} --Power Word: Barrier.
 }

@@ -67,7 +67,7 @@ local Survival = {
 
 local Cooldowns = {
 	{'Bestial Wrath'},
-	{'Titan\'s Thunder', 'cooldown(Dire Beast).remains>=3||player.buff(Bestial Wrath)&player.buff(Dire Beast)'},
+	{'Titan\'s Thunder', 'talent(2,2)||cooldown(Dire Beast).remains>=3||{player.buff(Bestial Wrath)&player.buff(Dire Beast)}'},
 }
 
 local Interrupts = {
@@ -79,14 +79,14 @@ local xCombat = {
 	{'Berserking'},
 	{'A Murder of Crows', 'talent(6,1)'},
 	{'Stampede', 'talent(7,1)&{player.buff(Bloodlust)||player.buff(Bestial Wrath)||cooldown(Bestial Wrath).remains<=2}||target.time_to_die<=14'},
-	{'Dire Beast', 'cooldown(Bestial Wrath).remains>2'},
-	{'Dire Frenzy', 'talent(2,2)&cooldown(Bestial Wrath).remains>2'},
-	{'Aspect of the Wild', 'player.buff(Bestial Wrath)'},
+	{'Dire Beast', 'cooldown(Bestial Wrath).remains>3'},
+	{'Dire Frenzy', 'talent(2,2)&cooldown(Bestial Wrath).remains>3'},
+	{'Aspect of the Wild', 'player.buff(Bestial Wrath)||target.time_to_die<12'},
 	{'Barrage', 'UI(kBarrage)&talent(6,1)&{target.area(15).enemies>1||{target.area(15).enemies=1&player.focus>90}}'},
-	{'Multi-Shot', 'target.area(8).enemies>4&{pet.buff(Beast Cleave).remains<gcd.max||!pet.buff(Beast Cleave)}'},
-	{'Multi-Shot', 'target.area(8).enemies>1&{pet.buff(Beast Cleave).remains<gcd.max*2||!pet.buff(Beast Cleave)}'},
+	{'Multi-Shot', 'target.area(10).enemies>4&{pet.buff(Beast Cleave).remains<gcd.max||!pet.buff(Beast Cleave)}'},
+	{'Multi-Shot', 'target.area(10).enemies>1&{pet.buff(Beast Cleave).remains<gcd.max*2||!pet.buff(Beast Cleave)}'},
 	{'Chimaera Shot', 'talent(2,3)&player.focus<90'},
-	{'Cobra Shot', 'talent(7,2)&{cooldown(Bestial Wrath).remains>=4&{player.buff(Bestial Wrath)&cooldown(Kill Command).remains>=2}||player.focus>119}||{!talent(7,2)&player.focus>90}'},
+	{'Cobra Shot', '{cooldown(Kill Command).remains>focus.time_to_max&cooldown(Bestial Wrath).remains>focus.time_to_max}||{player.buff(Bestial Wrath)&focus.regen*cooldown(Kill Command).remains>30}||target.time_to_die<cooldown(Kill Command).remains'},
 	{'Volley', 'talent(6,3)&!player.buff(Volley)&UI(kVolley)'},
 }
 
