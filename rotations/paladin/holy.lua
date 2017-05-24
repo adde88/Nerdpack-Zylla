@@ -1,349 +1,318 @@
-local _, Zylla = ...
-local GUI = {
-	{type = 'header', 	text = 'Keybinds', align = 'center'},
-	{type = 'text', 	text = 'Shift: Pause, | Ctrl: DPS,  | Alt: Top Up ', align = 'center'},
-	{type = 'header', 	text = 'Generic', align = 'center'},
-	{type = 'spinner', 	text = 'DPS while lowest health%', 	key = 'G_DPS', 	default = 70},
-	{type = 'spinner', 	text = 'Critical health%', 			key = 'G_CHP', 	default = 30},
-	{type = 'dropdown',text = 'Beacon Logic', key = 'G_Beacon', list =
-	{
-		{text = 'Manual', key = 'BeaconManual'},
-		{text = 'Lowest Tank', key = 'BeaconLowestTank'},
-		{text = 'Focus Tank', key = 'BeaconFocusTank'},
-    }, default = 'BeaconManual' },
+local _, Zylla=...
 
-    --------------------------------
-	-- AoE
-	--------------------------------
-	{type = 'header', 	text = 'AoE', align = 'center'},
-	--Aura Mastery logic
-    {type = 'spinner', 	text = 'Aura Mastery Health%', 				key = 'AoE_AMH', 	default = 70},
-    {type = 'spinner', 	text = 'Aura Mastery Number of Units', 		key = 'AoE_AMN', 	default = 4, step = 1},
-    {type = 'spinner', 	text = 'Light of Dawn Health%', 			key = 'AoE_LoDH', 	default = 70},
-    {type = 'spinner', 	text = 'Light of Dawn Number of Units', 	key = 'AoE_LoDHN', 	default = 5, step = 1},
-    {type = 'spinner', 	text = 'Holy Prism Health%', 				key = 'AoE_HPH', 	default = 70},
-    {type = 'spinner', 	text = 'Holy Prism Number of Units', 		key = 'AoE_HPN', 	default = 3, step = 1},
-	{type = 'ruler'},{type = 'spacer'},
+-- Thanks to Silver for a "working" Holy routine!
+
+--[[
+	TO DO:
+	Add Nighthold encounter support
+	Add mythic 5 man utility
+	Add support for all talents
+--]]
+
+local GUI={
+	{type='header', 	text='Generic', align='center'},
+	{type='spinner', 	text='DPS while lowest health%', 				key='G_DPS', 	default=70},
+	{type='spinner', 	text='Critical health%', 						key='G_CHP', 	default=30},
+	{type='spinner', 	text='Mana Restore', 							key='P_MR', 	default=20},
+	{type='checkbox',	text='Offensive Holy Shock',					key='O_HS', 	default=false},
+	{type='ruler'}, {type='spacer'},
 	
 	--------------------------------
-	-- PLAYER
+	-- Toggles
 	--------------------------------
-	{type = 'header', 	text = 'Player', align = 'center'},
-	{type = 'spinner', 	text = 'Divine Shield (Health %)', 				key = 'P_DS', 	default = 20}, 
-	{type = 'spinner', 	text = 'Divine Protection (Health %)', 			key = 'P_DP', 	default = 40}, 
-	{type = 'spinner', 	text = 'Healing Item (Pot/Stone) (Health %)', 	key = 'P_HI', 	default = 25}, 
-	{type = 'spinner', 	text = 'Blessing of Protection (Health %)', 	key = 'P_BoP', 	default = 0}, 
-	{type = 'spinner', 	text = 'Lay on Hands (Health %)', 				key = 'P_LoH', 	default = 25},		
-	{type = 'spinner', 	text = 'Holy Shock (Health %)', 				key = 'P_HS', 	default = 90},
-	{type = 'spinner', 	text = 'Bestow Faith (Health %)', 				key = 'Å_BF', 	default = 80},
-	{type = 'spinner', 	text = 'Flash of Light (Health %)', 			key = 'P_FoL', 	default = 75},
-	{type = 'spinner', 	text = 'Holy Light (Health %)', 				key = 'P_HL', 	default = 90},
-	{type = 'ruler'},{type = 'spacer'},
-	
+	{type='header', 	text='Toggles', align='center'},
+	{type='checkbox',	text='Avenging Wrath',						key='AW', 	default=false},
+	{type='checkbox',	text='Aura Mastery',							key='AM', 	default=false},
+	{type='checkbox',	text='Holy Avenger',							key='HA', 	default=false},
+	{type='checkbox',	text='Lay on Hands',							key='LoH', 	default=false},
+	{type='checkbox',	text='Encounter Support',						key='ENC', 	default=true},
+	{type='checkspin',text='Healing Potion',						key='P_HP', 	default=false},
+	{type='checkspin',text='Mana Potion',							key='P_MP', 	default=false},
+	{type='ruler'}, {type='spacer'},
+		
 	--------------------------------
 	-- TANK
 	--------------------------------
-	{type = 'header', 	text = 'Tank', align = 'center'},											
-	{type = 'spinner', 	text = 'Blessing of Protection (Health %)', 	key = 'T_BoP', 	default = 0}, 
-	{type = 'spinner', 	text = 'Blessing of Sacrifice (Health %)', 		key = 'T_BoS', 	default = 30},
-	{type = 'spinner', 	text = 'Lay on Hands (Health %)', 				key = 'T_LoH', 	default = 25},		
-	{type = 'spinner', 	text = 'Light of the Martyr (Health %)', 		key = 'T_LotM', default = 35},
-	{type = 'spinner', 	text = 'Holy Shock (Health %)', 				key = 'T_HS', 	default = 90},
-	{type = 'spinner', 	text = 'Light of the Martyr (Health %)', 		key = 'T_LotM', default = 40},
-	{type = 'spinner', 	text = 'Bestow Faith (Health %)', 				key = 'T_BF', 	default = 80},
-	{type = 'spinner', 	text = 'Flash of Light (Health %)', 			key = 'T_FoL', 	default = 75},
-	{type = 'spinner', 	text = 'Holy Light (Health %)', 				key = 'T_HL', 	default = 90},
-	{type = 'ruler'},{type = 'spacer'},
+	{type='header', 	text='Tank', align='center'},											
+	{type='spinner', 	text='Blessing of Sacrifice (Health %)', 		key='T_BoS', 	default=30},	
+	{type='spinner', 	text='Light of the Martyr (Health %)', 		key='T_LotM', default=35},
+	{type='spinner', 	text='Holy Shock (Health %)', 				key='T_HS', 	default=90},
+	{type='spinner', 	text='Flash of Light (Health %)', 			key='T_FoL', 	default=75},
+	{type='spinner', 	text='Holy Light (Health %)', 				key='T_HL', 	default=90},
+	{type='ruler'}, {type='spacer'},
 	
 	--------------------------------
 	-- LOWEST
 	--------------------------------
-	{type = 'header', 	text = 'Lowest', align = 'center'},
-	{type = 'spinner', 	text = 'Lay on Hands (Health %)', 				key = 'L_LoH', 	default = 25},
-	{type = 'spinner', 	text = 'Blessing of Protection (Health %)', 	key = 'L_BoP', 	default = 20},
-	{type = 'spinner', 	text = 'Blessing of Sacrifice (Health %)', 		key = 'L_BoS', 	default = 30},
-	{type = 'spinner', 	text = 'Holy Shock (Health %)', 				key = 'L_HS', 	default = 90},
-	{type = 'spinner', 	text = 'Light of the Martyr (Health %)', 		key = 'L_LotM', default = 40},
-	{type = 'spinner', 	text = 'Bestow Faith (Health %)', 				key = 'L_BF', 	default = 80},
-	{type = 'spinner', 	text = 'Flash of Light (Health %)', 			key = 'L_FoL', 	default = 70},
-	{type = 'spinner', 	text = 'Holy Light (Health %)', 				key = 'L_HL', 	default = 90},
+	{type='header', 	text='Lowest', align='center'},
+	{type='spinner', 	text='Lay on Hands (Health %)', 				key='L_LoH', 	default=10},
+	{type='spinner', 	text='Holy Shock (Health %)', 				key='L_HS', 	default=90},
+	{type='spinner', 	text='Light of the Martyr (Health %)', 		key='L_LotM', default=40},
+	{type='spinner', 	text='Light of the Martyr moving (Health %)', key='L_LotMm',default=65},
+	{type='spinner', 	text='Flash of Light (Health %)', 			key='L_FoL', 	default=70},
+	{type='spinner', 	text='Holy Light (Health %)', 				key='L_HL', 	default=90},
 }
 
-local exeOnLoad = function()
-	 Zylla.ExeOnLoad()
-
-	print('|cffADFF2F ----------------------------------------------------------------------|r')
-	print('|cffADFF2F --- |rPALADIN |cffADFF2FHoly |r')
-	print('|cffADFF2F --- |rRecommended Talents: 1/1 - 2/3 - 3/3 - 4/3 - 5/1 - 6/2 - 7/2')
-	print('|cffADFF2F ----------------------------------------------------------------------|r')
-
+local exeOnLoad=function()
 	NeP.Interface:AddToggle({
-		key = 'dps',
-		name = 'DPS',
-		text = 'DPS while healing',
-		icon = 'Interface\\Icons\\spell_nature_shamanrage.png',
+		key='dps',
+		name='DPS',
+		text='DPS while healing',
+		icon='Interface\\Icons\\spell_holy_crusaderstrike',
+	})
+	NeP.Interface:AddToggle({
+		key='disp',
+		name='Dispell',
+		text='ON/OFF Dispel All',
+		icon='Interface\\ICONS\\spell_holy_purify', 
 	})
 end
 
-local _Zylla = {
-    {"/targetenemy [dead][noharm]", "target.dead||!target.exists" },
-}
-
-local Util = {
-	-- Add stuff that should be done part of encounter, dont cast while, dont attack, dont etc
-	--BOSS
-	{ '%pause' , 'player.debuff(200904)' },			--Sapped Soul
-	{ '%pause' , 'player.debuff(Sapped Soul)' }, 	--Sapped Soul
-	-- FREEDOOM! --Should add a toggle for this
-	{ 'Every Man for Himself', 'player.state.stun' }, 
-	{ 'Blessing of Freedom', 'player.state.stun' }, 
-	{ 'Blessing of Freedom', 'player.state.root' }, 
-	{ 'Blessing of Freedom', 'player.state.snare' }, 
-}
-
 -- Cast that should be interrupted
-local Interrupts = {			-- No interrupt as Holy, but we can stun them
-	{ 'Hammer of Justice', nil, 'target'},
-	{ 'Blinding Light' },
+local interrupts={
+	{'Hammer of Justice', nil, 'target'},
+	{'Blinding Light', 'target.range<=7'},
 }
 
--- Units that should be CC
-local Stuns = {
-	{ 'Hammer of Justice', nil, 'target'},
+local survival={
+	{'#127834', 'UI(P_HP_check)&player.health<=UI(P_HP_spin)'}, -- Health Pot
+	{'#127835', 'UI(P_MP_check)&player.mana<=UI(P_MP_spin)'}, -- Mana Pot
+	{'Divine Protection', 'player.buff(Blessing of Sacrifice)'},
 }
 
--- Remove CC and slows
-local BreakFree = {
-	{ 'Blessing of Freedom' },
-	{ 'Every man for himself' },
-}
-local TopUp = {
-	{'Holy Shock', nil, 'lowest'},
-	{'Flash of Light', nil, 'lowest'},
-	--Todo: Should have a topup target and not always lowest, like MouseOver 
+local topUp={
+	{'Holy Shock', nil, 'mouseover'},
+	{'Flash of Light', nil, 'mouseover'},
 }
 
-local DPS = {
-	{'Consecration', {'player.area(8).enemies>2', '!xmoving=1'}},
+local DPS={
+	{'/startattack', '!isattacking'},
+	{'Consecration', 'target.range<=6&target.enemy&!player.moving'},
 	{'Blinding Light', 'player.area(8).enemies>=3'},
-	{'Holy Shock', nil, 'target'},
-	--{'Holy Prism', {'lowest.area(15).enemies>1', 'lowest.health<90'}, 'lowest'},
-	--{'Holy Prism', nil, 'target'},
+	{'Holy Shock', 'UI(O_HS)', 'target'},
+	{'Holy Prism', nil, 'target'},
 	{'Judgment'},
-	{'Crusader Strike'},
-	{'Consecration', {'player.area(8).enemies>0', '!xmoving=1'}},
-	--{'Holy Prism', 'lowest.health<95', 'lowest'},
-	{'Flash of Light', 'lowest.health<90', 'lowest'},
+	{'Crusader Strike', 'target.range<=8'},
 }
-local Healing = {
-	--Todos: Set alot of the configuration,
-	--[[
-	-------------------
-	-- Break out of Stuns with racials
-	-------------------
-	-- Todo :Add every man for himself
-	]]
-	--------------
-	-- Critical healing Player
-	--------------
-	{'!Divine Shield', 			'player.health<UI(P_DS)&!player.debuff(Forebearance)'},
-	{'!Lay on Hands', 			'player.health<UI(P_LoH)&!player.debuff(Forebearance)', 'player'},
-	{'!Blessing of Protection',	'player.health<UI(P_BoP)&!player.debuff(Forebearance)', 'player'},
-	--------------
-	-- Critical healing Tank
-	--------------
-	{'!Lay on Hands', 			'lowest(tank).health<UI(T_LoH)&!lowest(tank).debuff(Forebearance)',	'lowest(tank)'},
-	{'Blessing of Protection', 	'lowest(tank).health<UI(T_BoP)&!lowest(tank).debuff(Forebearance)', 	'lowest(tank)'},
-	{'Blessing of Sacrifice', 	'lowest(tank).health<UI(T_BoS)&player.health>70', 'lowest(tank)'},
-	--------------
-	-- Critical Heals Raid
-	-----------
-	{'!Lay on Hands', 			'lowest.health<UI(L_LoH)&!lowest.debuff(Forebearance)', 		'lowest'},
-	{'Blessing of Protection', 	'lowest.health<UI(L_BoP)&!lowest.debuff(Forebearance)', 		'lowest'},
-	{'Blessing of Sacrifice', 	'lowest.health<UI(L_BoS)&player.health>70', 				'lowest'},
-	--------------
-	-- Player low health CDs
-	--------------
-	{'Divine Protection', 		'player.health<UI(P_DP)'},
-	{ '#129196', 				'player.health<UI(P_HI)'}, 
-	-- ToDo Mana Pot, if mana low
 
-	-------------------------
-	-- Divine Protection if debuffed with Blessing of Sacrifice
-	-------------------------
-	{'Divine Protection', 		'player.debuff(Blessing of Sacrifice)'}, 
+local tank={
+	{{
+		{'Beacon of Light', '!tank.buff(Beacon of Faith)&!tank.buff(Beacon of Light)', 'tank'},
+		{'Beacon of Faith', '!tank2.buff(Beacon of Faith)&!tank2.buff(Beacon of Light)', 'tank2'},
+	}, '!talent(7,3)'},
+	{'Bestow Faith', '!tank.buff&talent(1,1)&tank.health<=90', 'tank'},
+	{'Bestow Faith', '!tank2.buff&talent(1,1)&tank2.health<=90', 'tank2'},
+}
 
-	---------------
-	-- Interrupt high prio
-	---------------
-
-	---------------
-	-- DPS target selection, 
-	---------------
-
-	---------------
-	-- Get Units populated, healing units, dispell units, unitswithdebuffs etc, MT/OTLowest
-	-- For AoE heals we need to get
-	--	Holy prism candidates, ie injunred allies around enemy targets
-	-- 	Light of Dawn candidates, ie injured around the player and frontal cone
-	--	Lights Hammer candidate or actaully spot on the gound to cast on
-	-- 	Rule of Law information, ie people 10-15 yards, out of range lowest we need to heal
-	---------------
-
-	-------------------
-	-- Dispell high prio debuffs
-	-------------------
-
-	------------------
-	-- Stuns High prio
-	------------------
-
-	--------------------
-	-- Healing CDs
-	--	Check number of injured allies and if beneath HP% and number then popp CDs
-	-------------------
-	--{'Aura Mastery', 'AoEHeal(15, 80, 40'}, --Cast AM if we have x number of units beneath y hp thresghold within y range
-	--{'Avenging Wrath', 'AoEHeal(15, 80, 40'},
-	--{'Holy Avenger', 'AoEHeal(15, 80, 40'},
-	--{'Light of Dawn', 'HealInFront(6, 80, 40'}
-	--{'Tyrs Deliverance', 'AoEHeal(15, 80, 40'}, -- AoE 15 yards around and more healing on thise targets
-
-	-------------------
-	-- Critical Healing under Threshold
-	--	Per unit set a threshold for critical heals, ie we do not do anyhting else then fast heals until they are up
-	-------------------
-	-- Player
-	{'Flash of Light', 'player.health<UI(G_CHP)&player.buff(Infusion of Light)', 'player'}, 
-	{'Holy Shock', 'player.health<UI(G_CHP)', 'player'}, 
-	{'Flash of Light', 'player.health<UI(G_CHP)', 'player'}, 
-	-- Tank
-	{'Light of the Martyr',	'player.buff(Divine Shield)&lowest(tank).health<UI(G_CHP)&player.health>lowest(tank).health', 'lowest(tank)'},
-	{'Flash of Light', 'lowest(tank).health<UI(G_CHP)&player.buff(Infusion of Light)', 'lowest(tank)'},
-	{'Holy Shock', 'lowest(tank).health<UI(G_CHP)', 'lowest(tank)'}, 
-	{'Flash of Light', 'lowest(tank).health<UI(G_CHP)', 'lowest(tank)'},
+local encounters={
+	-- Time Release
+	{'Holy Shock', 'lowest.debuff(Time Release)', 	'lowest'},
+	{'Holy Shock', 'lowest2.debuff(Time Release)', 'lowest2'},
+	{'Holy Shock', 'lowest3.debuff(Time Release)', 'lowest3'},
+	{'Holy Shock', 'lowest4.debuff(Time Release)', 'lowest4'},
+	{'Holy Shock', 'lowest5.debuff(Time Release)', 'lowest5'},
+	{'Holy Shock', 'lowest6.debuff(Time Release)', 'lowest6'},
+	{'Holy Shock', 'lowest7.debuff(Time Release)', 'lowest7'},
+	{'Holy Shock', 'lowest8.debuff(Time Release)', 'lowest8'},
+	{'Holy Shock', 'lowest9.debuff(Time Release)', 'lowest9'},
+	{'Holy Shock', 'lowest10.debuff(Time Release)', 'lowest10'},
+	{'Holy Shock', 'lowest11.debuff(Time Release)', 'lowest11'},
+	{'Holy Shock', 'lowest12.debuff(Time Release)', 'lowest12'},
+	{'Holy Shock', 'lowest13.debuff(Time Release)', 'lowest13'},
+	{'Holy Shock', 'lowest14.debuff(Time Release)', 'lowest14'},
+	{'Holy Shock', 'lowest15.debuff(Time Release)', 'lowest15'},
+	{'Holy Shock', 'lowest16.debuff(Time Release)', 'lowest16'},
+	{'Holy Shock', 'lowest17.debuff(Time Release)', 'lowest17'},
+	{'Holy Shock', 'lowest18.debuff(Time Release)', 'lowest18'},
+	{'Holy Shock', 'lowest19.debuff(Time Release)', 'lowest19'},
+	{'Holy Shock', 'lowest20.debuff(Time Release)', 'lowest20'},
+	{'Holy Shock', 'lowest20.debuff(Time Release)', 'lowest21'},
+	{'Holy Shock', 'lowest20.debuff(Time Release)', 'lowest22'},
+	{'Holy Shock', 'lowest20.debuff(Time Release)', 'lowest23'},
+	{'Holy Shock', 'lowest20.debuff(Time Release)', 'lowest24'},
+	{'Holy Shock', 'lowest20.debuff(Time Release)', 'lowest25'},
+	{'Holy Shock', 'lowest20.debuff(Time Release)', 'lowest26'},
+	{'Holy Shock', 'lowest20.debuff(Time Release)', 'lowest27'},
+	{'Holy Shock', 'lowest20.debuff(Time Release)', 'lowest28'},
+	{'Holy Shock', 'lowest20.debuff(Time Release)', 'lowest29'},
+	{'Holy Shock', 'lowest20.debuff(Time Release)', 'lowest30'},
+	{'Flash of Light', 'lowest.debuff(Time Release).duration>=1', 'lowest'},
+	{'Flash of Light', 'lowest2.debuff(Time Release).duration>=1', 'lowest2'},
+	{'Flash of Light', 'lowest3.debuff(Time Release).duration>=1', 'lowest3'},
+	{'Flash of Light', 'lowest4.debuff(Time Release).duration>=1', 'lowest4'},
+	{'Flash of Light', 'lowest5.debuff(Time Release).duration>=1', 'lowest5'},
+	{'Flash of Light', 'lowest6.debuff(Time Release).duration>=1', 'lowest6'},
+	{'Flash of Light', 'lowest7.debuff(Time Release).duration>=1', 'lowest7'},
+	{'Flash of Light', 'lowest8.debuff(Time Release).duration>=1', 'lowest8'},
+	{'Flash of Light', 'lowest9.debuff(Time Release).duration>=1', 'lowest9'},
+	{'Flash of Light', 'lowest10.debuff(Time Release).duration>=1', 'lowest10'},
+	{'Flash of Light', 'lowest11.debuff(Time Release).duration>=1', 'lowest11'},
+	{'Flash of Light', 'lowest12.debuff(Time Release).duration>=1', 'lowest12'},
+	{'Flash of Light', 'lowest13.debuff(Time Release).duration>=1', 'lowest13'},
+	{'Flash of Light', 'lowest14.debuff(Time Release).duration>=1', 'lowest14'},
+	{'Flash of Light', 'lowest15.debuff(Time Release).duration>=1', 'lowest15'},
+	{'Flash of Light', 'lowest16.debuff(Time Release).duration>=1', 'lowest16'},
+	{'Flash of Light', 'lowest17.debuff(Time Release).duration>=1', 'lowest17'},
+	{'Flash of Light', 'lowest18.debuff(Time Release).duration>=1', 'lowest18'},
+	{'Flash of Light', 'lowest19.debuff(Time Release).duration>=1', 'lowest19'},
+	{'Flash of Light', 'lowest20.debuff(Time Release).duration>=1', 'lowest20'},
+	{'Flash of Light', 'lowest20.debuff(Time Release).duration>=1', 'lowest21'},
+	{'Flash of Light', 'lowest20.debuff(Time Release).duration>=1', 'lowest22'},
+	{'Flash of Light', 'lowest20.debuff(Time Release).duration>=1', 'lowest23'},
+	{'Flash of Light', 'lowest20.debuff(Time Release).duration>=1', 'lowest24'},
+	{'Flash of Light', 'lowest20.debuff(Time Release).duration>=1', 'lowest25'},
+	{'Flash of Light', 'lowest20.debuff(Time Release).duration>=1', 'lowest26'},
+	{'Flash of Light', 'lowest20.debuff(Time Release).duration>=1', 'lowest27'},
+	{'Flash of Light', 'lowest20.debuff(Time Release).duration>=1', 'lowest28'},
+	{'Flash of Light', 'lowest20.debuff(Time Release).duration>=1', 'lowest29'},
+	{'Flash of Light', 'lowest20.debuff(Time Release).duration>=1', 'lowest30'},
 	
-	-- Raid
-	{'Light of the Martyr',	'player.buff(Divine Shield)&player.health>lowest.health', 'lowest'},
-	{'Flash of Light', 'lowest.health<UI(G_CHP)&player.buff(Infusion of Light)', 'lowest'}, 
-	{'Holy Shock', 'lowest.health<UI(G_CHP)', 'lowest'}, 
-	{'Flash of Light', 'lowest.health<UI(G_CHP)', 'lowest'},
+	-- M Bot
+	{'Divine Protection', 'player.debuff(Toxic Spores)'},
+}
 
+local aoeHealing={
+	{'Beacon of Virtue', 'lowestpredicted.area(30,95).heal>=3&talent(7,3)'},
+	{'Rule of Law', 'area(22,90).heal.infront>=3&!player.buff&spell(Light of Dawn).cooldown=0'},
+	{'Light of Dawn', 'area(15,90).heal.infront>=3&player.buff(Rule of Law)'},
+	{'Light of Dawn', 'area(15,90).heal.infront>=3'},
+	{'Light of Dawn', 'player.buff(Divine Purpose)'},
+	{'Holy Prism', 'target.area(15,80).heal>=3'},
+}
 
-	-----------------
-	-- Judgment if you have light talent and set it to high prio
-	--		Iterate through all enemies and cast on one with injured allies hitting it
-	----------------
-	--{'Judgment', 'target.exist, target.infront&target.distance<40&target.alive&target.debuff(Judgment of Light)', 'target'}, --Todo: Dynamic target
+local healing={
+	-- Add an Aura of Sacrifice rotation here!
+	--(Wings and Holy Avenger and Tyrs pre cast)
+	--(Bestow Faith or Hammer pre cast)
+	--(Divine Shield pre cast)
+	--Judgement of Light 
+	--Aura Mastery 
 
-	-----------------------
-	-- DPS if the user presses key or toggle and lowest.health is higher then threshold
-	-----------------------
-	{DPS, 'keybind(lcontrol)||{toggle(dps)&!lowest.health<UI(G_DPS)&target.enemy}' },
-
-
-	----------------------
-	-- TopUp the raid if user presses key
-	----------------------
-	{TopUp, 'keybind(lalt)'},
-
-	-----------------------
-	-- Beacon Handling
-	--	Beacon of light should be on the tank that takes damage
-	--		If beacon unit is 100% and not having aggro then switch to other tank if he has less HP and or having aggro
-	----------------------
-	--{Beaconf of Light},
-	--{Beaconf of Virtue}, -- If we have talent and 2-3 people is injured beneath X amount
-
-	--------------------
-	-- Dispel normal prio
-	---------------------
-
-	-- Healing Rotation
-		-- Heal Tanks as very high priority - Holy Shock and Flash of Light	
-			-- BestTankTarget =  MainTankHealth<OffTankHealth and MainTank or OffTank;
-
-	-- Divine Purpose - Light Of Dawn - 216413
-	{'Light of Dawn', 'player.buff(216413)'},
-	-- Divine Purpose - Holy Shock - 216411
-	{'Holy Shock', 'player.buff(216411)', 'lowest'},
-	
-	-- Holy Shock Always
-				-- If we have confiured to always use Holy Shock then cast it on lowest or enemy
-	-- Holy Prism on Target / MainTank Target / OffTank Target
-		-- Should first check if we can cast it on enemy, so use MT/OT target to check agains, or go through all of enemies to get the best one to cast on
-		-- Should here actaully get the healing for each target and not only how many
-	--{'Holy Prism', 'lowest.health<UI(L_HP)', 'lowest'},
-	
-	-- Holy Shock, however use infusion buff before if we have them
-	{'Flash of Light', {'player.health<UI(P_FoL)', 'player.buff(Infusion of Light)', 'xmoving=1'}, 'player'},
-	{'Holy Shock', 'player.health<UI(P_HS)', 'player'},
-
-	{'Flash of Light', {'lowest(tank).health<UI(T_FoL)','player.buff(Infusion of Light)', 'xmoving=1'}, 'lowest(tank)'},
-	{'Holy Shock', 'lowest(tank).health<UI(T_HS)', 'lowest(tank)'},
-	
-	{'Flash of Light', 'lowest.health<UI(L_FoL)&player.buff(Infusion of Light)&xmoving=1', 'lowest'},
-	{'Holy Shock', 'lowest.health<UI(L_HS)', 'lowest'},
-			
-	-- Light Of The Martyr
-	{'Light of the Martyr',	'lowest(tank).health<UI(T_LoftM)&player.health>70', 'lowest(tank)'},
-	{'Light of the Martyr',	'lowest.health<UI(L_LoftM)&player.health>70', 'lowest'},
-
-	-- Bestow Faith Unit, todo -- Should only be cast on tank os people with low health/debuffed
-	{'Bestow Faith', 'player.health<UI(P_BF)', 'player'},
-	{'Bestow Faith', 'lowest(tank).health<UI(T_BF)', 'lowest(tank)'},
-	{'Bestow Faith', 'lowest.health<UI(L_BF)', 'lowest'},
-				
-	--  CrusadersMight if we have it set to high, lowers CD on LoD and HS with 1.5 sec
-	-- Light's Hammer
-	-- Judgement light at low prio
-
-	-- Flash Of Light
-	{'Flash of Light', 'player.health<UI(P_FoL)&!xmoving=1', 'player'},
-	{'Flash of Light', 'lowest(tank).health<UI(T_FoL)&!xmoving=1', 'lowest(tank)'},
-	{'Flash of Light', 'lowest.health<UI(L_FoL)&!xmoving=1', 'lowest'},
-	
-	-- Bad Debuffs - Tank
-			-- Cast Holy Shock or Flash of Light if tanks is badly debuffed or need to be topped off
-			
-	-- Bad Debuffs - Debuffs
-		-- Cast Holy Shock or Flash of Light if tanks is badly debuffed or need to be topped off
-
-	-- Crusaders might if low prio
+	{{
+		{'Avenging Wrath'},
+		{'Holy Avenger'},
+		{'Holy Shock', nil, 'lowestpredicted'},
+		{'Light of Dawn'},
+		{'Flash of Light', nil, 'lowestpredicted'},
+	}, 'player.buff(Aura Mastery)&talent(5,2)'},
 		
-	-- Holy Light
-	{'Holy Light', 'player.health<UI(P_HL)&!xmoving=1', 'player'},
-	{'Holy Light', 'lowest(tank).health<UI(T_HL)&!xmoving=1', 'lowest(tank)'},
-	{'Holy Light', 'lowest.health<UI(L_HL)&!xmoving=1','lowest'},
-
-	-------------------------
-	-- DPS if nothing to heal
-	------------------------
-				
-}
-
-local HealingN = {
+	{aoeHealing},
 	
-	{'Holy Light', 'player.health<90&!xmoving=1', 'player'},
-	{'Holy Light', 'lowest(tank).health<90&!xmoving=1', 'lowest(tank)'},
-	{'Holy Light', 'lowest.health<90&!xmoving=1','lowest'},
+	-- Tyrs Deliverance
+	{'200652', 'player.area(15,75).heal>=3'},
+	{'200652', 'player.area(22,75).heal>=3&player.buff(Rule of Law)'},
 	
+	{encounters, 'UI(ENC)'},
+	
+	{'Light of the Martyr', '!player&player.buff(Maraad\'s Dying Breath)&lowestpredicted.health<=UI(L_FoL)', 'lowestpredicted'},
+	
+	-- Infusion of Light
+	--{'Flash of Light', 'player.buff(Infusion of Light).count>=2', 'lowestpredicted'},
+	{'Flash of Light', 'lowestpredicted.health<=UI(L_FoL)&player.buff(Infusion of Light)', 'lowestpredicted'},
+	{'Flash of Light', 'player.buff(Infusion of Light).duration<=3&player.buff(Infusion of Light)', 'lowestpredicted'},
+	
+	-- Need player health spinner added
+	{{
+		{'Light of the Martyr', '!player&tank.health<=UI(T_LotM)', 'tank'},
+		{'Light of the Martyr', '!player&tank2.health<=UI(T_LotM)', 'tank2'},
+		{'Light of the Martyr', '!player&lowestpredicted.health<=UI(L_LotM)', 'lowestpredicted'},
+	}, 'player.health>=40'},
+	
+	{'Holy Shock', 'tank.health<=UI(T_HS)', 'tank'},
+	{'Holy Shock', 'tank2.health<=UI(T_HS)', 'tank2'},
+	{'Holy Shock', 'lowestpredicted.health<=UI(L_HS)', 'lowestpredicted'},
+	{'Holy Shock', 'mouseover.health<=UI(L_HS)&!mouseover.enemy', 'mouseover'},
+	
+	{'Flash of Light', 'lbuff(200654).health<=UI(L_FoL)', 'lbuff(200654)'},
+	
+	{'Flash of Light', 'tank.health<=UI(T_FoL)', 'tank'},
+	{'Flash of Light', 'tank2.health<=UI(T_FoL)', 'tank2'},
+	{'!Flash of Light', 'lowestpredicted.health<=UI(L_FoL)&player.casting(Holy Light)&player.casting.percent<=50', 'lowestpredicted'},
+	{'Flash of Light', 'lowestpredicted.health<=UI(L_FoL)', 'lowestpredicted'},
+	{'Flash of Light', 'mouseover.health<=UI(L_FoL)&!mouseover.enemy', 'mouseover'},
+	
+	{'Judgment', 'target.enemy'}, -- Keep up dmg reduction buff
+	
+	{'Holy Light', 'tank.health<=UI(T_HL)', 'tank'},
+	{'Holy Light', 'tank2.health<=UI(T_HL)', 'tank2'},
+	{'Holy Light', 'mouseover.health<=UI(L_FoL)&!mouseover.enemy', 'mouseover'},
+	{'Holy Light', 'lowestpredicted.health<=UI(L_HL)', 'lowestpredicted'},
 }
 
-
-local Keybinds = {
-	{'%pause', 'keybind(lshift)&UI(kPause)'},
+local emergency={
+	{'!Holy Shock', '!player.casting(200652)', 'lowestpredicted'},
+	{'!Flash of Light', '!player.moving&!player.casting(200652)', 'lowestpredicted'},
+	{'!Light of the Martyr', '!player.casting(Flash of Light)&!player.casting(200652)', 'lowestpredicted'},
 }
 
-local inCombat = {
-	{Util},
-	{Keybinds},
-	{TopUp, 'keybind(lalt)'},
-	{Healing},
+local cooldowns={
+	-- Need to rewrite for Raid and 5 Man
+	{'Lay on Hands', 'UI(LoH)&lowestpredicted.health<=UI(L_LoH)&!lowestpredicted.debuff(Forbearance).any', 'lowestpredicted'},
+	{'Aura Mastery', 'UI(AM)&player.area(40,40).heal>=4'},
+	{'Avenging Wrath', 'UI(AW)&player.area(35,65).heal>=4&player.spell(Holy Shock).cooldown=0'},
+	{'Holy Avenger', 'UI(HA)&player.area(40,75).heal>=3&player.spell(Holy Shock).cooldown=0'},
+	
+	{'Blessing of Sacrifice', 'tank.health<=UI(T_BoS)', 'tank'}, 
+	{'Blessing of Sacrifice', 'tank2.health<=UI(T_BoS)', 'tank2'}, 
+	
+	--{'#trinket2', 'player.area(40,95).heal>=3'},
 }
 
-local outCombat = {
-	{DPS, 'keybind(lcontrol)'},
-	{TopUp, 'keybind(lalt)'},
+local moving={
+	{aoeHealing},
+	
+	{{
+		{'Light of the Martyr', '!player&tank.health<=UI(T_LotM)', 'tank'},
+		{'Light of the Martyr', '!player&tank2.health<=UI(T_LotM)', 'tank2'},
+		{'Light of the Martyr', '!player&lowestpredicted.health<=UI(L_LotM)', 'lowestpredicted'},
+	}, 'player.health>=40'},
+	
+	{'Holy Shock', 'tank.health<=UI(T_HS)', 'tank'},
+	{'Holy Shock', 'lowestpredicted.health<=UI(L_HS)', 'lowestpredicted'},
+	
+	{'Judgment', 'target.enemy'},
 }
 
-NeP.CR:Add(65, '[|cff'..Zylla.addonColor..'ZYLLA\'s|r] PALADIN - Holy V2', inCombat, outCombat, exeOnLoad, GUI)
+local manaRestore={
+	{'Holy Shock', 'lowestpredicted.health<=UI(L_HS)', 'lowestpredicted'},
+	{'Holy Light', 'tank.health<=UI(T_HL)', 'tank'},
+	{'Holy Light', 'tank2.health<=UI(T_HL)', 'tank2'},
+	{'Holy Light', 'lowestpredicted.health<=UI(L_HL)', 'lowestpredicted'},
+	
+	{'Judgment', 'target.enemy'},
+}
+
+local inCombat={
+	{pause, 'keybind(lalt)'},
+	{topUp, 'keybind(lcontrol)'},
+	{survival}, 
+	{interrupts, 'target.interruptAt(35)'},
+	{'%dispelall', 'toggle(disp)&spell(Cleanse).cooldown=0'},
+	{cooldowns, 'toggle(cooldowns)'},
+	{emergency, 'lowestpredicted.health<=UI(G_CHP)&!player.casting(200652)'},
+	{tank},
+	{DPS, 'toggle(dps)&target.enemy&target.infront&lowestpredicted.health>=UI(G_DPS)'},
+	{moving, 'player.moving'},
+	{manaRestore, 'player.mana<=UI(P_MR)'},
+	{healing, '!player.moving&player.mana>=UI(P_MR)'},
+	{DPS, 'toggle(dps)&target.enemy&target.infront'},
+}
+
+local outCombat={
+	-- Need to prevent this while eating
+	{tank},
+	{topUp, 'keybind(lcontrol)'},
+	
+	-- Precombat
+	{'Bestow Faith', 'pull_timer<=3', 'tank'},
+	{'#Potion of Prolonged Power', '!player.buff&pull_timer<=2'},
+	{'%dispelall', 'toggle(disp)&spell(Cleanse).cooldown=0'},
+}
+
+NeP.CR:Add(65, {
+	name='[|cff'..Zylla.addonColor..'Zylla|r] Paladin - Holy',
+	ic=inCombat,
+	ooc=outCombat,
+	gui=GUI,
+	load=exeOnLoad
+})
