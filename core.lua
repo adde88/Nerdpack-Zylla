@@ -1,6 +1,6 @@
 local _, Zylla = ...
 
-Zylla.Version = '1.0.1'
+Zylla.Version = '1.1.0'
 Zylla.Branch = 'DEVELOPER'
 Zylla.Name = 'NerdPack - Zylla\'s Rotations'
 Zylla.Author = 'Zylla'
@@ -1179,14 +1179,158 @@ NeP.Listener:Add('Zylla_Listener_TravelSpeed', 'COMBAT_LOG_EVENT_UNFILTERED', fu
 end)
 --]]
 
---------------------------------------------------------------------------------
--------------------------------- GABBZ_START -----------------------------------
---------------------------------------------------------------------------------
+-------------------------
+-- Gabbz fake units + misc
+---------------------------
 
---your stuffs here, for now
+function Zylla.dynEval(condition, spell)
+	return Parse(condition, spell or '')
+end
 
---------------------------------------------------------------------------------
--------------------------------- GABBZ_END -------------------------------------
---------------------------------------------------------------------------------
+function Zylla.GetPredictedHealth(unit)
+	return UnitHealth(unit)-(UnitGetTotalHealAbsorbs(unit) or 0)+(UnitGetIncomingHeals(unit) or 0)
+end
 
-NeP.Library:Add('Zylla', Zylla)
+-- Lowest
+NeP.FakeUnits:Add('healingCandidate', function(nump, role)
+	local tempTable = {}
+	local num = nump or 1
+	
+	for GUID, Obj in pairs(NeP.OM:Get('Friendly')) do
+		if UnitPlayerOrPetInParty(Obj.key) or UnitIsUnit('player', Obj.key) then
+			local healthRaw = Zylla.GetPredictedHealth(Obj.key)
+			local maxHealth = UnitHealthMax(Obj.key)
+			local healthPercent =  (healthRaw / maxHealth) * 100
+			tempTable[#tempTable+1] = {
+				key = Obj.key,
+				health = healthPercent,
+			}
+		end
+	end
+	table.sort( tempTable, function(a,b) return a.health < b.health end )
+	print("Zylla Unit: " ..tempTable[num].key .." Health: " ..tempTable[num].health)
+	return tempTable[num].key
+end)
+
+
+NeP.DSL:Register("area.enemiesheals", function(unit, distance)
+	local total = 0
+	if not UnitExists(unit) then return total end
+	for _, Obj in pairs(NeP.OM:Get('Enemy')) do
+		if NeP.DSL:Get('combat')(Obj.key) and NeP.Protected.Distance(unit, Obj.key) <= tonumber(distance) then
+			total = total +1
+		end
+	end
+	return total
+end)
+
+function Zylla.NrHealsAroundFriendly(number, healthp, distance)
+	local unit = unitp
+	local nrunits = number
+	local health = healthp
+	local range = distance
+	local total = 0
+	if not UnitExists(unit) then return total end
+	for _, Obj in pairs(NeP.OM:GetRoster()) do
+		if NeP.Protected.Distance(unit, Obj.key) <= tonumber(range) and Obj.health < health then
+			total = total +1
+		end
+	end
+	return total
+end
+
+-------------------------
+-- Gabbz END
+---------------------------
+
+function Zylla.tt()
+	if NeP.Unlocked and UnitAffectingCombat('player') and not NeP.DSL:Get('casting')('player', 'Fists of Fury') then
+		NeP:Queue('Transcendence: Transfer', 'player')
+	end
+end
+
+function Zylla.ts()
+	if NeP.Unlocked and UnitAffectingCombat('player') and not NeP.DSL:Get('casting')('player', 'Fists of Fury') then
+		NeP:Queue('Transcendence', 'player')
+	end
+end
+
+NeP.FakeUnits:Add('Zylla_sck', function(debuff)
+	for GUID, Obj in pairs(NeP.OM:Get('Enemy')) do
+		if UnitExists(Obj.key) then
+			if (NeP.DSL:Get('combat')(Obj.key) or Obj.isdummy) then
+				if (NeP.DSL:Get('infront')(Obj.key) and NeP.DSL:Get('inMelee')(Obj.key)) then
+					local _,_,_,_,_,_,debuffDuration = UnitDebuff(Obj.key, debuff, nil, 'PLAYER')
+					if not debuffDuration or debuffDuration - GetTime() < 1.5 then
+						--print("Zylla_sck: returning "..Obj.name.." ("..Obj.key.." - "..Obj.guid..' :'..time()..")");
+						return Obj.key
+					end
+				end
+			end
+		end
+	end
+end)
+
+NeP.Library:Add('Zylla', {
+	hitcombo = function(spell)
+		if not spell then return true end
+		local _, _, _, _, _, _, spellID = GetSpellInfo(spell)
+		if NeP.DSL:Get('buff')('player', 'Hit Combo') then
+			-- we're using hit combo and need to check if the spell we've passed is in the list
+			if HitComboLastCast == spellID then
+				-- If the passed-spell is in the list as flagged, we need to return false and exit
+				--print('hitcombo('..spell..') and it is was flagged ('..HitComboLastCast..'), returning false');
+				return false
+			end
+		end
+		return true
+	end,
+
+	sef = function()
+		if NeP.DSL:Get('buff')('player', 'Storm, Earth, and Fire') then
+			if SEF_Fixate_Casted then
+				return false
+			else
+				SEF_Fixate_Casted = true
+				return true
+			end
+		else
+			SEF_Fixate_Casted = false
+		end
+		return false
+	end,
+
+	staggered = function()
+		local stagger = UnitStagger("player");
+		local percentOfHealth = (100/UnitHealthMax("player")*stagger);
+		-- TODO: We are targetting 4.5% stagger value - too low?  I think we used 25% or heavy stagger before as the trigger
+		--if (percentOfHealth > 4.5) or UnitDebuff("player", GetSpellInfo(124273)) then
+		return percentOfHealth > 4.5
+	end,
+
+	purifyingCapped = function()
+		local MaxBrewCharges = 3;
+		if NeP.DSL:Get('talent')(nil, '3,1') then
+			MaxBrewCharges = MaxBrewCharges + 1;
+		end
+		local PurifyingCapped = (
+		(NeP.DSL:Get('spell.charges')('player', 'Purifying Brew') == MaxBrewCharges) or ((NeP.DSL:Get('spell.charges')('player', 'Purifying Brew') == MaxBrewCharges - 1) and NeP.DSL:Get('spell.recharge')('player', 'Purifying Brew') < 3 ) ) or false;
+		return PurifyingCapped
+	end,
+
+	--[[ for future use, call it via {"@Zylla.synclast"}, at the TOP of the combat section
+	synclast = function()
+		local _, LastCast = NeP.DSL:Get('lastcast')('player')
+		local _, _, _, _, _, _, spellID = GetSpellInfo(LastCast)
+		if spellID then
+			if MasterySpells[spellID] then
+				-- If NeP.Engine.lastCast is in the MasterySpells list, set HitComboLastCast to this spellID
+				HitComboLastCast = spellID
+				--print("windwalker_sync flagging "..LastCast);
+			end
+		end
+		return false
+	end,
+	]]--
+
+})
