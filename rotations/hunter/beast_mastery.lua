@@ -28,11 +28,11 @@ local exeOnLoad = function()
 end
 
 local _Zylla = {
-    {"/targetenemy [dead][noharm]", "target.dead||!target.exists" },
+    {"/targetenemy [dead][noharm]", "{target.dead||!target.exists}&!player.area(40).enemies=0" },
 }
 
 local PreCombat = {
-	{'/cast Call Pet 2', '!pet.exists&UI(kPet)'},
+	{'/cast Call Pet 1', '!pet.exists&UI(kPet)'},
 	{'Heart of the Phoenix', '!player.debuff(Weakened Heart)&pet.dead&UI(kPet)'},
 	{'Revive Pet', 'pet.dead&UI(kPet)'},
 	{'Volley', 'talent(6,3)&!player.buff(Volley)&UI(kVolley)'},
@@ -72,6 +72,7 @@ local Cooldowns = {
 
 local Interrupts = {
 	{'Counter Shot'},
+	{'Intimidation', 'talent(6,3)&spell(Counter Shot).cooldown>gcd&!prev_gcd(Counter Shot)&!target.immune(Stun)'},
 }
 
 local xCombat = {
@@ -94,7 +95,7 @@ local xPetCombat = {
 	--{'/petassist' },
 	{'!Kill Command'},
 	{'Mend Pet', 'pet.exists&pet.alive&pet.health<100&!pet.buff(Mend Pet)'},
-	{'/cast Call Pet 2', '!pet.exists&UI(kPet)'},
+	{'/cast Call Pet 1', '!pet.exists&UI(kPet)'},
 	{'Heart of the Phoenix', '!player.debuff(Weakened Heart)&pet.dead&UI(kPet)'},
 	{'Revive Pet', 'pet.dead&UI(kPet)'},
 	{'/cast [@focus, help] [@pet, nodead, exists] Misdirection', 'cooldown(Misdirection).remains<=gcd&toggle(xMisdirect)'},
