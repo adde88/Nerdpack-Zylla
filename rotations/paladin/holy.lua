@@ -11,21 +11,22 @@ local _, Zylla=...
 
 local GUI={
 	{type='header', 	text='Generic', align='center'},
-	{type='spinner', 	text='DPS while lowest health%', 				key='G_DPS', 	default=70},
-	{type='spinner', 	text='Critical health%', 						key='G_CHP', 	default=30},
-	{type='spinner', 	text='Mana Restore', 							key='P_MR', 	default=20},
-	{type='checkbox',	text='Offensive Holy Shock',					key='O_HS', 	default=false},
+	{type='spinner', 	text='DPS while lowest health%', 				key='G_DPS', 			default=70},
+	{type = 'checkbox', text = 'Auto-Target Enemies when DPSing			key = 'kAutoTarget', 	default = true},
+	{type='spinner', 	text='Critical health%', 						key='G_CHP', 			default=30},
+	{type='spinner', 	text='Mana Restore', 							key='P_MR', 			default=20},
+	{type='checkbox',	text='Offensive Holy Shock',					key='O_HS', 			default=false},
 	{type='ruler'}, {type='spacer'},
 	
 	--------------------------------
 	-- Toggles
 	--------------------------------
 	{type='header', 	text='Toggles', align='center'},
-	{type='checkbox',	text='Avenging Wrath',						key='AW', 	default=false},
-	{type='checkbox',	text='Aura Mastery',							key='AM', 	default=false},
-	{type='checkbox',	text='Holy Avenger',							key='HA', 	default=false},
-	{type='checkbox',	text='Lay on Hands',							key='LoH', 	default=false},
-	{type='checkbox',	text='Encounter Support',						key='ENC', 	default=true},
+	{type='checkbox',	text='Avenging Wrath',						key='AW', 		default=false},
+	{type='checkbox',	text='Aura Mastery',						key='AM', 		default=false},
+	{type='checkbox',	text='Holy Avenger',						key='HA', 		default=false},
+	{type='checkbox',	text='Lay on Hands',						key='LoH', 		default=false},
+	{type='checkbox',	text='Encounter Support',					key='ENC', 		default=true},
 	{type='checkspin',text='Healing Potion',						key='P_HP', 	default=false},
 	{type='checkspin',text='Mana Potion',							key='P_MP', 	default=false},
 	{type='ruler'}, {type='spacer'},
@@ -34,8 +35,8 @@ local GUI={
 	-- TANK
 	--------------------------------
 	{type='header', 	text='Tank', align='center'},											
-	{type='spinner', 	text='Blessing of Sacrifice (Health %)', 		key='T_BoS', 	default=30},	
-	{type='spinner', 	text='Light of the Martyr (Health %)', 		key='T_LotM', default=35},
+	{type='spinner', 	text='Blessing of Sacrifice (Health %)', 	key='T_BoS', 	default=30},	
+	{type='spinner', 	text='Light of the Martyr (Health %)', 		key='T_LotM', 	default=35},
 	{type='spinner', 	text='Holy Shock (Health %)', 				key='T_HS', 	default=90},
 	{type='spinner', 	text='Flash of Light (Health %)', 			key='T_FoL', 	default=75},
 	{type='spinner', 	text='Holy Light (Health %)', 				key='T_HL', 	default=90},
@@ -45,12 +46,12 @@ local GUI={
 	-- LOWEST
 	--------------------------------
 	{type='header', 	text='Lowest', align='center'},
-	{type='spinner', 	text='Lay on Hands (Health %)', 				key='L_LoH', 	default=10},
-	{type='spinner', 	text='Holy Shock (Health %)', 				key='L_HS', 	default=90},
-	{type='spinner', 	text='Light of the Martyr (Health %)', 		key='L_LotM', default=40},
-	{type='spinner', 	text='Light of the Martyr moving (Health %)', key='L_LotMm',default=65},
-	{type='spinner', 	text='Flash of Light (Health %)', 			key='L_FoL', 	default=70},
-	{type='spinner', 	text='Holy Light (Health %)', 				key='L_HL', 	default=90},
+	{type='spinner', 	text='Lay on Hands (Health %)', 				key='L_LoH', 		default=10},
+	{type='spinner', 	text='Holy Shock (Health %)', 					key='L_HS', 		default=90},
+	{type='spinner', 	text='Light of the Martyr (Health %)', 			key='L_LotM', 		default=40},
+	{type='spinner', 	text='Light of the Martyr moving (Health %)', 	key='L_LotMm',		default=65},
+	{type='spinner', 	text='Flash of Light (Health %)', 				key='L_FoL', 		default=70},
+	{type='spinner', 	text='Holy Light (Health %)', 					key='L_HL', 		default=90},
 }
 
 local exeOnLoad=function()
@@ -67,6 +68,10 @@ local exeOnLoad=function()
 		icon='Interface\\ICONS\\spell_holy_purify', 
 	})
 end
+
+local _Zylla = {
+    {"/targetenemy [dead][noharm]", "{target.dead||!target.exists}&!player.area(40).enemies=0" },
+}
 
 -- Cast that should be interrupted
 local interrupts={
@@ -283,6 +288,7 @@ local manaRestore={
 }
 
 local inCombat={
+	{_Zylla, 'UI(kAutoTarget)&toggle(dps)'},
 	{pause, 'keybind(lalt)'},
 	{topUp, 'keybind(lcontrol)'},
 	{survival}, 
