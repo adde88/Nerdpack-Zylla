@@ -12,7 +12,7 @@ local _, Zylla=...
 local GUI={
 	{type='header', 	text='Generic', align='center'},
 	{type='spinner', 	text='DPS while lowest health%', 				key='G_DPS', 			default=70},
-	{type = 'checkbox', text = 'Auto-Target Enemies when DPSing			key = 'kAutoTarget', 	default = true},
+	{type = 'checkbox', text = 'Auto-Target Enemies when DPSing',		key = 'kAutoTarget', 	default = true},
 	{type='spinner', 	text='Critical health%', 						key='G_CHP', 			default=30},
 	{type='spinner', 	text='Mana Restore', 							key='P_MR', 			default=20},
 	{type='checkbox',	text='Offensive Holy Shock',					key='O_HS', 			default=false},
