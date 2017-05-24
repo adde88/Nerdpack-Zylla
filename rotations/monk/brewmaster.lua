@@ -13,6 +13,8 @@ local GUI={
 	-- Survival
 	{type='spacer'},{type='rule'},
 	{type='header', text='Survival', align='center'},
+	{type='spinner', text='Holy Shock (Health %)', key='E_HP', default=60},
+	{type='checkbox', text='Use Self-Heal (Effuse)', key='kEffuse', default=false},
 	{type='spinner', text='Healthstone or Healing Potion', key='Health Stone', default=45},
 	{type='spinner', text='Healing Elixir', key='Healing Elixir', default=70},
 	{type='spinner', text='Expel Harm', key='Expel Harm', default=100},
@@ -31,7 +33,7 @@ local exeOnLoad=function()
 end
 
 local _Zylla={
-    {'/targetenemy [dead][noharm]', 'target.dead||!target.exists'},
+    {"/targetenemy [dead][noharm]", "{target.dead||!target.exists}&!player.area(40).enemies=0" },
 }
 
 local _Keybinds={
@@ -42,8 +44,8 @@ local _Keybinds={
 
 local _Snares={
 	-- Nimble Brew if PvP talent taken
-	{'Nimble Brew', 'player.state.disorient||player.state.stun||player.state.fear||player.state.horror'},
-	{'Tiger\'s Lust', 'player.state.disorient||player.state.stun||player.state.root||player.state.snare'},
+	{'Nimble Brew', 'spell.exists(213664)&{player.state.disorient||player.state.stun||player.state.fear||player.state.horror}'},
+	{'Tiger\'s Lust', 'talent(2,2)&{player.state.disorient||player.state.stun||player.state.root||player.state.snare}'},
 }
 
 local _Cooldowns={
@@ -67,6 +69,8 @@ local _Survival={
 	{'Fortifying Brew', 'player.health<=UI(Fortifying Brew)', 'player'},
 	-- Cast when there is at least one orb on the ground.
 	{'Expel Harm', 'player.health<=UI(Expel Harm)&player.spell(Expel Harm).count>=1', 'player'},
+	-- Self heal with Effuse at XX% HP if enabled in settings. (SOLO MODE)
+	{'Effuse', 'player.health<=UI(E_HP)&player.lastmoved>=1&UI(kEffuse)', 'player'},
 }
 
 local _Interrupts={
