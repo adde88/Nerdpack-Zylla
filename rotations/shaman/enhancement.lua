@@ -6,7 +6,7 @@ local _, Zylla = ...
 	{type = 'text', 	text = 'Left Alt: ', align = 'center'},
 	{type = 'text', 	text = 'Right Alt: ', align = 'center'},
 	{type = 'checkbox', text = 'Pause Enabled', key = 'kPause', default = true},
-	{type = 'checkbox', text = 'Auto-Target Enemies', key = 'kAutoTarget', default = true},
+	
 } 
 
 local exeOnLoad = function()
@@ -20,7 +20,7 @@ local exeOnLoad = function()
 end
 
 local _Zylla = {
-    {"/targetenemy [dead][noharm]", "{target.dead||!target.exists}&!player.area(40).enemies=0" },
+    {'/targetenemy [dead][noharm]', '{target.dead||!target.exists}&!player.area(40).enemies=0'},
 }
 
 local PreCombat = {
@@ -86,7 +86,7 @@ local Keybinds = {
 }
 
 local inCombat = {
-	{_Zylla, 'UI(kAutoTarget)'},
+	{_Zylla, 'toggle(AutoTarget)'},
 	{Keybinds},
 	{Interrupts, 'target.interruptAt(50)&toggle(Interrupts)&target.infront&target.range<=30'},
 	{Survival, 'player.health<100'},

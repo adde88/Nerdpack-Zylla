@@ -14,7 +14,7 @@ local exeOnLoad = function()
 end
 
 local _Zylla = {
-    {"/targetenemy [dead][noharm]", "{target.dead||!target.exists}&!player.area(40).enemies=0" },
+    {'/targetenemy [dead][noharm]', '{target.dead||!target.exists}&!player.area(40).enemies=0'},
 }
 
 local Keybinds = {
@@ -57,7 +57,7 @@ local Ranged = {
 
 local inCombat = {
 	{Keybinds},
-	{_Zylla, 'UI(kAutoTarget)'},
+	{_Zylla, 'toggle(AutoTarget)'},
 	{Interrupts, 'target.interruptAt(50)&toggle(Interrupts)&target.infront'},
 	{Ranged, 'target.range>8&target.range<=30'},
 	{ST, 'target.infront&target.range<=8'}

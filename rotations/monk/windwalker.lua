@@ -9,7 +9,7 @@ local GUI={
 	--{type='checkbox', text='Automatic Pre-Pot', key='auto_pot', default=false},
 	{type='checkbox', text='5 min DPS test', key='dpstest', default=false},
 	{type = 'checkbox', text = 'Pause Enabled', key = 'kPause', default = true},
-	{type = 'checkbox', text = 'Auto-Target Enemies', key = 'kAutoTarget', default = true},
+	
 
 	-- Survival
 	{type='spacer'},{type='rule'},
@@ -39,7 +39,7 @@ local exeOnLoad = function()
 end
 
 local _Zylla = {
-    {"/targetenemy [dead][noharm]", "{target.dead||!target.exists}&!player.area(40).enemies=0" },
+    {'/targetenemy [dead][noharm]', '{target.dead||!target.exists}&!player.area(40).enemies=0'},
 }
 
 local _All={
@@ -161,7 +161,7 @@ local _Melee={
 }
 
 local inCombat={
-	{_Zylla, 'UI(kAutoTarget)'},
+	{_Zylla, 'toggle(AutoTarget)'},
 	{'%pause', 'keybind(lshift)&UI(kPause)'},
 	{_All},
 	{_Survival, 'player.health<100'},

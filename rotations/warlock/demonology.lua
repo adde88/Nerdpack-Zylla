@@ -44,7 +44,7 @@ local exeOnLoad = function()
 end
 
 local _Zylla = {
-    {"/targetenemy [dead][noharm]", "{target.dead||!target.exists}&!player.area(40).enemies=0" },
+    {'/targetenemy [dead][noharm]', '{target.dead||!target.exists}&!player.area(40).enemies=0'},
 }
 
 local Survival = {

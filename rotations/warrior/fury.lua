@@ -5,7 +5,7 @@ local _, Zylla = ...
 	{type = 'text', 	text = 'Left Shift: Pause', align = 'center'},
 	{type = 'text', 	text = 'Left Ctrl: Heroic Leap', align = 'center'},
 	{type = 'checkbox', text = 'Pause enabled', key = 'kPause', default = true},
-	{type = 'checkbox', text = 'Auto-Target Enemies', key = 'kAutoTarget', default = true},
+	
 	{type = 'checkbox', text = 'Use trinket #1', key = 'kT1', default = true},
 	{type = 'checkbox', text = 'Use trinket #2', key = 'kT2', default = true}
 }
@@ -21,7 +21,7 @@ local exeOnLoad = function()
 end
 
 local _Zylla = {
-    {"/targetenemy [dead][noharm]", "{target.dead||!target.exists}&!player.area(40).enemies=0" },
+    {'/targetenemy [dead][noharm]', '{target.dead||!target.exists}&!player.area(40).enemies=0'},
 }
 
 local Util = {
@@ -109,7 +109,7 @@ local Interrupts = {
 local inCombat = {
 	{Keybinds},
 	{Interrupts, 'target.interruptAt(50)&toggle(Interrupts)&target.infront&target.range<=8'},
-	{_Zylla, 'UI(kAutoTarget)'},
+	{_Zylla, 'toggle(AutoTarget)'},
 	{Survival, 'player.health<100'},
 	{Cooldowns, 'toggle(Cooldowns)&target.range<8'},
 	{TwoTargets, 'toggle(aoe)&{player.area(8).enemies=2||player.area(8).enemies=3}'},

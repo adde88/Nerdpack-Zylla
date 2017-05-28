@@ -33,7 +33,7 @@ local exeOnLoad=function()
 end
 
 local _Zylla={
-    {"/targetenemy [dead][noharm]", "{target.dead||!target.exists}&!player.area(40).enemies=0" },
+    {'/targetenemy [dead][noharm]', '{target.dead||!target.exists}&!player.area(40).enemies=0'},
 }
 
 local _Keybinds={
@@ -114,7 +114,7 @@ local _Melee={
 }
 
 local inCombat={
-	{_Zylla, 'UI(kAutoTarget)'},
+	{_Zylla, 'toggle(AutoTarget)'},
 	{'%pause', 'keybind(lshift)&UI(kPause)'},
 	{_Artifact},
 	{_Keybinds},

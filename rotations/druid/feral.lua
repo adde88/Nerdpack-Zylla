@@ -7,7 +7,7 @@ local GUI = {
 	{type = 'text', 	text = 'Left Alt: ', align = 'center'},
 	{type = 'text', 	text = 'Right Alt: ', align = 'center'},
 	{type = 'checkbox', text = 'Pause Enabled', key = 'kPause', default = true},
-	{type = 'checkbox', text = 'Auto-Target Enemies', key = 'kAutoTarget', default = true},
+	
 	{type = 'checkbox', text = 'Use Trinket #1', key = 'kT1', default = false},
 	{type = 'checkbox', text = 'Use Trinket #2', key = 'kT2', default = false},
 	{type = 'checkbox', text = 'Ring of Collapsing Futures', key = 'kRoCF', default = false}
@@ -25,7 +25,7 @@ local exeOnLoad = function()
 end
 
 local _Zylla = {
-    {"/targetenemy [dead][noharm]", "{target.dead||!target.exists}&!player.area(40).enemies=0" },
+    {'/targetenemy [dead][noharm]', '{target.dead||!target.exists}&!player.area(40).enemies=0'},
 }
 
 -- Pool START
@@ -155,7 +155,7 @@ local Survival = {
 }
 
 local inCombat = {
-	{_Zylla, 'UI(kAutoTarget)'},
+	{_Zylla, 'toggle(AutoTarget)'},
 	{Keybinds},
 	{Interrupts, 'target.interruptAt(43)&toggle(Interrupts)&target.infront&target.range<=8'},
 	{Survival, 'player.health<100'},

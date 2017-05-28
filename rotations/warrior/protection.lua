@@ -6,7 +6,7 @@ local GUI = {
 	{type = 'text', 	text = 'Left Shift: Pause', align = 'center'},
 	{type = 'text', 	text = 'Left Ctrl: Heroic Leap', align = 'center'},
 	{type = 'checkbox', text = 'Pause enabled', key = 'kPause', default = true},
-	{type = 'checkbox', text = 'Auto-Target Enemies', key = 'kAutoTarget', default = true},
+	
 	{type = 'checkbox', text = 'Intercept enabled', key = 'kIntercept', default = false},
 	{type = 'checkbox', text = 'Use trinket #1', key = 'kT1', default = true},
 	{type = 'checkbox', text = 'Use trinket #2', key = 'kT2', default = true}
@@ -104,7 +104,7 @@ local ST = {
 }
 
 local inCombat = {
-	{_Zylla, 'UI(kAutoTarget)'},
+	{_Zylla, 'toggle(AutoTarget)'},
 	{Util},
 	{Keybinds},
 	{Interrupts, 'target.interruptAt(50)&toggle(Interrupts)'},
