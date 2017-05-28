@@ -24,7 +24,7 @@ local _Zylla = {
 }
 
 local PreCombat = {
-	--# Snapshot raid buffed stats before combat begins and pre-potting is done.
+	
 	{'Ghost Wolf', '!player.buff(Ghost Wolf)'},
 }
 

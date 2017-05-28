@@ -25,7 +25,7 @@ local _Zylla = {
 }
 
 local PreCombat = {
-	--# Snapshot raid buffed stats before combat begins and pre-potting is done.
+	
 	--{'Charge', 'target.range>8&target.range<=25&target.infront'},
 }
 

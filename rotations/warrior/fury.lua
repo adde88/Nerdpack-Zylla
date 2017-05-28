@@ -30,7 +30,6 @@ local Util = {
 }
 
 local PreCombat = {
-	--# Snapshot raid buffed stats before combat begins and pre-potting is done.
 }
 
 

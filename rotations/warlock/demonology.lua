@@ -47,40 +47,28 @@ local _Zylla = {
     {'/targetenemy [dead][noharm]', '{target.dead||!target.exists}&!player.area(40).enemies=0'},
 }
 
+local Util = {
+	-- ETC.
+	{'%pause' , 'player.debuff(200904)||player.debuff(Sapped Soul)'}, -- Vault of the Wardens, Sapped Soul
+}
+
 local Survival = {
-	-- Unending Resolve usage if enabled in UI.
 	{'&Unending Resolve', 'UI(S_UEE)&player.health<=UI(S_UE)'},
-	-- Dark Pact usage if enabled in UI.
 	{'&Dark Pact', 'UI(S_DPE)&talent(5,3)&pet.exists&player.health<=UI(S_DP)'},
-	-- Gift of the Naaru usage if enabled in UI.
 	{'&Gift of the Naaru', 'UI(S_GOTNE)&{!player.debuff(Ignite Soul)}&player.health<=UI(S_GOTN)'},
-	-- Healthstone usage if enabled in UI.
 	{'#5512', 'UI(S_HSE)&{!player.debuff(Ignite Soul)}&player.health<=UI(S_HS)'},
-	-- Ancient Healing Potion usage if enabled in UI.
 	{'#127834', 'UI(S_AHPE)&{!player.debuff(Ignite Soul)}&player.health<=UI(S_AHP)'},
 }
 
 local Player = {
-	-- Drain Life usage if enabled in UI.
 	{'!Drain Life', 'UI(S_DLE)&{!player.debuff(Ignite Soul)}&player.health<=UI(S_DL)', 'target'},
-	-- Health Funnel usage if enabled in UI.
 	{'!Health Funnel', 'UI(S_HFE)&pet.exists&pet.health<=UI(S_HF)', 'pet'},
 }
 
 local Keybinds = {
-	-- Shadowfury at cursor on Left-Control if enabled in UI.
-	{'!Shadowfury', '!moving&UI(K_SF)&talent(3,3)&keybind(lcontrol)', 'cursor.ground'},
-	-- Demonic Circle on Left-Alt if enabled in UI.
-	{'!Demonic Circle', '{!moving||moving}UI(K_DC)&talent(3,1)&keybind(lalt)'},
+	{'!Shadowfury', '!player.moving&UI(K_SF)&talent(3,3)&keybind(lcontrol)', 'cursor.ground'},
+	{'!Demonic Circle', 'UI(K_DC)&talent(3,1)&keybind(lalt)'},
 }
-
--- ####################################################################################
--- Primairly sourced from legion-dev SimC.
--- Updates to rotations from sources are considered for implementation.
--- ####################################################################################
-
--- SimC APL 1/17/2017
--- https://github.com/simulationcraft/simc/blob/legion-dev/profiles/Tier19M/Warlock_Demonology_T19M.simc
 
 local Cooldowns = {
 	{'&Arcane Torrent'},
@@ -96,65 +84,45 @@ local Cooldowns = {
 }
 
 local DW_Clip = {
-	--actions+=/summon_pet,if=!talent.grimoire_of_supremacy.enabled&(!talent.grimoire_of_sacrifice.enabled|buff.demonic_power.down)
-	{'!Summon Felguard', '!moving&!pet.exists&!talent(6,1)'},
-	--actions+=/call_dreadstalkers,if=(!talent.summon_darkglare.enabled|talent.power_trip.enabled)&(spell_targets.implosion<3|!talent.implosion.enabled)
-	{'!Call Dreadstalkers', '!moving||!moving&player.buff(Demonic Calling)'},
-	--actions+=/hand_of_guldan,if=soul_shard>=4&!talent.summon_darkglare.enabled
-	{'!Hand of Gul\'dan', '!moving&soulshards>=4'},
-	--actions+=/thalkiels_consumption,if=(dreadstalker_remaining_duration>execute_time|talent.implosion.enabled&spell_targets.implosion>=3)&wild_imp_count>3&wild_imp_remaining_duration>execute_time
-	{'!Thal\'kiel\'s Consumption', '!moving&spell(Call Dreadstalkers).cooldown>3&lastgcd(Hand of Gul\'dan)'},
-	--actions+=/demonic_empowerment,if=dreadstalker_no_de>0|darkglare_no_de>0|doomguard_no_de>0|infernal_no_de>0|service_no_de>0
-	{'!Demonic Empowerment', '!moving&!lastgcd(Demonic Empowerment)&{warlock.empower=0||lastgcd(Summon Felguard)||lastgcd(Call Dreadstalkers)||lastgcd(Hand of Gul\'dan)||lastgcd(Summon Darkglare)||lastgcd(Summon Doomguard)||lastgcd(Grimoire: Felguard)||lastgcd(Thal\'kiel\'s Consumption)}'},
-	--actions+=/doom,cycle_targets=1,if=!talent.hand_of_doom.enabled&target.time_to_die>duration&(!ticking|remains<duration*0.3)
-	{'!Doom', '{moving||!moving}&!talent(4,1)&toggle(yuDoom)&!target.debuff(Doom)'},
-	--actions+=/life_tap,if=mana.pct<=30
-	{'!Life Tap', '{moving||!moving}&mana<=30&player.health>=15&{!lastgcd(Summon Felguard)||!lastgcd(Call Dreadstalkers)||!lastgcd(Hand of Gul\'dan)||!lastgcd(Summon Darkglare)||!lastgcd(Summon Doomguard)||!lastgcd(Grimoire: Felguard)}'},
-	--actions+=/demonbolt
-	{'!Demonbolt', '!moving&talent(7,2)&!soulshards=4'},
-	--actions+=/shadow_bolt
-	{'!Shadow Bolt', '!moving&!talent(7,2)&!soulshards=4'},
-	--actions+=/felstorm
-	{'!&Felstorm', 'combat(player).time>2&!spell.cooldown(89751)'},
+	{'!Summon Felguard', '!player.moving&!pet.exists&!talent(6,1)'},
+	{'!Call Dreadstalkers', 'player.buff(Demonic Calling)'},
+	{'!Hand of Gul\'dan', '!player.moving&player.soulshards>=4'},
+	{'!Thal\'kiel\'s Consumption', '!player.moving&player.spell(Call Dreadstalkers).cooldown>3&player.lastgcd(Hand of Gul\'dan)'},
+	{'!Demonic Empowerment', '!player.moving&!player.lastgcd(Demonic Empowerment)&{warlock.empower=0||player.lastgcd(Summon Felguard)||player.lastgcd(Call Dreadstalkers)||player.lastgcd(Hand of Gul\'dan)||player.lastgcd(Summon Darkglare)||player.lastgcd(Summon Doomguard)||player.lastgcd(Grimoire: Felguard)||player.lastgcd(Thal\'kiel\'s Consumption)}'},
+	{'!Doom', '!talent(4,1)&toggle(yuDoom)&!target.debuff(Doom)'},
+	{'!Life Tap', 'player.mana<=30&player.health>=15&{!player.lastgcd(Summon Felguard)||!player.lastgcd(Call Dreadstalkers)||!player.lastgcd(Hand of Gul\'dan)||!player.lastgcd(Summon Darkglare)||!player.lastgcd(Summon Doomguard)||!player.lastgcd(Grimoire: Felguard)}'},
+	{'!Demonbolt', '!player.moving&talent(7,2)&!player.soulshards=4'},
+	{'!Shadow Bolt', '!player.moving&!talent(7,2)&!player.soulshards=4'},
+	{'!89751', 'spell.cooldown(89751)=0'},
 }
 
 local ST = {
 	{DW_Clip, 'player.channeling(Demonwrath)&pet.exists'},
-	--actions+=/summon_pet,if=!talent.grimoire_of_supremacy.enabled&(!talent.grimoire_of_sacrifice.enabled|buff.demonic_power.down)
-	{'!Summon Felguard', '!moving&!pet.exists&!talent(6,1)'},
-	--actions+=/call_dreadstalkers,if=(!talent.summon_darkglare.enabled|talent.power_trip.enabled)&(spell_targets.implosion<3|!talent.implosion.enabled)
-	{'Call Dreadstalkers', '!moving||!moving&player.buff(Demonic Calling)'},
-	--actions+=/hand_of_guldan,if=soul_shard>=4&!talent.summon_darkglare.enabled
-	{'Hand of Gul\'dan', '!moving&soulshards>=4'},
-	--actions+=/thalkiels_consumption,if=(dreadstalker_remaining_duration>execute_time|talent.implosion.enabled&spell_targets.implosion>=3)&wild_imp_count>3&wild_imp_remaining_duration>execute_time
-	{'Thal\'kiel\'s Consumption', '!moving&spell(Call Dreadstalkers).cooldown>3&lastgcd(Hand of Gul\'dan)'},
-	--actions+=/demonic_empowerment,if=dreadstalker_no_de>0|darkglare_no_de>0|doomguard_no_de>0|infernal_no_de>0|service_no_de>0
-	{'Demonic Empowerment', '!moving&!lastgcd(Demonic Empowerment)&{warlock.empower=0||lastgcd(Summon Felguard)||lastgcd(Call Dreadstalkers)||lastgcd(Hand of Gul\'dan)||lastgcd(Summon Darkglare)||lastgcd(Summon Doomguard)||lastgcd(Grimoire: Felguard)||lastgcd(Thal\'kiel\'s Consumption)}'},
-	--actions+=/doom,cycle_targets=1,if=!talent.hand_of_doom.enabled&target.time_to_die>duration&(!ticking|remains<duration*0.3)
-	{'Doom', '{moving||!moving}&!talent(4,1)&toggle(yuDoom)&!target.debuff(Doom)'},
-	--actions+=/life_tap,if=mana.pct<=30
-	{'Life Tap', '{moving||!moving}&mana<=30&player.health>=15&{!lastgcd(Summon Felguard)||!lastgcd(Call Dreadstalkers)||!lastgcd(Hand of Gul\'dan)||!lastgcd(Summon Darkglare)||!lastgcd(Summon Doomguard)||!lastgcd(Grimoire: Felguard)}'},
-	--actions+=/demonwrath,chain=1,interrupt=1,if=spell_targets.demonwrath>=3
-	{'Demonwrath', 'movingfor>=2&combat(player).time>2'},
-	--actions+=/demonbolt
-	{'Demonbolt', '!moving&talent(7,2)&!soulshards=4'},
-	--actions+=/shadow_bolt
-	{'Shadow Bolt', '!moving&!talent(7,2)&!soulshards=4'},
-	--actions+=/felstorm
-	{'&Felstorm', 'combat(player).time>2&!spell.cooldown(89751)'},
+	{'!Summon Felguard', '!player.moving&!pet.exists&!talent(6,1)'},
+	{'Call Dreadstalkers', '!player.moving&player.buff(Demonic Calling)'},
+	{'Hand of Gul\'dan', '!player.moving&player.soulshards>=4'},
+	{'Thal\'kiel\'s Consumption', '!player.moving&spell(Call Dreadstalkers).cooldown>3&player.lastgcd(Hand of Gul\'dan)'},
+	{'Demonic Empowerment', '!player.moving&!player.lastgcd(Demonic Empowerment)&{warlock.empower=0||player.lastgcd(Summon Felguard)||player.lastgcd(Call Dreadstalkers)||player.lastgcd(Hand of Gul\'dan)||player.lastgcd(Summon Darkglare)||player.lastgcd(Summon Doomguard)||player.lastgcd(Grimoire: Felguard)||player.lastgcd(Thal\'kiel\'s Consumption)}'},
+	{'Doom', '!talent(4,1)&toggle(yuDoom)&!target.debuff(Doom)'},
+	{'Life Tap', 'player.mana<=30&player.health>=15&{!player.lastgcd(Summon Felguard)||!player.lastgcd(Call Dreadstalkers)||!player.lastgcd(Hand of Gul\'dan)||!player.lastgcd(Summon Darkglare)||!player.lastgcd(Summon Doomguard)||!player.lastgcd(Grimoire: Felguard)}'},
+	{'Demonwrath', 'movingfor>=2&player.combat.time>2'},
+	{'Demonbolt', '!player.moving&talent(7,2)&!player.soulshards=4'},
+	{'Shadow Bolt', '!player.moving&!talent(7,2)&!player.soulshards=4'},
+	{'&89751', 'spell.cooldown(89751)=0'},
 }
 
 local inCombat = {
 	{_Zylla},
+	{Util},
 	{Keybinds},
-	{Survival, '{!moving||moving}'},
-	{Player, '!moving'},
+	{Survival},
+	{Player, '!player.moving'},
 	{Cooldowns, 'toggle(cooldowns)'},
 	{ST, 'target.infront&target.range<=40'},
 }
 
 local outCombat = {
-	{'Life Tap', '{moving||!moving}&mana<=60&player.health>=60'},
+	{'Life Tap', 'player.mana<=60&player.health>=60'},
 }
 
 NeP.CR:Add(266, {
