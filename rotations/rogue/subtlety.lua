@@ -13,7 +13,7 @@ local exeOnLoad = function()
 	 Zylla.ExeOnLoad()
 
 	print('|cffADFF2F ----------------------------------------------------------------------|r')
- 	print('|cffADFF2F --- |rROGUE |cffADFF2FSubtlety |r')
+ 	print('|cffADFF2F --- |rRogue |cffADFF2FSubtlety |r')
  	print('|cffADFF2F --- |rRecommended Talents: 1/2 - 2/2 - 3/1 - 4/X - 5/X - 6/1 - 7/1')
  	print('|cffADFF2F ----------------------------------------------------------------------|r')
 
@@ -106,7 +106,7 @@ local outCombat = {
 }
 
 NeP.CR:Add(261, {
-	name = '[|cff'..Zylla.addonColor..'Zylla\'s|r] ROGUE - Subtlety',
+	name = '[|cff'..Zylla.addonColor..'Zylla\'s|r] Rogue - Subtlety',
 	  ic = inCombat,
 	 ooc = outCombat,
 	 gui = GUI,

@@ -13,7 +13,7 @@ local exeOnLoad = function()
 	 Zylla.ExeOnLoad()
 
 	print("|cffADFF2F ---------------------------------------------------------------------------|r")
-	print("|cffADFF2F --- |ROGUE |cffADFF2FAssassination|r")
+	print("|cffADFF2F --- |Rogue |cffADFF2FAssassination|r")
 	print("|cffADFF2F --- |rRecommended Talents: Not ready yet.")
 	print("|cffADFF2F --- |r")
 	print("|cffADFF2F --- |rThis rotation does not work at the moment!|")
