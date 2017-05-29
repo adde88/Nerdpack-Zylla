@@ -37,6 +37,11 @@ local _Zylla = {
     {'/targetenemy [dead][noharm]', '{target.dead||!target.exists}&!player.area(40).enemies=0'},
 }
 
+local Util = {
+	-- ETC.
+	{'%pause' , 'player.debuff(200904)||player.debuff(Sapped Soul)'}, -- Vault of the Wardens, Sapped Soul
+}
+
 local Interrupts = {
 	{'Kick', 'target.inmelee'},
 	{'Kidney Shot', 'target.inmelee&cooldown(Kick).remains>gcd&!player.lastcast(Kick)&player.combopoints>0'},
@@ -106,6 +111,7 @@ local xCombat = {
 
 local inCombat = {
 	{_Zylla},
+	{Util},
 	{Keybinds},
 	{Interrupts, 'target.interruptAt(55)'},
 	{TricksofTrade},
