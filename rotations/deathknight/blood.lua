@@ -7,7 +7,6 @@ local GUI = {
 	{type = 'text', 	text = 'Left Alt: ', align = 'center'},
 	{type = 'text', 	text = 'Right Alt: ', align = 'center'},
 	{type = 'checkbox', text = 'Pause Enabled', key = 'kPause', default = true},
-	
 	{type = 'checkbox', text = 'Use Trinket #1', key = 'kT1', default = false},
 	{type = 'checkbox', text = 'Use Trinket #2', key = 'kT2', default = false},
 } 
@@ -62,14 +61,17 @@ local inCombat = {
 	{_Zylla, 'toggle(AutoTarget)'},
 	{Keybinds},
 	{xCombat},
+	{Interrupts},
+	{Survival},
 }
 
 local outCombat = {
+	{PreCombat},
 	{Keybinds},
 }
 
 NeP.CR:Add(250, {
-	name = '[|cff'..Zylla.addonColor..'Zylla|r] Death-Knight - Blood',
+	name = '[|cff'..Zylla.addonColor..'Zylla\'s|r] Death-Knight - Blood',
 	  ic = inCombat,
 	 ooc = outCombat,
 	 gui = GUI,
