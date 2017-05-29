@@ -1,4 +1,4 @@
-local _, Zylla=...
+local _, Zylla = ...
 
 -- Creds to Yobleed for this routine!
 local GUI = {
