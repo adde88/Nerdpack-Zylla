@@ -32,6 +32,11 @@ local _Zylla = {
     {'/targetenemy [dead][noharm]', '{target.dead||!target.exists}&!player.area(40).enemies=0'},
 }
 
+local Util = {
+	-- ETC.
+	{'%pause' , 'player.debuff(200904)||player.debuff(Sapped Soul)'}, -- Vault of the Wardens, Sapped Soul
+}
+
 local PreCombat = {
 
 }
@@ -143,9 +148,10 @@ local Interrupts = {
 }
 
 local inCombat = {
+	{_Zylla, 'toggle(AutoTarget)'},
+	{Util},
 	{Keybinds},
 	{Interrupts, 'target.interruptAt(50)&toggle(Interrupts)&target.infront&target.range<=15'},
-	{_Zylla, 'toggle(AutoTarget)'},
 	{Survival, 'player.health<100'},
 	{Cooldowns, 'toggle(Cooldowns)&target.range<8'},
 	{MACHINEGUN, 'toggle(xMACHINEGUN)&target.range<8&target.infront'},
