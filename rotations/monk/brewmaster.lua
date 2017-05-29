@@ -13,7 +13,7 @@ local GUI={
 	-- Survival
 	{type='spacer'},{type='rule'},
 	{type='header', text='Survival', align='center'},
-	{type='spinner', text='Holy Shock (Health %)', key='E_HP', default=60},
+	{type='spinner', text='Effuse (Health %)', key='E_HP', default=60},
 	{type='checkbox', text='Use Self-Heal (Effuse)', key='kEffuse', default=false},
 	{type='spinner', text='Healthstone or Healing Potion', key='Health Stone', default=45},
 	{type='spinner', text='Healing Elixir', key='Healing Elixir', default=70},
