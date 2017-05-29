@@ -31,6 +31,7 @@ local PreCombat = {
 
 local Survival = {
 	{'Death Strike', 'player.health<=80&player.buff(Dark Succor)'},
+	{'Icebound Fortitude', 'player.health<=25||player.incdmg(2.5)>player.health.max*0.50||player.state.stun'},
 }
 
 local Keybinds = {
@@ -41,7 +42,8 @@ local Keybinds = {
 
 local Interrupts = {
 	{'Mind Freeze'},
-	{'Arcane Torrent', 'target.range<=8&spell(Mind Freeze).cooldown>gcd&!prev_gcd(Mind Freeze)'},
+	{'Asphyxiate', 'target.range<=20&cooldown(Mind Freeze).remains>gcd&!prev_gcd(Mind Freeze)'},
+	{'Arcane Torrent', 'target.range<=8&cooldown(Mind Freeze).remains>gcd&!prev_gcd(Mind Freeze)'},
 }
 
 local xCombat = {
