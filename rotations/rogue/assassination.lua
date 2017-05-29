@@ -107,7 +107,7 @@ local xCombat = {
 local inCombat = {
 	{_Zylla},
 	{Keybinds},
-	{Interrupts, 'target.interruptAt(50)'},
+	{Interrupts, 'target.interruptAt(55)'},
 	{TricksofTrade},
 	{Cooldowns, 'toggle(cooldowns)'},
 	{xCombat, 'target.inmelee&!player.buff(Stealth)'},
