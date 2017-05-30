@@ -316,7 +316,7 @@ local outCombat={
 }
 
 NeP.CR:Add(65, {
-	name='[|cff'..Zylla.addonColor..'Zylla|r] Paladin - Holy',
+	name='[|cff'..Zylla.addonColor..'Zylla\'s|r] Paladin - Holy',
 	ic=inCombat,
 	ooc=outCombat,
 	gui=GUI,

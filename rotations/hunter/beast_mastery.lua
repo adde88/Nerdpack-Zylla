@@ -25,6 +25,13 @@ local exeOnLoad = function()
 	print('|cffADFF2F --- |rRecommended Talents: 1/2 - 2/1 - 3/X - 4/2 - 5/X - 6/1 - 7/2')
 	print('|cffADFF2F ----------------------------------------------------------------------|r')
 	
+	NeP.Interface:AddToggle({
+		key = 'xMisdirect',
+		name = 'Misdirection',
+		text = 'Automatically use Misdirection on current Focus-target or Pet.',
+		icon = 'Interface\\Icons\\ability_hunter_misdirection',
+	})
+	
 end
 
 local _Zylla = {
@@ -127,7 +134,7 @@ local outCombat = {
 }
 
 NeP.CR:Add(253, {
-	name = '[|cff'..Zylla.addonColor..'Zylla|r] Hunter - Beast Mastery',
+	name = '[|cff'..Zylla.addonColor..'Zylla\'s|r] Hunter - Beast Mastery',
 	  ic = inCombat,
 	 ooc = outCombat,
 	 gui = GUI,

@@ -40,7 +40,7 @@ local Survival = {
 }
 
 local Keybinds = {
-	-- Pause
+	-- Pause       
 	{'%pause', 'keybind(lshift)&UI(kPause)'},
 	{'Death and Decay', 'keybind(lcontrol)', 'cursor.ground'},
 }
@@ -80,8 +80,8 @@ local outCombat = {
 
 NeP.CR:Add(250, {
 	name = '[|cff'..Zylla.addonColor..'Zylla\'s|r] Death-Knight - Blood',
-	  ic = inCombat,
-	 ooc = outCombat,
-	 gui = GUI,
+	ic = inCombat,
+	ooc = outCombat,
+	gui = GUI,
 	load = exeOnLoad
 })

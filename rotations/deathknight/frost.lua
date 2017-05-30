@@ -68,13 +68,11 @@ local Cooldowns = {
 
 local Core = {
 	{'Frostscythe', 'talent(6,1)&!talent(7,2)&{player.buff(Killing Machine)||player.area(8).enemies>=4}'},
-	{'Remorseless Winter', 'artifact(Frozen Soul).enabled'},
 	{'Glacial Advance', 'talent(7,3)'},
 	{'Frost Strike', 'player.buff(Obliteration)&!player.buff(Killing Machine)'},
-	{'Remorseless Winter', 'player.area(8).enemies>=2||talent(6,3)'},
 	{'Obliterate', 'player.buff(Killing Machine)'},
 	{'Obliterate'},
-	{'Remorseless Winter'},
+	{'Remorseless Winter', '!cooldown(Remorseless Winter)'},
 	{'Frostscythe', 'talent(6,1)&talent(2,2)'},
 	{'Howling Blast', 'talent(2,2)'},
 }
@@ -120,11 +118,9 @@ local MACHINEGUN = {
 	{'Howling Blast', 'player.buff(Rime)'},
 	{'Frost Strike', 'runic_power>=80||player.buff(Icy Talons).stack<3'},
 	{'Frostscythe', 'talent(6,1)&!talent(7,2)&{player.buff(Killing Machine)||player.area(8).enemies>=4}'},
-	{'Remorseless Winter', 'artifact(Frozen Soul).enabled'},
 	{'Glacial Advance', 'talent(7,3)'},
 	{'Frost Strike', 'player.buff(Obliteration)&!player.buff(Killing Machine)'},
-	{'Remorseless Winter', 'player.area(8).enemies>=2||talent(6,3)'},
-	{'Remorseless Winter'},
+	{'Remorseless Winter', '!cooldown(Remorseless Winter)'},
 	{'Obliterate', '!talent(6,1)&player.buff(Killing Machine)'},
 	{'Obliterate', 'talent(6,1)&!player.buff(Killing Machine)'},
 	{'Frostscythe', 'talent(6,1)&talent(2,2)'},

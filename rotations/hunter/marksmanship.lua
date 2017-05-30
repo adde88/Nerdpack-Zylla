@@ -180,7 +180,7 @@ local outCombat = {
 }
 
 NeP.CR:Add(254, {
-	name = '[|cff'..Zylla.addonColor..'Zylla|r] Hunter - Marksmanship',
+	name = '[|cff'..Zylla.addonColor..'Zylla\'s|r] Hunter - Marksmanship',
 	  ic = inCombat,
 	 ooc = outCombat,
 	 gui = GUI,

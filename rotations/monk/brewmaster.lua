@@ -129,7 +129,7 @@ local outCombat={
 }
 
 NeP.CR:Add(268, {
-	name='[|cff'..Zylla.addonColor..'Zylla|r] Monk - Brewmaster',
+	name='[|cff'..Zylla.addonColor..'Zylla\'s|r] Monk - Brewmaster',
 	ic=inCombat,
 	ooc=outCombat,
 	gui=GUI,

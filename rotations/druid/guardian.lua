@@ -83,7 +83,7 @@ local outCombat = {
 }
 
 NeP.CR:Add(104, {
-	name = '[|cff'..Zylla.addonColor..'Zylla\'s|r] DRUID - Guardian',
+	name = '[|cff'..Zylla.addonColor..'Zylla\'s|r] Druid - Guardian',
 	  ic = inCombat,
 	 ooc = outCombat,
 	 gui = GUI,

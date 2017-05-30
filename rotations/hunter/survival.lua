@@ -166,7 +166,7 @@ local outCombat = {
 }
 
 NeP.CR:Add(255, {
-	name = '[|cff'..Zylla.addonColor..'Zylla|r] Hunter - Survival (DEV)',
+	name = '[|cff'..Zylla.addonColor..'Zylla\'s|r] Hunter - Survival (DEV)',
 	  ic = inCombat,
 	 ooc = outCombat,
 	 gui = GUI,
