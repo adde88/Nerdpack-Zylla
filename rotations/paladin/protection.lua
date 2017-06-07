@@ -1,13 +1,18 @@
 local _, Zylla = ...
 local GUI = {
-	{type = 'header', 	text = 'Keybinds', align = 'center'},
-	{type = 'text', 	text = 'Left Shift: Pause', align = 'center'},
-	{type = 'text', 	text = 'Left Ctrl: ', align = 'center'},
-	{type = 'text', 	text = 'Left Alt: ', align = 'center'},
-	{type = 'text', 	text = 'Right Alt: ', align = 'center'},
-	{type = 'checkbox', text = 'Pause Enabled', key = 'kPause', default = true},
-	
-} 
+	-- General
+	{type = 'header', 	text = 'Keybinds', 							align = 'center'},
+	{type = 'text', 	text = 'Left Shift: Pause', 				align = 'center'},
+	{type = 'text', 	text = 'Left Ctrl: ', 						align = 'center'},
+	{type = 'text', 	text = 'Left Alt: ',						align = 'center'},
+	{type = 'text', 	text = 'Right Alt: ',						align = 'center'},
+	{type = 'checkbox', text = 'Pause Enabled',						key = 'kPause', 	default = true},
+	-- Survival
+	{type='spacer'},	{type='rule'},
+	{type='header', 	text='Survival',							align='center'},
+	{type='checkbox',	text='Enable Self-Heal (Flash of Light)',	key='kFoL',			default=false},
+	{type='spinner', 	text='Flash of Light (HP%)',				key='E_FoL',		default=60},
+}
 
 local exeOnLoad = function()
 	 Zylla.ExeOnLoad()
@@ -17,16 +22,21 @@ local exeOnLoad = function()
 	print('|cffADFF2F --- |rRecommended Talents: 1/2 - 2/2 - 3/3 - 4/1 - 5/2 - 6/2 - 7/3')
 	print('|cffADFF2F ----------------------------------------------------------------------|r')
 
-	
-	NeP.Interface.CreateToggle(
-		'AutoTaunt',
-		'Interface\\Icons\\spell_nature_shamanrage.png',
-		'Auto Taunt',
-		'Automatically taunt nearby enemies.')
+	NeP.Interface:AddToggle({
+		key = 'AutoTaunt',
+		name = 'Auto Taunt',
+		text = 'Automatically taunt nearby enemies.',
+		icon = 'Interface\\Icons\\spell_nature_shamanrage.png',
+	})
 end
 
 local _Zylla = {
     {'/targetenemy [dead][noharm]', '{target.dead||!target.exists}&!player.area(40).enemies=0'},
+}
+
+local Util = {
+	-- ETC.
+	{'%pause' , 'player.debuff(200904)||player.debuff(Sapped Soul)'} -- Vault of the Wardens, Sapped Soul
 }
 
 local Keybinds = {
@@ -36,21 +46,22 @@ local Keybinds = {
 
 local Interrupts = {
 	{'Rebuke'},
-	{'Hammer of Justice', 'spell(Rebuke).cooldown>gcd'},
+	{'Hammer of Justice', 'cooldown(Rebuke).remains>gcd'},
 	{'Arcane Torrent', 'target.range<=8&spell(Rebuke).cooldown>gcd&!prev_gcd(Rebuke)'},
 }
 
 local Survival ={
-
+	{'Flash of Light', 'player.health<=UI(E_FoL)&player.lastmoved>=1&UI(kFoL)', 'player'},
+	{'Light of the Protector', 'player.health<=68&player.buff(Consecration)'},
 }
 
 local PreCombat = {
-	--# Executed before combat begins. Accepts non-harmful actions only.
+
 }
 
 local Cooldowns = {
 	{'Seraphim', 'talent(7,2)&spell(Shield of the Righteous).charges>=2'},
-	{'Shield of the Righteous', {'target.range<8', 'target.infront', '{!talent(7,2)||spell(Shield of the Righteous).charges>2}&!{player.buff(Eye of Tyr)&player.buff(Aegis of Light)&player.buff(Ardent Defender)&player.buff(Guardian of Ancient Kings)&player.buff(Divine Shield)}'}},
+	{'Shield of the Righteous', 'target.range<8&target.infront&{!talent(7,2)||spell(Shield of the Righteous).charges>2}&!{player.buff(Eye of Tyr)&player.buff(Aegis of Light)&player.buff(Ardent Defender)&player.buff(Guardian of Ancient Kings)&player.buff(Divine Shield)}'},
 	{'Bastion of Light', 'talent(2,2)&spell(Shield of the Righteous).charges<1'},
 	{'Light of the Protector', 'player.health<40'},
 	{'Hand of the Protector', 'talent(5,1)&player.health<40'},
@@ -68,7 +79,6 @@ local Cooldowns = {
 	{'Avenging Wrath', '!talent(7,2)'},
 	{'Avenging Wrath', 'talent(7,2)&player.buff(Seraphim)'}
 }
-
 
 local AoE = {
 	{'Avenger\'s Shield'},
@@ -88,9 +98,10 @@ local ST = {
 }
 
 local inCombat = {
+	--{_Zylla, 'toggle(AutoTarget)'},
+	{Util},
 	{Keybinds},
-	{_Zylla, 'toggle(AutoTarget)'},
-	--{Survival, 'player.health<100'},
+	{Survival, 'player.health<100'},
 	{Interrupts, 'target.interruptAt(50)&toggle(Interrupts)&target.infront&target.range<=8'},
 	{Cooldowns, 'toggle(Cooldowns)'},
 	{AoE, 'toggle(AoE)&player.area(8).enemies>=3'},

@@ -13,8 +13,8 @@ local GUI={
 	-- Survival
 	{type='spacer'},	{type='rule'},
 	{type='header', 	text='Survival',								align='center'},
+	{type='checkbox',	text='Enable Self-Heal (Effuse)', 					key='kEffuse',			default=false},
 	{type='spinner', 	text='Effuse (HP%)', 							key='E_HP',				default=60},
-	{type='checkbox',	text='Use Self-Heal (Effuse)', 					key='kEffuse',			default=false},
 	{type='spinner',	text='Healthstone or Healing Potion',			key='Health Stone',		default=45},
 	{type='spinner',	text='Healing Elixir', 							key='Healing Elixir',	default=70},
 	{type='spinner',	text='Expel Harm', 								key='Expel Harm',		default=100},
@@ -68,7 +68,7 @@ local Survival = {
 	{'#Ancient Healing Potion', 'player.health<=UI(Healthstone)', 'player'},
 	{'Fortifying Brew', 'player.health<=UI(Fortifying Brew)', 'player'},
 	{'Expel Harm', 'player.health<=UI(Expel Harm)&player.spell(Expel Harm).count>=1', 'player'},
-	{'Effuse', 'player.health<=UI(E_HP)&player.lastmoved>=1&UI(kEffuse)', 'player'},
+	<zz
 }
 
 local Interrupts = {
@@ -109,7 +109,7 @@ local Melee = {
 }
 
 local inCombat = {
-	{_Zylla, 'toggle(AutoTarget)'},
+	--{_Zylla, 'toggle(AutoTarget)'},
 	{Util},
 	{Artifact},
 	{Keybinds},

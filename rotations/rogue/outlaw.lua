@@ -91,7 +91,7 @@ local xCombat = {
 }
 
 local inCombat = {
-	{_Zylla, 'toggle(AutoTarget)'},
+	--{_Zylla, 'toggle(AutoTarget)'},
 	{Keybinds},
 	{Interrupts, 'target.interruptAt(70)&toggle(Interrupts)&target.infront'},
 	{Survival, 'player.health<100'},

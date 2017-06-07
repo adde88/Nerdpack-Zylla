@@ -369,7 +369,7 @@ local s2m2 = {
 }
 
 local inCombat = {
-	{_Zylla, 'toggle(AutoTarget)'},
+	--{_Zylla, 'toggle(AutoTarget)'},
 	{Util},
 	--Shadowform if no voidform and no shadowform.
 	{'Shadowform', '!player.buff(Voidform)&!player.buff(Shadowform)'},

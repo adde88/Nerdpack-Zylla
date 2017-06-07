@@ -226,7 +226,7 @@ local ASSingle = {
 }
 
 local inCombat = {
-	{_Zylla, 'toggle(AutoTarget)'},
+	--{_Zylla, 'toggle(AutoTarget)'},
 	{Keybinds, '{!moving||moving}'},
 	{Dispel, '{!moving||moving}&toggle(yuPS)&spell(Cleanse Spirit).cooldown=0'},
 	{Survival, '{!moving||moving}'},

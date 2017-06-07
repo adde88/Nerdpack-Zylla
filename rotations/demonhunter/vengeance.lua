@@ -61,7 +61,7 @@ local Ranged = {
 }
 
 local inCombat = {
-	{_Zylla, 'toggle(AutoTarget)'},
+	--{_Zylla, 'toggle(AutoTarget)'},
 	{Util},
 	{Keybinds},
 	{Interrupts, 'toggle(Interrupts)'},

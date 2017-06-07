@@ -161,7 +161,7 @@ local _Melee={
 }
 
 local inCombat={
-	{_Zylla, 'toggle(AutoTarget)'},
+	--{_Zylla, 'toggle(AutoTarget)'},
 	{'%pause', 'keybind(lshift)&UI(kPause)'},
 	{_All},
 	{_Survival, 'player.health<100'},

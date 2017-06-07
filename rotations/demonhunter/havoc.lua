@@ -39,7 +39,7 @@ local Cooldowns = {
 }
 
 local inCombat = {
-	{_Zylla, 'toggle(AutoTarget)'},
+	--{_Zylla, 'toggle(AutoTarget)'},
 	{Keybinds},
 	{Survival, 'player.health<100'},
 	{Interrupts, 'target.interruptAt(50)'},

@@ -7,12 +7,9 @@ local GUI = {
 	{type = 'text', 	text = 'Left Alt:  Rune of Power', align = 'center'},
 	{type = 'text', 	text = 'Right Alt:  ', align = 'center'},
 	{type = 'checkbox', text = 'Pause Enabled', key = 'kPause', default = true},
-	{type = 'checkbox', text = 'Auto-Target Enemies', key = 'kAutoTarget', default = true},
-	{type = 'checkbox', text = 'Combustion Enabled', key = 'kCombustion', default = true},
-   	{type = 'checkbox', text = 'Cinderstorm Enabled', key = 'kCinderstorm', default = true},
 	{type = 'checkbox', text = 'Use Trinket #1', key = 'kT1', default = false},
 	{type = 'checkbox', text = 'Use Trinket #2', key = 'kT2', default = false}
-} 
+}
 
 local exeOnLoad = function()
 	 Zylla.ExeOnLoad()
@@ -25,11 +22,11 @@ local exeOnLoad = function()
 end
 
 local _Zylla = {
-    {"/targetenemy [dead][noharm]", "target.dead||!target.exists" }
+    {"/targetenemy [dead][noharm]", "{target.dead||!target.exists}&!player.area(40).enemies=0" }
 }
 
 local Keybinds = {
-	{'%pause', 'keybind(lshift))&UI(kPause)'},
+	{'%pause', 'keybind(lshift)&UI(kPause)'},
 	{'Rune of Power', 'keybind(lalt)'},
 	{'Flamestrike', 'keybind(lcontrol)', 'target.ground'}
 }
@@ -65,7 +62,7 @@ local Talents = {
 	{'Flame On', 'talent(4,2)&{action(Fire Blast).charges<0.2&{cooldown(Combustion).remains>65||target.time_to_die<cooldown(Combustion).remains}}'},
 	{'Blast Wave', 'talent(4,1)&{{!player.buff(Combustion)}||{player.buff(Combustion)&action(Fire Blast).charges<1&action(Phoenix\'s Flames).charges<1}}'},
 	{'Meteor', 'talent(7,3)&{cooldown(Combustion).remains>30||{cooldown(Combustion).remains>target.time_to_die}||player.buff(Rune of Power)}'},
-	{'Cinderstorm', 'talent(7,2)&UI(kCinderstorm)&{cooldown(Combustion).remains<action(Cinderstorm).cast_time&{player.buff(Rune of Power)||!talent(3,2)}||cooldown(Combustion).remains>10*spell_haste&!player.buff(Combustion)}'},
+	{'Cinderstorm', 'talent(7,2)&{cooldown(Combustion).remains<action(Cinderstorm).cast_time&{player.buff(Rune of Power)||!talent(3,2)}||cooldown(Combustion).remains>10*spell_haste&!player.buff(Combustion)}'},
 	{'Dragon\'s Breath', 'equipped(132863)'},
 	{'Living Bomb', 'talent(6,1)&target.area(10).enemies>1&!player.buff(Combustion)'}
 }
@@ -80,7 +77,7 @@ local Combustion = {
 	--Want to cast Flames if we have 3 charges so we can recharges going
 	{'Phoenix\'s Flames', 'action(Phoenix\'s Flames).charges>2.7&player.buff(Combustion)&!player.buff(Hot Streak!)'},
 	{'&Fire Blast', 'player.buff(Heating Up)&!player.lastcast(Fire Blast)&player.buff(Combustion)'},
-	{'Phoenix\'s Flames', 'artifact(Phoenix\'s Flames).equipped'},
+	{'Phoenix\'s Flames', 'artifact(Phoenix\'s Flames).enabled'},
 	{'Scorch', 'player.buff(Combustion).remains>action(Scorch).cast_time'},
 	{'Scorch'}
 }
@@ -98,7 +95,7 @@ local RoP = {
 
 local MainRotation = {
 	{'Pyroblast', 'player.buff(Hot Streak!)&player.buff(Hot Streak!).remains<action(Fireball).execute_time'},
-	{'Phoenix\'s Flames', 'artifact(Phoenix\'s Flames).equipped&{action(Phoenix\'s Flames).charges>2.7&target.area(8).enemies>2}'},
+	{'Phoenix\'s Flames', 'artifact(Phoenix\'s Flames).enabled&{action(Phoenix\'s Flames).charges>2.7&target.area(8).enemies>2}'},
 	{'Flamestrike', 'talent(6,3)&target.area(10).enemies>2&player.buff(Hot Streak!)', 'target.ground'},
 	{'&Pyroblast', 'player.buff(Hot Streak!)&!player.lastgcd(Pyroblast)&{player.casting(Fireball).percent>90||player.lastcast(Fireball)}'},--&player.casting(Fireball).percent>90
 	{'Pyroblast', 'player.buff(Hot Streak!)&target.health<=25&equipped(132454)'},
@@ -118,21 +115,21 @@ local MainRotation = {
 }
 
 local xCombat = {
-	{'Rune of Power', 'toggle(cooldowns)&xmoving=0&{cooldown(Combustion).remains>40||!toggle(xCombustion)}&{!player.buff(Combustion)&{cooldown(Flame On).remains<5||cooldown(Flame On).remains>30}&!talent(7,1)||target.time_to_die<11||talent(7,1)&{action(Rune of Power).charges>1.8||xtime<40}&{cooldown(Combustion).remains>40||!toggle(xCombustion)}}'},
-	{Combustion, 'toggle(xCombustion)&toggle(cooldowns)&xmoving=0&{cooldown(Combustion).remains<=action(Rune of Power).cast_time+gcd||player.buff(Combustion)}'},
+	{'Rune of Power', 'xmoving=0&toggle(cooldowns)&{cooldown(Combustion).remains>40}&{!player.buff(Combustion)&{cooldown(Flame On).remains<5||cooldown(Flame On).remains>30}&!talent(7,1)||target.time_to_die<11||talent(7,1)&{action(Rune of Power).charges>1.8||xtime<40}&{cooldown(Combustion).remains>40)}}'},
+	{Combustion, 'xmoving=0&{cooldown(Combustion).remains<=action(Rune of Power).cast_time+gcd||player.buff(Combustion)}'},
 	{RoP, 'xmoving=0&player.buff(Rune of Power)&!player.buff(Combustion)'},
-	{MainRotation, '!player.casting(Rune of Power)&!player.buff(Combustion)'}
+	{MainRotation, '!player.casting(Rune of Power)'}
 }
 
 local inCombat = {
-	{_Zylla, 'UI(kAutoTarget)'},
+	--{_Zylla, 'toggle(AutoTarget)'},
+	{Util},
 	{Keybinds},
 	{Trinkets},
-	{Util},
-	{Interrupts, 'target.interruptAt(50)&toggle(interrupts)&target.infront&target.range<40'},	--&target.infront     Does this be here ?
+	{Interrupts, 'target.interruptAt(50)&toggle(interrupts)&target.infront&target.range<=40'},
 	{Cooldowns, 'toggle(cooldowns)'},
 	{Survival, 'player.health<100'},
-	{xCombat, 'target.range<40&target.infront'}
+	{xCombat, 'target.range<=40&target.infront'}
 }
 
 local outCombat = {
@@ -141,7 +138,7 @@ local outCombat = {
 }
 
 NeP.CR:Add(63, {
-	name = '[|cff'..Zylla.addonColor..'Zylla|r] Mage - Fire',
+	name = '[|cff'..Zylla.addonColor..'Zylla\'s|r] Mage - Fire',
 	  ic = inCombat,
 	 ooc = outCombat,
 	 gui = GUI,

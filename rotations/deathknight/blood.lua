@@ -58,19 +58,19 @@ local xCombat = {
 	{'Death and Decay', 'player.buff(Crimson Scourge)&talent(2,1)', 'target.ground'},
 	{'Death Strike', 'player.runicpower>=75'},
 	{'Marrowrend', 'player.buff(Bone Shield).count<=6'},
-	-- DnD here 3 or more runes and using talent
+	-- DnD here 3 or more runes and usiwwwwng talent
 	{'Heart Strike', 'player.runes>=3'},
 	{'Consumption'},
-	{'Blood Boil'},
+	{'Blood Boil'}, 
 }
 
 local inCombat = {
-	{_Zylla, 'toggle(AutoTarget)'},
+	--{_Zylla, 'toggle(AutoTarget)'},
 	{Util},
 	{Keybinds},
-	{xCombat},
 	{Interrupts},
 	{Survival},
+	{xCombat},
 }
 
 local outCombat = {

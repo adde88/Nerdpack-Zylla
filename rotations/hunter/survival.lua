@@ -149,7 +149,7 @@ local Melee = {
 }
 
 local inCombat = {
-	{_Zylla, 'toggle(AutoTarget)'},
+	--{_Zylla, 'toggle(AutoTarget)'},
 	{'Mongoose Bite', 'lastcast(Mongoose Bite)'},
 	{Keybinds},
 	{Survival, 'player.health<100'},
