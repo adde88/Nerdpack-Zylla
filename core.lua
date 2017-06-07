@@ -34,14 +34,15 @@ function Zylla.ExeOnLoad()
       text = 'Start opener rotation',
       icon = 'Interface\\Icons\\Ability_warrior_charge',
     })
-  --]]
+
   NeP.Interface:AddToggle({
       key = 'AutoTarget',
       name = 'Auto Target',
       text = 'Automatically target the nearest enemy when target dies or does not exist',
       icon = 'Interface\\Icons\\ability_hunter_snipershot',
     })
-
+  --]]
+  
 end
 
 function Zylla.Taunt(eval, args)
