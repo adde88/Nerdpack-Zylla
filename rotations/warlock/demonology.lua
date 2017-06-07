@@ -117,11 +117,11 @@ local ST = {
 	{'Demonwrath', 'movingfor>=2&player.combat.time>2'},
 	{'Demonbolt', '!player.moving&talent(7,2)&!player.soulshards=4'},
 	{'Shadow Bolt', '!player.moving&!talent(7,2)&!player.soulshards=4'},
-	{'&89751', 'spell.cooldown(89751)=0'},
+	{'&89751', 'spell.cooldown(89751)=0&pet_range<=8'},
 }
 
 local inCombat = {
-	{_Zylla},
+	--{_Zylla},
 	{Util},
 	{Keybinds},
 	{Survival},

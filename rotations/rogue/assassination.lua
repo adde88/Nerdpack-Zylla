@@ -110,7 +110,7 @@ local xCombat = {
 }
 
 local inCombat = {
-	{_Zylla},
+	--{_Zylla},
 	{Util},
 	{Keybinds},
 	{Interrupts, 'target.interruptAt(55)'},
