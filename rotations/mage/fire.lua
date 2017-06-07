@@ -28,7 +28,7 @@ local _Zylla = {
 local Keybinds = {
 	{'%pause', 'keybind(lshift)&UI(kPause)'},
 	{'Rune of Power', 'keybind(lalt)'},
-	{'Flamestrike', 'keybind(lcontrol)', 'target.ground'}
+	{'Flamestrike', 'keybind(lcontrol)', 'cursor.ground'}
 }
 
 local Trinkets = {
