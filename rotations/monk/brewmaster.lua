@@ -68,6 +68,7 @@ local Survival = {
 	{'#Ancient Healing Potion', 'player.health<=UI(Healthstone)', 'player'},
 	{'Fortifying Brew', 'player.health<=UI(Fortifying Brew)', 'player'},
 	{'Expel Harm', 'player.health<=UI(Expel Harm)&player.spell(Expel Harm).count>=1', 'player'},
+	{'Effuse', 'player.health<=UI(E_HP)&player.lastmoved>=1&UI(kEffuse)', 'player'},
 }
 
 local Interrupts = {
