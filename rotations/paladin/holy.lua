@@ -69,29 +69,34 @@ local exeOnLoad=function()
 	})
 end
 
-local _Zylla = {
-    {'/targetenemy [dead][noharm]', '{target.dead||!target.exists}&!player.area(40).enemies=0'},
+local Util = {
+	-- ETC.
+	{'%pause' , 'player.debuff(200904)||player.debuff(Sapped Soul)'} -- Vault of the Wardens, Sapped Soul
+}
+
+local Kebinds = {
+	{'%pause', 'keybind(lalt)'},
+	{Top_Up, 'keybind(lcontrol)'},
 }
 
 -- Cast that should be interrupted
-local interrupts={
+local Interrupts = {
 	{'Hammer of Justice', nil, 'target'},
 	{'Blinding Light', 'target.range<=7'},
 }
 
-local survival={
+local Survival = {
 	{'#127834', 'UI(P_HP_check)&player.health<=UI(P_HP_spin)'}, -- Health Pot
 	{'#127835', 'UI(P_MP_check)&player.mana<=UI(P_MP_spin)'}, -- Mana Pot
 	{'Divine Protection', 'player.buff(Blessing of Sacrifice)'},
 }
 
-local topUp={
+local Top_Up = {
 	{'Holy Shock', nil, 'mouseover'},
 	{'Flash of Light', nil, 'mouseover'},
 }
 
-local DPS={
-	{'/startattack', '!isattacking'},
+local DPS = {
 	{'Consecration', 'target.range<=6&target.enemy&!player.moving'},
 	{'Blinding Light', 'player.area(8).enemies>=3'},
 	{'Holy Shock', 'UI(O_HS)', 'target'},
@@ -100,162 +105,96 @@ local DPS={
 	{'Crusader Strike', 'target.range<=8'},
 }
 
-local tank={
-	{{
-		{'Beacon of Light', '!tank.buff(Beacon of Faith)&!tank.buff(Beacon of Light)', 'tank'},
-		{'Beacon of Faith', '!tank2.buff(Beacon of Faith)&!tank2.buff(Beacon of Light)', 'tank2'},
-	}, '!talent(7,3)'},
+local Tank = {
+	{'Beacon of Light', '!talent(7,3)&!tank.buff(Beacon of Faith)&!tank.buff(Beacon of Light)', 'tank'},
+	{'Beacon of Faith', '!talent(7,3)&!tank2.buff(Beacon of Faith)&!tank2.buff(Beacon of Light)', 'tank2'},
+	
 	{'Bestow Faith', '!tank.buff&talent(1,1)&tank.health<=90', 'tank'},
 	{'Bestow Faith', '!tank2.buff&talent(1,1)&tank2.health<=90', 'tank2'},
 }
 
-local encounters={
-	-- Time Release
-	{'Holy Shock', 'lowest.debuff(Time Release)', 	'lowest'},
-	{'Holy Shock', 'lowest2.debuff(Time Release)', 'lowest2'},
-	{'Holy Shock', 'lowest3.debuff(Time Release)', 'lowest3'},
-	{'Holy Shock', 'lowest4.debuff(Time Release)', 'lowest4'},
-	{'Holy Shock', 'lowest5.debuff(Time Release)', 'lowest5'},
-	{'Holy Shock', 'lowest6.debuff(Time Release)', 'lowest6'},
-	{'Holy Shock', 'lowest7.debuff(Time Release)', 'lowest7'},
-	{'Holy Shock', 'lowest8.debuff(Time Release)', 'lowest8'},
-	{'Holy Shock', 'lowest9.debuff(Time Release)', 'lowest9'},
-	{'Holy Shock', 'lowest10.debuff(Time Release)', 'lowest10'},
-	{'Holy Shock', 'lowest11.debuff(Time Release)', 'lowest11'},
-	{'Holy Shock', 'lowest12.debuff(Time Release)', 'lowest12'},
-	{'Holy Shock', 'lowest13.debuff(Time Release)', 'lowest13'},
-	{'Holy Shock', 'lowest14.debuff(Time Release)', 'lowest14'},
-	{'Holy Shock', 'lowest15.debuff(Time Release)', 'lowest15'},
-	{'Holy Shock', 'lowest16.debuff(Time Release)', 'lowest16'},
-	{'Holy Shock', 'lowest17.debuff(Time Release)', 'lowest17'},
-	{'Holy Shock', 'lowest18.debuff(Time Release)', 'lowest18'},
-	{'Holy Shock', 'lowest19.debuff(Time Release)', 'lowest19'},
-	{'Holy Shock', 'lowest20.debuff(Time Release)', 'lowest20'},
-	{'Holy Shock', 'lowest20.debuff(Time Release)', 'lowest21'},
-	{'Holy Shock', 'lowest20.debuff(Time Release)', 'lowest22'},
-	{'Holy Shock', 'lowest20.debuff(Time Release)', 'lowest23'},
-	{'Holy Shock', 'lowest20.debuff(Time Release)', 'lowest24'},
-	{'Holy Shock', 'lowest20.debuff(Time Release)', 'lowest25'},
-	{'Holy Shock', 'lowest20.debuff(Time Release)', 'lowest26'},
-	{'Holy Shock', 'lowest20.debuff(Time Release)', 'lowest27'},
-	{'Holy Shock', 'lowest20.debuff(Time Release)', 'lowest28'},
-	{'Holy Shock', 'lowest20.debuff(Time Release)', 'lowest29'},
-	{'Holy Shock', 'lowest20.debuff(Time Release)', 'lowest30'},
-	{'Flash of Light', 'lowest.debuff(Time Release).duration>=1', 'lowest'},
-	{'Flash of Light', 'lowest2.debuff(Time Release).duration>=1', 'lowest2'},
-	{'Flash of Light', 'lowest3.debuff(Time Release).duration>=1', 'lowest3'},
-	{'Flash of Light', 'lowest4.debuff(Time Release).duration>=1', 'lowest4'},
-	{'Flash of Light', 'lowest5.debuff(Time Release).duration>=1', 'lowest5'},
-	{'Flash of Light', 'lowest6.debuff(Time Release).duration>=1', 'lowest6'},
-	{'Flash of Light', 'lowest7.debuff(Time Release).duration>=1', 'lowest7'},
-	{'Flash of Light', 'lowest8.debuff(Time Release).duration>=1', 'lowest8'},
-	{'Flash of Light', 'lowest9.debuff(Time Release).duration>=1', 'lowest9'},
-	{'Flash of Light', 'lowest10.debuff(Time Release).duration>=1', 'lowest10'},
-	{'Flash of Light', 'lowest11.debuff(Time Release).duration>=1', 'lowest11'},
-	{'Flash of Light', 'lowest12.debuff(Time Release).duration>=1', 'lowest12'},
-	{'Flash of Light', 'lowest13.debuff(Time Release).duration>=1', 'lowest13'},
-	{'Flash of Light', 'lowest14.debuff(Time Release).duration>=1', 'lowest14'},
-	{'Flash of Light', 'lowest15.debuff(Time Release).duration>=1', 'lowest15'},
-	{'Flash of Light', 'lowest16.debuff(Time Release).duration>=1', 'lowest16'},
-	{'Flash of Light', 'lowest17.debuff(Time Release).duration>=1', 'lowest17'},
-	{'Flash of Light', 'lowest18.debuff(Time Release).duration>=1', 'lowest18'},
-	{'Flash of Light', 'lowest19.debuff(Time Release).duration>=1', 'lowest19'},
-	{'Flash of Light', 'lowest20.debuff(Time Release).duration>=1', 'lowest20'},
-	{'Flash of Light', 'lowest20.debuff(Time Release).duration>=1', 'lowest21'},
-	{'Flash of Light', 'lowest20.debuff(Time Release).duration>=1', 'lowest22'},
-	{'Flash of Light', 'lowest20.debuff(Time Release).duration>=1', 'lowest23'},
-	{'Flash of Light', 'lowest20.debuff(Time Release).duration>=1', 'lowest24'},
-	{'Flash of Light', 'lowest20.debuff(Time Release).duration>=1', 'lowest25'},
-	{'Flash of Light', 'lowest20.debuff(Time Release).duration>=1', 'lowest26'},
-	{'Flash of Light', 'lowest20.debuff(Time Release).duration>=1', 'lowest27'},
-	{'Flash of Light', 'lowest20.debuff(Time Release).duration>=1', 'lowest28'},
-	{'Flash of Light', 'lowest20.debuff(Time Release).duration>=1', 'lowest29'},
-	{'Flash of Light', 'lowest20.debuff(Time Release).duration>=1', 'lowest30'},
-	
-	-- M Bot
-	{'Divine Protection', 'player.debuff(Toxic Spores)'},
+local Encounters = {
 }
 
-local aoeHealing={
-	{'Beacon of Virtue', 'lowestpredicted.area(30,95).heal>=3&talent(7,3)'},
-	{'Rule of Law', 'area(22,90).heal.infront>=3&!player.buff&spell(Light of Dawn).cooldown=0'},
+local AoE_Healing = {
+	{'Beacon of Virtue', 'lowestp.area(30,95).heal>=3&talent(7,3)'},
+	{'Rule of Law', 'area(22,90).heal.infront>=3&!player.buff&cooldown(Light of Dawn).remains<gcd'},
 	{'Light of Dawn', 'area(15,90).heal.infront>=3&player.buff(Rule of Law)'},
 	{'Light of Dawn', 'area(15,90).heal.infront>=3'},
 	{'Light of Dawn', 'player.buff(Divine Purpose)'},
 	{'Holy Prism', 'target.area(15,80).heal>=3'},
+	
+	{'Tyr\'s Deliverance', 'player.area(15,75).heal>=3'},
+	{'Tyr\'s Deliverance', 'player.area(22,75).heal>=3&player.buff(Rule of Law)'},
 }
 
-local healing={
+local Healing = {
 	-- Add an Aura of Sacrifice rotation here!
-	--(Wings and Holy Avenger and Tyrs pre cast)
-	--(Bestow Faith or Hammer pre cast)
-	--(Divine Shield pre cast)
+	--(Wings and Holy Avenger and Tyrs pre-cast)
+	--(Bestow Faith or Hammer pre-cast)
+	--(Divine Shield pre-cast)
 	--Judgement of Light 
 	--Aura Mastery 
 
 	{{
 		{'Avenging Wrath'},
 		{'Holy Avenger'},
-		{'Holy Shock', nil, 'lowestpredicted'},
+		{'Holy Shock', nil, 'lowestp'},
 		{'Light of Dawn'},
-		{'Flash of Light', nil, 'lowestpredicted'},
+		{'Flash of Light', nil, 'lowestp'},
 	}, 'player.buff(Aura Mastery)&talent(5,2)'},
 		
-	{aoeHealing},
+	{AoE_Healing},
+	{Encounters, 'UI(ENC)'},
 	
-	-- Tyrs Deliverance
-	{'200652', 'player.area(15,75).heal>=3'},
-	{'200652', 'player.area(22,75).heal>=3&player.buff(Rule of Law)'},
-	
-	{encounters, 'UI(ENC)'},
-	
-	{'Light of the Martyr', '!player&player.buff(Maraad\'s Dying Breath)&lowestpredicted.health<=UI(L_FoL)', 'lowestpredicted'},
+	{'Light of the Martyr', '!player&player.buff(Maraad\'s Dying Breath)&lowestp.health<=UI(L_FoL)', 'lowestp'},
 	
 	-- Infusion of Light
-	--{'Flash of Light', 'player.buff(Infusion of Light).count>=2', 'lowestpredicted'},
-	{'Flash of Light', 'lowestpredicted.health<=UI(L_FoL)&player.buff(Infusion of Light)', 'lowestpredicted'},
-	{'Flash of Light', 'player.buff(Infusion of Light).duration<=3&player.buff(Infusion of Light)', 'lowestpredicted'},
+	--{'Flash of Light', 'player.buff(Infusion of Light).count>=2', 'lowestp'},
+	{'Flash of Light', 'lowestp.health<=UI(L_FoL)&player.buff(Infusion of Light)', 'lowestp'},
+	{'Flash of Light', 'player.buff(Infusion of Light).duration<=3&player.buff(Infusion of Light)', 'lowestp'},
 	
 	-- Need player health spinner added
 	{{
 		{'Light of the Martyr', '!player&tank.health<=UI(T_LotM)', 'tank'},
 		{'Light of the Martyr', '!player&tank2.health<=UI(T_LotM)', 'tank2'},
-		{'Light of the Martyr', '!player&lowestpredicted.health<=UI(L_LotM)', 'lowestpredicted'},
+		{'Light of the Martyr', '!player&lowestp.health<=UI(L_LotM)', 'lowestp'},
 	}, 'player.health>=40'},
 	
 	{'Holy Shock', 'tank.health<=UI(T_HS)', 'tank'},
 	{'Holy Shock', 'tank2.health<=UI(T_HS)', 'tank2'},
-	{'Holy Shock', 'lowestpredicted.health<=UI(L_HS)', 'lowestpredicted'},
+	{'Holy Shock', 'lowestp.health<=UI(L_HS)', 'lowestp'},
 	{'Holy Shock', 'mouseover.health<=UI(L_HS)&!mouseover.enemy', 'mouseover'},
 	
-	{'Flash of Light', 'lbuff(200654).health<=UI(L_FoL)', 'lbuff(200654)'},
+	{'Flash of Light', 'lbuff(Tyr\'s Deliverance).health<=UI(L_FoL)', 'lbuff(Tyr\'s Deliverance)'},
 	
 	{'Flash of Light', 'tank.health<=UI(T_FoL)', 'tank'},
 	{'Flash of Light', 'tank2.health<=UI(T_FoL)', 'tank2'},
-	{'!Flash of Light', 'lowestpredicted.health<=UI(L_FoL)&player.casting(Holy Light)&player.casting.percent<=50', 'lowestpredicted'},
-	{'Flash of Light', 'lowestpredicted.health<=UI(L_FoL)', 'lowestpredicted'},
+	
+	{'!Flash of Light', 'lowestp.health<=UI(L_FoL)&player.casting(Holy Light)&player.casting.percent<=50', 'lowestp'}, 
+	{'Flash of Light', 'lowestp.health<=UI(L_FoL)', 'lowestp'},
 	{'Flash of Light', 'mouseover.health<=UI(L_FoL)&!mouseover.enemy', 'mouseover'},
 	
 	{'Judgment', 'target.enemy'}, -- Keep up dmg reduction buff
 	
 	{'Holy Light', 'tank.health<=UI(T_HL)', 'tank'},
-	{'Holy Light', 'tank2.health<=UI(T_HL)', 'tank2'},
+	{'Holy Light', 'tank2.health<=UI(                                                                                                                                                                                                                                                                        T_HL)', 'tank2'},
 	{'Holy Light', 'mouseover.health<=UI(L_FoL)&!mouseover.enemy', 'mouseover'},
-	{'Holy Light', 'lowestpredicted.health<=UI(L_HL)', 'lowestpredicted'},
+	{'Holy Light', 'lowestp.health<=UI(L_HL)', 'lowestp'},
 }
 
-local emergency={
-	{'!Holy Shock', '!player.casting(200652)', 'lowestpredicted'},
-	{'!Flash of Light', '!player.moving&!player.casting(200652)', 'lowestpredicted'},
-	{'!Light of the Martyr', '!player.casting(Flash of Light)&!player.casting(200652)', 'lowestpredicted'},
+local Emergency = {
+	{'!Holy Shock', '!player.casting(200652)', 'lowestp'},
+	{'!Flash of Light', '!player.moving&!player.casting(200652)', 'lowestp'},
+	{'!Light of the Martyr', '!player.casting(Flash of Light)&!player.casting(200652)', 'lowestp'},
 }
 
-local cooldowns={
+local Cooldowns = {
 	-- Need to rewrite for Raid and 5 Man
-	{'Lay on Hands', 'UI(LoH)&lowestpredicted.health<=UI(L_LoH)&!lowestpredicted.debuff(Forbearance).any', 'lowestpredicted'},
+	{'Lay on Hands', 'UI(LoH)&lowestp.health<=UI(L_LoH)&!lowestp.debuff(Forbearance).any', 'lowestp'},
 	{'Aura Mastery', 'UI(AM)&player.area(40,40).heal>=4'},
-	{'Avenging Wrath', 'UI(AW)&player.area(35,65).heal>=4&player.spell(Holy Shock).cooldown=0'},
-	{'Holy Avenger', 'UI(HA)&player.area(40,75).heal>=3&player.spell(Holy Shock).cooldown=0'},
+	{'Avenging Wrath', 'UI(AW)&player.area(35,65).heal>=4&cooldon(Holy Shock).remains<gcd'},
+	{'Holy Avenger', 'UI(HA)&player.area(40,75).heal>=3&cooldon(Holy Shock).remains<gcd'},
 	
 	{'Blessing of Sacrifice', 'tank.health<=UI(T_BoS)', 'tank'}, 
 	{'Blessing of Sacrifice', 'tank2.health<=UI(T_BoS)', 'tank2'}, 
@@ -263,56 +202,53 @@ local cooldowns={
 	--{'#trinket2', 'player.area(40,95).heal>=3'},
 }
 
-local moving={
-	{aoeHealing},
+local Moving = {
+	{AoE_Healing},
 	
 	{{
 		{'Light of the Martyr', '!player&tank.health<=UI(T_LotM)', 'tank'},
 		{'Light of the Martyr', '!player&tank2.health<=UI(T_LotM)', 'tank2'},
-		{'Light of the Martyr', '!player&lowestpredicted.health<=UI(L_LotM)', 'lowestpredicted'},
+		{'Light of the Martyr', '!player&lowestp.health<=UI(L_LotM)', 'lowestp'},
 	}, 'player.health>=40'},
 	
 	{'Holy Shock', 'tank.health<=UI(T_HS)', 'tank'},
-	{'Holy Shock', 'lowestpredicted.health<=UI(L_HS)', 'lowestpredicted'},
+	{'Holy Shock', 'lowestp.health<=UI(L_HS)', 'lowestp'},
 	
 	{'Judgment', 'target.enemy'},
 }
 
-local manaRestore={
-	{'Holy Shock', 'lowestpredicted.health<=UI(L_HS)', 'lowestpredicted'},
+local Mana_Restore = {
+	{'Holy Shock', 'lowestp.health<=UI(L_HS)', 'lowestp'},
 	{'Holy Light', 'tank.health<=UI(T_HL)', 'tank'},
 	{'Holy Light', 'tank2.health<=UI(T_HL)', 'tank2'},
-	{'Holy Light', 'lowestpredicted.health<=UI(L_HL)', 'lowestpredicted'},
-	
+	{'Holy Light', 'lowestp.health<=UI(L_HL)', 'lowestp'},
 	{'Judgment', 'target.enemy'},
 }
 
-local inCombat={
-	{_Zylla, 'UI(kAutoTarget)&toggle(dps)'},
-	{pause, 'keybind(lalt)'},
-	{topUp, 'keybind(lcontrol)'},
-	{survival}, 
-	{interrupts, 'target.interruptAt(35)'},
-	{'%dispelall', 'toggle(disp)&spell(Cleanse).cooldown=0'},
-	{cooldowns, 'toggle(cooldowns)'},
-	{emergency, 'lowestpredicted.health<=UI(G_CHP)&!player.casting(200652)'},
-	{tank},
-	{DPS, 'toggle(dps)&target.enemy&target.infront&lowestpredicted.health>=UI(G_DPS)'},
-	{moving, 'player.moving'},
-	{manaRestore, 'player.mana<=UI(P_MR)'},
-	{healing, '!player.moving&player.mana>=UI(P_MR)'},
+local inCombat = {
+	{Util},
+	{Keybinds},
+	{Survival}, 
+	{Interrupts, 'target.interruptAt(35)'},
+	{'%dispelall', 'toggle(disp)&spell(Cleanse).cooldown<gcd'},
+	{Cooldowns, 'toggle(cooldowns)'},
+	{Emergency, 'lowestp.health<=UI(G_CHP)&!player.casting(200652)'},
+	{Tank},
+	{DPS, 'toggle(dps)&target.enemy&target.infront&lowestp.health>=UI(G_DPS)'},
+	{Moving, 'player.moving'},
+	{Mana_Restore, 'player.mana<=UI(P_MR)'},
+	{Healing, '!player.moving&player.mana>=UI(P_MR)'},
 	{DPS, 'toggle(dps)&target.enemy&target.infront'},
 }
 
-local outCombat={
+local outCombat = {
 	-- Need to prevent this while eating
-	{tank},
-	{topUp, 'keybind(lcontrol)'},
-	
+	{Tank},
+	{Keybinds},
 	-- Precombat
 	{'Bestow Faith', 'pull_timer<=3', 'tank'},
 	{'#Potion of Prolonged Power', '!player.buff&pull_timer<=2'},
-	{'%dispelall', 'toggle(disp)&spell(Cleanse).cooldown=0'},
+	{'%dispelall', 'toggle(disp)&cooldown(Cleanse).remains<gcd'},
 }
 
 NeP.CR:Add(65, {
