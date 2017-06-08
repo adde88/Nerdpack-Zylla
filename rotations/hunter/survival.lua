@@ -7,7 +7,6 @@ local GUI = {
 	{type = 'text', 	text = 'Left Alt: Binding Shot', align = 'center'},
 	{type = 'text', 	text = 'Right Alt: Freezing Trap', align = 'center'},
 	{type = 'checkbox', text = 'Pause Enabled', key = 'kPause', default = true},
-	
 	{type = 'checkbox', text = 'Summon Pet', key = 'kPet', default = true},
 	{type = 'checkbox', text = 'Barrage Enabled', key = 'kBarrage', default = false},
    	{type = 'checkbox', text = 'Volley Enabled', key = 'kVolley', default = true},
@@ -26,10 +25,6 @@ local exeOnLoad = function()
 	print('|cffADFF2F ----------------------------------------------------------------------|r')
 	
 end
-
-local _Zylla = {
-    {'/targetenemy [dead][noharm]', '{target.dead||!target.exists}&!player.area(40).enemies=0'},
-}
 
 local PreCombat = {
 	{Pet},	
@@ -149,7 +144,6 @@ local Melee = {
 }
 
 local inCombat = {
-	--{_Zylla, 'toggle(AutoTarget)'},
 	{'Mongoose Bite', 'lastcast(Mongoose Bite)'},
 	{Keybinds},
 	{Survival, 'player.health<100'},
