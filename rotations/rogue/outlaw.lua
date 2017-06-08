@@ -1,5 +1,6 @@
 local _, Zylla = ...
-local GUI = {
+
+local GUI = {
 	{type = 'header', 	text = 'Keybinds', align = 'center'},
 	{type = 'text', 	text = 'Left Shift: Pause', align = 'center'},
 	{type = 'text', 	text = 'Left Ctrl: Cannonball Barrage (Cursor}', align = 'center'},
@@ -16,11 +17,14 @@ local exeOnLoad = function()
 	print("|cffFFFF00 --- |rRecommended Talents: 1/1 - 2/3 - 3/1 - 4/X - 5/1 - 6/2 - 7/2")
 	print("|cffFFFF00 ----------------------------------------------------------------------|r")
 
+		NeP.Interface:AddToggle({
+		key='opener',
+		name='opener',
+		text='If enabled it will open with Ambush. If not Cheap Shot is used.',
+		icon='Interface\\Icons\\ability_rogue_ambush',
+	})
+	
 end
-
-local _Zylla = {
-	{'/targetenemy [dead][noharm]', '{target.dead||!target.exists}&!player.area(40).enemies=0'},
-}
 
 local Survival ={
 	{'Crimson Vial', 'player.health<=65'},
@@ -91,7 +95,6 @@ local xCombat = {
 }
 
 local inCombat = {
-	--{_Zylla, 'toggle(AutoTarget)'},
 	{Keybinds},
 	{Interrupts, 'target.interruptAt(70)&toggle(Interrupts)&target.infront'},
 	{Survival, 'player.health<100'},
@@ -100,8 +103,9 @@ local inCombat = {
 }
 
 local outCombat = {
-	{'Stealth', '!player.buff(Stealth)'},
-	{'Ambush', 'target.inmelee&target.infront&player.buff(Stealth)'},
+	{'Stealth', '!player.buff&!player.buff(Vanish)&!nfly'},
+	{'Ambush', 'target.inmelee&target.infront&player.buff(Stealth)&toggle(opener)'},
+	{'Cheap Shot', 'target.inmelee&target.infront&player.buff(Stealth)&!toggle(opener)'},
 	{Keybinds},
 	{TricksofTrade},
 }
