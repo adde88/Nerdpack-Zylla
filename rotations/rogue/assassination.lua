@@ -1,5 +1,6 @@
 local _, Zylla = ...
-local GUI= {
+
+local GUI= {
 	-- General
 	{type='header', 		text='General', 								align='center'},
 	{type='checkbox',		text='Multi-Dot (Target/Focus/MousOver)',		key='multi', 	default=true},
@@ -33,18 +34,14 @@ local exeOnLoad=function()
 	
 end
 
-local _Zylla = {
-    {'/targetenemy [dead][noharm]', '{target.dead||!target.exists}&!player.area(40).enemies=0'},
-}
-
 local Util = {
 	-- ETC.
 	{'%pause' , 'player.debuff(200904)||player.debuff(Sapped Soul)'}, -- Vault of the Wardens, Sapped Soul
 }
 
 local Interrupts = {
-	{'Kick', 'target.inmelee'},
-	{'Kidney Shot', 'target.inmelee&cooldown(Kick).remains>gcd&!player.lastcast(Kick)&player.combopoints>0'},
+	{'Kick', 'target.inMelee'},
+	{'Kidney Shot', 'target.inMelee&cooldown(Kick).remains>gcd&!player.lastcast(Kick)&player.combopoints>0'},
 	{'Arcane Torrent', 'target.range<=8&spell(Kick).cooldown>gcd&!prev_gcd(Kick)'},
 }
 
@@ -84,18 +81,25 @@ local inStealth = {
 	{'Garrote', 'player.buff(Stealth)&player.combopoints<=4&target.debuff.duration<=5.4'},
 }
 
+local Poisons = {
+	{'Deadly Poison', 'player.buff.duration<=600&!player.lastcast&!talent(6,1)'},
+	{'Agonizing Poison', 'player.buff.duration<=600&!player.lastcast&talent(6,1)'},
+	{'Leeching Poison', 'player.buff.duration<=600&!player.lastcast&talent(4,1)'},
+	{'Crippling Poison', 'player.buff.duration<=600&!player.lastcast&!talent(4,1)'},
+}
+
 local xCombat = {
 	{Survival},	
 	-- Rupture
 	{'Rupture', 'player.buff(Vanish)&toggle(cooldowns)'},
 	{'Rupture', 'target.debuff.duration<=7.2&player.combopoints>=4&player.spell(Vanish).cooldown&target.ttd>=6'},
 	-- Multi DoT Rupture
-	{'Rupture', 'target.enemy&target.inmelee&target.debuff.duration<=7.2&player.combopoints>=4', 'target'},
-	{'Rupture', 'focus.enemy&focus.inmelee&focus.debuff.duration<=7.2&player.combopoints>=4&focus.enemy&UI(multi)', 'focus'},
-	{'Rupture', 'mouseover.enemy&mouseover.inmelee&mouseover.debuff.duration<=7.2&player.combopoints>=4&UI(multi)', 'mouseover'},
-	{'Garrote', 'target.debuff.duration<=5.4&player.combopoints<=4&target.inmelee'},
+	{'Rupture', 'target.enemy&target.inMelee&target.debuff.duration<=7.2&player.combopoints>=4', 'target'},
+	{'Rupture', 'focus.enemy&focus.inMelee&focus.debuff.duration<=7.2&player.combopoints>=4&focus.enemy&UI(multi)', 'focus'},
+	{'Rupture', 'mouseover.enemy&mouseover.inMelee&mouseover.debuff.duration<=7.2&player.combopoints>=4&UI(multi)', 'mouseover'},
+	{'Garrote', 'target.debuff.duration<=5.4&player.combopoints<=4&target.inMelee'},
 	-- Use Mutilate till 4/5 combopoints for rupture
-	{'Mutilate', '!target.debuff(Rupture)&player.combopoints<=3&target.inmelee'},
+	{'Mutilate', '!target.debuff(Rupture)&player.combopoints<=3&target.inMelee'},
 	{'Kingsbane', '!talent(6,3)&player.buff(Envenom)&target.debuff(Vendetta)&target.debuff(Surge of Toxins)&target.ttd>=10'},
 	{'Kingsbane', '!talent(6,3)&player.buff(Envenom)&player.spell(Vendetta).cooldown<=5.8&target.ttd>=10'},
 	{'Kingsbane', '!talent(6,3)&player.buff(Envenom)&player.spell(Vendetta).cooldown>=10&target.ttd>=10'},
@@ -104,32 +108,28 @@ local xCombat = {
 	{'Envenom', 'player.combopoints>=4&target.debuff(Surge of Toxins).duration<=0.5'},
 	{'Envenom', 'player.combopoints>=4&player.energy>=160'},
 	{'Fan of Knives', 'player.area(10).enemies>=3&player.combopoints<=4'},
-	{'Mutilate', 'player.combopoints<=3&player.buff(Envenom)&target.inmelee'},
-	{'Mutilate', 'player.spell(Vendetta).cooldown<=5&player.combopoints<=3&target.inmelee'},
-	{'Mutilate', 'player.combopoints<=3&target.inmelee'},
+	{'Mutilate', 'player.combopoints<=3&player.buff(Envenom)&target.inMelee'},
+	{'Mutilate', 'player.spell(Vendetta).cooldown<=5&player.combopoints<=3&target.inMelee'},
+	{'Mutilate', 'player.combopoints<=3&target.inMelee'},
 }
 
 local inCombat = {
-	--{_Zylla},
 	{Util},
 	{Keybinds},
-	{Interrupts, 'target.interruptAt(55)'},
+	{Interrupts, 'target.interruptAt(70)'},
 	{TricksofTrade},
 	{Cooldowns, 'toggle(cooldowns)'},
-	{xCombat, 'target.inmelee&!player.buff(Stealth)'},
+	{xCombat, 'target.inMelee&!player.buff(Stealth)'},
 	{inStealth},
-	{Ranged, 'target.range>=10'},
+	{Ranged, '!target.inMelee&target.inRanged'},
 }
 
 local outCombat= {
 	-- Poisons
-	{'Deadly Poison', 'player.buff.duration<=600&!player.lastcast&!talent(6,1)'},
-	{'Agonizing Poison', 'player.buff.duration<=600&!player.lastcast&talent(6,1)'},
-	{'Leeching Poison', 'player.buff.duration<=600&!player.lastcast&talent(4,1)'},
-	{'Crippling Poison', 'player.buff.duration<=600&!player.lastcast&!talent(4,1)'},
-	{'Rupture', 'target.inmelee&target.enemy&player.buff(Vanish)'},
-	{'Garrote', 'target.inmelee&target.enemy&player.buff(Stealth)&player.combopoints<=4&target.debuff.duration<=5.4'},
-	{'Stealth', '!player.buff&!player.buff(Vanish)'},
+	{Poisons},
+	{'Rupture', 'target.inMelee&target.enemy&player.buff(Vanish)'},
+	{'Garrote', 'target.inMelee&target.enemy&player.buff(Stealth)&player.combopoints<=4&target.debuff.duration<=5.4'},
+	{'Stealth', '!player.buff&!player.buff(Vanish)&!nfly'},
 	{Keybinds},
 	{preCombat},
 }
