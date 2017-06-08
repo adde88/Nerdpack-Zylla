@@ -7,7 +7,6 @@ local GUI = {
 	{type = 'text', 	text = 'Left Alt: Binding Shot', align = 'center'},
 	{type = 'text', 	text = 'Right Alt: Freezing Trap', align = 'center'},
 	{type = 'checkbox', text = 'Pause Enabled', key = 'kPause', default = true},
-	
 	{type = 'checkbox', text = 'Summon Pet', key = 'kPet', default = false},
 	{type = 'checkbox', text = 'Barrage Enabled', key = 'kBarrage', default = false},
    	{type = 'checkbox', text = 'Volley Enabled', key = 'kVolley', default = true},
@@ -26,8 +25,9 @@ local exeOnLoad = function()
 	
 end
 
-local _Zylla = {
-    {'/targetenemy [dead][noharm]', '{target.dead||!target.exists}&!player.area(40).enemies=0'},
+local Util = {
+	-- ETC.
+	{'%pause' , 'player.debuff(200904)||player.debuff(Sapped Soul)'}, -- Vault of the Wardens, Sapped Soul
 }
 
 local PreCombat = {
@@ -165,6 +165,7 @@ local xPetCombat = {
 }
 
 local inCombat = {
+	{Util},
 	{Keybinds},
 	{Trinkets},
 	{Survival},
