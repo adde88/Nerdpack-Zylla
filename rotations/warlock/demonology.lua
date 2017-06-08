@@ -43,10 +43,6 @@ local exeOnLoad = function()
 	})
 end
 
-local _Zylla = {
-    {'/targetenemy [dead][noharm]', '{target.dead||!target.exists}&!player.area(40).enemies=0'},
-}
-
 local Util = {
 	-- ETC.
 	{'%pause' , 'player.debuff(200904)||player.debuff(Sapped Soul)'}, -- Vault of the Wardens, Sapped Soul
@@ -102,7 +98,7 @@ local DW_Clip = {
 	{'!Life Tap', 'player.mana<=30&player.health>=15&{!player.lastgcd(Summon Felguard)||!player.lastgcd(Call Dreadstalkers)||!player.lastgcd(Hand of Gul\'dan)||!player.lastgcd(Summon Darkglare)||!player.lastgcd(Summon Doomguard)||!player.lastgcd(Grimoire: Felguard)}'},
 	{'!Demonbolt', '!player.moving&talent(7,2)&!player.soulshards=4'},
 	{'!Shadow Bolt', '!player.moving&!talent(7,2)&!player.soulshards=4'},
-	{'!89751', 'spell.cooldown(89751)=0'},
+	{'!89751', 'spell.cooldown(89751)<gcd&pet_range<=8'},
 }
 
 local ST = {
@@ -117,11 +113,10 @@ local ST = {
 	{'Demonwrath', 'movingfor>=2&player.combat.time>2'},
 	{'Demonbolt', '!player.moving&talent(7,2)&!player.soulshards=4'},
 	{'Shadow Bolt', '!player.moving&!talent(7,2)&!player.soulshards=4'},
-	{'&89751', 'spell.cooldown(89751)=0&pet_range<=8'},
+	{'&89751', 'spell.cooldown(89751)<gcd&pet_range<=8'},
 }
 
 local inCombat = {
-	--{_Zylla},
 	{Util},
 	{Keybinds},
 	{Survival},
