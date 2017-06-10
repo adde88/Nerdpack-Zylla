@@ -1242,7 +1242,7 @@ end
 
 -------------------------
 -- Gabbz END
----------------------------
+-------------------------
 
 function Zylla.tt()
 	if NeP.Unlocked and UnitAffectingCombat('player') and not NeP.DSL:Get('casting')('player', 'Fists of Fury') then
@@ -1271,6 +1271,18 @@ NeP.FakeUnits:Add('Zylla_sck', function(debuff)
 		end
 	end
 end)
+
+function xitems(item)
+   local items = 0
+   for bag=0,NUM_BAG_SLOTS do
+      for slot=1,GetContainerNumSlots(bag) do
+         if item == GetContainerItemID(bag,slot) then
+            items=items+(select(2,GetContainerItemInfo(bag,slot)))
+         end
+      end
+   end
+   return items
+end
 
 NeP.Library:Add('Zylla', {
 	hitcombo = function(spell)
