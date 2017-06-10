@@ -52,7 +52,7 @@ local Util = {
 local Survival = {
 	{'&Unending Resolve', 'UI(S_UEE)&player.health<=UI(S_UE)'},
 	{'&Dark Pact', 'UI(S_DPE)&talent(5,3)&pet.exists&player.health<=UI(S_DP)'},
-	{'&Gift of the Naaru', 'UI(S_GOTNE)&{!player.debuff(Ignite Soul)}&player.health<=UI(S_GOTN)'},
+	{'&Gift of the Naaru', 'UI(S_GOTNE)&player.health<=UI(S_GOTN)'},
 	{'Create Healthstone', 'xitems(5512)=0'},
 	{'#5512', 'UI(S_HSE)&player.health<=UI(S_HS)&xitems(5512)>0'},
 	{'#127834', 'UI(S_AHPE)&player.health<=UI(S_AHP)&xitems(127834)>0'},
@@ -66,7 +66,7 @@ local Interrupts = {
 }
 
 local Player = {
-	{'!Drain Life', 'UI(S_DLE)&{!player.debuff(Ignite Soul)}&player.health<=UI(S_DL)', 'target'},
+	{'!Drain Life', 'UI(S_DLE)&player.health<=UI(S_DL)', 'target'},
 	{'!Health Funnel', 'UI(S_HFE)&pet.exists&pet.health<=UI(S_HF)', 'pet'},
 }
 
