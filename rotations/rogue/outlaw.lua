@@ -82,8 +82,8 @@ local RollingBones ={
 }
 
 local TricksofTrade = {
-	{'Tricks of the Trade', '!focus.buff', 'focus'},
-	{'Tricks of the Trade', '!tank.buff', 'tank'},
+	{'Tricks of the Trade', '!focus.buff&focus.range<=100', 'focus'},
+	{'Tricks of the Trade', '!tank.buff&tank.range<=100', 'tank'},
 }
 
 local xCombat = {
@@ -104,8 +104,8 @@ local inCombat = {
 
 local outCombat = {
 	{'Stealth', '!player.buff&!player.buff(Vanish)&!nfly'},
-	{'Ambush', 'target.inmelee&target.infront&player.buff(Stealth)&toggle(opener)'},
-	{'Cheap Shot', 'target.inmelee&target.infront&player.buff(Stealth)&!toggle(opener)'},
+	{'Ambush', 'target.enemy&target.inmelee&target.infront&player.buff(Stealth)&toggle(opener)'},
+	{'Cheap Shot', 'target.enemy&target.inmelee&target.infront&player.buff(Stealth)&!toggle(opener)'},
 	{Keybinds},
 	{TricksofTrade},
 }
