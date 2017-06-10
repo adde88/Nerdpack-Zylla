@@ -53,6 +53,7 @@ local Survival = {
 	{'&Unending Resolve', 'UI(S_UEE)&player.health<=UI(S_UE)'},
 	{'&Dark Pact', 'UI(S_DPE)&talent(5,3)&pet.exists&player.health<=UI(S_DP)'},
 	{'&Gift of the Naaru', 'UI(S_GOTNE)&{!player.debuff(Ignite Soul)}&player.health<=UI(S_GOTN)'},
+	{'Create Healthstone', 'xitems(5512)=0'},
 	{'#5512', 'UI(S_HSE)&{!player.debuff(Ignite Soul)}&player.health<=UI(S_HS)'},
 	{'#127834', 'UI(S_AHPE)&{!player.debuff(Ignite Soul)}&player.health<=UI(S_AHP)'},
 	{'Mortal Coil', 'target.range<=20&talent(3,2)&player.health<=80'},
@@ -129,6 +130,7 @@ local inCombat = {
 
 local outCombat = {
 	{'Life Tap', 'player.mana<=60&player.health>=60'},
+	{'Create Healthstone', 'xitems(5512)=0'},
 }
 
 NeP.CR:Add(266, {
