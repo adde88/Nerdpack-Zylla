@@ -23,6 +23,7 @@ local GUI = {
 	{type = 'header', 	text = 'Keybinds', 							align = 'center'},
 	{type = 'checkbox', text = 'L-Control: Shadowfury @ Cursor',	key = 'K_SF',		default = true},
 	{type = 'checkbox', text = 'L-Alt: Demonic Circle', 			key = 'K_DC',		default = true},
+	{type = 'checkbox', text = 'L-Shift: Pause', 					key = 'kPause', 	default = true},
 	{type = 'ruler'},	{type = 'spacer'},
 }
 
@@ -36,7 +37,7 @@ local exeOnLoad = function()
 
 	NeP.Interface:AddToggle({
 		-- Doom
-		key = 'yuDoom',
+		key = 'Doom',
 		name = 'Doom',
 		text = 'Enable/Disable: Casting of Doom on targets',
 		icon = 'Interface\\ICONS\\spell_shadow_auraofdarkness',
@@ -69,6 +70,7 @@ local Player = {
 }
 
 local Keybinds = {
+	{'%pause', 'keybind(lshift)&UI(kPause)'},
 	{'!Shadowfury', '!player.moving&UI(K_SF)&talent(3,3)&keybind(lcontrol)', 'cursor.ground'},
 	{'!Demonic Circle', 'UI(K_DC)&talent(3,1)&keybind(lalt)'},
 }
@@ -94,7 +96,7 @@ local DW_Clip = {
 	{'!Hand of Gul\'dan', '!player.moving&player.soulshards>=4'},
 	{'!Thal\'kiel\'s Consumption', '!player.moving&cooldown(Call Dreadstalkers).remains>3&player.lastgcd(Hand of Gul\'dan)'},
 	{'!Demonic Empowerment', '!player.moving&!player.lastgcd(Demonic Empowerment)&{Zylla.empower=0||player.lastgcd(Summon Felguard)||player.lastgcd(Call Dreadstalkers)||player.lastgcd(Hand of Gul\'dan)||player.lastgcd(Summon Darkglare)||player.lastgcd(Summon Doomguard)||player.lastgcd(Grimoire: Felguard)||player.lastgcd(Thal\'kiel\'s Consumption)}'},
-	{'!Doom', '!talent(4,1)&toggle(yuDoom)&!target.debuff(Doom)'},
+	{'!Doom', '!talent(4,1)&toggle(Doom)&!target.debuff(Doom)'},
 	{'!Life Tap', 'player.mana<=30&player.health>=15&{!player.lastgcd(Summon Felguard)||!player.lastgcd(Call Dreadstalkers)||!player.lastgcd(Hand of Gul\'dan)||!player.lastgcd(Summon Darkglare)||!player.lastgcd(Summon Doomguard)||!player.lastgcd(Grimoire: Felguard)}'},
 	{'!Demonbolt', '!player.moving&talent(7,2)&!player.soulshards=4'},
 	{'!Shadow Bolt', '!player.moving&!talent(7,2)&!player.soulshards=4'},
@@ -108,7 +110,7 @@ local ST = {
 	{'Hand of Gul\'dan', '!player.moving&player.soulshards>=4'},
 	{'Thal\'kiel\'s Consumption', '!player.moving&cooldown(Call Dreadstalkers).remains>3&player.lastgcd(Hand of Gul\'dan)'},
 	{'Demonic Empowerment', '!player.moving&!player.lastgcd(Demonic Empowerment)&{Zylla.empower=0||player.lastgcd(Summon Felguard)||player.lastgcd(Call Dreadstalkers)||player.lastgcd(Hand of Gul\'dan)||player.lastgcd(Summon Darkglare)||player.lastgcd(Summon Doomguard)||player.lastgcd(Grimoire: Felguard)||player.lastgcd(Thal\'kiel\'s Consumption)}'},
-	{'Doom', '!talent(4,1)&toggle(yuDoom)&!target.debuff(Doom)'},
+	{'Doom', '!talent(4,1)&toggle(Doom)&!target.debuff(Doom)'},
 	{'Life Tap', 'player.mana<=30&player.health>=15&{!player.lastgcd(Summon Felguard)||!player.lastgcd(Call Dreadstalkers)||!player.lastgcd(Hand of Gul\'dan)||!player.lastgcd(Summon Darkglare)||!player.lastgcd(Summon Doomguard)||!player.lastgcd(Grimoire: Felguard)}'},
 	{'Demonwrath', 'movingfor>=2&player.combat.time>2'},
 	{'Demonbolt', '!player.moving&talent(7,2)&!player.soulshards=4'},
