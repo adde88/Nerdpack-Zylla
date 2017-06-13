@@ -142,11 +142,11 @@ local Interrupts = {
 local inCombat = {
 	{Util},
 	{Keybinds},
-	{Interrupts, 'target.interruptAt(50)&toggle(Interrupts)&target.infront&target.range<=15'},
+	{Interrupts, 'target.interruptAt(50)&toggle(Interrupts)&target.inFront&target.range<=15'},
 	{Survival, 'player.health<100'},
 	{Cooldowns, 'toggle(Cooldowns)&target.inMelee'},
-	{MACHINEGUN, 'toggle(xMACHINEGUN)&target.inMelee&target.infront'},
-	{xCombat, '!toggle(xMACHINEGUN)&target.inMelee&target.infront'}
+	{MACHINEGUN, 'toggle(xMACHINEGUN)&target.inMelee&target.inFront'},
+	{xCombat, '!toggle(xMACHINEGUN)&target.inMelee&target.inFront'}
 }
 
 local outCombat = {

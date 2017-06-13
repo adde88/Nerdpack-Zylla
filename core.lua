@@ -1272,7 +1272,8 @@ NeP.FakeUnits:Add('Zylla_sck', function(debuff)
 	end
 end)
 
-function xitems(item)
+-- - Zylla - Count items in bag 
+NeP.DSL:Register("xitems", function xitems(item)
    local items = 0
    for bag=0,NUM_BAG_SLOTS do
       for slot=1,GetContainerNumSlots(bag) do
@@ -1282,7 +1283,7 @@ function xitems(item)
       end
    end
    return items
-end
+end)
 
 NeP.Library:Add('Zylla', {
 	hitcombo = function(spell)

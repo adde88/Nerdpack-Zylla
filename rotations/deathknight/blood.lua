@@ -48,22 +48,22 @@ local Interrupts = {
 }
 
 local xCombat = {
-	{'Marrowrend', 'player.buff(Bone Shield).duration<=3'},
+	{'Marrowrend', 'player.buff(Bone Shield).duration<=3&target.inFront&target.inMelee'},
 	{'Blood Boil', '!target.debuff(Blood Plague)'},
 	-- DnD here w/ crimson scourge proc
-	{'Death and Decay', 'player.buff(Crimson Scourge)&talent(2,1)', 'player.ground'},
-	{'Death Strike', 'player.runicpower>=75'},
-	{'Marrowrend', 'player.buff(Bone Shield).count<=6'},
+	{'Death and Decay', 'player.buff(Crimson Scourge)&talent(2,1)&target.range<=30', 'player.ground'},
+	{'Death Strike', 'player.runicpower>=75&target.inFront&target.inMelee'},
+	{'Marrowrend', 'player.buff(Bone Shield).count<=6&target.inFront&target.inMelee'},
 	-- DnD here 3 or more runes and usiwwwwng talent
-	{'Heart Strike', 'player.runes>=3'},
-	{'Consumption'},
+	{'Heart Strike', 'player.runes>=3&target.inFront&target.inMelee'},
+	{'Consumption', 'target.inFront&target.inMelee'},
 	{'Blood Boil'}, 
 }
 
 local inCombat = {
 	{Util},
 	{Keybinds},
-	{Interrupts, 'target.interruptAt(50)&toggle(Interrupts)&target.infront&target.inMelee'},
+	{Interrupts, 'target.interruptAt(50)&toggle(Interrupts)&target.inFront&target.inMelee'},
 	{Survival},
 	{xCombat},
 }
