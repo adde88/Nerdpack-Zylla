@@ -1272,7 +1272,8 @@ NeP.FakeUnits:Add('Zylla_sck', function(debuff)
 	end
 end)
 
--- - Zylla - Count items in bag 
+-- Zylla - Count items in bag 
+--/dump NeP.DSL:Get('xitems')('5512')
 NeP.DSL:Register("xitems", function(item)
    local items = 0
    for bag=0,NUM_BAG_SLOTS do
