@@ -20,7 +20,7 @@ local exeOnLoad = function()
 	 Zylla.ExeOnLoad()
 
 	print('|cffADFF2F ----------------------------------------------------------------------|r')
-	print('|cffADFF2F --- |rHunter |cffADFF2FBeast Mastery |r')
+	print('|cffADFF2F --- |rHunter |cffADFF2FBeast Mastery [T-19] |r')
 	print('|cffADFF2F --- |rRecommended Talents: 1/2 - 2/1 - 3/X - 4/2 - 5/X - 6/1 - 7/2')
 	print('|cffADFF2F ----------------------------------------------------------------------|r')
 	
@@ -115,8 +115,8 @@ local inCombat = {
 	{Trinkets},
 	{Survival, 'player.health<100'},
 	{Cooldowns, 'toggle(Cooldowns)'},
-	{Interrupts, 'target.interruptAt(50)&toggle(Interrupts)&target.infront&target.range<=40'},
-	{xCombat, 'target.range<=40&target.infront'},
+	{Interrupts, 'target.interruptAt(50)&toggle(Interrupts)&target.inFront&target.range<=40'},
+	{xCombat, 'target.range<=40&target.inFront'},
 	{xPetCombat},
 	{xPvP, 'target.player&target.enemy'},
 }
