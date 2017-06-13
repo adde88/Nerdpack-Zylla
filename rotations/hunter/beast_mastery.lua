@@ -94,7 +94,6 @@ local xCombat = {
 }
 
 local xPetCombat = {
-	--{'/petassist' },
 	{'!Kill Command'},
 	{'Mend Pet', 'pet.exists&pet.alive&pet.health<100&!pet.buff(Mend Pet)'},
 	{'/cast Call Pet 1', '!pet.exists&UI(kPet)'},
@@ -105,9 +104,9 @@ local xPetCombat = {
 
 local xPvP = {
 	{'Gladiator\'s Medallion', 'spell.exists(208683)&{player.state.incapacitate||player.state.stun||player.state.fear||player.state.horror||player.state.sleep||player.state.charm}'},
-	{'Viper Sting', 'spell.exists(Viper Sting)&target.range<40&target.health<80'},
-	{'Scorpid Sting', 'spell.exists(Scorpid Sting)&target.range<8'},
-	{'Spider Sting', 'spell.exists(Spider Sting)&target.range<40'},
+	{'Viper Sting', 'spell.exists(Viper Sting)&target.range<=40&target.health<80'},
+	{'Scorpid Sting', 'spell.exists(Scorpid Sting)&target.inMelee'},
+	{'Spider Sting', 'spell.exists(Spider Sting)&target.range<=40'},
 }
 
 local inCombat = {
@@ -117,9 +116,9 @@ local inCombat = {
 	{Survival, 'player.health<100'},
 	{Cooldowns, 'toggle(Cooldowns)'},
 	{Interrupts, 'target.interruptAt(50)&toggle(Interrupts)&target.infront&target.range<=40'},
-	{xCombat, 'target.range<40&target.infront'},
+	{xCombat, 'target.range<=40&target.infront'},
 	{xPetCombat},
-	{xPvP, 'target.player'},
+	{xPvP, 'target.player&target.enemy'},
 }
 
 local outCombat = {

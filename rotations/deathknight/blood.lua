@@ -21,10 +21,6 @@ local exeOnLoad = function()
 	
 end
 
-local _Zylla = {
-    {'/targetenemy [dead][noharm]', '{target.dead||!target.exists}&!player.area(40).enemies=0'},
-}
-
 local Util = {
 	-- ETC.
 	{'%pause' , 'player.debuff(200904)||player.debuff(Sapped Soul)'}, -- Vault of the Wardens, Sapped Soul
@@ -48,14 +44,14 @@ local Keybinds = {
 local Interrupts = {
 	{'Mind Freeze'},
 	{'Asphyxiate', 'target.range<=20&cooldown(Mind Freeze).remains>gcd&!prev_gcd(Mind Freeze)'},
-	{'Arcane Torrent', 'target.range<=8&cooldown(Mind Freeze).remains>gcd&!prev_gcd(Mind Freeze)'},
+	{'Arcane Torrent', 'target.inMelee&cooldown(Mind Freeze).remains>gcd&!prev_gcd(Mind Freeze)'},
 }
 
 local xCombat = {
 	{'Marrowrend', 'player.buff(Bone Shield).duration<=3'},
 	{'Blood Boil', '!target.debuff(Blood Plague)'},
 	-- DnD here w/ crimson scourge proc
-	{'Death and Decay', 'player.buff(Crimson Scourge)&talent(2,1)', 'target.ground'},
+	{'Death and Decay', 'player.buff(Crimson Scourge)&talent(2,1)', 'player.ground'},
 	{'Death Strike', 'player.runicpower>=75'},
 	{'Marrowrend', 'player.buff(Bone Shield).count<=6'},
 	-- DnD here 3 or more runes and usiwwwwng talent
@@ -65,10 +61,9 @@ local xCombat = {
 }
 
 local inCombat = {
-	--{_Zylla, 'toggle(AutoTarget)'},
 	{Util},
 	{Keybinds},
-	{Interrupts},
+	{Interrupts, 'target.interruptAt(50)&toggle(Interrupts)&target.infront&target.inMelee'},
 	{Survival},
 	{xCombat},
 }

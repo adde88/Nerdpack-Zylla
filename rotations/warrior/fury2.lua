@@ -13,7 +13,7 @@ local exeOnLoad = function()
 	 Zylla.ExeOnLoad()
 
 	print("|cffADFF2F ----------------------------------------------------------------------|r")
-	print("|cffADFF2F --- |rWarrior |cffADFF2FFury |r")
+	print("|cffADFF2F --- |rWarrior |cffADFF2FFury[2] - (alternative) |r")
 	print("|cffADFF2F --- |rRecommended Talents: 1/2 - 2/2 - 3/3 - 4/2 - 5/1 - 6/3 - 7/3")
 	print("|cffADFF2F ----------------------------------------------------------------------|r")
 
@@ -55,7 +55,7 @@ local AoE = {
 
 local ST = {
 	{'Bloodthirst', 'player.buff(Fujieda\'s Fury)&player.buff(Fujieda\'s Fury).stack<2'},
-	{'Execute', '{artifact(Juggernaut).enabled&{!player.buff(Juggernaut)||player.buff(Juggernaut).remains<2}}||player.buff(Stone Heart)'},
+	{'Execute', '{!player.buff(Juggernaut)||player.buff(Juggernaut).remains<2}||player.buff(Stone Heart)'},
 	{'Rampage', 'player.rage=100&{target.health>20||{target.health<20&!talent(5,1)}||{player.buff(Massacre)&player.buff(Enrage).remains<1}}'},
 	{'Berserker Rage', 'talent(3,2)&spell(Odyn\'s Fury).cooldown<gcd&!player.buff(Enrage)'},
 	{'Dragon Roar', '!spell(Odyn\'s Fury).cooldown<=10||spell(Odyn\'s Fury).cooldown<3'},
@@ -67,7 +67,7 @@ local ST = {
 	{'Execute', 'talent(6,3)||{!talent(6,3)&player.rage>50}'},
 	{'Bloodthirst', '!player.buff(Enrage)'},
 	{'Raging Blow', '!player.buff(Enrage)'},
-	{'Execute', 'artifact(Juggernaut).enabled'},
+	{'Execute'},
 	{'Raging Blow'},
 	{'Bloodthirst'},
 	{'Furious Slash'},

@@ -19,10 +19,6 @@ local exeOnLoad = function()
 
 end
 
-local _Zylla = {
-    {'/targetenemy [dead][noharm]', '{target.dead||!target.exists}&!player.area(40).enemies=0'},
-}
-
 local PreCombat = {
 
 }
@@ -75,7 +71,7 @@ local inCombat = {
 	{Survival, 'player.health<100'},
 	{Cooldowns, 'toggle(Cooldowns)'},
 	{'Bear Form', 'form~=1'},
-	{xCombat, 'target.range<8&target.infront'}
+	{xCombat, 'target.inMelee&target.infront'}
 }
 
 local outCombat = {

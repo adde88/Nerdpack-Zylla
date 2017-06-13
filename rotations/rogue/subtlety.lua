@@ -95,9 +95,9 @@ local Survival ={
 local inCombat = {
 	--{_Zylla, 'toggle(AutoTarget)'},
 	{Keybinds},
-	{Interrupts, 'target.interruptAt(47)&toggle(Interrupts)&target.infront&target.range<8'},
+	{Interrupts, 'target.interruptAt(47)&toggle(Interrupts)&target.infront&target.inMelee'},
 	{Survival, 'player.health<100'},
-	{xCombat, 'target.range<8&target.infront'},
+	{xCombat, 'target.inMelee&target.infront'},
 }
 
 local outCombat = {

@@ -19,10 +19,6 @@ local exeOnLoad = function()
 	
 end
 
-local _Zylla = {
-    {'/targetenemy [dead][noharm]', '{target.dead||!target.exists}&!player.area(40).enemies=0'},
-}
-
 local Survival = {
 
 }
@@ -49,12 +45,11 @@ local ST = {
 }
 
 local inCombat = {
-	--{_Zylla, 'toggle(AutoTarget)'},
 	{Keybinds},
 	{Survival, 'player.health<100'},
 	{Cooldowns, 'toggle(Cooldowns)'},
-	{AoE, {'toggle(AoE)&player.area(8).enemies>=3'}},
-	{ST, {'target.range<8&target.infront'}}
+	{AoE, 'toggle(AoE)&player.area(8).enemies>=3'},
+	{ST, 'target.inMelee&target.infront'}
 }
 
 local Keybinds = {

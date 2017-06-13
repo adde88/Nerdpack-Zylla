@@ -19,8 +19,8 @@ local exeOnLoad = function()
 
 		NeP.Interface:AddToggle({
 		key='opener',
-		name='opener',
-		text='If enabled it will open with Ambush. If not Cheap Shot is used.',
+		name='Opener',
+		text='If Enabled we will Open with Ambush when Stealthed. If not Cheap Shot will be used.',
 		icon='Interface\\Icons\\ability_rogue_ambush',
 	})
 	
@@ -43,21 +43,21 @@ local Util = {
 }
 
 local Interrupts = {
-	{'Kick', 'target.inmelee'},
+	{'Kick', 'target.inMelee'},
 	{'Between the Eyes', 'target.range<=20&cooldown(Kick).remains>gcd&combo_points>0'},
 	{'Blind', 'target.range<=15&cooldown(Kick).remains>gcd&cooldown(Between the Eyes)>gcd'},
 	{'Cloak of Shadows', 'cooldown(Kick).remains>gcd&cooldown(Between the Eyes)>gcd&cooldown(Blind)>gcd'},
 }
 
 local Build = {
-	{'Ghostly Strike', 'target.inmelee&combo_points.deficit>=1&target.debuff(Ghostly Strike).duration<2'},
+	{'Ghostly Strike', 'target.inMelee&combo_points.deficit>=1&target.debuff(Ghostly Strike).duration<2'},
 	{'Pistol Shot', 'target.range<=20&player.buff(Opportunity)&combo_points<5'},
-	{'Saber Slash', 'target.inmelee&{combo_points<5||{combo_points<=5&player.buff(Broadsides)}}'},
+	{'Saber Slash', 'target.inMelee&{combo_points<5||{combo_points<=5&player.buff(Broadsides)}}'},
 }
 
 local Finishers = {
 	{'Between the Eyes', 'target.range<=20&combo_points>=5&player.buff(Shark Infested Waters)'},
-	{'Run Through', 'target.inmelee&combo_points>=5'},
+	{'Run Through', 'target.inMelee&combo_points>=5'},
 	{'Death from Above', 'talent(7,3)&target.area(8).enemies>=5&combo_points>=5'},
 	{'Slice and Dice', 'talent(7,1)&combo_points>=5&player.buff(Slice and Dice).remains<=2'},
 }
@@ -69,7 +69,7 @@ local Blade_Flurry = {
 
 local Cooldowns = {
 	{'Cannonball Barrage', 'target.area(10).enemies<=3', 'target.ground'},
-	{'Adrenaline Rush', 'target.inmelee&energy.deficit>0'},
+	{'Adrenaline Rush', 'target.inMelee&energy.deficit>0'},
 	{'Marked for Death', 'talent(7,2)&{combo_points<=5&player.energy>=26}||pull_timer<=10'},
 	{'Curse of the Dreadblades', 'combo_points.deficit>=4&{!talent(1,1)||target.debuff(Ghostly Strike)}'},
 	{'Killing Spree', 'talent(6,3)&energy.time_to_max>5||player.energy<15'},
@@ -104,8 +104,8 @@ local inCombat = {
 
 local outCombat = {
 	{'Stealth', '!player.buff&!player.buff(Vanish)&!nfly'},
-	{'Ambush', 'target.enemy&target.inmelee&target.infront&player.buff(Stealth)&toggle(opener)'},
-	{'Cheap Shot', 'target.enemy&target.inmelee&target.infront&player.buff(Stealth)&!toggle(opener)'},
+	{'Ambush', 'target.enemy&target.inMelee&target.infront&player.buff(Stealth)&toggle(opener)'},
+	{'Cheap Shot', 'target.enemy&target.inMelee&target.infront&player.buff(Stealth)&!toggle(opener)'},
 	{Keybinds},
 	{TricksofTrade},
 }

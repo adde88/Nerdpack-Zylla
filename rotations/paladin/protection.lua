@@ -47,7 +47,7 @@ local Keybinds = {
 local Interrupts = {
 	{'Rebuke'},
 	{'Hammer of Justice', 'cooldown(Rebuke).remains>gcd'},
-	{'Arcane Torrent', 'target.range<=8&spell(Rebuke).cooldown>gcd&!prev_gcd(Rebuke)'},
+	{'Arcane Torrent', 'target.inMelee&spell(Rebuke).cooldown>gcd&!prev_gcd(Rebuke)'},
 }
 
 local Survival ={
@@ -61,7 +61,7 @@ local PreCombat = {
 
 local Cooldowns = {
 	{'Seraphim', 'talent(7,2)&spell(Shield of the Righteous).charges>=2'},
-	{'Shield of the Righteous', 'target.range<8&target.infront&{!talent(7,2)||spell(Shield of the Righteous).charges>2}&!{player.buff(Eye of Tyr)&player.buff(Aegis of Light)&player.buff(Ardent Defender)&player.buff(Guardian of Ancient Kings)&player.buff(Divine Shield)}'},
+	{'Shield of the Righteous', 'target.inMelee&target.infront&{!talent(7,2)||spell(Shield of the Righteous).charges>2}&!{player.buff(Eye of Tyr)&player.buff(Aegis of Light)&player.buff(Ardent Defender)&player.buff(Guardian of Ancient Kings)&player.buff(Divine Shield)}'},
 	{'Bastion of Light', 'talent(2,2)&spell(Shield of the Righteous).charges<1'},
 	{'Light of the Protector', 'player.health<40'},
 	{'Hand of the Protector', 'talent(5,1)&player.health<40'},
@@ -102,7 +102,7 @@ local inCombat = {
 	{Util},
 	{Keybinds},
 	{Survival, 'player.health<100'},
-	{Interrupts, 'target.interruptAt(50)&toggle(Interrupts)&target.infront&target.range<=8'},
+	{Interrupts, 'target.interruptAt(50)&toggle(Interrupts)&target.infront&target.inMelee'},
 	{Cooldowns, 'toggle(Cooldowns)'},
 	{AoE, 'toggle(AoE)&player.area(8).enemies>=3'},
 	{ST, 'target.infront'}

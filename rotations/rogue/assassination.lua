@@ -42,7 +42,7 @@ local Util = {
 local Interrupts = {
 	{'Kick', 'target.inMelee'},
 	{'Kidney Shot', 'target.inMelee&cooldown(Kick).remains>gcd&!player.lastcast(Kick)&player.combopoints>0'},
-	{'Arcane Torrent', 'target.range<=8&spell(Kick).cooldown>gcd&!prev_gcd(Kick)'},
+	{'Arcane Torrent', 'target.inMelee&spell(Kick).cooldown>gcd&!prev_gcd(Kick)'},
 }
 
 local preCombat = {

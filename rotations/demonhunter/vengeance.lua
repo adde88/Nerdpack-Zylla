@@ -13,10 +13,6 @@ local exeOnLoad = function()
 
 end
 
-local _Zylla = {
-    {'/targetenemy [dead][noharm]', '{target.dead||!target.exists}&!player.area(40).enemies=0'},
-}
-
 local Util = {
 	-- ETC.
 	{'%pause' , 'player.debuff(200904)||player.debuff(Sapped Soul)'}, -- Vault of the Wardens, Sapped Soul
@@ -29,13 +25,13 @@ local Keybinds = {
 }
 
 local Interrupts = {
-	{'Consume Magic', 'target.interruptAt(50)&target.infront&target.range<=8'},
-	{'Sigil of Silence', 'target.interruptAt(1)&target.range<=29&spell(Consume Magic).cooldown>gcd&!prev_gcd(Consume Magic)', 'target.ground'},
-	{'Arcane Torrent', 'target.interruptAt(50)&target.infront&target.range<=8&spell(Consume Magic).cooldown>gcd&!prev_gcd(Consume Magic)'},
+	{'Consume Magic', 'target.interruptAt(50)&target.infront&target.inMelee'},
+	{'Sigil of Silence', 'target.interruptAt(1)&target.range<=29&spell(Consume Magic).cooldown>gcd&!prev_gcd(Consume Magic)', 'player.ground'},
+	{'Arcane Torrent', 'target.interruptAt(50)&target.infront&target.inMelee&spell(Consume Magic).cooldown>gcd&!prev_gcd(Consume Magic)'},
 }
 
 local ST = {
-	{'Sigil of Flame', 'target.range<=15&!target.debuff(Sigil of Flame)', 'target.ground'},
+	{'Sigil of Flame', 'target.range<=15&!target.debuff(Sigil of Flame)', 'player.ground'},
 	{'Fiery Brand', '!player.buff(Demon Spikes)&!player.buff(Metamorphosis)'},
 	{'Demon Spikes', '{spell(Demon Spikes)charges=2||!player.buff(Demon Spikes)}&!target.debuff(Fiery Brand)&!player.buff(Metamorphosis)'},
 	{'!Empower Wards', 'target.casting.percent>80'},
@@ -61,12 +57,11 @@ local Ranged = {
 }
 
 local inCombat = {
-	--{_Zylla, 'toggle(AutoTarget)'},
 	{Util},
 	{Keybinds},
 	{Interrupts, 'toggle(Interrupts)'},
-	{Ranged, 'target.range>8&target.range<=30'},
-	{ST, 'target.infront&target.range<=8'}
+	{Ranged, '!target.inMelee&target.range<=30'},
+	{ST, 'target.infront&target.inMelee'}
 }
 
 local outCombat = {

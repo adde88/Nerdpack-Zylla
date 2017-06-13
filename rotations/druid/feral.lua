@@ -24,10 +24,6 @@ local exeOnLoad = function()
 	print('| This routine does not work at the moment...')
 end
 
-local _Zylla = {
-    {'/targetenemy [dead][noharm]', '{target.dead||!target.exists}&!player.area(40).enemies=0'},
-}
-
 -- Pool START
 
 local Bear_Heal = {
@@ -155,14 +151,13 @@ local Survival = {
 }
 
 local inCombat = {
-	--{_Zylla, 'toggle(AutoTarget)'},
 	{Keybinds},
-	{Interrupts, 'target.interruptAt(43)&toggle(Interrupts)&target.infront&target.range<=8'},
+	{Interrupts, 'target.interruptAt(43)&toggle(Interrupts)&target.infront&target.inMelee'},
 	{Survival, 'player.health<100'},
 	{'Cat Form', '!player.buff(Frenzied Regeneration)&{!player.buff(Cat Form)&{!player.buff(Travel Form)||player.area(8).enemies>=1}}'},
 	{Cooldowns, '!player.buff(Frenzied Regeneration)&toggle(Cooldowns)'},
-	{Moonfire, 'talent(1,3)&target.range>8&target.range<=40&target.infront&!player.buff(Prowl)&!target.debuff(Moonfire)'},
-	{xCombat, '!player.buff(Frenzied Regeneration)&target.range<8&target.infront'},
+	{Moonfire, 'talent(1,3)&!target.inMelee&target.range<=40&target.infront&!player.buff(Prowl)&!target.debuff(Moonfire)'},
+	{xCombat, '!player.buff(Frenzied Regeneration)&target.inMelee&target.infront'},
 }
 
 local outCombat = {

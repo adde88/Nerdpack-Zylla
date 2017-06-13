@@ -14,19 +14,15 @@ local exeOnLoad = function()
 	 Zylla.ExeOnLoad()
 
 	print("|cffADFF2F ----------------------------------------------------------------------|r")
-	print("|cffADFF2F --- |rWARRIOR |cffADFF2FArms |r")
+	print("|cffADFF2F --- |rWarrior |cffADFF2FArms |r")
 	print("|cffADFF2F --- |rRecommended Talents: 1/1 - 2/3 - 3/3 - 4/2 - 5/3 - 6/1 - 7/1")
 	print("|cffADFF2F ----------------------------------------------------------------------|r")
 
 end
 
-local _Zylla = {
-    {'/targetenemy [dead][noharm]', '{target.dead||!target.exists}&!player.area(40).enemies=0'},
-}
-
 local PreCombat = {
 	
-	--{'Charge', 'target.range>8&target.range<=25&target.infront'},
+	--{'Charge', '!target.inMelee&target.range<=25&target.infront'},
 }
 
 
@@ -144,20 +140,19 @@ local Keybinds = {
 
 local Interrupts = {
 	{'Pummel'},
-	{'Arcane Torrent', 'target.range<=8&cooldown(Pummel).remains>gcd&!prev_gcd(Pummel)'},
+	{'Arcane Torrent', 'target.inMelee&cooldown(Pummel).remains>gcd&!prev_gcd(Pummel)'},
 }
 
 local inCombat = {
-	--{_Zylla, 'toggle(AutoTarget)'},
 	{Keybinds},
-	{Interrupts, 'target.interruptAt(50)&toggle(Interrupts)&target.infront&target.range<=8'},
+	{Interrupts, 'target.interruptAt(50)&toggle(Interrupts)&target.infront&target.inMelee'},
 	{Survival, 'player.health<100'},
-	{Cooldowns, 'toggle(Cooldowns)&target.range<8'},
-	{Util, 'target.range<8'},
+	{Cooldowns, 'toggle(Cooldowns)&target.inMelee'},
+	{Util, 'target.inMelee'},
 	{Cleave, 'toggle(aoe)&player.area(8).enemies>=2&talent(1,3)'},
 	{AoE, 'toggle(aoe)&player.area(8).enemies>=5&!talent(1,3)'},
-	{Execute, 'target.range<8&target.infront&target.health<=20&player.area(8).enemies<5'},
-	{ST, 'target.range<8&target.infront&target.health>20'}
+	{Execute, 'target.inMelee&target.infront&target.health<=20&player.area(8).enemies<5'},
+	{ST, 'target.inMelee&target.infront&target.health>20'}
 }
 
 local outCombat = {

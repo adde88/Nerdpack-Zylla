@@ -41,7 +41,7 @@ local inCombat = {
 	{Survival, 'player.health<100'},
 	{Cooldowns, 'toggle(Cooldowns)'},
 	{AoE, {'toggle(AoE)', 'player.area(8).enemies>=3'}},
-	{ST, {'target.range<40', 'target.infront'}}
+	{ST, {'target.range<=40', 'target.infront'}}
 }
 
 local outCombat = {

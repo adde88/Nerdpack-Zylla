@@ -9,6 +9,7 @@ local GUI = {
 	{type = 'checkbox', text = 'Pause Enabled', key = 'kPause', default = true},
 	{type = 'checkbox', text = 'Use Trinket #1', key = 'kT1', default = false},
 	{type = 'checkbox', text = 'Use Trinket #2', key = 'kT2', default = false}
+	{type = 'checkbox', text = 'Use Timewarp', key = 'kTW', default = false},
 }
 
 local exeOnLoad = function()
@@ -20,10 +21,6 @@ local exeOnLoad = function()
 	print('|cffADFF2F ----------------------------------------------------------------------|r')
 
 end
-
-local _Zylla = {
-    {"/targetenemy [dead][noharm]", "{target.dead||!target.exists}&!player.area(40).enemies=0" }
-}
 
 local Keybinds = {
 	{'%pause', 'keybind(lshift)&UI(kPause)'},
@@ -46,12 +43,12 @@ local PreCombat = {
 
 local Interrupts = {
 	{'Counterspell'},
-	{'Arcane Torrent', 'target.range<=8&spell(Counterspell).cooldown>gcd&!player.lastcast(Counterspell)'}
+	{'Arcane Torrent', 'target.inMelee&spell(Counterspell).cooldown>gcd&!player.lastcast(Counterspell)'}
 }
-
 
 local Cooldowns = {
 	--# Executed every time the actor is available.
+	{'Time Warp', 'UI(kTW)&{xtime=0&!player.buff(Bloodlust)}||{!player.buff(Bloodlust)&xequipped(132410)}'},
 }
 
 local Survival = {
@@ -122,7 +119,6 @@ local xCombat = {
 }
 
 local inCombat = {
-	--{_Zylla, 'toggle(AutoTarget)'},
 	{Util},
 	{Keybinds},
 	{Trinkets},

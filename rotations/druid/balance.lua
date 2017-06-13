@@ -19,10 +19,6 @@ local exeOnLoad = function()
 
 end
 
-local _Zylla = {
-    {'/targetenemy [dead][noharm]', '{target.dead||!target.exists}&!player.area(40).enemies=0'},
-}
-
 local PreCombat = {
 	--# Executed before combat begins. Accepts non-harmful actions only.
 	{'Moonkin Form', '!player.buff(Moonkin Form)&!player.buff(Travel Form)'},
@@ -147,12 +143,11 @@ local Cooldowns = {
 }
 
 local inCombat = {
-	--{_Zylla, 'toggle(AutoTarget)'},
 	{Keybinds},
 	{Interrupts, 'target.interruptAt(50)&toggle(Interrupts)&target.infront&target.range<=40'},
 	{Survival, 'player.health<100'},
 	{Cooldowns, 'toggle(Cooldowns)'},
-	{xCombat, 'target.range<40&target.infront'},
+	{xCombat, 'target.range<=40&target.infront'},
 }
 
 local outCombat = {

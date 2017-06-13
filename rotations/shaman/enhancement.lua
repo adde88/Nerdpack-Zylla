@@ -92,8 +92,8 @@ local inCombat = {
 	{Survival, 'player.health<100'},
 	{Cooldowns, 'toggle(Cooldowns)'},
 	{AoE, {'toggle(AoE)', 'player.area(8).enemies>=3'}},
-	{xCombat, 'target.range<8&target.infront'},
-	{Ranged, 'target.range>8&target.range<40&target.infront'}
+	{xCombat, 'target.inMelee&target.infront'},
+	{Ranged, '!target.inMelee&target.range<=40&target.infront'}
 }
 
 local outCombat = {

@@ -102,7 +102,7 @@ local DPS = {
 	{'Holy Shock', 'UI(O_HS)', 'target'},
 	{'Holy Prism', nil, 'target'},
 	{'Judgment'},
-	{'Crusader Strike', 'target.range<=8'},
+	{'Crusader Strike', 'target.inMelee'},
 }
 
 local Tank = {

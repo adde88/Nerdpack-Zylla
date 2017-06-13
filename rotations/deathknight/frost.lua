@@ -28,10 +28,6 @@ local exeOnLoad = function()
 
 end
 
-local _Zylla = {
-    {'/targetenemy [dead][noharm]', '{target.dead||!target.exists}&!player.area(40).enemies=0'},
-}
-
 local Util = {
 	-- ETC.
 	{'%pause' , 'player.debuff(200904)||player.debuff(Sapped Soul)'}, -- Vault of the Wardens, Sapped Soul
@@ -104,10 +100,10 @@ local Generic = {
 }
 
 local Shatter = {
-	{'Frost Strike', ''},
-	{'Howling Blast', ''},
-	{'Howling Blast', ''},
-	{'Frost Strike', ''},
+	{'Frost Strike'},
+	{'Howling Blast'},
+	{'Howling Blast'},
+	{'Frost Strike'},
 	{Core},
 	{BoS_check},
 }
@@ -140,18 +136,17 @@ local Keybinds = {
 
 local Interrupts = {
 	{'Mind Freeze'},
-	{'Arcane Torrent', 'target.range<=8&spell(Mind Freeze).cooldown>gcd&!prev_gcd(Mind Freeze)'},
+	{'Arcane Torrent', 'target.inMelee&spell(Mind Freeze).cooldown>gcd&!prev_gcd(Mind Freeze)'},
 }
 
 local inCombat = {
-	--{_Zylla, 'toggle(AutoTarget)'},
 	{Util},
 	{Keybinds},
 	{Interrupts, 'target.interruptAt(50)&toggle(Interrupts)&target.infront&target.range<=15'},
 	{Survival, 'player.health<100'},
-	{Cooldowns, 'toggle(Cooldowns)&target.range<8'},
-	{MACHINEGUN, 'toggle(xMACHINEGUN)&target.range<8&target.infront'},
-	{xCombat, '!toggle(xMACHINEGUN)&target.range<8&target.infront'}
+	{Cooldowns, 'toggle(Cooldowns)&target.inMelee'},
+	{MACHINEGUN, 'toggle(xMACHINEGUN)&target.inMelee&target.infront'},
+	{xCombat, '!toggle(xMACHINEGUN)&target.inMelee&target.infront'}
 }
 
 local outCombat = {

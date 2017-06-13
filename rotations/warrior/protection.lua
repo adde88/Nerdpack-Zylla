@@ -16,7 +16,7 @@ local exeOnLoad = function()
 	Zylla.ExeOnLoad()
 
 	print("|cffADFF2F ----------------------------------------------------------------------|r")
-	print("|cffADFF2F --- |rWARRIOR |cffADFF2FProtection |r")
+	print("|cffADFF2F --- |rWarrior |cffADFF2FProtection |r")
 	print("|cffADFF2F --- |rRecommended Talents: 1/1 - 2/1 - 3/2 - 4/2 - 5/3 - 6/1 - 7/2")
 	print("|cffADFF2F ----------------------------------------------------------------------|r")
 	--[[
@@ -32,9 +32,9 @@ end
 local _Zylla = {
     {"/targetenemy [dead][noharm]", "UI(kAutoTarget)&{target.dead||!target.exists}" },
 	{'Impending Victory', '{!player.buff(Victorious)&player.rage>10&player.health<=85}||{player.buff(Victorious)&player.health<=70}'},
-	{'Heroic Throw', 'target.range>8&target.range<=30&target.infront'},
+	{'Heroic Throw', '!target.inMelee&target.range<=30&target.infront'},
 	{'Shockwave', 'player.area(6).enemies>=3'},
-	{'Intercept', 'target.range>8&target.range<25&target.enemy&!prev_gcd(Heroic Leap)&UI(kIntercept)&target.alive'},
+	{'Intercept', '!target.inMelee&target.range<25&target.enemy&!prev_gcd(Heroic Leap)&UI(kIntercept)&target.alive'},
 }
 
 local Util = {
@@ -49,10 +49,10 @@ local Keybinds = {
 }
 
 local Interrupts = {
-	{'Pummel', 'target.infront&target.range<=8'},
-	{'Arcane Torrent', 'target.range<=8&spell(Pummel).cooldown>gcd&!prev_gcd(Pummel)'},
-	{'Shockwave', 'talent(1,1)&target.infront&!target.immune(stun)&spell(Pummel).cooldown>gcd&!prev_gcd(Pummel)&target.infront&target.range<=8'},
-	{'Spell Reflection', '{target.range<=8&spell(Pummel).cooldown>gcd&!prev_gcd(Pummel)}||{target.range>=10&!spell(Pummel).cooldown}'}
+	{'Pummel', 'target.infront&target.inMelee'},
+	{'Arcane Torrent', 'target.inMelee&spell(Pummel).cooldown>gcd&!prev_gcd(Pummel)'},
+	{'Shockwave', 'talent(1,1)&target.infront&!target.immune(stun)&spell(Pummel).cooldown>gcd&!prev_gcd(Pummel)&target.infront&target.inMelee'},
+	{'Spell Reflection', '{target.inMelee&spell(Pummel).cooldown>gcd&!prev_gcd(Pummel)}||{target.range>=10&!spell(Pummel).cooldown}'}
 }
 
 local Trinkets = {
@@ -66,8 +66,8 @@ local Cooldowns = {
 
 local PreCombat = {
 	--# Executed before combat begins. Accepts non-harmful actions only.
-	{'Intercept', 'target.range>8&target.range<25&target.enemy&!prev_gcd(Heroic Leap)&UI(kIntercept)&target.alive'},
-	{'Heroic Throw', 'target.range>8&target.range<=30&target.infront&target.alive&target.enemy&!UI(kIntercept'}
+	{'Intercept', '!target.inMelee&target.range<25&target.enemy&!prev_gcd(Heroic Leap)&UI(kIntercept)&target.alive'},
+	{'Heroic Throw', '!target.inMelee&target.range<=30&target.infront&target.alive&target.enemy&!UI(kIntercept'}
 }
 
 local Something = {
@@ -110,7 +110,7 @@ local inCombat = {
 	{Interrupts, 'target.interruptAt(50)&toggle(Interrupts)'},
 	{Cooldowns, 'toggle(Cooldowns)'},
 	{Trinkets},
-	{ST, 'target.range<8&target.infront'},
+	{ST, 'target.inMelee&target.infront'},
 }
 
 local outCombat = {

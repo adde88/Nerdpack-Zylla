@@ -6,7 +6,7 @@ local _, Zylla = ...
 	{type = 'text', 	text = 'Left Alt: ', align = 'center'},
 	{type = 'text', 	text = 'Right Alt: ', align = 'center'},
 	{type = 'checkbox', text = 'Pause Enabled', key = 'kPause', default = true},
-	
+	{type = 'checkbox', text = 'Use Timewarp', key = 'kTW', default = false},
 } 
 
 local exeOnLoad = function()
@@ -24,22 +24,17 @@ local exeOnLoad = function()
 
 end
 
-local _Zylla = {
-    {'/targetenemy [dead][noharm]', '{target.dead||!target.exists}&!player.area(40).enemies=0'},
-}
-
 local PreCombat = {
 	{'Summon Water Elemental', '!pet.exists'},
 }
 
 local Cooldowns = {
-	--{'Time Warp', '{xtime=0&!player.buff(Bloodlust)}||{!player.buff(Bloodlust)&xequipped(132410)}'},
+	{'Time Warp', 'UI(kTW)&{xtime=0&!player.buff(Bloodlust)}||{!player.buff(Bloodlust)&xequipped(132410)}'},
 	{'Rune of Power', '!player.buff(Rune of Power)&{cooldown(Icy Veins).remains<cooldown(Rune of Power).cast_time||cooldown(Rune of Power).charges<1.9&cooldown(Icy Veins).remains>10||player.buff(Icy Veins)||{target.time_to_die+5<cooldown(Rune of Power).charges*10}}'},
 	{'Icy Veins', '!player.buff(Icy Veins)'},
 	{'Mirror Image'},
 	{'Blood Fury'},
 	{'Berserking'},
-	--{'#Deadly Grace'},
 }
 
 local xCombat = {
@@ -74,7 +69,7 @@ local Keybinds = {
 
 local Interrupts = {
 	{'Counterspell'},
-	{'Arcane Torrent', 'target.range<=8&spell(Counterspell).cooldown>gcd&!prev_gcd(Counterspell)'},
+	{'Arcane Torrent', 'target.inMelee&spell(Counterspell).cooldown>gcd&!prev_gcd(Counterspell)'},
 }
 
 local Survival = {
@@ -82,11 +77,10 @@ local Survival = {
 }
 
 local inCombat = {
-	--{_Zylla, 'toggle(AutoTarget)'},
 	{Keybinds},
-	{Interrupts, 'target.interruptAt(50)&toggle(Interrupts)&target.infront&target.range<40'},
+	{Interrupts, 'target.interruptAt(50)&toggle(Interrupts)&target.infront&target.range<=40'},
 	{Survival, 'player.health<100'},
-	{xCombat, 'target.range<40&target.infront'}
+	{xCombat, 'target.range<=40&target.infront'}
 }
 
 local outCombat = {

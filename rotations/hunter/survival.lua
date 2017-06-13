@@ -150,8 +150,8 @@ local inCombat = {
 	{Interrupts, 'target.interruptAt(50)&toggle(Interrupts)&target.infront&target.range<=5'},
 	{Pet, 'pet.exists&pet.alive'},
 	{AoE, 'toggle(AoE)&player.area(8).enemies>=3'},
-	{Melee, 'target.range<8&target.infront'},
-	{Ranged, 'target.range>8&target.infront'},
+	{Melee, 'target.inMelee&target.infront'},
+	{Ranged, '!target.inMelee&target.infront'},
 }
 
 local outCombat = {

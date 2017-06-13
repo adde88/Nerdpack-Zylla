@@ -42,7 +42,7 @@ local Survival = {
 local Interrupts = {
 	{'Rebuke'},
 	{'Hammer of Justice', 'cooldown(Rebuke).remains>gcd'},
-	{'Arcane Torrent', 'target.range<=8&cooldown(Rebuke).remains>gcd&!prev_gcd(Rebuke)'},
+	{'Arcane Torrent', 'target.inMelee&cooldown(Rebuke).remains>gcd&!prev_gcd(Rebuke)'},
 }
 
 local Cooldowns = {
@@ -97,10 +97,10 @@ local inCombat = {
 	--{_Zylla, 'toggle(AutoTarget)'},
 	{Util},
 	{Keybinds},
-	{Interrupts, 'target.interruptAt(50)&toggle(Interrupts)&target.infront&target.range<=8'},
+	{Interrupts, 'target.interruptAt(50)&toggle(Interrupts)&target.infront&target.inMelee'},
 	{Survival, 'player.health<100'},
 	{Cooldowns, 'toggle(Cooldowns)'},
-	{xCombat, 'target.range<8&target.infront'},
+	{xCombat, 'target.inMelee&target.infront'},
 }
 
 local outCombat = {

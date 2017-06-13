@@ -18,10 +18,6 @@ local exeOnLoad = function()
 	print("|cffADFF2F ---------------------------------------------------------------------------|r")
 end
 
-local _Zylla = {
-    {'/targetenemy [dead][noharm]', '{target.dead||!target.exists}&!player.area(40).enemies=0'},
-}
-
 local Survival = {
 	{'Blur', 'player.health<=60'}
 }
@@ -39,7 +35,6 @@ local Cooldowns = {
 }
 
 local inCombat = {
-	--{_Zylla, 'toggle(AutoTarget)'},
 	{Keybinds},
 	{Survival, 'player.health<100'},
 	{Interrupts, 'target.interruptAt(50)'},
