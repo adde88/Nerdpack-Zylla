@@ -32,7 +32,7 @@ end
 local _Zylla = {
     {"/targetenemy [dead][noharm]", "UI(kAutoTarget)&{target.dead||!target.exists}" },
 	{'Impending Victory', '{!player.buff(Victorious)&player.rage>10&player.health<=85}||{player.buff(Victorious)&player.health<=70}'},
-	{'Heroic Throw', '!target.inMelee&target.range<=30&target.infront'},
+	{'Heroic Throw', '!target.inMelee&target.range<=30&target.inFront'},
 	{'Shockwave', 'player.area(6).enemies>=3'},
 	{'Intercept', '!target.inMelee&target.range<25&target.enemy&!prev_gcd(Heroic Leap)&UI(kIntercept)&target.alive'},
 }
@@ -49,9 +49,9 @@ local Keybinds = {
 }
 
 local Interrupts = {
-	{'Pummel', 'target.infront&target.inMelee'},
+	{'Pummel', 'target.inFront&target.inMelee'},
 	{'Arcane Torrent', 'target.inMelee&spell(Pummel).cooldown>gcd&!prev_gcd(Pummel)'},
-	{'Shockwave', 'talent(1,1)&target.infront&!target.immune(stun)&spell(Pummel).cooldown>gcd&!prev_gcd(Pummel)&target.infront&target.inMelee'},
+	{'Shockwave', 'talent(1,1)&target.inFront&!target.immune(stun)&spell(Pummel).cooldown>gcd&!prev_gcd(Pummel)&target.inFront&target.inMelee'},
 	{'Spell Reflection', '{target.inMelee&spell(Pummel).cooldown>gcd&!prev_gcd(Pummel)}||{target.range>=10&!spell(Pummel).cooldown}'}
 }
 
@@ -67,7 +67,7 @@ local Cooldowns = {
 local PreCombat = {
 	--# Executed before combat begins. Accepts non-harmful actions only.
 	{'Intercept', '!target.inMelee&target.range<25&target.enemy&!prev_gcd(Heroic Leap)&UI(kIntercept)&target.alive'},
-	{'Heroic Throw', '!target.inMelee&target.range<=30&target.infront&target.alive&target.enemy&!UI(kIntercept'}
+	{'Heroic Throw', '!target.inMelee&target.range<=30&target.inFront&target.alive&target.enemy&!UI(kIntercept'}
 }
 
 local Something = {
@@ -110,7 +110,7 @@ local inCombat = {
 	{Interrupts, 'target.interruptAt(50)&toggle(Interrupts)'},
 	{Cooldowns, 'toggle(Cooldowns)'},
 	{Trinkets},
-	{ST, 'target.inMelee&target.infront'},
+	{ST, 'target.inMelee&target.inFront'},
 }
 
 local outCombat = {

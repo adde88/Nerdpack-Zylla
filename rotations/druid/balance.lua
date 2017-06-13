@@ -144,10 +144,10 @@ local Cooldowns = {
 
 local inCombat = {
 	{Keybinds},
-	{Interrupts, 'target.interruptAt(50)&toggle(Interrupts)&target.infront&target.range<=40'},
+	{Interrupts, 'target.interruptAt(50)&toggle(Interrupts)&target.inFront&target.range<=40'},
 	{Survival, 'player.health<100'},
 	{Cooldowns, 'toggle(Cooldowns)'},
-	{xCombat, 'target.range<=40&target.infront'},
+	{xCombat, 'target.range<=40&target.inFront'},
 }
 
 local outCombat = {

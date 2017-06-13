@@ -33,9 +33,9 @@ end
 --[[
 UNIT.lastgcd(SPELL)
 UNIT.area(HEALTH, DISTANCE).heal>= #
-UNIT.area(HEALTH, DISTANCE).heal.infront>=#
-UNIT.area(DISTANCE).enemies.infront>=#
-UNIT.area(DISTANCE).friendly.infront>=#
+UNIT.area(HEALTH, DISTANCE).heal.inFront>=#
+UNIT.area(DISTANCE).enemies.inFront>=#
+UNIT.area(DISTANCE).friendly.inFront>=#
 ]]--
 
 NeP.FakeUnits:Add('lnbuff', function(num, buff)
@@ -84,7 +84,7 @@ local Keybinds = {
 local Cooldowns = {
 	{'Mindbender', nil, 'target'}, --Mind Bender for better Mana Regen and dps boost.
 	{'Power Infusion'}, --Power Infusion for some BOOOST YO!
-	{'Divine Star', 'player.area(20).enemies.infront>=3', 'target'}, -- Divine Star (if selected) for some small AoE dmg dealing.
+	{'Divine Star', 'player.area(20).enemies.inFront>=3', 'target'}, -- Divine Star (if selected) for some small AoE dmg dealing.
 	{'Light\'s Wrath', 'target.debuff(Schism)&player.buff(Overloaded with Light)', 'target'},
 
 	--{"#trinket1", { "player.buff(Power Infusion)", "!player.buff(Lethal On Board)" }}, --Eyasu's Mulligan's crit or haste

@@ -125,10 +125,10 @@ local inCombat = {
 	{Cooldowns, 'toggle(cooldowns)'},
 	{Emergency, 'lowest.health<=UI(G_CHP)&!player.casting(200652)'},
 	{Tank},
-	{DPS, 'toggle(dps)&target.enemy&target.infront&lowest.health>=UI(G_DPS)'},
+	{DPS, 'toggle(dps)&target.enemy&target.inFront&lowest.health>=UI(G_DPS)'},
 	{Moving, 'player.moving'},
 	{Healing, '!player.moving'},
-	{DPS, 'toggle(dps)&target.enemy&target.infront'},
+	{DPS, 'toggle(dps)&target.enemy&target.inFront'},
 }
 
 local outCombat = {

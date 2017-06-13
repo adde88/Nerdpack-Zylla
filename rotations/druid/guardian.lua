@@ -71,7 +71,7 @@ local inCombat = {
 	{Survival, 'player.health<100'},
 	{Cooldowns, 'toggle(Cooldowns)'},
 	{'Bear Form', 'form~=1'},
-	{xCombat, 'target.inMelee&target.infront'}
+	{xCombat, 'target.inMelee&target.inFront'}
 }
 
 local outCombat = {

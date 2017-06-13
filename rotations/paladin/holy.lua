@@ -118,9 +118,9 @@ local Encounters = {
 
 local AoE_Healing = {
 	{'Beacon of Virtue', 'lowestp.area(30,95).heal>=3&talent(7,3)'},
-	{'Rule of Law', 'area(22,90).heal.infront>=3&!player.buff&cooldown(Light of Dawn).remains<gcd'},
-	{'Light of Dawn', 'area(15,90).heal.infront>=3&player.buff(Rule of Law)'},
-	{'Light of Dawn', 'area(15,90).heal.infront>=3'},
+	{'Rule of Law', 'area(22,90).heal.inFront>=3&!player.buff&cooldown(Light of Dawn).remains<gcd'},
+	{'Light of Dawn', 'area(15,90).heal.inFront>=3&player.buff(Rule of Law)'},
+	{'Light of Dawn', 'area(15,90).heal.inFront>=3'},
 	{'Light of Dawn', 'player.buff(Divine Purpose)'},
 	{'Holy Prism', 'target.area(15,80).heal>=3'},
 	
@@ -234,11 +234,11 @@ local inCombat = {
 	{Cooldowns, 'toggle(cooldowns)'},
 	{Emergency, 'lowestp.health<=UI(G_CHP)&!player.casting(200652)'},
 	{Tank},
-	{DPS, 'toggle(dps)&target.enemy&target.infront&lowestp.health>=UI(G_DPS)'},
+	{DPS, 'toggle(dps)&target.enemy&target.inFront&lowestp.health>=UI(G_DPS)'},
 	{Moving, 'player.moving'},
 	{Mana_Restore, 'player.mana<=UI(P_MR)'},
 	{Healing, '!player.moving&player.mana>=UI(P_MR)'},
-	{DPS, 'toggle(dps)&target.enemy&target.infront'},
+	{DPS, 'toggle(dps)&target.enemy&target.inFront'},
 }
 
 local outCombat = {

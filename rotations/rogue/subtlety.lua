@@ -25,7 +25,7 @@ local _Zylla = {
 
 local PreCombat = {
 	{'Stealth', '!player.buff(Stealth)||!player.buff(Shadowmeld)'},
-	{'Shadowstrike', 'stealthed&target.range<=15&target.infront'},
+	{'Shadowstrike', 'stealthed&target.range<=15&target.inFront'},
 	--{'#Old War'},
 }
 
@@ -95,9 +95,9 @@ local Survival ={
 local inCombat = {
 	--{_Zylla, 'toggle(AutoTarget)'},
 	{Keybinds},
-	{Interrupts, 'target.interruptAt(47)&toggle(Interrupts)&target.infront&target.inMelee'},
+	{Interrupts, 'target.interruptAt(47)&toggle(Interrupts)&target.inFront&target.inMelee'},
 	{Survival, 'player.health<100'},
-	{xCombat, 'target.inMelee&target.infront'},
+	{xCombat, 'target.inMelee&target.inFront'},
 }
 
 local outCombat = {

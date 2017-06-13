@@ -77,7 +77,7 @@ local PreCombat = {
 	{_Regrowth, 'talent(7,2)&target.enemy&target.alive&!player.buff(Prowl)&!prev(Regrowth)&player.buff(Bloodtalons).stack<2'},
 	{'Cat Form', '!player.buff(Cat Form)&!player.buff(Travel Form)'},
  	{'Prowl', '!player.buff(Prowl)&target.enemy&target.alive'},
- 	{'Rake', 'player.buff(Prowl)&target.range<5&target.infront'},
+ 	{'Rake', 'player.buff(Prowl)&target.range<5&target.inFront'},
 }
 
 local SBT_Opener = {
@@ -152,12 +152,12 @@ local Survival = {
 
 local inCombat = {
 	{Keybinds},
-	{Interrupts, 'target.interruptAt(43)&toggle(Interrupts)&target.infront&target.inMelee'},
+	{Interrupts, 'target.interruptAt(43)&toggle(Interrupts)&target.inFront&target.inMelee'},
 	{Survival, 'player.health<100'},
 	{'Cat Form', '!player.buff(Frenzied Regeneration)&{!player.buff(Cat Form)&{!player.buff(Travel Form)||player.area(8).enemies>=1}}'},
 	{Cooldowns, '!player.buff(Frenzied Regeneration)&toggle(Cooldowns)'},
-	{Moonfire, 'talent(1,3)&!target.inMelee&target.range<=40&target.infront&!player.buff(Prowl)&!target.debuff(Moonfire)'},
-	{xCombat, '!player.buff(Frenzied Regeneration)&target.inMelee&target.infront'},
+	{Moonfire, 'talent(1,3)&!target.inMelee&target.range<=40&target.inFront&!player.buff(Prowl)&!target.debuff(Moonfire)'},
+	{xCombat, '!player.buff(Frenzied Regeneration)&target.inMelee&target.inFront'},
 }
 
 local outCombat = {

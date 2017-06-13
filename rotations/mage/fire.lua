@@ -122,10 +122,10 @@ local inCombat = {
 	{Util},
 	{Keybinds},
 	{Trinkets},
-	{Interrupts, 'target.interruptAt(50)&toggle(interrupts)&target.infront&target.range<=40'},
+	{Interrupts, 'target.interruptAt(50)&toggle(interrupts)&target.inFront&target.range<=40'},
 	{Cooldowns, 'toggle(cooldowns)'},
 	{Survival, 'player.health<100'},
-	{xCombat, 'target.range<=40&target.infront'}
+	{xCombat, 'target.range<=40&target.inFront'}
 }
 
 local outCombat = {

@@ -45,6 +45,8 @@ local _, Zylla = ...
 
 	-- GUI Survival&Potions
 	{type='header', text='Survival&Potions', align='center'},
+	{type='checkbox', text='Self Heal Below X%', key='k_SH', width=55, default= true},
+	{type='spinner', text='', key='k_SHspin', width=55, default=66},
 	{type='checkbox', text='Fade', key='s_F', width=55, default= false},
 	{type='checkbox', text='Power Word: Shield', key='s_PWS', width=55, default=false},
 	{type='spinner', text='', key='s_PWSspin', width=55, default=40},
@@ -64,6 +66,8 @@ local _, Zylla = ...
 	{type='spinner', text='', key='sup_GotNspin', width=55, default=20},
 	{type='checkbox', text='Power Word: Shield', key='sup_PWS', width=55, default=false},
 	{type='spinner', text='', key='sup_PWSspin', width=55, default=20},
+	{type='checkbox', text='Heal Party Below X%', key='k_PH', width=55, default= false},
+	{type='spinner', text='', key='k_PHspin', width=55, default=30},
 
 	-- GUI Keybinds
 	{type='header', text='Keybinds', align='center'},
@@ -109,10 +113,6 @@ local exeOnLoad=function()
 	--})
 end
 
-local _Zylla = {
-    {'/targetenemy [dead][noharm]', '{target.dead||!target.exists}&!player.area(40).enemies=0'},
-}
-
 local Util = {
 	-- ETC.
 	{'%pause' , 'player.debuff(200904)||player.debuff(Sapped Soul)'}, -- Vault of the Wardens, Sapped Soul
@@ -127,6 +127,8 @@ local Survival = {
 	{'!Dispersion', 'player.health<=UI(s_Dspin)&UI(s_D)'},
 	-- Gift of the Naaru usage if enabled in UI.
 	{'Gift of the Naaru', 'player.health<=UI(s_GotNspin)&UI(s_GotN)'},
+	-- Use self healing at X % if enabled in UI.
+	{'Shadow Mend', 'UI(k_SH)&player.health<=UI(k_SHspin)', 'player'},
 }
 
 local Potions = {
@@ -170,6 +172,9 @@ local Support = {
 	{'!Gift of the Naaru', 'lowest.health<=UI(sup_GotNspin)&UI(sup_GotN)', 'lowest'},
 	-- Power Word: Shield usage if enabled in UI.
 	{'!Power Word: Shield', 'lowest.health<=UI(sup_PWSspin)&UI(sup_PWS)', 'lowest'},
+	-- Heal Party Members Below X%
+	{'!Shadow Mend', 'UI(k_PH)&lowest.health<=UI(k_PHspin)&lowest.range<=40', 'lowest'},
+	
 }
 
 local Interrupts = {
@@ -384,7 +389,7 @@ local inCombat = {
 	{Insight, 'player.buff(Shadowy Insight)&{!player.channeling(Void Torrent)&{talent(7,1)&!player.insanity>=65}||{talent(7,3) ||talent(7,2)&!player.insanity=100}}||{player.moving&!player.buff(Surrender to Madness)}'},
 	{Keybinds},
 	{Trinkets, '!player.channeling(Void Torrent)'},
-	{Interrupts, 'toggle(interrupts)&target.interruptAt(80)&target.infront&target.range<=30&!player.channeling(Void Torrent)'},
+	{Interrupts, 'toggle(interrupts)&target.interruptAt(80)&target.inFront&target.range<=30&!player.channeling(Void Torrent)'},
 	--{Leveling, '!player.channeling(Void Torrent)&toggle(level)'},
 	{AOE, 'talent(7,2)&!player.channeling(Void Torrent)'}, 
 	{s2m2, "equipped(Mangaza's Madness)&player.buff(voidform)&!player.channeling(Void Torrent)&player.buff(Surrender to Madness)"},

@@ -22,7 +22,7 @@ end
 
 local PreCombat = {
 	
-	--{'Charge', '!target.inMelee&target.range<=25&target.infront'},
+	--{'Charge', '!target.inMelee&target.range<=25&target.inFront'},
 }
 
 
@@ -145,14 +145,14 @@ local Interrupts = {
 
 local inCombat = {
 	{Keybinds},
-	{Interrupts, 'target.interruptAt(50)&toggle(Interrupts)&target.infront&target.inMelee'},
+	{Interrupts, 'target.interruptAt(50)&toggle(Interrupts)&target.inFront&target.inMelee'},
 	{Survival, 'player.health<100'},
 	{Cooldowns, 'toggle(Cooldowns)&target.inMelee'},
 	{Util, 'target.inMelee'},
 	{Cleave, 'toggle(aoe)&player.area(8).enemies>=2&talent(1,3)'},
 	{AoE, 'toggle(aoe)&player.area(8).enemies>=5&!talent(1,3)'},
-	{Execute, 'target.inMelee&target.infront&target.health<=20&player.area(8).enemies<5'},
-	{ST, 'target.inMelee&target.infront&target.health>20'}
+	{Execute, 'target.inMelee&target.inFront&target.health<=20&player.area(8).enemies<5'},
+	{ST, 'target.inMelee&target.inFront&target.health>20'}
 }
 
 local outCombat = {

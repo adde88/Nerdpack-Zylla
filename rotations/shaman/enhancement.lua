@@ -88,12 +88,12 @@ local Keybinds = {
 local inCombat = {
 	--{_Zylla, 'toggle(AutoTarget)'},
 	{Keybinds},
-	{Interrupts, 'target.interruptAt(50)&toggle(Interrupts)&target.infront&target.range<=30'},
+	{Interrupts, 'target.interruptAt(50)&toggle(Interrupts)&target.inFront&target.range<=30'},
 	{Survival, 'player.health<100'},
 	{Cooldowns, 'toggle(Cooldowns)'},
 	{AoE, {'toggle(AoE)', 'player.area(8).enemies>=3'}},
-	{xCombat, 'target.inMelee&target.infront'},
-	{Ranged, '!target.inMelee&target.range<=40&target.infront'}
+	{xCombat, 'target.inMelee&target.inFront'},
+	{Ranged, '!target.inMelee&target.range<=40&target.inFront'}
 }
 
 local outCombat = {

@@ -67,7 +67,7 @@ local Interrupts = {
 
 local Player = {
 	{'!Drain Life', 'UI(S_DLE)&player.health<=UI(S_DL)', 'target'},
-	{'!Health Funnel', 'UI(S_HFE)&pet.exists&pet.health<=UI(S_HF)', 'pet'},
+	{'!Health Funnel', 'UI(S_HFE)&pet.alive&pet.health<=UI(S_HF)', 'pet'},
 }
 
 local Keybinds = {
@@ -125,7 +125,7 @@ local inCombat = {
 	{Survival},
 	{Player, '!player.moving'},
 	{Cooldowns, 'toggle(cooldowns)'},
-	{ST, 'target.infront&target.range<=40'},
+	{ST, 'target.inFront&target.range<=40'},
 }
 
 local outCombat = {

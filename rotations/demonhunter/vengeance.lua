@@ -25,9 +25,9 @@ local Keybinds = {
 }
 
 local Interrupts = {
-	{'Consume Magic', 'target.interruptAt(50)&target.infront&target.inMelee'},
+	{'Consume Magic', 'target.interruptAt(50)&target.inFront&target.inMelee'},
 	{'Sigil of Silence', 'target.interruptAt(1)&target.range<=29&spell(Consume Magic).cooldown>gcd&!prev_gcd(Consume Magic)', 'player.ground'},
-	{'Arcane Torrent', 'target.interruptAt(50)&target.infront&target.inMelee&spell(Consume Magic).cooldown>gcd&!prev_gcd(Consume Magic)'},
+	{'Arcane Torrent', 'target.interruptAt(50)&target.inFront&target.inMelee&spell(Consume Magic).cooldown>gcd&!prev_gcd(Consume Magic)'},
 }
 
 local ST = {
@@ -61,7 +61,7 @@ local inCombat = {
 	{Keybinds},
 	{Interrupts, 'toggle(Interrupts)'},
 	{Ranged, '!target.inMelee&target.range<=30'},
-	{ST, 'target.infront&target.inMelee'}
+	{ST, 'target.inFront&target.inMelee'}
 }
 
 local outCombat = {

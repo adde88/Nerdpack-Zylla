@@ -89,7 +89,7 @@ local Non_Patient_Sniper = {
 	{'Piercing Shot', 'talent(7,2)&player.focus>=100&target.area(8).enemies>=3&target.debuff(Vulnerable)'},
 	{'Sentinel', '!target.debuff(Hunter\'s Mark)&player.focus>30&!player.buff(Trueshot)'},
 	{'Sidewinders', 'target.debuff(Vulnerable).remains<gcd&xtime>6'},
-	{'Aimed Shot', 'xmoving=0&player.buff(Lock and Load)&player.area(50).enemies.infront<3'},
+	{'Aimed Shot', 'xmoving=0&player.buff(Lock and Load)&player.area(50).enemies.inFront<3'},
 	{'Marked Shot'},
 	{'Explosive Shot', 'talent(4,1)&target.area(8).enemies>=3'},
 	{'Sidewinders', '{{player.buff(Marking Targets)||player.buff(Trueshot)}&focus.deficit>70}||action(Sidewinders).charges>=1.9'},
@@ -121,9 +121,9 @@ local Opener = {
 }
 
 local Patient_Sniper = {
-	{'Marked Shot', '{talent(7,1)&talent(6,2)&player.area(50).enemies.infront>2}||target.debuff(Hunter\'s Mark).remains<2||{{target.debuff(Vulnerable)||talent(7,1)}&target.debuff(Vulnerable).remains<gcd)}'},
+	{'Marked Shot', '{talent(7,1)&talent(6,2)&player.area(50).enemies.inFront>2}||target.debuff(Hunter\'s Mark).remains<2||{{target.debuff(Vulnerable)||talent(7,1)}&target.debuff(Vulnerable).remains<gcd)}'},
 	{'Windburst', 'talent(7,1)&{!target.debuff(Hunter\'s Mark)||{target.debuff(Hunter\'s Mark).remains>action(Windburst).execute_time&focus+{focus.regen*target.debuff(Hunter\'s Mark).remains}>=50}}||player.buff(Trueshot)'},
-	{'Sidewinders', 'player.buff(Trueshot)&{{!player.buff(Marking Targets&player.buff(Trueshot).remains<2)}||{action(Sidewinders).charges>=1.9&{focus.deficit>70||player.area(50).enemies.infront>1}}}'},
+	{'Sidewinders', 'player.buff(Trueshot)&{{!player.buff(Marking Targets&player.buff(Trueshot).remains<2)}||{action(Sidewinders).charges>=1.9&{focus.deficit>70||player.area(50).enemies.inFront>1}}}'},
 	{'Multi-Shot', 'modifier.player.buff(Marking Targets)&!target.debuff(Hunter\'s Mark)&variable.use_multishot&focus.deficit>2*target.area(8).enemies+gcd*focus.regen'},
 	{'Aimed Shot', 'xmoving=0&player.buff(Lock and Load)&player.buff(Trueshot)&target.debuff(Vulnerable).remains>action(Aimed Shot).execute_time'},
 	{'Marked Shot', 'player.buff(Trueshot)&!talent(7,1)'},
@@ -132,7 +132,7 @@ local Patient_Sniper = {
 	{'Aimed Shot', 'xmoving=0&talent(7,1)&target.debuff(Hunter\'s Mark).remains>action(Aimed Shot).execute_time&target.debuff(Vulnerable).remains>action(Aimed Shot).execute_time&{player.buff(Lock and Load)||{player.focus+target.debuff(Hunter\'s Mark).remains*focus.regen>=80&player.focus+focus.regen*target.debuff(Vulnerable).remains>=80}}&{!talent(7,2)||{talent(7,2)&cooldown(Piercing Shot).remains>5}||player.focus>120}'},
 	{'Aimed Shot', 'xmoving=0&!talent(7,1)&target.debuff(Hunter\'s Mark).remains>action(Aimed Shot).execute_time&target.debuff(Vulnerable).remains>action(Aimed Shot).execute_time&{player.buff(Lock and Load)||{player.buff(Trueshot)&player.focus>=80}||{!player.buff(Trueshot)&player.focus+target.debuff(Hunter\'s Mark).remains*focus.regen>=80&player.focus+focus.regen*target.debuff(Vulnerable).remains>=80}}&{!talent(7,2)||{talent(7,2)&cooldown(Piercing Shot).remains>5}||player.focus>120}'},
 	{'Windburst', 'xmoving=0&!talent(7,1)&player.focus>80{!target.debuff(Hunter\'s Mark)||{target.debuff(Hunter\'s Mark).remains>action(Windburst).execute_time&focus+{focus.regen*target.debuff(Hunter\'s Mark).remains}>=50}}'},
-	{'Marked Shot', '{talent(7,1)&player.area(50).enemies.infront>1}||focus.deficit<50||player.buff(Trueshot)||{player.buff(Marking Targets)&{!talent(7,1)||cooldown(Sidewinders).charges>=1.2}}'},
+	{'Marked Shot', '{talent(7,1)&player.area(50).enemies.inFront>1}||focus.deficit<50||player.buff(Trueshot)||{player.buff(Marking Targets)&{!talent(7,1)||cooldown(Sidewinders).charges>=1.2}}'},
 	{'Piercing Shot', 'talent(7,2)&player.focus>80&target.area(8).enemies>=3&target.debuff(Vulnerable)'},
 	{'Sidewinders', 'variable.safe_to_build&{{player.buff(Trueshot)&focus.deficit>70}||action(Sidewinders).charges>=1.9}'},
 	{'Sidewinders', '{player.buff(Marking Targets)&!target.debuff(Hunter\'s Mark)&!player.buff(Trueshot)}||{cooldown(Sidewinders).charges>1&target.time_to_die<11}'},
@@ -169,9 +169,9 @@ local inCombat = {
 	{Keybinds},
 	{Trinkets},
 	{Survival},
-	{Interrupts, 'target.interruptAt(50)&toggle(Interrupts)&target.infront&target.range<=50'},
+	{Interrupts, 'target.interruptAt(50)&toggle(Interrupts)&target.inFront&target.range<=50'},
 	{Cooldowns, 'toggle(Cooldowns)'},
-	{xCombat,'target.range<50&target.infront'},
+	{xCombat,'target.range<50&target.inFront'},
 	{xPetCombat, 'UI(kPet)'},
 }
 

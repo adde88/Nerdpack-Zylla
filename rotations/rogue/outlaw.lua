@@ -96,16 +96,16 @@ local xCombat = {
 
 local inCombat = {
 	{Keybinds},
-	{Interrupts, 'target.interruptAt(70)&toggle(Interrupts)&target.infront'},
+	{Interrupts, 'target.interruptAt(70)&toggle(Interrupts)&target.inFront'},
 	{Survival, 'player.health<100'},
-	{xCombat, 'target.infront'},
+	{xCombat, 'target.inFront'},
 	{TricksofTrade},
 }
 
 local outCombat = {
 	{'Stealth', '!player.buff&!player.buff(Vanish)&!nfly'},
-	{'Ambush', 'target.enemy&target.inMelee&target.infront&player.buff(Stealth)&toggle(opener)'},
-	{'Cheap Shot', 'target.enemy&target.inMelee&target.infront&player.buff(Stealth)&!toggle(opener)'},
+	{'Ambush', 'target.enemy&target.inMelee&target.inFront&player.buff(Stealth)&toggle(opener)'},
+	{'Cheap Shot', 'target.enemy&target.inMelee&target.inFront&player.buff(Stealth)&!toggle(opener)'},
 	{Keybinds},
 	{TricksofTrade},
 }

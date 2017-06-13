@@ -101,12 +101,12 @@ local Interrupts = {
 local inCombat = {
 	{Util},
 	{Keybinds},
-	{Interrupts, 'target.interruptAt(50)&toggle(Interrupts)&target.infront&target.inMelee'},
+	{Interrupts, 'target.interruptAt(50)&toggle(Interrupts)&target.inFront&target.inMelee'},
 	{Survival, 'player.health<100'},
 	{Cooldowns, 'toggle(Cooldowns)&target.inMelee'},
 	{TwoTargets, 'toggle(aoe)&{player.area(8).enemies=2||player.area(8).enemies=3}'},
 	{AoE, 'toggle(aoe)&player.area(8).enemies>3'},
-	{ST, 'target.inMelee&target.infront'}
+	{ST, 'target.inMelee&target.inFront'}
 }
 
 local outCombat = {
