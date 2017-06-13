@@ -8,7 +8,7 @@ local GUI = {
 	{type = 'text', 	text = 'Right Alt:  ', align = 'center'},
 	{type = 'checkbox', text = 'Pause Enabled', key = 'kPause', default = true},
 	{type = 'checkbox', text = 'Use Trinket #1', key = 'kT1', default = false},
-	{type = 'checkbox', text = 'Use Trinket #2', key = 'kT2', default = false}
+	{type = 'checkbox', text = 'Use Trinket #2', key = 'kT2', default = false},
 	{type = 'checkbox', text = 'Use Timewarp', key = 'kTW', default = false},
 }
 

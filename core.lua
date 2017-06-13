@@ -1273,7 +1273,7 @@ NeP.FakeUnits:Add('Zylla_sck', function(debuff)
 end)
 
 -- - Zylla - Count items in bag 
-NeP.DSL:Register("xitems", function xitems(item)
+NeP.DSL:Register("xitems", function(item)
    local items = 0
    for bag=0,NUM_BAG_SLOTS do
       for slot=1,GetContainerNumSlots(bag) do
