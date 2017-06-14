@@ -68,6 +68,7 @@ local Survival = {
 }
 
 local Cooldowns = {
+	{Trinkets},
 	{'Bestial Wrath'},
 	{'Titan\'s Thunder', 'talent(2,2)||cooldown(Dire Beast).remains>=3||{player.buff(Bestial Wrath)&player.buff(Dire Beast)}'},
 }
@@ -112,7 +113,6 @@ local xPvP = {
 local inCombat = {
 	{Util},
 	{Keybinds},
-	{Trinkets},
 	{Survival, 'player.health<100'},
 	{Cooldowns, 'toggle(Cooldowns)'},
 	{Interrupts, 'target.interruptAt(50)&toggle(Interrupts)&target.inFront&target.range<=40'},
