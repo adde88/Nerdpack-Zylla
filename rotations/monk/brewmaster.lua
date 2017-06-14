@@ -32,10 +32,6 @@ local exeOnLoad=function()
 	
 end
 
-local _Zylla = {
-    {'/targetenemy [dead][noharm]', '{target.dead||!target.exists}&!player.area(40).enemies=0'},
-}
-
 local Util = {
 	-- ETC.
 	{'%pause' , 'player.debuff(200904)||player.debuff(Sapped Soul)'}, -- Vault of the Wardens, Sapped Soul
@@ -87,7 +83,7 @@ local Crackle = {
 }
 
 local Taunts = {
-	--{'Provoke', 'target.range<=35'},
+	--{'Provoke', 'target.range<=35&'},
 }
 
 local Melee = {
@@ -109,7 +105,6 @@ local Melee = {
 }
 
 local inCombat = {
-	--{_Zylla, 'toggle(AutoTarget)'},
 	{Util},
 	{Artifact},
 	{Keybinds},
