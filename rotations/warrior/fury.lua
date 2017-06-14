@@ -5,8 +5,9 @@ local _, Zylla = ...
 	{type = 'text', 	text = 'Left Shift: Pause', align = 'center'},
 	{type = 'text', 	text = 'Left Ctrl: Heroic Leap', align = 'center'},
 	{type = 'checkbox', text = 'Pause enabled', key = 'kPause', default = true},
-	{type = 'checkbox', text = 'Use trinket #1', key = 'kT1', default = true},
-	{type = 'checkbox', text = 'Use trinket #2', key = 'kT2', default = true}
+	{type = 'checkbox', text = 'Use Trinket #1', key = 'kT1', default = true},
+	{type = 'checkbox', text = 'Use Trinket #2', key = 'kT2', default = true},
+	{type = 'checkbox', text = 'Ring of Collapsing Futures', key = 'kRoCF', default = true}
 }
 
 local exeOnLoad = function()
@@ -24,6 +25,12 @@ local Util = {
 	{'%pause' , 'player.debuff(200904)||player.debuff(Sapped Soul)'}, -- Vault of the Wardens, Sapped Soul
 }
 
+local Trinkets = {
+	{'#trinket1', 'UI(kT1)'},
+	{'#trinket2', 'UI(kT2)'},
+	{'#Ring of Collapsing Futures', 'equipped(142173)&!player.debuff(Temptation)&UI(kRoCF)', 'target.enemy'},
+}
+
 local PreCombat = {
 }
 
@@ -32,6 +39,7 @@ local Survival = {
 }
 
 local Cooldowns = {
+	{Trinkets},
 	{'Battle Cry', '{spell(Odyn\'s Fury).cooldown<gcd&{spell(Bloodthirst).cooldown<gcd||{player.buff(Enrage).remains>spell(Bloodthirst).cooldown}}}'},
 	{'Avatar', 'player.buff(Battle Cry)'},
 	{'Bloodbath', 'player.buff(Dragon Roar)||{!talent(7,3)&{player.buff(Battle Cry)||spell(Battle Cry).cooldown>10}}'},
