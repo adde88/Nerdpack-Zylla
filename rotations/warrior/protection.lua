@@ -8,8 +8,8 @@ local GUI = {
 	{type = 'checkbox', text = 'Pause enabled', key = 'kPause', default = true},
 	
 	{type = 'checkbox', text = 'Intercept enabled', key = 'kIntercept', default = false},
-	{type = 'checkbox', text = 'Use trinket #1', key = 'kT1', default = true},
-	{type = 'checkbox', text = 'Use trinket #2', key = 'kT2', default = true}
+	{type = 'checkbox', text = 'Use Trinket #1', key = 'kT1', default = true},
+	{type = 'checkbox', text = 'Use Trinket #2', key = 'kT2', default = true}
 } 
 
 local exeOnLoad = function()
