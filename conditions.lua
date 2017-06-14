@@ -593,8 +593,8 @@ NeP.DSL:Register('line_cd', function(_, spell)
 end)
 
 -- Zylla - Count items in bag 
---/dump NeP.DSL:Get('xitems')('5512')
-NeP.DSL:Register('xitems', function(item)
+--/dump NeP.DSL:Get('xitems')(nil, 5512)   -- Should probably change to GetItemCount in the future, as it can count charges
+NeP.DSL:Register('xitems', function(_, item)
    local items = 0
    for bag=0,NUM_BAG_SLOTS do
       for slot=1,GetContainerNumSlots(bag) do
