@@ -9,7 +9,7 @@ local GUI = {
 	{type = 'checkbox', text = 'Pause Enabled', key = 'kPause', default = true},
 	{type = 'checkbox', text = 'Use Trinket #1', key = 'kT1', default = false},
 	{type = 'checkbox', text = 'Use Trinket #2', key = 'kT2', default = false},
-	{type = 'checkbox', text = 'Use Timewarp', key = 'kTW', default = false},
+	{type = 'checkbox', text = 'Use Time Warp', key = 'kTW', default = false},
 }
 
 local exeOnLoad = function()
@@ -48,7 +48,7 @@ local Interrupts = {
 
 local Cooldowns = {
 	--# Executed every time the actor is available.
-	{'Time Warp', 'UI(kTW)&{xtime=0&!player.buff(Bloodlust)}||{!player.buff(Bloodlust)&xequipped(132410)}'},
+	{'Time Warp', 'UI(kTW)&{{xtime=0&!player.buff(Bloodlust)}||{!player.buff(Bloodlust)&xequipped(132410)}}'},
 }
 
 local Survival = {

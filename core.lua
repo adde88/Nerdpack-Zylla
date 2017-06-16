@@ -1,7 +1,7 @@
 local _, Zylla = ...
 
 Zylla.Version = '1.1.0'
-Zylla.Branch = 'DEVELOPER'
+Zylla.Branch = 'RELEASE'
 Zylla.Name = 'NerdPack - Zylla\'s Rotations'
 Zylla.Author = 'Zylla'
 Zylla.addonColor = 'D11E0E'
@@ -27,23 +27,41 @@ local classTaunt = {
 -- Temp Hack
 function Zylla.ExeOnLoad()
   Zylla.Splash()
-  --[[
-  NeP.Interface:AddToggle({
-      key = 'xopener',
-      name = 'Opener rotation',
-      text = 'Start opener rotation',
-      icon = 'Interface\\Icons\\Ability_warrior_charge',
-    })
-
-  NeP.Interface:AddToggle({
-      key = 'AutoTarget',
-      name = 'Auto Target',
-      text = 'Automatically target the nearest enemy when target dies or does not exist',
-      icon = 'Interface\\Icons\\ability_hunter_snipershot',
-    })
-  --]]
-  
+	--[[
+NeP.Interface:AddToggle({
+	key = 'xopener',
+	name = 'Opener rotation',
+	text = 'Start opener rotation',
+	icon = 'Interface\\Icons\\Ability_warrior_charge',
+})
+	]]--
 end
+
+local _G = _G
+
+_G["Zylla.Trinkets"] = {
+	{'#trinket1', 'UI(kT1)'},
+	{'#trinket2', 'UI(kT2)'},
+	{'#Ring of Collapsing Futures', 'equipped(142173)&!player.debuff(Temptation)&UI(kRoCF)', 'target.enemy'},
+}
+
+_G["Zylla.Heirlooms"] = {
+	{'#Eternal Horizon Choker', 'equipped(122664)&UI(k_HEIR)&player.health<=UI(k_HeirHP)'},
+	{'#Eternal Amulet of the Redeemed', 'equipped(122663)&UI(k_HEIR)&player.health<=UI(k_HeirHP)'},
+	{'#Eternal Woven Ivy Necklace', 'equipped(122666)&UI(k_HEIR)&player.health<=UI(k_HeirHP)'},
+	{'#Eternal Emberfury Talisman', 'equipped(122667)&UI(k_HEIR)&player.health<=UI(k_HeirHP)'},
+	{'#Eternal Will of the Martyr', 'equipped(122668)&UI(k_HEIR)&player.health<=UI(k_HeirHP)'},
+	{'#Touch of the Void', 'equipped(128318)&UI(k_HEIR)&player.area(8).enemies>=3'},
+	{'#Inherited Mark of Tyranny', 'equipped(122530)&UI(k_HEIR)&player.incdmg(2.5)>player.health.max*0.50'},
+	{'#Inherited Insignia of the Alliance', 'equipped(44098)&UI(k_HEIR)&{player.state.incapacitate||player.state.stun||player.state.fear||player.state.horror||player.state.sleep||player.state.charm}'},
+	{'#Inherited Insignia of the Horde', 'equipped(44097)&UI(k_HEIR)&{player.state.incapacitate||player.state.stun||player.state.fear||player.state.horror||player.state.sleep||player.state.charm}'},
+	{'#Returning Champion', 'equipped(126949)&UI(k_HEIR)&{player.incdmg(2.5)>player.health.max*0.50}||{player.health<=20}'},
+	{'#Defending Champion', 'equipped(126948)&UI(k_HEIR)&{player.incdmg(2.5)>player.health.max*0.50}||{player.health<=20}'},
+}
+
+_G["Zylla.Util"] = {
+	{'%pause' , 'player.debuff(200904)||player.debuff(Sapped Soul)'}, -- Vault of the Wardens, Sapped Soul
+}
 
 function Zylla.Taunt(eval, args)
   local spell = NeP.Engine:Spell(args)

@@ -1,6 +1,6 @@
 local _, Zylla = ...
 
-local GUI={
+local GUI = {
 	-- General
 	{type='spacer'},	{type='rule'},
 	{type='header', 	text='General', 				align='center'},
@@ -13,13 +13,20 @@ local GUI={
 	-- Survival
 	{type='spacer'},	{type='rule'},
 	{type='header', 	text='Survival',								align='center'},
-	{type='checkbox',	text='Enable Self-Heal (Effuse)', 					key='kEffuse',			default=false},
+	{type='checkbox',	text='Enable Self-Heal (Effuse)', 				key='kEffuse',			default=false},
 	{type='spinner', 	text='Effuse (HP%)', 							key='E_HP',				default=60},
 	{type='spinner',	text='Healthstone or Healing Potion',			key='Health Stone',		default=45},
 	{type='spinner',	text='Healing Elixir', 							key='Healing Elixir',	default=70},
 	{type='spinner',	text='Expel Harm', 								key='Expel Harm',		default=100},
 	{type='spinner',	text='Fortifying Brew',							key='Fortifying Brew',	default=20},
 	{type='spinner',	text='Ironskin Brew',							key='Ironskin Brew',	default=80},
+	
+	-- Trinkets + Heirlooms for leveling
+	{type = 'checkbox', text = 'Use Trinket #1',						key = 'kT1',			default = false},
+	{type = 'checkbox', text = 'Use Trinket #2',						key = 'kT2',			default = false},
+	{type = 'checkbox', text = 'Ring of Collapsing Futures',			key = 'kRoCF',			default = true},
+	{type = 'checkbox', text = 'Use Heirloom Necks When Below X% HP',	key = 'k_HEIR',			default = true},
+	{type = 'spinner',	text = '',										key = 'k_HeirHP',		default = 40},
 }
 
 local exeOnLoad=function()
@@ -41,6 +48,26 @@ local Keybinds = {
 	{'%pause', 'keybind(lshift)&UI(kPause)'},
 	{'Summon Black Ox Statue', 'keybind(lalt)', 'cursor.ground'},
 	{'Leg Sweep', 'keybind(lcontrol)'},
+}
+
+local Trinkets = {
+	{'#trinket1', 'UI(kT1)'},
+	{'#trinket2', 'UI(kT2)'},
+	{'#Ring of Collapsing Futures', 'equipped(142173)&!player.debuff(Temptation)&UI(kRoCF)', 'target.enemy'},
+}
+
+local Heirlooms = {
+	{'#Eternal Horizon Choker', 'equipped(122664)&UI(k_HEIR)&player.health<=UI(k_HeirHP)'},
+	{'#Eternal Amulet of the Redeemed', 'equipped(122663)&UI(k_HEIR)&player.health<=UI(k_HeirHP)'},
+	{'#Eternal Woven Ivy Necklace', 'equipped(122666)&UI(k_HEIR)&player.health<=UI(k_HeirHP)'},
+	{'#Eternal Emberfury Talisman', 'equipped(122667)&UI(k_HEIR)&player.health<=UI(k_HeirHP)'},
+	{'#Eternal Will of the Martyr', 'equipped(122668)&UI(k_HEIR)&player.health<=UI(k_HeirHP)'},
+	{'#Touch of the Void', 'equipped(128318)&UI(k_HEIR)&player.area(8).enemies>=3'},
+	{'#Inherited Mark of Tyranny', 'equipped(122530)&UI(k_HEIR)&player.incdmg(2.5)>player.health.max*0.50'},
+	{'#Inherited Insignia of the Alliance', 'equipped(44098)&UI(k_HEIR)&{player.state.incapacitate||player.state.stun||player.state.fear||player.state.horror||player.state.sleep||player.state.charm}'},
+	{'#Inherited Insignia of the Horde', 'equipped(44097)&UI(k_HEIR)&{player.state.incapacitate||player.state.stun||player.state.fear||player.state.horror||player.state.sleep||player.state.charm}'},
+	{'#Returning Champion', 'equipped(126949)&UI(k_HEIR)&{player.incdmg(2.5)>player.health.max*0.50}||{player.health<=20}'},
+	{'#Defending Champion', 'equipped(126948)&UI(k_HEIR)&{player.incdmg(2.5)>player.health.max*0.50}||{player.health<=20}'},
 }
 
 local Snares = {
@@ -106,6 +133,8 @@ local Melee = {
 
 local inCombat = {
 	{Util},
+	{Trinkets},
+	{Heirlooms},
 	{Artifact},
 	{Keybinds},
 	{Snares},
@@ -118,7 +147,7 @@ local inCombat = {
 }
 
 local outCombat={
-	{_Keybinds},
+	{Keybinds},
 	{'%ressdead(Resuscitate)', 'UI(auto_res)'},
 	{'Effuse', 'player.health<=50&player.lastmoved>=1', 'player'},
 }

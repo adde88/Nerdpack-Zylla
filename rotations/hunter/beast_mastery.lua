@@ -1,19 +1,26 @@
 local _, Zylla = ...
 
 local GUI = {
+	-- Keybinds
 	{type = 'header', 	text = 'Keybinds', align = 'center'},
 	{type = 'text', 	text = 'Left Shift: Pause', align = 'center'},
 	{type = 'text', 	text = 'Left Ctrl: Tar Trap', align = 'center'},
 	{type = 'text', 	text = 'Left Alt: Binding Shot', align = 'center'},
 	{type = 'text', 	text = 'Right Alt: Freezing Trap', align = 'center'},
+	{type = 'ruler'},	{type = 'spacer'},
+	-- Settings
 	{type = 'checkbox', text = 'Pause Enabled', key = 'kPause', default = true},
 	{type = 'checkbox', text = 'Summon Pet', key = 'kPet', default = true},
 	{type = 'checkbox', text = 'Barrage Enabled', key = 'kBarrage', default = false},
    	{type = 'checkbox', text = 'Volley Enabled', key = 'kVolley', default = true},
 	{type = 'checkbox', text = 'Misdirect Focus/Pet', key = 'kMisdirect', default = true},
+	{type = 'ruler'},	{type = 'spacer'},
+	-- Trinkets + Heirlooms for leveling
 	{type = 'checkbox', text = 'Use Trinket #1', key = 'kT1', default = false},
 	{type = 'checkbox', text = 'Use Trinket #2', key = 'kT2', default = false},
-	{type = 'checkbox', text = 'Ring of Collapsing Futures', key = 'kRoCF', default = true}
+	{type = 'checkbox', text = 'Ring of Collapsing Futures', key = 'kRoCF', default = true},
+	{type = 'checkbox', text = 'Use Heirloom Necks When Below X% HP', key = 'k_HEIR', default = true},
+	{type = 'spinner',	text = '', key = 'k_HeirHP', default = 40},
 } 
 
 local exeOnLoad = function()
@@ -34,16 +41,11 @@ local exeOnLoad = function()
 end
 
 local PreCombat = {
-	{'/cast Call Pet 1', '!pet.exists&UI(kPet)'},
+	{'/cast Call Pet 2', '!pet.exists&UI(kPet)'},
 	{'Heart of the Phoenix', '!player.debuff(Weakened Heart)&pet.dead&UI(kPet)'},
 	{'Revive Pet', 'pet.dead&UI(kPet)'},
 	{'Volley', 'talent(6,3)&!player.buff(Volley)&UI(kVolley)'},
 	{'Volley', 'talent(6,3)&player.buff(Volley)&!UI(kVolley)'},
-}
-
-local Util = {
-	-- ETC.
-	{'%pause' , 'player.debuff(200904)||player.debuff(Sapped Soul)'}, -- Vault of the Wardens, Sapped Soul
 }
 
 local Keybinds = {
@@ -51,12 +53,6 @@ local Keybinds = {
 	{'Binding Shot', 'keybind(lalt)', 'cursor.ground'},
 	{'Tar Trap', 'keybind(lcontrol)', 'cursor.ground'},
 	{'Freezing Trap', 'keybind(ralt)', 'cursor.ground'},
-}
-
-local Trinkets = {
-	{'#trinket1', 'UI(kT1)'},
-	{'#trinket2', 'UI(kT2)'},
-	{'#Ring of Collapsing Futures', 'equipped(142173)&!player.debuff(Temptation)&UI(kRoCF)', 'target.enemy'},
 }
 
 local Survival = {
@@ -68,7 +64,6 @@ local Survival = {
 }
 
 local Cooldowns = {
-	{Trinkets},
 	{'Bestial Wrath'},
 	{'Titan\'s Thunder', 'talent(2,2)||cooldown(Dire Beast).remains>=3||{player.buff(Bestial Wrath)&player.buff(Dire Beast)}'},
 }
@@ -97,7 +92,7 @@ local xCombat = {
 local xPetCombat = {
 	{'!Kill Command'},
 	{'Mend Pet', 'pet.exists&pet.alive&pet.health<100&!pet.buff(Mend Pet)'},
-	{'/cast Call Pet 1', '!pet.exists&UI(kPet)'},
+	{'/cast Call Pet 2', '!pet.exists&UI(kPet)'},
 	{'Heart of the Phoenix', '!player.debuff(Weakened Heart)&pet.dead&UI(kPet)'},
 	{'Revive Pet', 'pet.dead&UI(kPet)'},
 	{'/cast [@focus, help] [@pet, nodead, exists] Misdirection', 'cooldown(Misdirection).remains<=gcd&toggle(xMisdirect)'},
@@ -111,11 +106,13 @@ local xPvP = {
 }
 
 local inCombat = {
-	{Util},
+	{Zylla.Util},
+	{Zylla.Trinkets},
+	{Zylla.Heirlooms},
 	{Keybinds},
 	{Survival, 'player.health<100'},
 	{Cooldowns, 'toggle(Cooldowns)'},
-	{Interrupts, 'target.interruptAt(50)&toggle(Interrupts)&target.inFront&target.range<=40'},
+	{Interrupts, 'target.interruptAt(80)&toggle(Interrupts)&target.inFront&target.range<=40'},
 	{xCombat, 'target.range<=40&target.inFront'},
 	{xPetCombat},
 	{xPvP, 'target.player&target.enemy'},

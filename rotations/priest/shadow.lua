@@ -5,8 +5,8 @@ local _, Zylla = ...
 	-- GUI Header 
 	{type='texture',
 	texture='Interface\\AddOns\\Nerdpack-Zylla\\media\\shadow.blp',
-	width=512,
-	height=256,
+	width=768,
+	height=512,
 	offset=90,
 	y=42,
 	center=true},

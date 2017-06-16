@@ -2,7 +2,7 @@ local _, Zylla = ...
 
 -- Thanks to NoC for a working WW-Monk rotation.
 
-local GUI={
+local GUI = {
 	-- General
 	{type='header',text='General', align='center'},
 	{type='checkbox', text='Automatic Res', key='auto_res', default=false},

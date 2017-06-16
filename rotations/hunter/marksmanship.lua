@@ -1,18 +1,26 @@
 local _, Zylla = ...
 
 local GUI = {
+	-- Keybinds
 	{type = 'header', 	text = 'Keybinds', align = 'center'},
 	{type = 'text', 	text = 'Left Shift: Pause', align = 'center'},
 	{type = 'text', 	text = 'Left Ctrl: Tar Trap', align = 'center'},
 	{type = 'text', 	text = 'Left Alt: Binding Shot', align = 'center'},
 	{type = 'text', 	text = 'Right Alt: Freezing Trap', align = 'center'},
+	{type = 'ruler'},	{type = 'spacer'},
+	-- Settings
 	{type = 'checkbox', text = 'Pause Enabled', key = 'kPause', default = true},
-	{type = 'checkbox', text = 'Summon Pet', key = 'kPet', default = false},
+	{type = 'checkbox', text = 'Summon Pet', key = 'kPet', default = true},
 	{type = 'checkbox', text = 'Barrage Enabled', key = 'kBarrage', default = false},
    	{type = 'checkbox', text = 'Volley Enabled', key = 'kVolley', default = true},
-	{type = 'checkbox', text = 'Misdirect Focus/Pet', key = 'kMisdirect', default = false},
+	{type = 'checkbox', text = 'Misdirect Focus/Pet', key = 'kMisdirect', default = true},
+	{type = 'ruler'},	{type = 'spacer'},
+	-- Trinkets + Heirlooms for leveling
 	{type = 'checkbox', text = 'Use Trinket #1', key = 'kT1', default = false},
-	{type = 'checkbox', text = 'Use Trinket #2', key = 'kT2', default = false}
+	{type = 'checkbox', text = 'Use Trinket #2', key = 'kT2', default = false},
+	{type = 'checkbox', text = 'Ring of Collapsing Futures', key = 'kRoCF', default = true},
+	{type = 'checkbox', text = 'Use Heirloom Necks When Below X% HP', key = 'k_HEIR', default = true},
+	{type = 'spinner',	text = '', key = 'k_HeirHP', default = 40},
 } 
 
 local exeOnLoad = function()
@@ -48,6 +56,21 @@ local Keybinds = {
 local Trinkets = {
 	{'#trinket1', 'UI(kT1)'},
 	{'#trinket2', 'UI(kT2)'},
+	{'#Ring of Collapsing Futures', 'equipped(142173)&!player.debuff(Temptation)&UI(kRoCF)', 'target.enemy'},
+}
+
+local Heirlooms = {
+	{'#Eternal Horizon Choker', 'equipped(122664)&UI(k_HEIR)&player.health<=UI(k_HeirHP)'},
+	{'#Eternal Amulet of the Redeemed', 'equipped(122663)&UI(k_HEIR)&player.health<=UI(k_HeirHP)'},
+	{'#Eternal Woven Ivy Necklace', 'equipped(122666)&UI(k_HEIR)&player.health<=UI(k_HeirHP)'},
+	{'#Eternal Emberfury Talisman', 'equipped(122667)&UI(k_HEIR)&player.health<=UI(k_HeirHP)'},
+	{'#Eternal Will of the Martyr', 'equipped(122668)&UI(k_HEIR)&player.health<=UI(k_HeirHP)'},
+	{'#Touch of the Void', 'equipped(128318)&UI(k_HEIR)&player.area(8).enemies>=3'},
+	{'#Inherited Mark of Tyranny', 'equipped(122530)&UI(k_HEIR)&player.incdmg(2.5)>player.health.max*0.50'},
+	{'#Inherited Insignia of the Alliance', 'equipped(44098)&UI(k_HEIR)&{player.state.incapacitate||player.state.stun||player.state.fear||player.state.horror||player.state.sleep||player.state.charm}'},
+	{'#Inherited Insignia of the Horde', 'equipped(44097)&UI(k_HEIR)&{player.state.incapacitate||player.state.stun||player.state.fear||player.state.horror||player.state.sleep||player.state.charm}'},
+	{'#Returning Champion', 'equipped(126949)&UI(k_HEIR)&{player.incdmg(2.5)>player.health.max*0.50}||{player.health<=20}'},
+	{'#Defending Champion', 'equipped(126948)&UI(k_HEIR)&{player.incdmg(2.5)>player.health.max*0.50}||{player.health<=20}'},
 }
 
 local Survival = {
@@ -166,8 +189,9 @@ local xPetCombat = {
 
 local inCombat = {
 	{Util},
-	{Keybinds},
 	{Trinkets},
+	{Heirlooms},
+	{Keybinds},
 	{Survival},
 	{Interrupts, 'target.interruptAt(50)&toggle(Interrupts)&target.inFront&target.range<=50'},
 	{Cooldowns, 'toggle(Cooldowns)'},

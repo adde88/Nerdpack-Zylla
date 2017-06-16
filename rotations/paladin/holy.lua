@@ -9,7 +9,7 @@ local _, Zylla = ...
 	Add support for all talents
 --]]
 
-local GUI={
+local GUI = {
 	{type='header', 	text='Generic', align='center'},
 	{type='spinner', 	text='DPS while lowest health%', 				key='G_DPS', 			default=70},
 	{type = 'checkbox', text = 'Auto-Target Enemies when DPSing',		key = 'kAutoTarget', 	default = true},

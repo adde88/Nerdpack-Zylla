@@ -1,8 +1,23 @@
 local _, Zylla = ...
 
 local GUI = {
+	-- Keybinds
+	{type = 'header', 	text = 'Keybinds', align = 'center'},
+	{type = 'text', 	text = 'Left Shift: Pause', align = 'center'},
+	{type = 'text', 	text = 'Left Ctrl: Infernal Strike @ Cursor', align = 'center'},
+	{type = 'text', 	text = 'Left Alt: Sigil of Flame @ Cursor', align = 'center'},
+	{type = 'ruler'},	{type = 'spacer'},
+	-- Settings
+	{type = 'checkbox', text = 'Pause Enabled', key = 'kPause', default = true},
+	{type = 'ruler'},	{type = 'spacer'},
+	-- Trinkets + Heirlooms for leveling
+	{type = 'checkbox', text = 'Use Trinket #1', key = 'kT1', default = true},
+	{type = 'checkbox', text = 'Use Trinket #2', key = 'kT2', default = true},
+	{type = 'checkbox', text = 'Ring of Collapsing Futures', key = 'kRoCF', default = true},
+	{type = 'checkbox', text = 'Use Heirloom Necks When Below X% HP', key = 'k_HEIR', default = true},
+	{type = 'spinner',	text = '', key = 'k_HeirHP', default = 40},
+} 
 
-}
 local exeOnLoad = function()
 	 Zylla.ExeOnLoad()
 
@@ -12,11 +27,6 @@ local exeOnLoad = function()
 	print('|cffADFF2F ----------------------------------------------------------------------|r')
 
 end
-
-local Util = {
-	-- ETC.
-	{'%pause' , 'player.debuff(200904)||player.debuff(Sapped Soul)'}, -- Vault of the Wardens, Sapped Soul
-}
 
 local Keybinds = {
 	{'%pause', 'keybind(lshift)&UI(kPause)'},
@@ -57,7 +67,9 @@ local Ranged = {
 }
 
 local inCombat = {
-	{Util},
+	{Zylla.Util},
+	{Zylla.Trinkets},
+	{Zylla.Heirlooms},
 	{Keybinds},
 	{Interrupts, 'toggle(Interrupts)'},
 	{Ranged, '!target.inMelee&target.range<=30'},
