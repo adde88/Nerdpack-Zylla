@@ -7,11 +7,11 @@ local GUI = {
 	{type = 'text', 	text = 'Left Alt: ', align = 'center'},
 	{type = 'text', 	text = 'Right Alt: ', align = 'center'},
 	{type = 'checkbox', text = 'Pause Enabled', key = 'kPause', default = true},
-	
+
 	{type = 'checkbox', text = 'Use Trinket #1', key = 'kT1', default = false},
 	{type = 'checkbox', text = 'Use Trinket #2', key = 'kT2', default = false},
 	{type = 'checkbox', text = 'Ring of Collapsing Futures', key = 'kRoCF', default = false}
-} 
+}
 
 local exeOnLoad = function()
 	Zylla.ExeOnLoad()
@@ -55,7 +55,7 @@ local Savage_Roar = {
 	{'Savage Roar'},
 }
 
-local Ferocious_Bite = {
+local _Ferocious_Bite = {
 	{'%pause', 'player.energy<25&!player.buff(Clearcasting)'},
 	{'Ferocious Bite'},
 }
@@ -76,13 +76,13 @@ local PreCombat = {
 	{'Travel Form', '!indoors&!player.buff(Travel Form)&!player.buff(Prowl)&{!target.enemy||target.enemy&!target.alive}'},
 	{_Regrowth, 'talent(7,2)&target.enemy&target.alive&!player.buff(Prowl)&!prev(Regrowth)&player.buff(Bloodtalons).stack<2'},
 	{'Cat Form', '!player.buff(Cat Form)&!player.buff(Travel Form)'},
- 	{'Prowl', '!player.buff(Prowl)&target.enemy&target.alive'},
- 	{'Rake', 'player.buff(Prowl)&target.range<5&target.inFront'},
+	{'Prowl', '!player.buff(Prowl)&target.enemy&target.alive'},
+	{'Rake', 'player.buff(Prowl)&target.range<5&target.inFront'},
 }
 
 local SBT_Opener = {
 	--# Hard-cast a Regrowth for Bloodtalons buff. Use Dash to re-enter Cat Form.
-	{Regrowth, 'talent(7,2)&combo_points=5&!player.buff(Bloodtalons)&!target.dot(Rip).ticking'},
+	{_Regrowth, 'talent(7,2)&combo_points=5&!player.buff(Bloodtalons)&!target.dot(Rip).ticking'},
 	--# Force use of Tiger's Fury before applying Rip.
 	{'Tiger\'s Fury', '!target.dot(Rip).ticking&combo_points=5'},
 }
@@ -156,7 +156,7 @@ local inCombat = {
 	{Survival, 'player.health<100'},
 	{'Cat Form', '!player.buff(Frenzied Regeneration)&{!player.buff(Cat Form)&{!player.buff(Travel Form)||player.area(8).enemies>=1}}'},
 	{Cooldowns, '!player.buff(Frenzied Regeneration)&toggle(Cooldowns)'},
-	{Moonfire, 'talent(1,3)&!target.inMelee&target.range<=40&target.inFront&!player.buff(Prowl)&!target.debuff(Moonfire)'},
+	{_Moonfire, 'talent(1,3)&!target.inMelee&target.range<=40&target.inFront&!player.buff(Prowl)&!target.debuff(Moonfire)'},
 	{xCombat, '!player.buff(Frenzied Regeneration)&target.inMelee&target.inFront'},
 }
 
