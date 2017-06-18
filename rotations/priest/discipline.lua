@@ -1,5 +1,9 @@
 local _, Zylla = ...
 
+local Util = _G['Zylla.Util']
+local Trinkets = _G['Zylla.Trinkets']
+local Heirlooms = _G['Zylla.Heirlooms']
+
 local GUI = {
 	{type = 'header', 	text = 'Keybinds', align = 'center'},
 	{type = 'text', 	text = 'Left Shift: Pause', align = 'center'},
@@ -7,7 +11,13 @@ local GUI = {
 	{type = 'text', 	text = 'Left Alt: ', align = 'center'},
 	{type = 'text', 	text = 'Right Alt: ', align = 'center'},
 	{type = 'checkbox', text = 'Pause Enabled', key = 'kPause', default = true},
-	
+	{type = 'ruler'},	{type = 'spacer'},
+	-- Trinkets + Heirlooms for leveling
+	{type = 'header', 	text = 'Trinkets/Heirlooms', align = 'center'},
+	{type = 'checkbox', text = 'Use Trinket #1', key = 'kT1', default = true},
+	{type = 'checkbox', text = 'Use Trinket #2', key = 'kT2', default = true},
+	{type = 'checkbox', text = 'Ring of Collapsing Futures', key = 'kRoCF', default = true},
+	{type = 'checkbox', text = 'Use Heirloom Necks When Below X% HP', key = 'k_HEIR', default = true},	
 } 
 
 local _Zylla = {
@@ -86,11 +96,6 @@ local Cooldowns = {
 	{'Power Infusion'}, --Power Infusion for some BOOOST YO!
 	{'Divine Star', 'player.area(20).enemies.inFront>=3', 'target'}, -- Divine Star (if selected) for some small AoE dmg dealing.
 	{'Light\'s Wrath', 'target.debuff(Schism)&player.buff(Overloaded with Light)', 'target'},
-
-	--{"#trinket1", { "player.buff(Power Infusion)", "!player.buff(Lethal On Board)" }}, --Eyasu's Mulligan's crit or haste
-	--{"#trinket1", { "player.buff(Power Infusion)", "!player.buff(The Coin)" }}, --Eyasu's Mulligan's crit or haste
-	--{"#trinket2", { "player.buff(Power Infusion)", "!player.buff(Lethal On Board)" }}, --Eyasu's Mulligan's crit or haste
-	--{"#trinket2", { "player.buff(Power Infusion)", "!player.buff(The Coin)" }} --Eyasu's Mulligan's crit or haste
 }
 
 local Tank = {
@@ -102,8 +107,6 @@ local Tank = {
 
 local Lowest = {
 	{'Plea', '!lowest.buff(Atonement)&lowest.health<=90', 'lowest'}, --Plea for an instant Atonement.
-	--{'Plea', '!lowest2.buff(Atonement)&lowest.health<=90', 'lowest2'},
-	--{'Plea', '!lowest3.buff(Atonement)&lowest.health<=90', 'lowest3'},
 	{'Power Word: Shield', 'lowest.health<=90||player.buff(Rapture)&!lowest.buff(Power Word: Shield)', 'lowest'}, --Power Word: Shield Use to absorb low to moderate damage and to apply Atonement.
 	{'Shadow Mend', 'lowest.health<=60', 'lowest'}, --Shadow Mend for a decent direct heal.
 	{'Penance', 'lowest.health<=80&talent(1,1)', 'lowest'}, -- Penance (if talent "Penitent" selected)
@@ -126,14 +129,16 @@ local Atonement = {
 }
 
 local inCombat = {
-		{'%dispelall'},
-		{'Arcane Torrent', 'player.mana<50'},
-		{Keybinds},
-		{Cooldowns, 'toggle(Cooldowns)'},
-		{Tank, 'tank.health<100'},
-		{Lowest, 'lowest.health<100'},
-		--{Player, 'player.health<100'},
-		{Atonement}
+	{Util},
+	{Trinkets},
+	{Heirlooms},
+	{'%dispelall'},
+	{'Arcane Torrent', 'player.mana<50'},
+	{Keybinds},
+	{Cooldowns, 'toggle(Cooldowns)'},
+	{Tank, 'tank.health<100'},
+	{Lowest, 'lowest.health<100'},
+	{Atonement}
 }
 
 local outCombat = {

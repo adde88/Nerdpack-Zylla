@@ -1,13 +1,29 @@
 local _, Zylla = ...
+
+local Util = _G['Zylla.Util']
+local Trinkets = _G['Zylla.Trinkets']
+local Heirlooms = _G['Zylla.Heirlooms']
 local GUI = {
+	-- Keybinds
 	{type = 'header', 	text = 'Keybinds', align = 'center'},
 	{type = 'text', 	text = 'Left Shift: Pause', align = 'center'},
 	{type = 'text', 	text = 'Left Ctrl: ', align = 'center'},
 	{type = 'text', 	text = 'Left Alt: ', align = 'center'},
 	{type = 'text', 	text = 'Right Alt: ', align = 'center'},
+	{type = 'ruler'},	{type = 'spacer'},
+	-- Settings
+	{type = 'header', 	text = 'Class Settings', align = 'center'},
 	{type = 'checkbox', text = 'Pause Enabled', key = 'kPause', default = true},
-	
-} 
+	{type='spinner', 	text = 'Crimson Vial Below (HP%)', key='E_HP', default = 60},
+	{type = 'ruler'},	{type = 'spacer'},
+	-- Trinkets + Heirlooms for leveling
+	{type = 'header', 	text = 'Trinkets/Heirlooms', align = 'center'},
+	{type = 'checkbox', text = 'Use Trinket #1', key = 'kT1', default = true},
+	{type = 'checkbox', text = 'Use Trinket #2', key = 'kT2', default = true},
+	{type = 'checkbox', text = 'Ring of Collapsing Futures', key = 'kRoCF', default = true},
+	{type = 'checkbox', text = 'Use Heirloom Necks When Below X% HP', key = 'k_HEIR', default = true},
+	{type = 'spinner',	text = '', key = 'k_HeirHP', default = 40},
+}
 
 local exeOnLoad = function()
 	 Zylla.ExeOnLoad()
@@ -17,16 +33,18 @@ local exeOnLoad = function()
  	print('|cffADFF2F --- |rRecommended Talents: 1/2 - 2/2 - 3/1 - 4/X - 5/X - 6/1 - 7/1')
  	print('|cffADFF2F ----------------------------------------------------------------------|r')
 
+	NeP.Interface:AddToggle({
+		key='opener',
+		name='Opener',
+		text = 'If Enabled we will Open with Ambush when Stealthed. If not Cheap Shot will be used.',
+		icon='Interface\\Icons\\ability_rogue_ambush',
+	})
+	
 end
-
-local _Zylla = {
-    {'/targetenemy [dead][noharm]', '{target.dead||!target.exists}&!player.area(40).enemies=0'},
-}
 
 local PreCombat = {
 	{'Stealth', '!player.buff(Stealth)||!player.buff(Shadowmeld)'},
 	{'Shadowstrike', 'stealthed&target.range<=15&target.inFront'},
-	--{'#Old War'},
 }
 
 
@@ -83,17 +101,19 @@ local Keybinds = {
 
 local Interrupts = {
 	{'Kick'},
-	{'Cheap Shot', 'cooldown(Kick).remains>gcd'},
-	{'Kidney Shot', 'cooldown(Kick).remains>gcd'},
-	{'Blind', 'cooldown(Kick).remains>gcd'},
+	{'Cheap Shot', 'cooldown(Kick).remains>gcd&player.buff(Stealth)&target.inFront&target.inMelee'},
+	{'Kidney Shot', 'cooldown(Kick).remains>gcd&combo_points>0&target.inFront&target.inMelee'},
+	{'Blind', 'cooldown(Kick).remains>gcd&target.inFront&target.range<=15&cooldown(Kidney Shot).remains>gcd'},
 }
 
 local Survival ={
-	{'Crimson Vial', 'player.health<=70'},
+	{'Crimson Vial', 'player.health<=UI(k_CVHP)'},
 }
 
 local inCombat = {
-	--{_Zylla, 'toggle(AutoTarget)'},
+	{Util},
+	{Trinkets},
+	{Heirlooms},
 	{Keybinds},
 	{Interrupts, 'target.interruptAt(47)&toggle(Interrupts)&target.inFront&target.inMelee'},
 	{Survival, 'player.health<100'},

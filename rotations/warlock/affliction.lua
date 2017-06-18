@@ -1,4 +1,8 @@
 local _, Zylla = ...
+
+local Util = _G['Zylla.Util']
+local Trinkets = _G['Zylla.Trinkets']
+local Heirlooms = _G['Zylla.Heirlooms']
 local GUI = {
 	{type = 'header', 	text = 'Keybinds', align = 'center'},
 	{type = 'text', 	text = 'Left Shift: Pause', align = 'center'},
@@ -6,7 +10,14 @@ local _, Zylla = ...
 	{type = 'text', 	text = 'Left Alt: ', align = 'center'},
 	{type = 'text', 	text = 'Right Alt: ', align = 'center'},
 	{type = 'checkbox', text = 'Pause Enabled', key = 'kPause', default = true},
-	
+	{type = 'ruler'},	{type = 'spacer'},
+	-- Trinkets + Heirlooms for leveling
+	{type = 'header', 	text = 'Trinkets/Heirlooms', align = 'center'},
+	{type = 'checkbox', text = 'Use Trinket #1', key = 'kT1', default = true},
+	{type = 'checkbox', text = 'Use Trinket #2', key = 'kT2', default = true},
+	{type = 'checkbox', text = 'Ring of Collapsing Futures', key = 'kRoCF', default = true},
+	{type = 'checkbox', text = 'Use Heirloom Necks When Below X% HP', key = 'k_HEIR', default = true},
+	{type = 'spinner',	text = '', key = 'k_HeirHP', default = 40},
 } 
 
 local exeOnLoad = function()
@@ -18,10 +29,6 @@ local exeOnLoad = function()
 	print('|cffADFF2F ----------------------------------------------------------------------|r')
 
 end
-
-local _Zylla = {
-    {'/targetenemy [dead][noharm]', '{target.dead||!target.exists}&!player.area(40).enemies=0'},
-}
 
 local xCombat = {
 	{'Corruption', '!target.dot(Corruption).ticking'},
@@ -44,7 +51,9 @@ local Cooldowns = {
 }
 
 local inCombat = {
-	--{_Zylla, 'toggle(AutoTarget)'},
+	{Util},
+	{Trinkets},
+	{Heirlooms},
 	{Keybinds},
 	{Survival, 'player.health<100'},
 	{Cooldowns, 'toggle(Cooldowns)'},

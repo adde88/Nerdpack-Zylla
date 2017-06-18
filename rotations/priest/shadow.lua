@@ -1,6 +1,10 @@
 local _, Zylla = ...
 
 -- Creds to Yobleed for this routine!
+
+local Util = _G['Zylla.Util']
+local Trinkets = _G['Zylla.Trinkets']
+local Heirlooms = _G['Zylla.Heirlooms']
 local GUI = {
 	-- GUI Header 
 	{type='texture',
@@ -12,70 +16,75 @@ local _, Zylla = ...
 	center=true},
 
 	-- GENERAL
-	{type='header', text='General', align='center'},
-	{type='text', text='Before Pull.', align='center'},
-	{type='checkbox', text='Potion of Prolonged Power', key='s_pull', width=55, default= false},
-	{type='checkbox', text='Mind Blast', key='pull_MB', width=55, default= false},
-	{type='text', text='Movement', align='center'},
-	{type='checkbox', text='Body and Soul', key='m_Body', width=55, default=false},
+	{type = 'header', text = 'General', align = 'center'},
+	{type='text', text = 'Before Pull.', align = 'center'},
+	{type='checkbox', text = 'Potion of Prolonged Power', key='s_pull', width=55, default= false},
+	{type='checkbox', text = 'Mind Blast', key='pull_MB', width=55, default= false},
+	{type='text', text = 'Movement', align = 'center'},
+	{type='checkbox', text = 'Body and Soul', key='m_Body', width=55, default=false},
     {type='ruler'}, {type='spacer'},
 
     -- COOLDOWNS
-    {type='header', text='Cooldowns if Toggled', align='center'},
-    {type='checkbox', text='Hero Potion of Prolonged Power', key='s_PP', width=55, default= false},
-    {type='text', text='Trinkets', align='center'},
-    {type='checkbox', text='Top Trinket', key='trinket_1', width=55, default=false},
-	{type='checkbox', text='Bottom Trinket', key='trinket_2', width=55, default=false},
-	{type='text', text='Power Infusion', align='center'},
-	{type='checkbox', text='ON/OFF', key='dps_PI', width=55, default= false},
-	{type='spinner', text='Target<=35%', key='dps_PIspin1', align='left', width=55, step=1, default=15},
-	{type='spinner', text='Target>35%', key='dps_PIspin2', align='left', width=55, step=1, default=15},
-	{type='text', text='Shadowfiend', align='center'},
-	{type='checkbox', text='ON/OFF', key='dps_fiend', width=55, default= false},
-    {type='spinner', text='Shadowfiend Stacks', key='dps_SFspin', align='left', width=55, step=1, default=22},
-    {type='text', text='Void Torrent', align='center'},
-    {type='checkbox', text='ON/OFF', key='dps_void', width=55, default= false}, 
-	{type='text', text='Dispersion', align='center'},
-	{type='checkbox', text='ON/OFF', key='dps_D', width=55, default= false},
-	{type='spinner', text='Target<=35%', key='dps_Dspin', align='left', width=55, min=15, max=50, step=1, default=44},
-	{type='spinner', text='Target>35%', key='dps_D2spin', align='left', width=55, min=15, max=50, step=1, default=30},
-	{type='text', text='Arcane Torrent', align='center'},
-	{type='checkbox', text='ON/OFF', key='dps_at', width=55, default= true},
+    {type = 'header', text = 'Cooldowns if Toggled', align = 'center'},
+    {type='checkbox', text = 'Hero Potion of Prolonged Power', key='s_PP', width=55, default= false},
+    {type='text', text = 'Trinkets', align = 'center'},
+    {type='checkbox', text = 'Top Trinket', key='trinket_1', width=55, default=false},
+	{type='checkbox', text = 'Bottom Trinket', key='trinket_2', width=55, default=false},
+	{type='text', text = 'Power Infusion', align = 'center'},
+	{type='checkbox', text = 'ON/OFF', key='dps_PI', width=55, default= false},
+	{type='spinner', text = 'Target<=35%', key='dps_PIspin1', align = 'left', width=55, step=1, default=15},
+	{type='spinner', text = 'Target>35%', key='dps_PIspin2', align = 'left', width=55, step=1, default=15},
+	{type='text', text = 'Shadowfiend', align = 'center'},
+	{type='checkbox', text = 'ON/OFF', key='dps_fiend', width=55, default= false},
+    {type='spinner', text = 'Shadowfiend Stacks', key='dps_SFspin', align = 'left', width=55, step=1, default=22},
+    {type='text', text = 'Void Torrent', align = 'center'},
+    {type='checkbox', text = 'ON/OFF', key='dps_void', width=55, default= false}, 
+	{type='text', text = 'Dispersion', align = 'center'},
+	{type='checkbox', text = 'ON/OFF', key='dps_D', width=55, default= false},
+	{type='spinner', text = 'Target<=35%', key='dps_Dspin', align = 'left', width=55, min=15, max=50, step=1, default=44},
+	{type='spinner', text = 'Target>35%', key='dps_D2spin', align = 'left', width=55, min=15, max=50, step=1, default=30},
+	{type='text', text = 'Arcane Torrent', align = 'center'},
+	{type='checkbox', text = 'ON/OFF', key='dps_at', width=55, default= true},
 	{type='ruler'}, {type='spacer'},
 
-	-- GUI Survival&Potions
-	{type='header', text='Survival&Potions', align='center'},
-	{type='checkbox', text='Self Heal Below X%', key='k_SH', width=55, default= true},
-	{type='spinner', text='', key='k_SHspin', width=55, default=66},
-	{type='checkbox', text='Fade', key='s_F', width=55, default= false},
-	{type='checkbox', text='Power Word: Shield', key='s_PWS', width=55, default=false},
-	{type='spinner', text='', key='s_PWSspin', width=55, default=40},
-	{type='checkbox', text='Dispersion', key='s_D', width=55, default=false},
-	{type='spinner', text='', key='s_Dspin', align='left', width=55, default=20},
-	{type='checkbox', text='Gift of the Naaru', key='s_GotN', width=55, default=false},
-	{type='spinner', text='', key='s_GotNspin', width=55, default=40},
-	{type='checkbox', text='Healthstone', key='s_HS', width=55, default=false},
-	{type='spinner', text='', key='s_HSspin', width=55, default=20},
-	{type='checkbox', text='Ancient Healing Potion', key='s_AHP', width=55, default=false},
-	{type='spinner', text='', key='s_AHPspin', width=55, default=20, align='left'},
+	-- GUI Survival & Potions
+	{type = 'header', text = 'Survival&Potions', align = 'center'},
+	{type='checkbox', text = 'Self Heal Below X%', key='k_SH', width=55, default= true},
+	{type='spinner', text = '', key='k_SHspin', width=55, default=66},
+	{type='checkbox', text = 'Fade', key='s_F', width=55, default= false},
+	{type='checkbox', text = 'Power Word: Shield', key='s_PWS', width=55, default=false},
+	{type='spinner', text = '', key='s_PWSspin', width=55, default=40},
+	{type='checkbox', text = 'Dispersion', key='s_D', width=55, default=false},
+	{type='spinner', text = '', key='s_Dspin', align = 'left', width=55, default=20},
+	{type='checkbox', text = 'Gift of the Naaru', key='s_GotN', width=55, default=false},
+	{type='spinner', text = '', key='s_GotNspin', width=55, default=40},
+	{type='checkbox', text = 'Healthstone', key='s_HS', width=55, default=false},
+	{type='spinner', text = '', key='s_HSspin', width=55, default=20},
+	{type='checkbox', text = 'Ancient Healing Potion', key='s_AHP', width=55, default=false},
+	{type='spinner', text = '', key='s_AHPspin', width=55, default=20, align = 'left'},
 	{type='ruler'}, {type='spacer'},
 
 	-- GUI Party Support
-	{type='header', text='Party Support', align='center'},
-	{type='checkbox', text='Gift of the Naaru', key='sup_GotN', width=55, default=false},
-	{type='spinner', text='', key='sup_GotNspin', width=55, default=20},
-	{type='checkbox', text='Power Word: Shield', key='sup_PWS', width=55, default=false},
-	{type='spinner', text='', key='sup_PWSspin', width=55, default=20},
-	{type='checkbox', text='Heal Party Below X%', key='k_PH', width=55, default= false},
-	{type='spinner', text='', key='k_PHspin', width=55, default=30},
-
+	{type = 'header', text = 'Party Support', align = 'center'},
+	{type='checkbox', text = 'Gift of the Naaru', key='sup_GotN', width=55, default=false},
+	{type='spinner', text = '', key='sup_GotNspin', width=55, default=20},
+	{type='checkbox', text = 'Power Word: Shield', key='sup_PWS', width=55, default=false},
+	{type='spinner', text = '', key='sup_PWSspin', width=55, default=20},
+	{type='checkbox', text = 'Heal Party Below X%', key='k_PH', width=55, default= false},
+	{type='spinner', text = '', key='k_PHspin', width=55, default=30},
 	-- GUI Keybinds
-	{type='header', text='Keybinds', align='center'},
-	{type='text', text='Left Shift: AOE|Left Ctrl: Mass Dispel|Alt: Pause', align='center'},
-	{type='checkbox', text='Force AOE', key='k_AOE', width=55, default=false},
-	{type='checkbox', text='Mass Dispel', key='k_MD', width=55, default=false},
-	{type='checkbox', text='Pause', key='k_P', width=55, default=false},
-	{type='ruler'}, {type='spacer'},
+	{type = 'header', text = 'Keybinds', align = 'center'},
+	{type='text', text = 'Left Shift: AOE|Left Ctrl: Mass Dispel|Alt: Pause', align = 'center'},
+	{type='checkbox', text = 'Force AOE', key='k_AOE', width=55, default=false},
+	{type='checkbox', text = 'Mass Dispel', key='k_MD', width=55, default=false},
+	{type='checkbox', text = 'Pause', key='k_P', width=55, default=false},
+	{type = 'ruler'},	{type = 'spacer'},
+	-- Trinkets + Heirlooms for leveling
+	{type = 'header', 	text = 'Trinkets/Heirlooms', align = 'center'},
+	{type = 'checkbox', text = 'Use Trinket #1', key = 'kT1', default = true},
+	{type = 'checkbox', text = 'Use Trinket #2', key = 'kT2', default = true},
+	{type = 'checkbox', text = 'Ring of Collapsing Futures', key = 'kRoCF', default = true},
+	{type = 'checkbox', text = 'Use Heirloom Necks When Below X% HP', key = 'k_HEIR', default = true},
 }
 
 local exeOnLoad=function()
@@ -93,7 +102,7 @@ local exeOnLoad=function()
 		-- Mind Bomb toggle only active with AoE.
 		key='abc',
 		name='Mind Bomb AoE',
-		text='Enable/Disable: Mind Bomb in rotation.',
+		text = 'Enable/Disable: Mind Bomb in rotation.',
 		icon='Interface\\ICONS\\Spell_shadow_mindbomb',
 	})
 
@@ -101,22 +110,17 @@ local exeOnLoad=function()
 		-- Surrender to Madness toggle.
 		key='s2m',
 		name='Surrender to Madness',
-		text='Enable/Disable: Automatic S2M',
+		text = 'Enable/Disable: Automatic S2M',
 		icon='Interface\\ICONS\\Achievement_boss_generalvezax_01',
 	})
 
 	--NeP.Interface:AddToggle({
 	--	key='level',
 	--	name='Leveling',
-	--	text='Enable/Disable: Leveling',
+	--	text = 'Enable/Disable: Leveling',
 	--	icon='Interface\\ICONS\\icon_treasuremap',
 	--})
 end
-
-local Util = {
-	-- ETC.
-	{'%pause' , 'player.debuff(200904)||player.debuff(Sapped Soul)'}, -- Vault of the Wardens, Sapped Soul
-}
 
 local Survival = {
 	-- Fade usage if enabled in UI.
@@ -138,13 +142,6 @@ local Potions = {
 	{'#5512', 'player.health<=UI(s_HSspin)&UI(s_HS)'},
 	-- Ancient Healing Potion usage if enabled in UI.
 	{'#127834', 'player.health<=UI(s_AHPspin)&UI(s_AHP)'},
-}
-
-local Trinkets = {
-	-- Top Trinket usage if enabled in UI.
-	{'#trinket1', 'UI(trinket_1)', 'target'},
-	-- Bottom Trinket usage if enabled in UI.
-	{'#trinket2', 'UI(trinket_2)'},
 }
 
 local Keybinds = {
@@ -374,8 +371,9 @@ local s2m2 = {
 }
 
 local inCombat = {
-	--{_Zylla, 'toggle(AutoTarget)'},
 	{Util},
+	{Trinkets},
+	{Heirlooms},
 	--Shadowform if no voidform and no shadowform.
 	{'Shadowform', '!player.buff(Voidform)&!player.buff(Shadowform)'},
 	{Movement, '!player.buff(Voidform||{player.buff Voidform&!spell(Void Eruption).cooldown=0&!player.channeling(Void Torrent)}'},

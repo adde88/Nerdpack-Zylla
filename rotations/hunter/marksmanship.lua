@@ -1,18 +1,32 @@
 local _, Zylla = ...
 
+local Util = _G['Zylla.Util']
+local Trinkets = _G['Zylla.Trinkets']
+local Heirlooms = _G['Zylla.Heirlooms']
+
 local GUI = {
+	-- Keybinds
 	{type = 'header', 	text = 'Keybinds', align = 'center'},
 	{type = 'text', 	text = 'Left Shift: Pause', align = 'center'},
 	{type = 'text', 	text = 'Left Ctrl: Tar Trap', align = 'center'},
 	{type = 'text', 	text = 'Left Alt: Binding Shot', align = 'center'},
 	{type = 'text', 	text = 'Right Alt: Freezing Trap', align = 'center'},
+	{type = 'ruler'},	{type = 'spacer'},
+	-- Settings
+	{type = 'header', 	text = 'Class Settings', align = 'center'},
 	{type = 'checkbox', text = 'Pause Enabled', key = 'kPause', default = true},
-	{type = 'checkbox', text = 'Summon Pet', key = 'kPet', default = false},
+	{type = 'checkbox', text = 'Summon Pet', key = 'kPet', default = true},
 	{type = 'checkbox', text = 'Barrage Enabled', key = 'kBarrage', default = false},
    	{type = 'checkbox', text = 'Volley Enabled', key = 'kVolley', default = true},
-	{type = 'checkbox', text = 'Misdirect Focus/Pet', key = 'kMisdirect', default = false},
+	{type = 'checkbox', text = 'Misdirect Focus/Pet', key = 'kMisdirect', default = true},
+	{type = 'ruler'},	{type = 'spacer'},
+	-- Trinkets + Heirlooms for leveling
+	{type = 'header', 	text = 'Trinkets/Heirlooms', align = 'center'},
 	{type = 'checkbox', text = 'Use Trinket #1', key = 'kT1', default = false},
-	{type = 'checkbox', text = 'Use Trinket #2', key = 'kT2', default = false}
+	{type = 'checkbox', text = 'Use Trinket #2', key = 'kT2', default = false},
+	{type = 'checkbox', text = 'Ring of Collapsing Futures', key = 'kRoCF', default = true},
+	{type = 'checkbox', text = 'Use Heirloom Necks When Below X% HP', key = 'k_HEIR', default = true},
+	{type = 'spinner',	text = '', key = 'k_HeirHP', default = 40},
 } 
 
 local exeOnLoad = function()
@@ -24,11 +38,6 @@ local exeOnLoad = function()
 	print('|cffADFF2F ----------------------------------------------------------------------|r')
 	
 end
-
-local Util = {
-	-- ETC.
-	{'%pause' , 'player.debuff(200904)||player.debuff(Sapped Soul)'}, -- Vault of the Wardens, Sapped Soul
-}
 
 local PreCombat = {
 	{'/cast Call Pet 1', '!pet.exists&!pet.dead&UI(kPet)'},
@@ -43,11 +52,6 @@ local Keybinds = {
 	{'Binding Shot', 'keybind(lalt)', 'cursor.ground'},
 	{'Tar Trap', 'keybind(lcontrol)', 'cursor.ground'},
 	{'Freezing Trap', 'keybind(ralt)', 'cursor.ground'},
-}
-
-local Trinkets = {
-	{'#trinket1', 'UI(kT1)'},
-	{'#trinket2', 'UI(kT2)'},
 }
 
 local Survival = {
@@ -166,8 +170,9 @@ local xPetCombat = {
 
 local inCombat = {
 	{Util},
-	{Keybinds},
 	{Trinkets},
+	{Heirlooms},
+	{Keybinds},
 	{Survival},
 	{Interrupts, 'target.interruptAt(50)&toggle(Interrupts)&target.inFront&target.range<=50'},
 	{Cooldowns, 'toggle(Cooldowns)'},

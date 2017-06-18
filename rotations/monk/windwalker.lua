@@ -2,30 +2,39 @@ local _, Zylla = ...
 
 -- Thanks to NoC for a working WW-Monk rotation.
 
-local GUI={
+local Util = _G['Zylla.Util']
+local Trinkets = _G['Zylla.Trinkets']
+local Heirlooms = _G['Zylla.Heirlooms']
+
+local GUI = {
 	-- General
-	{type='header',text='General', align='center'},
-	{type='checkbox', text='Automatic Res', key='auto_res', default=false},
-	--{type='checkbox', text='Automatic Pre-Pot', key='auto_pot', default=false},
-	{type='checkbox', text='5 min DPS test', key='dpstest', default=false},
+	{type = 'header',text = 'General', align = 'center'},
+	{type='checkbox', text = 'Automatic Res', key='auto_res', default=false},
+	{type='checkbox', text = '5 min DPS test', key='dpstest', default=false},
 	{type = 'checkbox', text = 'Pause Enabled', key = 'kPause', default = true},
 	
-
 	-- Survival
 	{type='spacer'},{type='rule'},
-	{type='header', text='Survival', align='center'},
-	{type='spinner', text='Healthstone&Healing Tonic', key='Healthstone', default=35},
-	{type='spinner', text='Effuse', key='effuse', default=30},
-	{type='spinner', text='Healing Elixir', key='Healing Elixir', default=50},
+	{type = 'header', text = 'Survival', align = 'center'},
+	{type='spinner', text = 'Healthstone & Healing Tonic', key='Healthstone', default=35},
+	{type='spinner', text = 'Effuse', key='effuse', default=30},
+	{type='spinner', text = 'Healing Elixir', key='Healing Elixir', default=50},
 
 	-- Offensive
 	{type='spacer'},{type='rule'},
-	{type='header', text='Offensive', align='center'},
-	{type='checkbox', text='SEF usage', key='sef_toggle', default=true},
-	{type='checkbox', text='Automatic CJL at range', key='auto_cjl', default=false},
-	{type='checkbox', text='Automatic Chi Wave at pull', key='auto_cw', default=true},
-	{type='checkbox', text='Automatic Mark of the Crane Dotting', key='auto_dot', default=true},
-	{type='checkbox', text='Automatic CJL in melee to maintain Hit Combo', key='auto_cjl_hc', default=false},
+	{type = 'header', text = 'Offensive', align = 'center'},
+	{type='checkbox', text = 'SEF usage', key='sef_toggle', default=true},
+	{type='checkbox', text = 'Automatic CJL at range', key='auto_cjl', default=false},
+	{type='checkbox', text = 'Automatic Chi Wave at pull', key='auto_cw', default=true},
+	{type='checkbox', text = 'Automatic Mark of the Crane Dotting', key='auto_dot', default=true},
+	{type='checkbox', text = 'Automatic CJL in melee to maintain Hit Combo', key='auto_cjl_hc', default=false},
+	{type = 'ruler'},	{type = 'spacer'},
+	-- Trinkets + Heirlooms for leveling
+	{type = 'header', 	text = 'Trinkets/Heirlooms', align = 'center'},
+	{type = 'checkbox', text = 'Use Trinket #1', key = 'kT1', default = true},
+	{type = 'checkbox', text = 'Use Trinket #2', key = 'kT2', default = true},
+	{type = 'checkbox', text = 'Ring of Collapsing Futures', key = 'kRoCF', default = true},
+	{type = 'checkbox', text = 'Use Heirloom Necks When Below X% HP', key = 'k_HEIR', default = true},
 }
 
 local exeOnLoad = function()
@@ -156,7 +165,10 @@ local Melee = {
 	{'Tiger Palm', 'player.energy>=100&target.inMelee'},
 }
 
-local inCombat={
+local inCombat = {
+	{Util},
+	{Trinkets},
+	{Heirlooms},
 	{'%pause', 'keybind(lshift)&UI(kPause)'},
 	{All},
 	{Survival, 'player.health<100'},
@@ -169,7 +181,7 @@ local inCombat={
 	{Ranged, '!target.inMelee&target.inRanged&target.combat'},
 }
 
-local outCombat={
+local outCombat = {
 	{'Effuse', 'player.health<=50&player.lastmoved>=1', 'player'},
 	-- Automatic res of dead party members
 	{'%ressdead(Resuscitate)', 'UI(auto_res)'},

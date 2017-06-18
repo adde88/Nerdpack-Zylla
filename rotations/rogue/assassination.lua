@@ -1,26 +1,35 @@
 local _, Zylla = ...
 
+local Util = _G['Zylla.Util']
+local Trinkets = _G['Zylla.Trinkets']
+local Heirlooms = _G['Zylla.Heirlooms']
+
 local GUI= {
 	-- General
-	{type='header', 		text='General', 								align='center'},
-	{type='checkbox',		text='Multi-Dot (Target/Focus/MousOver)',		key='multi', 	default=true},
-	{type='checkbox',		text='Mantle of the Master Assassin',			key='mantle', 	default=false},
-	{type='ruler'},			{type='spacer'},
-	
+	{type = 'header', 		text = 'General', 								align = 'center'},
+	{type='checkbox',		text = 'Multi-Dot (Target/Focus/MousOver)',		key='multi', 	default=true},
+	{type='checkbox',		text = 'Mantle of the Master Assassin',			key='mantle', 	default=false},
+	{type = 'checkbox', 	text = 'Pause Enabled', 						key = 'kPause', default = true},
+	{type='ruler'},			{type='spacer'},	
 	-- Survival
-	{type='header', 		text='Survival', align='center'},
-	{type='spinner', 		text='Crimson Vial', 							key='cv', 		default_spin=65},
-	{type='spinner', 		text='Evasion (HP%)', 							key='E_HP', 	default_spin=40},
-	{type='checkspin', 		text='Health Potion', 							key='hp', 		default_check=true, default_spin=25},
-	{type='checkspin',		text='Healthstone', 							key='hs', 		default_check=true, default_spin=25},
+	{type = 'header', 		text = 'Survival', align = 'center'},
+	{type='spinner', 		text = 'Crimson Vial', 							key='cv', 		default_spin=65},
+	{type='spinner', 		text = 'Evasion (HP%)', 							key='E_HP', 	default_spin=40},
+	{type='checkspin', 		text = 'Health Potion', 							key='hp', 		default_check=true, default_spin=25},
+	{type='checkspin',		text = 'Healthstone', 							key='hs', 		default_check=true, default_spin=25},
 	{type='ruler'},			{type='spacer'},
-	
 	--Cooldowns
-	{type='header', 		text='Cooldowns When Toggled ON', 				align='center'},
-	{type='checkbox',		text='Vanish',									key='van', 		default=true},
-	{type='checkbox',		text='Vendetta',								key='ven', 		default=true},
-	{type='checkbox',		text='Potion of the Old War',					key='ow', 		default=false},
+	{type = 'header', 		text = 'Cooldowns When Toggled ON', 				align = 'center'},
+	{type='checkbox',		text = 'Vanish',									key='van', 		default=true},
+	{type='checkbox',		text = 'Vendetta',								key='ven', 		default=true},
+	{type='checkbox',		text = 'Potion of the Old War',					key='ow', 		default=false},
 	{type='ruler'},			{type='spacer'},
+	-- Trinkets + Heirlooms for leveling
+	{type = 'header', 	text = 'Trinkets/Heirlooms', align = 'center'},
+	{type = 'checkbox', text = 'Use Trinket #1', key = 'kT1', default = true},
+	{type = 'checkbox', text = 'Use Trinket #2', key = 'kT2', default = true},
+	{type = 'checkbox', text = 'Ring of Collapsing Futures', key = 'kRoCF', default = true},
+	{type = 'checkbox', text = 'Use Heirloom Necks When Below X% HP', key = 'k_HEIR', default = true},
 }  
  
 local exeOnLoad=function()
@@ -33,11 +42,6 @@ local exeOnLoad=function()
 	print("|cffADFF2F ---------------------------------------------------------------------------|r")
 	
 end
-
-local Util = {
-	-- ETC.
-	{'%pause' , 'player.debuff(200904)||player.debuff(Sapped Soul)'}, -- Vault of the Wardens, Sapped Soul
-}
 
 local Interrupts = {
 	{'Kick', 'target.inMelee'},
@@ -115,6 +119,8 @@ local xCombat = {
 
 local inCombat = {
 	{Util},
+	{Trinkets},
+	{Heirlooms},
 	{Keybinds},
 	{Interrupts, 'target.interruptAt(70)'},
 	{TricksofTrade},

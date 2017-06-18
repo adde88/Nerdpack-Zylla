@@ -1,5 +1,9 @@
 local _, Zylla = ...
 
+local Util = _G['Zylla.Util']
+local Trinkets = _G['Zylla.Trinkets']
+local Heirlooms = _G['Zylla.Heirlooms']
+
 local GUI = {
 	{type = 'header', 	text = 'Keybinds', align = 'center'},
 	{type = 'text', 	text = 'Left Shift: Pause', align = 'center'},
@@ -7,6 +11,14 @@ local GUI = {
 	{type = 'text', 	text = 'Left Alt: Grappling Hook (Cursor)', align = 'center'},
 	{type = 'text', 	text = 'Right Alt: ', align = 'center'},
 	{type = 'checkbox', text = 'Pause Enabled', key = 'kPause', default = true},
+	{type = 'ruler'},	{type = 'spacer'},
+	-- Trinkets + Heirlooms for leveling
+	{type = 'header', 	text = 'Trinkets/Heirlooms', align = 'center'},
+	{type = 'checkbox', text = 'Use Trinket #1', key = 'kT1', default = true},
+	{type = 'checkbox', text = 'Use Trinket #2', key = 'kT2', default = true},
+	{type = 'checkbox', text = 'Ring of Collapsing Futures', key = 'kRoCF', default = true},
+	{type = 'checkbox', text = 'Use Heirloom Necks When Below X% HP', key = 'k_HEIR', default = true},
+	{type = 'spinner',	text = '', key = 'k_HeirHP', default = 40},
 } 
 
 local exeOnLoad = function()
@@ -20,7 +32,7 @@ local exeOnLoad = function()
 		NeP.Interface:AddToggle({
 		key='opener',
 		name='Opener',
-		text='If Enabled we will Open with Ambush when Stealthed. If not Cheap Shot will be used.',
+		text = 'If Enabled we will Open with Ambush when Stealthed. If not Cheap Shot will be used.',
 		icon='Interface\\Icons\\ability_rogue_ambush',
 	})
 	
@@ -36,10 +48,6 @@ local Keybinds = {
 	{'%pause', 'keybind(lshift)&UI(kPause)'},
 	{'Cannonball Barrage', 'keybind(lcontrol)', 'cursor.ground'},
 	{'Grappling Hook', 'talent(2,1)&keybind(lalt)', 'cursor.ground'},
-}
-
-local Util = {
-	{'%pause' , 'player.debuff(200904)||player.debuff(Sapped Soul||target.debuff(Gouge).duration>gcd'}, -- Vault of the Wardens, Sapped Soul, Gouge
 }
 
 local Interrupts = {
@@ -82,8 +90,14 @@ local RollingBones ={
 }
 
 local TricksofTrade = {
-	{'Tricks of the Trade', '!focus.buff&focus.range<=100', 'focus'},
-	{'Tricks of the Trade', '!tank.buff&tank.range<=100', 'tank'},
+	{'Tricks of the Trade', '!focus.buff&focus.range<99', 'focus'},
+	{'Tricks of the Trade', '!tank.buff&tank.range<99', 'tank'},
+}
+
+local Stealth_Opener = {
+	{'Stealth', '!player.buff&!player.buff(Vanish)&!nfly'},
+	{'Ambush', 'target.enemy&target.inMelee&target.inFront&player.buff(Stealth)&toggle(opener)'},
+	{'Cheap Shot', 'target.enemy&target.inMelee&target.inFront&player.buff(Stealth)&!toggle(opener)'},
 }
 
 local xCombat = {
@@ -95,17 +109,18 @@ local xCombat = {
 }
 
 local inCombat = {
+	{Util},
+	{Trinkets},
+	{Heirlooms},
 	{Keybinds},
-	{Interrupts, 'target.interruptAt(70)&toggle(Interrupts)&target.inFront'},
+	{Interrupts, 'target.interruptAt(70)&toggle(Interrupts)&target.inFront&target.inMelee'},
 	{Survival, 'player.health<100'},
-	{xCombat, 'target.inFront'},
+	{xCombat, 'target.inFront&target.inMelee'},
 	{TricksofTrade},
 }
 
 local outCombat = {
-	{'Stealth', '!player.buff&!player.buff(Vanish)&!nfly'},
-	{'Ambush', 'target.enemy&target.inMelee&target.inFront&player.buff(Stealth)&toggle(opener)'},
-	{'Cheap Shot', 'target.enemy&target.inMelee&target.inFront&player.buff(Stealth)&!toggle(opener)'},
+	{Stealth_Opener},
 	{Keybinds},
 	{TricksofTrade},
 }

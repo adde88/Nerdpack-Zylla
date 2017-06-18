@@ -1,5 +1,9 @@
 local _, Zylla = ...
 
+local Util = _G['Zylla.Util']
+local Trinkets = _G['Zylla.Trinkets']
+local Heirlooms = _G['Zylla.Heirlooms']
+
 local GUI = {
 	-- GUI Survival
 	{type = 'header',	text = 'Survival', 							align = 'center'},
@@ -18,13 +22,18 @@ local GUI = {
 	{type = 'checkbox',	text = 'Enable Ancient Healing Potion', 	key = 'S_AHPE', 	default = true},
 	{type = 'spinner',	text = '',									key = 'S_AHP', 		default = 20},
 	{type = 'ruler'},	{type = 'spacer'},
-
 	-- GUI Keybinds
 	{type = 'header', 	text = 'Keybinds', 							align = 'center'},
 	{type = 'checkbox', text = 'L-Control: Shadowfury @ Cursor',	key = 'K_SF',		default = true},
 	{type = 'checkbox', text = 'L-Alt: Demonic Circle', 			key = 'K_DC',		default = true},
 	{type = 'checkbox', text = 'L-Shift: Pause', 					key = 'kPause', 	default = true},
 	{type = 'ruler'},	{type = 'spacer'},
+	-- Trinkets + Heirlooms for leveling
+	{type = 'checkbox', text = 'Use Trinket #1',							key = 'kT1', 		default = true},
+	{type = 'checkbox', text = 'Use Trinket #2', 							key = 'kT2', 		default = true},
+	{type = 'checkbox', text = 'Ring of Collapsing Futures',				key = 'kRoCF',		default = true},
+	{type = 'checkbox', text = 'Use Heirloom Necks When Below X% HP',		key = 'k_HEIR', 	default = true},
+	{type = 'spinner',	text = '',											key = 'k_HeirHP', 	default = 40},
 }
 
 local exeOnLoad = function()
@@ -43,11 +52,6 @@ local exeOnLoad = function()
 		icon = 'Interface\\ICONS\\spell_shadow_auraofdarkness',
 	})
 end
-
-local Util = {
-	-- ETC.
-	{'%pause' , 'player.debuff(200904)||player.debuff(Sapped Soul)'}, -- Vault of the Wardens, Sapped Soul
-}
 
 local Survival = {
 	{'&Unending Resolve', 'UI(S_UEE)&player.health<=UI(S_UE)'},
@@ -100,7 +104,7 @@ local DW_Clip = {
 	{'!Life Tap', 'player.mana<=30&player.health>=15&{!player.lastgcd(Summon Felguard)||!player.lastgcd(Call Dreadstalkers)||!player.lastgcd(Hand of Gul\'dan)||!player.lastgcd(Summon Darkglare)||!player.lastgcd(Summon Doomguard)||!player.lastgcd(Grimoire: Felguard)}'},
 	{'!Demonbolt', '!player.moving&talent(7,2)&!player.soulshards=4'},
 	{'!Shadow Bolt', '!player.moving&!talent(7,2)&!player.soulshards=4'},
-	{'!89751', 'spell.cooldown(89751)<gcd&pet_range<=8'},
+	{'!89751', 'spell.cooldown(89751)<gcd&pet_range<=8&player.area(8).enemies>=3'},
 }
 
 local ST = {
@@ -110,16 +114,18 @@ local ST = {
 	{'Hand of Gul\'dan', '!player.moving&player.soulshards>=4'},
 	{'Thal\'kiel\'s Consumption', '!player.moving&cooldown(Call Dreadstalkers).remains>3&player.lastgcd(Hand of Gul\'dan)'},
 	{'Demonic Empowerment', '!player.moving&!player.lastgcd(Demonic Empowerment)&{Zylla.empower=0||player.lastgcd(Summon Felguard)||player.lastgcd(Call Dreadstalkers)||player.lastgcd(Hand of Gul\'dan)||player.lastgcd(Summon Darkglare)||player.lastgcd(Summon Doomguard)||player.lastgcd(Grimoire: Felguard)||player.lastgcd(Thal\'kiel\'s Consumption)}'},
-	{'Doom', '!talent(4,1)&toggle(Doom)&!target.debuff(Doom)'},
+	{'Doom', '!talent(4,1)&toggle(Doom)&!target.debuff(Doom)&target.inRanged'},
 	{'Life Tap', 'player.mana<=30&player.health>=15&{!player.lastgcd(Summon Felguard)||!player.lastgcd(Call Dreadstalkers)||!player.lastgcd(Hand of Gul\'dan)||!player.lastgcd(Summon Darkglare)||!player.lastgcd(Summon Doomguard)||!player.lastgcd(Grimoire: Felguard)}'},
 	{'Demonwrath', 'movingfor>=2&player.combat.time>2'},
 	{'Demonbolt', '!player.moving&talent(7,2)&!player.soulshards=4'},
 	{'Shadow Bolt', '!player.moving&!talent(7,2)&!player.soulshards=4'},
-	{'&89751', 'spell.cooldown(89751)<gcd&pet_range<=8'},
+	{'&89751', 'spell.cooldown(89751)<gcd&pet_range<=8&player.area(8).enemies>=3'},
 }
 
 local inCombat = {
 	{Util},
+	{Trinkets},
+	{Heirlooms},
 	{Keybinds},
 	{Survival},
 	{Player, '!player.moving'},

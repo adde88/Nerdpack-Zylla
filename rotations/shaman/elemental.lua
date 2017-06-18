@@ -1,9 +1,12 @@
 local _, Zylla = ...
 
+local Util = _G['Zylla.Util']
+local Trinkets = _G['Zylla.Trinkets']
+local Heirlooms = _G['Zylla.Heirlooms']
+
 local GUI = {
 	-- GUI Survival
 	{type = 'header', text = 'Survival', align = 'center'},
-	
 	{type = 'checkbox', text = 'Enable Astral Shift', key = 'S_ASE', default = true},
 	{type = 'spinner', text = '', key = 'S_AS', default = 40},
 	{type = 'checkbox', text = 'Enable Healing Surge', key = 'S_HSGE', default = true},
@@ -17,20 +20,27 @@ local GUI = {
 	{type = 'checkbox', text = 'Enable Ancient Healing Potion', key = 'S_AHPE', default = true},
 	{type = 'spinner', text = '', key = 'S_AHP', default = 20},
 	{type = 'ruler'},{type = 'spacer'},
-
 	-- GUI Emergency Group Healing
 	{type = 'header', text = 'Emergency Group Healing', align = 'center'},
 	{type = 'checkbox', text = 'Enable Emergency Group Healing', key = 'E_HSGE', default = false},
 	{type = 'text', text = 'Healing Surge'},
 	{type = 'spinner', text = '', key = 'E_HSG', default = 35},
 	{type = 'ruler'},{type = 'spacer'},
-
 	-- GUI Keybinds
 	{type = 'header', text = 'Keybinds', align = 'center'},
+	{type = 'checkbox', text = 'Pause Enabled', key = 'kPause', default = true},
 	{type = 'checkbox', text = 'L-Shift: Liquid Magma Totem @ Cursor', key = 'K_LMT', default = true},
 	{type = 'checkbox', text = 'L-Control: Lightning Surge Totem @ Cursor', key = 'K_LST', default = true},
 	{type = 'checkbox', text = 'L-Alt: Earthbind Totem @ Cursor', key = 'K_ET', default = true},
 	{type = 'ruler'},{type = 'spacer'},
+	{type = 'ruler'},	{type = 'spacer'},
+	-- Trinkets + Heirlooms for leveling
+	{type = 'header', 	text = 'Trinkets/Heirlooms', align = 'center'},
+	{type = 'checkbox', text = 'Use Trinket #1', key = 'kT1', default = true},
+	{type = 'checkbox', text = 'Use Trinket #2', key = 'kT2', default = true},
+	{type = 'checkbox', text = 'Ring of Collapsing Futures', key = 'kRoCF', default = true},
+	{type = 'checkbox', text = 'Use Heirloom Necks When Below X% HP', key = 'k_HEIR', default = true},
+	{type = 'spinner',	text = '', key = 'k_HeirHP', default = 40},
 }
 
 local exeOnLoad = function()
@@ -52,10 +62,6 @@ local exeOnLoad = function()
 		icon = 'Interface\\ICONS\\ability_shaman_cleansespirit',
 	})
 end
-
-local _Zylla = {
-    {'/targetenemy [dead][noharm]', '{target.dead||!target.exists}&!player.area(40).enemies=0'},
-}
 
 local Survival = {
 	-- Astral Shift usage if enabled in UI.
@@ -226,7 +232,9 @@ local ASSingle = {
 }
 
 local inCombat = {
-	--{_Zylla, 'toggle(AutoTarget)'},
+	{Util},
+	{Trinkets},
+	{Heirlooms},
 	{Keybinds, '{!moving||moving}'},
 	{Dispel, '{!moving||moving}&toggle(yuPS)&spell(Cleanse Spirit).cooldown=0'},
 	{Survival, '{!moving||moving}'},

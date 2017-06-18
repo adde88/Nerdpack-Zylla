@@ -1,8 +1,28 @@
 local _, Zylla = ...
 
-local GUI = {
+local Util = _G['Zylla.Util']
+local Trinkets = _G['Zylla.Trinkets']
+local Heirlooms = _G['Zylla.Heirlooms']
 
-}
+local GUI = {
+	-- Keybinds
+	{type = 'header', 	text = 'Keybinds', align = 'center'},
+	{type = 'text', 	text = 'Left Shift: Pause', align = 'center'},
+	{type = 'text', 	text = 'Left Ctrl: Infernal Strike @ Cursor', align = 'center'},
+	{type = 'text', 	text = 'Left Alt: Sigil of Flame @ Cursor', align = 'center'},
+	{type = 'ruler'},	{type = 'spacer'},
+	-- Settings
+	{type = 'checkbox', text = 'Pause Enabled', key = 'kPause', default = true},
+	{type = 'ruler'},	{type = 'spacer'},
+	-- Trinkets + Heirlooms for leveling
+	{type = 'header', 	text = 'Trinkets/Heirlooms', align = 'center'},
+	{type = 'checkbox', text = 'Use Trinket #1', key = 'kT1', default = true},
+	{type = 'checkbox', text = 'Use Trinket #2', key = 'kT2', default = true},
+	{type = 'checkbox', text = 'Ring of Collapsing Futures', key = 'kRoCF', default = true},
+	{type = 'checkbox', text = 'Use Heirloom Necks When Below X% HP', key = 'k_HEIR', default = true},
+	{type = 'spinner',	text = '', key = 'k_HeirHP', default = 40},
+} 
+
 local exeOnLoad = function()
 	 Zylla.ExeOnLoad()
 
@@ -12,11 +32,6 @@ local exeOnLoad = function()
 	print('|cffADFF2F ----------------------------------------------------------------------|r')
 
 end
-
-local Util = {
-	-- ETC.
-	{'%pause' , 'player.debuff(200904)||player.debuff(Sapped Soul)'}, -- Vault of the Wardens, Sapped Soul
-}
 
 local Keybinds = {
 	{'%pause', 'keybind(lshift)&UI(kPause)'},
@@ -32,6 +47,7 @@ local Interrupts = {
 
 local ST = {
 	{'Sigil of Flame', 'target.range<=15&!target.debuff(Sigil of Flame)', 'player.ground'},
+	{'Infernal Strike', 'talent(3,2)&'},
 	{'Fiery Brand', '!player.buff(Demon Spikes)&!player.buff(Metamorphosis)'},
 	{'Demon Spikes', '{spell(Demon Spikes)charges=2||!player.buff(Demon Spikes)}&!target.debuff(Fiery Brand)&!player.buff(Metamorphosis)'},
 	{'!Empower Wards', 'target.casting.percent>80'},
@@ -58,6 +74,8 @@ local Ranged = {
 
 local inCombat = {
 	{Util},
+	{Trinkets},
+	{Heirlooms},
 	{Keybinds},
 	{Interrupts, 'toggle(Interrupts)'},
 	{Ranged, '!target.inMelee&target.range<=30'},
@@ -69,7 +87,7 @@ local outCombat = {
 }
 
 NeP.CR:Add(581, {
-	name = '[|cff'..Zylla.addonColor..'Zylla\'s|r] DEMON HUNTER - Vengeance',
+	name = '[|cff'..Zylla.addonColor..'Zylla\'s|r] Demon Hunter - Vengeance',
 	  ic = inCombat,
 	 ooc = outCombat,
 	 gui = GUI,

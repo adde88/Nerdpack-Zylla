@@ -1,4 +1,8 @@
 local _, Zylla = ...
+
+local Util = _G['Zylla.Util']
+local Trinkets = _G['Zylla.Trinkets']
+local Heirlooms = _G['Zylla.Heirlooms']
 local GUI = {
 	-- General
 	{type = 'header', 	text = 'Keybinds', 							align = 'center'},
@@ -7,11 +11,18 @@ local _, Zylla = ...
 	{type = 'text', 	text = 'Left Alt: ',						align = 'center'},
 	{type = 'text', 	text = 'Right Alt: ',						align = 'center'},
 	{type = 'checkbox', text = 'Pause Enabled',						key = 'kPause', 	default = true},
+	{type = 'ruler'},	{type = 'spacer'},
+	-- Trinkets + Heirlooms for leveling
+	{type = 'header', 	text = 'Trinkets/Heirlooms', align = 'center'},
+	{type = 'checkbox', text = 'Use Trinket #1', key = 'kT1', default = true},
+	{type = 'checkbox', text = 'Use Trinket #2', key = 'kT2', default = true},
+	{type = 'checkbox', text = 'Ring of Collapsing Futures', key = 'kRoCF', default = true},
+	{type = 'checkbox', text = 'Use Heirloom Necks When Below X% HP', key = 'k_HEIR', default = true},
 	-- Survival
 	{type='spacer'},	{type='rule'},
-	{type='header', 	text='Survival',							align='center'},
-	{type='checkbox',	text='Enable Self-Heal (Flash of Light)',	key='kFoL',			default=false},
-	{type='spinner', 	text='Flash of Light (HP%)',				key='E_FoL',		default=60},
+	{type = 'header', 	text = 'Survival',							align = 'center'},
+	{type='checkbox',	text = 'Enable Self-Heal (Flash of Light)',	key='kFoL',			default=false},
+	{type='spinner', 	text = 'Flash of Light (HP%)',				key='E_FoL',		default=60},
 }
 
 local exeOnLoad = function()
@@ -29,15 +40,6 @@ local exeOnLoad = function()
 		icon = 'Interface\\Icons\\spell_nature_shamanrage.png',
 	})
 end
-
-local _Zylla = {
-    {'/targetenemy [dead][noharm]', '{target.dead||!target.exists}&!player.area(40).enemies=0'},
-}
-
-local Util = {
-	-- ETC.
-	{'%pause' , 'player.debuff(200904)||player.debuff(Sapped Soul)'} -- Vault of the Wardens, Sapped Soul
-}
 
 local Keybinds = {
 	-- Pause
@@ -98,8 +100,9 @@ local ST = {
 }
 
 local inCombat = {
-	--{_Zylla, 'toggle(AutoTarget)'},
 	{Util},
+	{Trinkets},
+	{Heirlooms},
 	{Keybinds},
 	{Survival, 'player.health<100'},
 	{Interrupts, 'target.interruptAt(50)&toggle(Interrupts)&target.inFront&target.inMelee'},

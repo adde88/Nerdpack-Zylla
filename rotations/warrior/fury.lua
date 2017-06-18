@@ -1,37 +1,50 @@
 local _, Zylla = ...
+
+local Util = _G['Zylla.Util']
+local Trinkets = _G['Zylla.Trinkets']
+local Heirlooms = _G['Zylla.Heirlooms']
 local GUI = {
-	--KEYBINDS
+	-- Keybinds
 	{type = 'header', 	text = 'Keybinds', align = 'center'},
 	{type = 'text', 	text = 'Left Shift: Pause', align = 'center'},
 	{type = 'text', 	text = 'Left Ctrl: Heroic Leap', align = 'center'},
-	{type = 'checkbox', text = 'Pause enabled', key = 'kPause', default = true},
+	{type = 'text', 	text = 'Left Alt: ', align = 'center'},
+	{type = 'text', 	text = 'Right Alt: ', align = 'center'},
+	{type = 'ruler'},	{type = 'spacer'},
+	-- Settings
+	{type = 'header', 	text = 'Class Settings', align = 'center'},
+	{type = 'checkbox', text = 'Pause Enabled', key = 'kPause', default = true},
+	{type = 'ruler'},	{type = 'spacer'},
+	-- Trinkets + Heirlooms for leveling
+	{type = 'header', 	text = 'Trinkets/Heirlooms', align = 'center'},
 	{type = 'checkbox', text = 'Use Trinket #1', key = 'kT1', default = true},
 	{type = 'checkbox', text = 'Use Trinket #2', key = 'kT2', default = true},
-	{type = 'checkbox', text = 'Ring of Collapsing Futures', key = 'kRoCF', default = true}
-}
+	{type = 'checkbox', text = 'Ring of Collapsing Futures', key = 'kRoCF', default = true},
+	{type = 'checkbox', text = 'Use Heirloom Necks When Below X% HP', key = 'k_HEIR', default = true},
+	{type = 'spinner',	text = '', key = 'k_HeirHP', default = 40},
+} 
 
 local exeOnLoad = function()
 	 Zylla.ExeOnLoad()
 
 	print("|cffADFF2F ----------------------------------------------------------------------|r")
 	print("|cffADFF2F --- |rWarrior |cffADFF2FFury |r")
-	print("|cffADFF2F --- |rRecommended Talents: 1/2 - 2/2 - 3/3 - 4/2 - 5/1 - 6/3 - 7/3")
+	print("|cffADFF2F --- |rRecommended Talents: 1/1 - 2/3 - 3/3 - 4/2 - 5/2 - 6/3 - 7/2")
+	print("|cffADFF2F --- |rLast Updated: 16.06.2017")
 	print("|cffADFF2F ----------------------------------------------------------------------|r")
 
 end
 
-local Util = {
-	-- ETC.
-	{'%pause' , 'player.debuff(200904)||player.debuff(Sapped Soul)'}, -- Vault of the Wardens, Sapped Soul
+local Keybinds = {
+	-- Pause
+	{'%pause', 'keybind(lshift)&UI(kPause)'},
+	{'Heroic Leap', 'keybind(lcontrol)' , 'cursor.ground'}
 }
 
-local Trinkets = {
-	{'#trinket1', 'UI(kT1)'},
-	{'#trinket2', 'UI(kT2)'},
-	{'#Ring of Collapsing Futures', 'equipped(142173)&!player.debuff(Temptation)&UI(kRoCF)', 'target.enemy'},
-}
-
-local PreCombat = {
+local Interrupts = {
+	{'Pummel'},
+	{'Arcane Torrent', 'target.inMelee&spell(Pummel).cooldown>gcd&!prev_gcd(Pummel)'},
+	{'Shockwave', 'talent(2,1)&!target.immune(stun)&spell(Pummel).cooldown>gcd&!prev_gcd(Pummel)&target.inFront&target.inMelee'},
 }
 
 local Survival = {
@@ -39,12 +52,11 @@ local Survival = {
 }
 
 local Cooldowns = {
-	{Trinkets},
 	{'Battle Cry', '{spell(Odyn\'s Fury).cooldown<gcd&{spell(Bloodthirst).cooldown<gcd||{player.buff(Enrage).remains>spell(Bloodthirst).cooldown}}}'},
-	{'Avatar', 'player.buff(Battle Cry)'},
-	{'Bloodbath', 'player.buff(Dragon Roar)||{!talent(7,3)&{player.buff(Battle Cry)||spell(Battle Cry).cooldown>10}}'},
+	{'Avatar', 'talent(3,3)&player.buff(Battle Cry)'},
+	{'Bloodbath', 'talent(6,1)&{player.buff(Dragon Roar)||{!talent(7,3)&{player.buff(Battle Cry)||spell(Battle Cry).cooldown>10}}}'},
 	{'Blood Fury', 'player.buff(Battle Cry)'},
-	{'Berserking', 'player.buff(Battle Cry)'},
+	{'Berserking', 'player.buff(Battle Cry)'},	
 }
 
 local Bladestorm = {
@@ -59,6 +71,7 @@ local AoE = {
 	{'Rampage', 'player.buff(Meat Cleaver)'},
 	{'Bloodthirst'},
 	{'Whirlwind'},
+	{'Shockwave', 'talent(2,1)&!target.immune(stun)&player.area(6).enemies>=3&target.inMelee&target.inFront'},
 }
 
 local ST = {
@@ -80,7 +93,7 @@ local ST = {
 	{'Bloodthirst'},
 	{'Furious Slash'},
 	{Bladestorm},
-	{'Bloodbath', 'player.buff(Frothing Berserker)||{player.rage>80&!talent(5,2)}'}
+	{'Bloodbath', 'talent(6,1)&{player.buff(Frothing Berserker)||{player.rage>80&!talent(5,2)}}'}
 }
 
 local TwoTargets = {
@@ -95,31 +108,26 @@ local TwoTargets = {
 	{'Whirlwind'}
 }
 
-local Keybinds = {
-	-- Pause
-	{'%pause', 'keybind(lshift)&UI(kPause)'},
-	{'Heroic Leap', 'keybind(lcontrol)' , 'cursor.ground'}
-}
-
-local Interrupts = {
-	{'Pummel'},
-	{'Arcane Torrent', 'target.inMelee&spell(Pummel).cooldown>gcd&!prev_gcd(Pummel)'},
+local Ranged = {
+	{'Storm Bolt', 'talent(2,2)&target.range<=20&!target.immune(stun)'},
 }
 
 local inCombat = {
 	{Util},
+	{Trinkets},
+	{Heirlooms},
 	{Keybinds},
-	{Interrupts, 'target.interruptAt(50)&toggle(Interrupts)&target.inFront&target.inMelee'},
+	{Interrupts, 'target.interruptAt(75)&toggle(Interrupts)&target.inFront&target.inMelee'},
 	{Survival, 'player.health<100'},
 	{Cooldowns, 'toggle(Cooldowns)&target.inMelee'},
-	{TwoTargets, 'toggle(aoe)&{player.area(8).enemies=2||player.area(8).enemies=3}'},
-	{AoE, 'toggle(aoe)&player.area(8).enemies>3'},
-	{ST, 'target.inMelee&target.inFront'}
+	{TwoTargets, 'player.area(8).enemies=2||player.area(8).enemies=3'},
+	{AoE, 'player.area(8).enemies>3'},
+	{ST, 'target.inMelee&target.inFront'},
+	{Ranged, '!target.inMelee&target.inFront'}
 }
 
 local outCombat = {
-	{Keybinds},
-	{PreCombat},
+	{Keybinds}
 }
 
 NeP.CR:Add(72, {

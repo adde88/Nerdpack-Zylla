@@ -1,5 +1,9 @@
 local _, Zylla = ...
 
+local Util = _G['Zylla.Util']
+local Trinkets = _G['Zylla.Trinkets']
+local Heirlooms = _G['Zylla.Heirlooms']
+
 local GUI = {
 	{type = 'header', 	text = 'Keybinds', align = 'center'},
 	{type = 'text', 	text = 'Left Shift: Pause', align = 'center'},
@@ -7,7 +11,14 @@ local GUI = {
 	{type = 'text', 	text = 'Left Alt: ', align = 'center'},
 	{type = 'text', 	text = 'Right Alt: ', align = 'center'},
 	{type = 'checkbox', text = 'Pause Enabled', key = 'kPause', default = true},
-	
+	{type = 'ruler'},	{type = 'spacer'},
+	-- Trinkets + Heirlooms for leveling
+	{type = 'header', 	text = 'Trinkets/Heirlooms', align = 'center'},
+	{type = 'checkbox', text = 'Use Trinket #1', key = 'kT1', default = true},
+	{type = 'checkbox', text = 'Use Trinket #2', key = 'kT2', default = true},
+	{type = 'checkbox', text = 'Ring of Collapsing Futures', key = 'kRoCF', default = true},
+	{type = 'checkbox', text = 'Use Heirloom Necks When Below X% HP', key = 'k_HEIR', default = true},
+	{type = 'spinner',	text = '', key = 'k_HeirHP', default = 40},	
 } 
 
 local exeOnLoad = function()
@@ -21,8 +32,6 @@ local exeOnLoad = function()
 end
 
 local PreCombat = {
-	
-	--{'Charge', '!target.inMelee&target.range<=25&target.inFront'},
 }
 
 
@@ -36,7 +45,6 @@ local Cooldowns = {
 	{'Arcane Torrent', 'player.buff(Battle Cry)&talent(6,1)&rage.deficit>40'},
 	{'Battle Cry', '{player.buff(Bloodlust)||xtime>=1}&gcd.remains<0.5&{player.buff(Shattered Defenses)||{cooldown(Colossus Smash).remains>gcd&cooldown(Warbreaker).remains>gcd}}'},
 	{'Avatar', 'talent(3,3)&{player.buff(Bloodlust)||xtime>=1}'},
-	{'#trinket2'},
 }
 
 local Opener = {
@@ -58,8 +66,7 @@ local Opener = {
 	{'Slam'},
 }
 
-local Util = {
-	{'%pause' , 'player.debuff(200904)||player.debuff(Sapped Soul)'}, -- Vault of the Wardens, Sapped Soul
+local Etc = {
 	{Cooldowns, 'toggle(Cooldowns)'},
 	--{'Hamstring', 'player.buff(Battle Cry)&talent(6,1)&!target.debuff(Hamstring)'},	--waste of player.rage i would say unless ... it's PvP, maybe?
 	{'Rend', 'talent(3,2)&target.debuff(Rend).remains<gcd'},
@@ -144,11 +151,14 @@ local Interrupts = {
 }
 
 local inCombat = {
+	{Util},
+	{Trinkets},
+	{Heirlooms},
 	{Keybinds},
 	{Interrupts, 'target.interruptAt(50)&toggle(Interrupts)&target.inFront&target.inMelee'},
 	{Survival, 'player.health<100'},
 	{Cooldowns, 'toggle(Cooldowns)&target.inMelee'},
-	{Util, 'target.inMelee'},
+	{Etc, 'target.inMelee'},
 	{Cleave, 'toggle(aoe)&player.area(8).enemies>=2&talent(1,3)'},
 	{AoE, 'toggle(aoe)&player.area(8).enemies>=5&!talent(1,3)'},
 	{Execute, 'target.inMelee&target.inFront&target.health<=20&player.area(8).enemies<5'},

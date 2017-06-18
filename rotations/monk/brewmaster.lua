@@ -1,25 +1,34 @@
 local _, Zylla = ...
 
-local GUI={
+local Util = _G['Zylla.Util']
+local Trinkets = _G['Zylla.Trinkets']
+local Heirlooms = _G['Zylla.Heirlooms']
+
+local GUI = {
 	-- General
 	{type='spacer'},	{type='rule'},
-	{type='header', 	text='General', 				align='center'},
-	{type='checkbox', 	text='Automatic Res', 			key='auto_res', 	default=true},
-	--{type='checkbox', text='Automated Taunts', 		key='canTaunt', 	default=false },
-	{type='checkbox', 	text='Automatic CJL at range', 	key='auto_cjl', 	default=false},
-	{type='checkbox', 	text='Pause Enabled', 			key='kPause', 		default=true},
-	{type='checkbox', 	text='Auto-Target Enemies', 	key='kAutoTarget',	default=true},
-
+	{type = 'header', 	text = 'General', 				align = 'center'},
+	{type='checkbox', 	text = 'Automatic Res', 			key='auto_res', 	default=true},
+	--{type='checkbox', text = 'Automated Taunts', 		key='canTaunt', 	default=false },
+	{type='checkbox', 	text = 'Automatic CJL at range', 	key='auto_cjl', 	default=false},
+	{type='checkbox', 	text = 'Pause Enabled', 			key='kPause', 		default=true},
+	{type='checkbox', 	text = 'Auto-Target Enemies', 	key='kAutoTarget',	default=true},
 	-- Survival
 	{type='spacer'},	{type='rule'},
-	{type='header', 	text='Survival',								align='center'},
-	{type='checkbox',	text='Enable Self-Heal (Effuse)', 					key='kEffuse',			default=false},
-	{type='spinner', 	text='Effuse (HP%)', 							key='E_HP',				default=60},
-	{type='spinner',	text='Healthstone or Healing Potion',			key='Health Stone',		default=45},
-	{type='spinner',	text='Healing Elixir', 							key='Healing Elixir',	default=70},
-	{type='spinner',	text='Expel Harm', 								key='Expel Harm',		default=100},
-	{type='spinner',	text='Fortifying Brew',							key='Fortifying Brew',	default=20},
-	{type='spinner',	text='Ironskin Brew',							key='Ironskin Brew',	default=80},
+	{type = 'header', 	text = 'Survival',								align = 'center'},
+	{type='checkbox',	text = 'Enable Self-Heal (Effuse)', 				key='kEffuse',			default=false},
+	{type='spinner', 	text = 'Effuse (HP%)', 							key='E_HP',				default=60},
+	{type='spinner',	text = 'Healthstone or Healing Potion',			key='Health Stone',		default=45},
+	{type='spinner',	text = 'Healing Elixir', 							key='Healing Elixir',	default=70},
+	{type='spinner',	text = 'Expel Harm', 								key='Expel Harm',		default=100},
+	{type='spinner',	text = 'Fortifying Brew',							key='Fortifying Brew',	default=20},
+	{type='spinner',	text = 'Ironskin Brew',							key='Ironskin Brew',	default=80},
+	-- Trinkets + Heirlooms for leveling
+	{type = 'checkbox', text = 'Use Trinket #1',						key = 'kT1',			default = false},
+	{type = 'checkbox', text = 'Use Trinket #2',						key = 'kT2',			default = false},
+	{type = 'checkbox', text = 'Ring of Collapsing Futures',			key = 'kRoCF',			default = true},
+	{type = 'checkbox', text = 'Use Heirloom Necks When Below X% HP',	key = 'k_HEIR',			default = true},
+	{type = 'spinner',	text = '',										key = 'k_HeirHP',		default = 40},
 }
 
 local exeOnLoad=function()
@@ -31,11 +40,6 @@ local exeOnLoad=function()
 	print('|cffADFF2F ---------------------------------------------------------------------------|r')
 	
 end
-
-local Util = {
-	-- ETC.
-	{'%pause' , 'player.debuff(200904)||player.debuff(Sapped Soul)'}, -- Vault of the Wardens, Sapped Soul
-}
 
 local Keybinds = {
 	{'%pause', 'keybind(lshift)&UI(kPause)'},
@@ -106,6 +110,8 @@ local Melee = {
 
 local inCombat = {
 	{Util},
+	{Trinkets},
+	{Heirlooms},
 	{Artifact},
 	{Keybinds},
 	{Snares},
@@ -118,7 +124,7 @@ local inCombat = {
 }
 
 local outCombat={
-	{_Keybinds},
+	{Keybinds},
 	{'%ressdead(Resuscitate)', 'UI(auto_res)'},
 	{'Effuse', 'player.health<=50&player.lastmoved>=1', 'player'},
 }

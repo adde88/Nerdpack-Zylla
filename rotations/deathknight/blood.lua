@@ -1,15 +1,27 @@
 local _, Zylla = ...
 
+local Util = _G['Zylla.Util']
+local Trinkets = _G['Zylla.Trinkets']
+local Heirlooms = _G['Zylla.Heirlooms']
+
 local GUI = {
+	-- Keybinds
 	{type = 'header', 	text = 'Keybinds', align = 'center'},
 	{type = 'text', 	text = 'Left Shift: Pause', align = 'center'},
 	{type = 'text', 	text = 'Left Ctrl: ', align = 'center'},
 	{type = 'text', 	text = 'Left Alt: ', align = 'center'},
 	{type = 'text', 	text = 'Right Alt: ', align = 'center'},
+	{type = 'ruler'},	{type = 'spacer'},
+	-- Settings
 	{type = 'checkbox', text = 'Pause Enabled', key = 'kPause', default = true},
+	{type = 'ruler'},	{type = 'spacer'},
+	-- Trinkets + Heirlooms for leveling
+	{type = 'header', 	text = 'Trinkets/Heirlooms', align = 'center'},
 	{type = 'checkbox', text = 'Use Trinket #1', key = 'kT1', default = true},
 	{type = 'checkbox', text = 'Use Trinket #2', key = 'kT2', default = true},
-	{type = 'checkbox', text = 'Ring of Collapsing Futures', key = 'kRoCF', default = true}
+	{type = 'checkbox', text = 'Ring of Collapsing Futures', key = 'kRoCF', default = true},
+	{type = 'checkbox', text = 'Use Heirloom Necks When Below X% HP', key = 'k_HEIR', default = true},
+	{type = 'spinner',	text = '', key = 'k_HeirHP', default = 40},
 } 
 
 local exeOnLoad = function()
@@ -21,17 +33,6 @@ local exeOnLoad = function()
 	print('|cffADFF2F ----------------------------------------------------------------------|r')
 	
 end
-
-local Util = {
-	-- ETC.
-	{'%pause' , 'player.debuff(200904)||player.debuff(Sapped Soul)'}, -- Vault of the Wardens, Sapped Soul
-}
-
-local Trinkets = {
-	{'#trinket1', 'UI(kT1)'},
-	{'#trinket2', 'UI(kT2)'},
-	{'#Ring of Collapsing Futures', 'equipped(142173)&!player.debuff(Temptation)&UI(kRoCF)', 'target.enemy'},
-}
 
 local PreCombat = {
 }
@@ -49,8 +50,8 @@ local Keybinds = {
 }
 
 local Cooldowns = {
-	{'Dancing Rune Weapon', 'target.inFront&target.inMelee&{player.incdmg(2.5)>player.health.max*0.50}||{player.health<=20}'},
-	{'Vampiric Blood', 'player.incdmg(2.5)>player.health.max*0.50||player.health<=25'},
+	{'Dancing Rune Weapon', 'target.inFront&target.inMelee&{{player.incdmg(2.5)>player.health.max*0.50}||{player.health<=20}}'},
+	{'Vampiric Blood', 'player.incdmg(2.5)>player.health.max*0.50||player.health<=40'},
 }
 
 local Interrupts = {
@@ -60,13 +61,13 @@ local Interrupts = {
 }
 
 local xCombat = {
-	{'Death Grip', '!target.inMelee&target.range<=30&target.threat>99'},
-	{'Death\'s Caress', 'target.range<=30&{!target.debuff(Blood Plague)}||{target.debuff(Blood Plague).remains<=2}'},
+	{'Death Grip', '!target.inMelee&target.range<=30&target.threat<99'},
+	{'Death\'s Caress', 'target.range<=30&{{!target.debuff(Blood Plague)}||{target.debuff(Blood Plague).remains<=2}}'},
 	{'Marrowrend', 'player.buff(Bone Shield).duration<=3&target.inFront&target.inMelee'},
 	{'Marrowrend', 'player.buff(Bone Shield).count<=6&talent(3,1)&target.inFront&target.inMelee'},
 	{'Blood Boil', '!target.debuff(Blood Plague)&target.range<=10'},
-	{'Death and Decay', 'target.range<=30&{talent(2,1)&player.buff(Crimson Scourge)}||{player.area(10).enemies>1&player.buff(Crimson Scourge}', 'player.ground'},
-	{'Death and Decay', 'target.range<=30&{talent(2,1)&player.runes>=3}||{player.area(10).enemies>=3', 'player.ground'},
+	{'Death and Decay', 'target.range<=30&{{talent(2,1)&player.buff(Crimson Scourge)}||{player.area(10).enemies>1&player.buff(Crimson Scourge}}', 'player.ground'},
+	{'Death and Decay', 'target.range<=30&{{talent(2,1)&player.runes>=3}||{player.area(10).enemies>=3}}', 'player.ground'},
 	{'Death and Decay', '!talent(2,1)&target.range<=30&player.area(10).enemies=1&player.buff(Crimson Scourge)', 'player.ground'},
 	{'Death Strike', 'player.runicpower>=75&target.inFront&target.inMelee'},
 	{'Heart Strike', 'player.runes>=3&target.inFront&target.inMelee'},
@@ -75,6 +76,8 @@ local xCombat = {
 
 local inCombat = {
 	{Util},
+	{Trinkets},
+	{Heirlooms},
 	{Keybinds},
 	{Trinkets},
 	{Interrupts, 'target.interruptAt(80)&toggle(Interrupts)'},

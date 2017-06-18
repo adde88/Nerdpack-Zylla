@@ -1,4 +1,8 @@
 local _, Zylla = ...
+
+local Util = _G['Zylla.Util']
+local Trinkets = _G['Zylla.Trinkets']
+local Heirlooms = _G['Zylla.Heirlooms']
 local GUI = {
 	{type = 'header', 	text = 'Keybinds', align = 'center'},
 	{type = 'text', 	text = 'Left Shift: Pause', align = 'center'},
@@ -6,7 +10,14 @@ local _, Zylla = ...
 	{type = 'text', 	text = 'Left Alt: ', align = 'center'},
 	{type = 'text', 	text = 'Right Alt: ', align = 'center'},
 	{type = 'checkbox', text = 'Pause Enabled', key = 'kPause', default = true},
-	
+	{type = 'ruler'},	{type = 'spacer'},
+	-- Trinkets + Heirlooms for leveling
+	{type = 'header', 	text = 'Trinkets/Heirlooms', align = 'center'},
+	{type = 'checkbox', text = 'Use Trinket #1', key = 'kT1', default = true},
+	{type = 'checkbox', text = 'Use Trinket #2', key = 'kT2', default = true},
+	{type = 'checkbox', text = 'Ring of Collapsing Futures', key = 'kRoCF', default = true},
+	{type = 'checkbox', text = 'Use Heirloom Necks When Below X% HP', key = 'k_HEIR', default = true},
+	{type = 'spinner',	text = '', key = 'k_HeirHP', default = 40},
 } 
 
 local exeOnLoad = function()
@@ -19,17 +30,18 @@ local exeOnLoad = function()
 
 end
 
-local _Zylla = {
-    {'/targetenemy [dead][noharm]', '{target.dead||!target.exists}&!player.area(40).enemies=0'},
+local Keybinds = {
+	-- Pause
+	{'%pause', 'keybind(lshift)&UI(kPause)'},
+	{'Lightning Surge Totem', 'keybind(lcontrol)' , 'cursor.ground'}
 }
 
 local PreCombat = {
-	
 	{'Ghost Wolf', '!player.buff(Ghost Wolf)'},
 }
 
 local Survival = {
-
+	{'Healing Surge', 'player.health<=70&player.maelstrom>=20', 'player'},
 }
 
 local Cooldowns = {
@@ -41,9 +53,6 @@ local Interrupts = {
 }
 
 local xCombat = {
-	{'Healing Surge', 'player.health<=70&player.maelstrom>=20', 'player'},
-	--# Executed every time the actor is available.
-	--# Bloodlust casting behavior mirrors the simulator settings for proxy bloodlust. See options 'bloodlust_percent', and 'bloodlust_time'.
 	{'Feral Spirit', 'toggle(Cooldowns)'},
 	{'Crash Lightning', 'artifact(Alpha Wolf).enabled&prev_gcd(Feral Spirit)'},
 	{'Berserking', 'player.buff(Ascendance)||!talent(7,1)||player.level<100'},
@@ -70,7 +79,7 @@ local xCombat = {
 	{'Flametongue', 'player.buff(Flametongue).remains<4.8'},
 	{'Sundering'},
 	{'Lava Lash', 'player.maelstrom>=90'},
-	--{'Rockbiter'},
+	{'Rockbiter'},
 	{'Flametongue'},
 	{'Boulderfist'}
 }
@@ -79,19 +88,15 @@ local Ranged = {
 	{'Lightning Bolt'}
 }
 
-local Keybinds = {
-	-- Pause
-	{'%pause', 'keybind(lshift)&UI(kPause)'},
-	{'Lightning Surge Totem', 'keybind(lcontrol)' , 'cursor.ground'}
-}
-
 local inCombat = {
-	--{_Zylla, 'toggle(AutoTarget)'},
+	{Util},
+	{Trinkets},
+	{Heirlooms},
 	{Keybinds},
 	{Interrupts, 'target.interruptAt(50)&toggle(Interrupts)&target.inFront&target.range<=30'},
 	{Survival, 'player.health<100'},
 	{Cooldowns, 'toggle(Cooldowns)'},
-	{AoE, {'toggle(AoE)', 'player.area(8).enemies>=3'}},
+	{AoE, 'toggle(AoE)&player.area(8).enemies>=3'},
 	{xCombat, 'target.inMelee&target.inFront'},
 	{Ranged, '!target.inMelee&target.range<=40&target.inFront'}
 }

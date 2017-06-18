@@ -1,15 +1,27 @@
 local _, Zylla = ...
 
+local Util = _G['Zylla.Util']
+local Trinkets = _G['Zylla.Trinkets']
+local Heirlooms = _G['Zylla.Heirlooms']
+
 local GUI = {
 	--KEYBINDS
 	{type = 'header', 	text = 'Keybinds', align = 'center'},
 	{type = 'text', 	text = 'Left Shift: Pause', align = 'center'},
 	{type = 'text', 	text = 'Left Ctrl: Heroic Leap', align = 'center'},
+	{type = 'ruler'},	{type = 'spacer'},
+	-- Settings
+	{type = 'header', 	text = 'Class Settings', align = 'center'},
 	{type = 'checkbox', text = 'Pause enabled', key = 'kPause', default = true},
-	
 	{type = 'checkbox', text = 'Intercept enabled', key = 'kIntercept', default = false},
+	{type = 'ruler'},	{type = 'spacer'},
+	-- Trinkets + Heirlooms for leveling	
+	{type = 'header', 	text = 'Trinkets/Heirlooms', align = 'center'},
 	{type = 'checkbox', text = 'Use Trinket #1', key = 'kT1', default = true},
-	{type = 'checkbox', text = 'Use Trinket #2', key = 'kT2', default = true}
+	{type = 'checkbox', text = 'Use Trinket #2', key = 'kT2', default = true},
+	{type = 'checkbox', text = 'Ring of Collapsing Futures', key = 'kRoCF', default = true},
+	{type = 'checkbox', text = 'Use Heirloom Necks When Below X% HP', key = 'k_HEIR', default = true},
+	{type = 'spinner',	text = '', key = 'k_HeirHP', default = 40},
 } 
 
 local exeOnLoad = function()
@@ -19,6 +31,7 @@ local exeOnLoad = function()
 	print("|cffADFF2F --- |rWarrior |cffADFF2FProtection |r")
 	print("|cffADFF2F --- |rRecommended Talents: 1/1 - 2/1 - 3/2 - 4/2 - 5/3 - 6/1 - 7/2")
 	print("|cffADFF2F ----------------------------------------------------------------------|r")
+	
 	--[[
 	NeP.Interface:AddToggle({
 		key = 'AutoTaunt',
@@ -30,16 +43,10 @@ local exeOnLoad = function()
 end
 
 local _Zylla = {
-    {"/targetenemy [dead][noharm]", "UI(kAutoTarget)&{target.dead||!target.exists}" },
 	{'Impending Victory', '{!player.buff(Victorious)&player.rage>10&player.health<=85}||{player.buff(Victorious)&player.health<=70}'},
 	{'Heroic Throw', '!target.inMelee&target.range<=30&target.inFront'},
-	{'Shockwave', 'player.area(6).enemies>=3'},
+	{'Shockwave', '!target.immune(stun)&player.area(6).enemies>=3&target.inMelee&target.inFront'},
 	{'Intercept', '!target.inMelee&target.range<25&target.enemy&!prev_gcd(Heroic Leap)&UI(kIntercept)&target.alive'},
-}
-
-local Util = {
-	-- ETC.
-	{'%pause' , 'player.debuff(200904)||player.debuff(Sapped Soul)'}, -- Vault of the Wardens, Sapped Soul
 }
 
 local Keybinds = {
@@ -51,13 +58,8 @@ local Keybinds = {
 local Interrupts = {
 	{'Pummel', 'target.inFront&target.inMelee'},
 	{'Arcane Torrent', 'target.inMelee&spell(Pummel).cooldown>gcd&!prev_gcd(Pummel)'},
-	{'Shockwave', 'talent(1,1)&target.inFront&!target.immune(stun)&spell(Pummel).cooldown>gcd&!prev_gcd(Pummel)&target.inFront&target.inMelee'},
+	{'Shockwave', 'talent(1,1)&!target.immune(stun)&spell(Pummel).cooldown>gcd&!prev_gcd(Pummel)&target.inFront&target.inMelee'},
 	{'Spell Reflection', '{target.inMelee&spell(Pummel).cooldown>gcd&!prev_gcd(Pummel)}||{target.range>=10&!spell(Pummel).cooldown}'}
-}
-
-local Trinkets = {
-	{'#trinket1', 'UI(kT1)'},
-	{'#trinket2', 'UI(kT2)'}
 }
 
 local Cooldowns = {
@@ -104,8 +106,10 @@ local ST = {
 }
 
 local inCombat = {
-	--{_Zylla, 'toggle(AutoTarget)'},
+	{_Zylla},
 	{Util},
+	{Trinkets},
+	{Heirlooms},
 	{Keybinds},
 	{Interrupts, 'target.interruptAt(50)&toggle(Interrupts)'},
 	{Cooldowns, 'toggle(Cooldowns)'},
