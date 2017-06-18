@@ -14,20 +14,21 @@ local GUI = {
 	-- General Class/Spec Settings
 	{type = 'header',	text = 'General Settings',					align = 'center'},
 	{type='checkbox',	text='Pause Enabled',						key='kPause',	default=true},
-	{type = 'spinner', 	text = 'Critical Health %',					key = 'k_CH',		default = 33},
+	{type = 'spinner', 	text = 'Critical Health %',					key = 'k_CH',	default = 33},
+	{type = 'spinner', 	text = 'DPS while ppl. are above HP %',		key = 'k_DPSHP',default = 90},
 	-- TANK
 	{type = 'header', 	text = 'Tank Healing',						align = 'center'},											
-	{type = 'spinner', 	text = 'Rejuvenation',						key = 'trejuv',	default = 100},
+	{type = 'spinner', 	text = 'Rejuvenation',						key = 'trejuv',	default = 99},
 	{type = 'spinner', 	text = 'Germination',						key = 'tgerm',	default = 90},
-	{type = 'spinner', 	text = 'Swiftmend',							key = 'tsm',	default = 90},
+	{type = 'spinner', 	text = 'Swiftmend',							key = 'tsm',	default = 80},
 	{type = 'spinner', 	text = 'Healing Touch)',					key = 'tht',	default = 90},
 	{type = 'spinner', 	text = 'Regrowth',							key = 'trg',	default = 60},
 	{type='ruler'},		{type='spacer'},
 	-- LOWEST
-	{type = 'header', 	text = 'Lowest', 							align = 'center'},
+	{type = 'header', 	text = 'Lowest Healing', 							align = 'center'},
 	{type = 'spinner', 	text = 'Rejuv', 							key = 'lrejuv', default = 90},
 	{type = 'spinner', 	text = 'Germ', 								key = 'lgerm', 	default = 75},
-	{type = 'spinner', 	text = 'Swiftmend', 						key = 'lsm', 	default = 90},
+	{type = 'spinner', 	text = 'Swiftmend', 						key = 'lsm', 	default = 80},
 	{type = 'spinner', 	text = 'Healing touch)', 					key = 'lht',	default = 90},
 	{type = 'spinner', 	text = 'Regrowth', 							key = 'lrg', 	default = 60},
 	{type='ruler'},		{type='spacer'},
@@ -71,6 +72,9 @@ local Keybinds = {
 }
 
 local DPS = {
+	{'Moonfire', nil, 'endebuff(Moonfire)'},
+	{'Sunfire', nil, 'endebuff(Sunfire)'},
+	{'Solar Wrath', 'target.debuff(Moonfire)&target.debuff(Sunfire)'},
 }
 
 local Innervate = {
@@ -168,7 +172,7 @@ local inCombat = {
 	{Cooldowns, 'toggle(Cooldowns)'},
 	{xHealing, '!player.moving'},
 	{Moving, 'player.moving'},
-	{DPS, 'toggle(xDPS)'},
+	{DPS, 'toggle(xDPS)&lowest.health<=UI(k_DPSHP)'},
 }
 
 local outCombat = {
