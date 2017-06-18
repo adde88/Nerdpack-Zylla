@@ -47,7 +47,7 @@ local Interrupts = {
 
 local ST = {
 	{'Sigil of Flame', 'target.range<=15&!target.debuff(Sigil of Flame)', 'player.ground'},
-	{'Infernal Strike', 'talent(3,2)&'},
+	--{'Infernal Strike', 'talent(3,2)&'},
 	{'Fiery Brand', '!player.buff(Demon Spikes)&!player.buff(Metamorphosis)'},
 	{'Demon Spikes', '{spell(Demon Spikes)charges=2||!player.buff(Demon Spikes)}&!target.debuff(Fiery Brand)&!player.buff(Metamorphosis)'},
 	{'!Empower Wards', 'target.casting.percent>80'},
