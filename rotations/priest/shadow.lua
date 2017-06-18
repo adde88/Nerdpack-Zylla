@@ -5,6 +5,7 @@ local _, Zylla = ...
 local Util = _G['Zylla.Util']
 local Trinkets = _G['Zylla.Trinkets']
 local Heirlooms = _G['Zylla.Heirlooms']
+
 local GUI = {
 	-- GUI Header 
 	{type='texture',
