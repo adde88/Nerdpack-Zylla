@@ -4,13 +4,13 @@ A compilation containing some of my own private NerdPack routines, and also rout
 
 ## Installing
 
-Install this repository/folder into your "World of Warcraft\Interface\AddOns\" folder.
+Install this repository/folder into your "World of Warcraft\Interface\AddOns\" folder.  
 The folder has to be named "Nerdpack-Zylla" otherwise it will not work.
 
 ### Prerequisites
 
-World of Warcraft
-LUA Unlocker
+World of Warcraft  
+LUA Unlocker  
 NerdPack
 
 ### Support
