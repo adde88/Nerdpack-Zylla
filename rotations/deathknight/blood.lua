@@ -61,7 +61,7 @@ local Interrupts = {
 }
 
 local xCombat = {
-	{'Death Grip', '!target.inMelee&target.range<=30&target.threat<99'},
+	{'Death Grip', '!target.inMelee&target.range<=30&target.threat<99&target.combat'},
 	{'Death\'s Caress', 'target.range<=30&{{!target.debuff(Blood Plague)}||{target.debuff(Blood Plague).remains<=2}}'},
 	{'Marrowrend', 'player.buff(Bone Shield).duration<=3&target.inFront&target.inMelee'},
 	{'Marrowrend', 'player.buff(Bone Shield).count<=6&talent(3,1)&target.inFront&target.inMelee'},
