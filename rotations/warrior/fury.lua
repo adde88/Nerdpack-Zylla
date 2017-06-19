@@ -42,9 +42,10 @@ local Keybinds = {
 }
 
 local Interrupts = {
-	{'Pummel'},
-	{'Arcane Torrent', 'target.inMelee&spell(Pummel).cooldown>gcd&!prev_gcd(Pummel)'},
-	{'Shockwave', 'talent(2,1)&!target.immune(stun)&spell(Pummel).cooldown>gcd&!prev_gcd(Pummel)&target.inFront&target.inMelee'},
+	{'Pummel', '!target.immune(stun)'},
+	{'Storm Bolt', 'target.inFront&target.range<=20&talent(2,2)&!target.immune(stun)&spell(Pummel).cooldown>gcd&!prev_gcd(Pummel)'},
+	{'Arcane Torrent', 'target.inMelee&!target.immune(stun)&spell(Pummel).cooldown>gcd&!prev_gcd(Pummel)'},
+	{'Shockwave', 'target.inFront&target.inMelee&talent(2,1)&!target.immune(stun)&spell(Pummel).cooldown>gcd&!prev_gcd(Pummel)'},
 }
 
 local Survival = {
@@ -61,6 +62,10 @@ local Cooldowns = {
 
 local Bladestorm = {
 	{'Bladestorm', 'talent(7,1)&player.buff(Enrage).remains>2'},
+}
+
+local Ranged = {
+	{'Storm Bolt', 'talent(2,2)&target.range<=20'},
 }
 
 local AoE = {
@@ -108,16 +113,12 @@ local TwoTargets = {
 	{'Whirlwind'}
 }
 
-local Ranged = {
-	{'Storm Bolt', 'talent(2,2)&target.range<=20&!target.immune(stun)'},
-}
-
 local inCombat = {
 	{Util},
 	{Trinkets},
 	{Heirlooms},
 	{Keybinds},
-	{Interrupts, 'target.interruptAt(75)&toggle(Interrupts)&target.inFront&target.inMelee'},
+	{Interrupts, 'target.interruptAt(75)&toggle(Interrupts)'},
 	{Survival, 'player.health<100'},
 	{Cooldowns, 'toggle(Cooldowns)&target.inMelee'},
 	{TwoTargets, 'player.area(8).enemies=2||player.area(8).enemies=3'},
