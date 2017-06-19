@@ -32,8 +32,11 @@ local exeOnLoad = function()
 
 end
 
-local PreCombat = {
+local Keybinds = {
+	{'%pause', 'keybind(lshift)&UI(kPause)'},
+}
 
+local PreCombat = {
 }
 
 local Interrupts = {
@@ -74,12 +77,10 @@ local xCombat = {
 	{'Swipe'},
 }
 
-local Keybinds = {
-	-- Pause
-	{'%pause', 'keybind(lshift)&UI(kPause)'},
-}
-
 local inCombat = {
+	{Util},
+	{Trinkets},
+	{Heirlooms},
 	{Keybinds},
 	{Survival, 'player.health<100'},
 	{Cooldowns, 'toggle(Cooldowns)'},
