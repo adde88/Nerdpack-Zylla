@@ -168,6 +168,7 @@ local inCombat = {
 	{Trinkets},
 	{Heirlooms},
 	{Keybinds},
+	{Interrupts, 'toggle(Interrupts)&target.inMelee&target.inFront'},
 	{Mitigations},
 	{Cooldowns, 'toggle(Cooldowns)'},
 	{xHealing, '!player.moving'},
