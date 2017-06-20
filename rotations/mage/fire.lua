@@ -14,7 +14,6 @@ local GUI = {
 	{type = 'ruler'},	{type = 'spacer'},
 	-- Settings
 	{type = 'header', 	text = 'Class Settings', align = 'center'},
-	{type = 'checkbox', text = 'Use Timewarp', key = 'kTW', default = false},
 	{type = 'checkbox', text = 'Pause Enabled', key = 'kPause', default = true},
 	{type = 'ruler'},	{type = 'spacer'},
 	-- Trinkets + Heirlooms for leveling
@@ -34,6 +33,13 @@ local exeOnLoad = function()
 	print('|cffADFF2F --- |rRecommended Talents: 1/1 - 2/X - 3/2 - 4/2 - 5/X - 6/2 - 7/1')
 	print('|cffADFF2F ----------------------------------------------------------------------|r')
 
+	NeP.Interface:AddToggle({
+		key = 'xTimeWarp',
+		name = 'Time Warp',
+		text = 'Automatically use Time Warp.',
+		icon = 'Interface\\Icons\\ability_mage_timewarp',
+	})
+
 end
 
 local Keybinds = {
@@ -52,7 +58,7 @@ local Interrupts = {
 
 local Cooldowns = {
 	--# Executed every time the actor is available.
-	{'Time Warp', 'UI(kTW)&{xtime=0&!player.buff(Bloodlust)}||{!player.buff(Bloodlust)&xequipped(132410)}'},
+	{'Time Warp', 'toggle(xTimeWarp)&{{xtime=0&!player.buff(Bloodlust)}||{!player.buff(Bloodlust)&xequipped(132410)}}'},
 }
 
 local Survival = {
