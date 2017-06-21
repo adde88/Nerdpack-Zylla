@@ -173,7 +173,7 @@ local inCombat = {
 	{Cooldowns, 'toggle(Cooldowns)'},
 	{xHealing, '!player.moving'},
 	{Moving, 'player.moving'},
-	{DPS, 'toggle(xDPS)&lowest.health<=UI(k_DPSHP)'},
+	{DPS, 'toggle(xDPS)&lowest.health>=UI(k_DPSHP)'},
 }
 
 local outCombat = {
