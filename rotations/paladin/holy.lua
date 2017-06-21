@@ -15,75 +15,71 @@ local Heirlooms = _G['Zylla.Heirlooms']
 
 local GUI = {
 	{type = 'header', 	text = 'Generic', align = 'center'},
-	{type='spinner', 	text = 'DPS while lowest above % ', 				key='G_DPS', 			default=70},
-	{type = 'checkbox', text = 'Auto-Target Enemies while DPSing',		key = 'kAutoTarget', 	default = true},
-	{type='spinner', 	text = 'Critical health %', 						key='G_CHP', 			default=30},
-	{type='spinner', 	text = 'Mana Restore', 							key='P_MR', 			default=20},
-	{type='checkbox',	text = 'Offensive Holy Shock',					key='O_HS', 			default=false},
-	{type='ruler'}, {type='spacer'},
+	{type = 'spinner', 	text = 'DPS while lowest above % ', 			key = 'G_DPS', 		default = 70},
+	{type = 'checkbox', text = 'Auto-Target Enemies while DPSing',		key = 'kAutoTarget',default = true},
+	{type = 'spinner', 	text = 'Critical health %', 					key = 'G_CHP', 		default = 30},
+	{type = 'spinner', 	text = 'Mana Restore', 							key = 'P_MR', 		default = 20},
+	{type = 'checkbox',	text = 'Offensive Holy Shock',					key = 'O_HS', 		default = true},
+	{type = 'ruler'},	{type = 'spacer'},
 	
 	--------------------------------
 	-- Toggles
 	--------------------------------
 	{type = 'header', 	text = 'Toggles', align = 'center'},
-	{type='checkbox',	text = 'Avenging Wrath',						key='AW', 		default=false},
-	{type='checkbox',	text = 'Aura Mastery',						key='AM', 		default=false},
-	{type='checkbox',	text = 'Holy Avenger',						key='HA', 		default=false},
-	{type='checkbox',	text = 'Lay on Hands',						key='LoH', 		default=false},
-	{type='checkbox',	text = 'Encounter Support',					key='ENC', 		default=true},
-	{type='checkspin',text = 'Healing Potion',						key='P_HP', 	default=false},
-	{type='checkspin',text = 'Mana Potion',							key='P_MP', 	default=false},
-	{type='ruler'}, {type='spacer'},
+	{type = 'checkbox',	text = 'Avenging Wrath',						key = 'AW', 		default = true},
+	{type = 'checkbox',	text = 'Aura Mastery',							key = 'AM', 		default = true},
+	{type = 'checkbox',	text = 'Holy Avenger',							key = 'HA', 		default = false},
+	{type = 'checkbox',	text = 'Lay on Hands',							key = 'LoH', 		default = true},
+	{type = 'checkbox',	text = 'Encounter Support',						key = 'ENC', 		default = true},
+	{type = 'checkspin',text = 'Healing Potion',						key = 'P_HP', 		default = false},
+	{type = 'checkspin',text = 'Mana Potion',							key = 'P_MP', 		default = false},
+	{type = 'ruler'},	{type = 'spacer'},
 		
 	--------------------------------
 	-- TANK
 	--------------------------------
 	{type = 'header', 	text = 'Tank', align = 'center'},											
-	{type='spinner', 	text = 'Blessing of Sacrifice (Health %)', 	key='T_BoS', 	default=30},	
-	{type='spinner', 	text = 'Light of the Martyr (Health %)', 		key='T_LotM', 	default=35},
-	{type='spinner', 	text = 'Holy Shock (Health %)', 				key='T_HS', 	default=90},
-	{type='spinner', 	text = 'Flash of Light (Health %)', 			key='T_FoL', 	default=75},
-	{type='spinner', 	text = 'Holy Light (Health %)', 				key='T_HL', 	default=90},
-	{type='ruler'}, {type='spacer'},
+	{type = 'spinner', 	text = 'Blessing of Sacrifice (Health %)', 		key = 'T_BoS', 		default = 30},	
+	{type = 'spinner', 	text = 'Light of the Martyr (Health %)', 		key = 'T_LotM', 	default = 35},
+	{type = 'spinner', 	text = 'Holy Shock (Health %)', 				key = 'T_HS', 		default = 90},
+	{type = 'spinner', 	text = 'Flash of Light (Health %)', 			key = 'T_FoL', 		default = 75},
+	{type = 'spinner', 	text = 'Holy Light (Health %)', 				key = 'T_HL', 		default = 90},
+	{type = 'ruler'},	{type = 'spacer'},
 	
 	--------------------------------
 	-- LOWEST
 	--------------------------------
 	{type = 'header', 	text = 'Lowest', align = 'center'},
-	{type='spinner', 	text = 'Lay on Hands (Health %)', 				key='L_LoH', 		default=10},
-	{type='spinner', 	text = 'Holy Shock (Health %)', 					key='L_HS', 		default=90},
-	{type='spinner', 	text = 'Light of the Martyr (Health %)', 			key='L_LotM', 		default=40},
-	{type='spinner', 	text = 'Light of the Martyr moving (Health %)', 	key='L_LotMm',		default=65},
-	{type='spinner', 	text = 'Flash of Light (Health %)', 				key='L_FoL', 		default=70},
-	{type='spinner', 	text = 'Holy Light (Health %)', 					key='L_HL', 		default=90},
+	{type = 'spinner', 	text = 'Lay on Hands (Health %)', 					key = 'L_LoH', 	default = 10},
+	{type = 'spinner', 	text = 'Holy Shock (Health %)', 					key = 'L_HS', 	default = 90},
+	{type = 'spinner', 	text = 'Light of the Martyr (Health %)', 			key = 'L_LotM', default = 40},
+	{type = 'spinner', 	text = 'Light of the Martyr moving (Health %)', 	key = 'L_LotMm',default = 65},
+	{type = 'spinner', 	text = 'Flash of Light (Health %)', 				key = 'L_FoL', 	default = 70},
+	{type = 'spinner', 	text = 'Holy Light (Health %)', 					key = 'L_HL', 	default = 90},
 	{type = 'ruler'},	{type = 'spacer'},
 	-- Trinkets + Heirlooms for leveling
-	{type = 'header', 	text = 'Trinkets/Heirlooms', align = 'center'},
-	{type = 'checkbox', text = 'Use Trinket #1', key = 'kT1', default = true},
-	{type = 'checkbox', text = 'Use Trinket #2', key = 'kT2', default = true},
-	{type = 'checkbox', text = 'Ring of Collapsing Futures', key = 'kRoCF', default = true},
-	{type = 'checkbox', text = 'Use Heirloom Necks When Below X% HP', key = 'k_HEIR', default = true},
+	{type = 'header', 	text = 'Trinkets/Heirlooms', 						align = 'center'},
+	{type = 'checkbox', text = 'Use Trinket #1', 							key = 'kT1',	default = true},
+	{type = 'checkbox', text = 'Use Trinket #2', 							key = 'kT2',	default = true},
+	{type = 'checkbox', text = 'Ring of Collapsing Futures',				key = 'kRoCF',	default = true},
+	{type = 'checkbox', text = 'Use Heirloom Necks When Below X% HP',		key = 'k_HEIR',	default = true},
+	{type = 'ruler'},	{type = 'spacer'},
 }
 
 local exeOnLoad=function()
 	NeP.Interface:AddToggle({
-		key='dps',
+		key = 'dps',
 		name='DPS',
 		text = 'DPS while healing',
 		icon='Interface\\Icons\\spell_holy_crusaderstrike',
 	})
 	NeP.Interface:AddToggle({
-		key='disp',
+		key = 'disp',
 		name='Dispell',
 		text = 'ON/OFF Dispel All',
 		icon='Interface\\ICONS\\spell_holy_purify', 
 	})
 end
-
-local Util = {
-	-- ETC.
-	{'%pause' , 'player.debuff(200904)||player.debuff(Sapped Soul)'} -- Vault of the Wardens, Sapped Soul
-}
 
 local Kebinds = {
 	{'%pause', 'keybind(lalt)'},
@@ -97,8 +93,8 @@ local Interrupts = {
 }
 
 local Survival = {
-	{'#127834', 'UI(P_HP_check)&player.health<=UI(P_HP_spin)'}, -- Health Pot
-	{'#127835', 'UI(P_MP_check)&player.mana<=UI(P_MP_spin)'}, -- Mana Pot
+	{'#127834', 'UI(P_HP_check)&player.health<=UI(P_HP_spin)'},		-- Health Pot
+	{'#127835', 'UI(P_MP_check)&player.mana<=UI(P_MP_spin)'},		-- Mana Pot
 	{'Divine Protection', 'player.buff(Blessing of Sacrifice)'},
 }
 
@@ -201,30 +197,28 @@ local Emergency = {
 }
 
 local Cooldowns = {
-	-- Need to rewrite for Raid and 5 Man
+	-- Need to re-write for Raid and 5 Man
 	{'Lay on Hands', 'UI(LoH)&lowestp.health<=UI(L_LoH)&!lowestp.debuff(Forbearance).any', 'lowestp'},
 	{'Aura Mastery', 'UI(AM)&player.area(40,40).heal>=4'},
 	{'Avenging Wrath', 'UI(AW)&player.area(35,65).heal>=4&cooldon(Holy Shock).remains<gcd'},
 	{'Holy Avenger', 'UI(HA)&player.area(40,75).heal>=3&cooldon(Holy Shock).remains<gcd'},
-	
+
 	{'Blessing of Sacrifice', 'tank.health<=UI(T_BoS)', 'tank'}, 
 	{'Blessing of Sacrifice', 'tank2.health<=UI(T_BoS)', 'tank2'}, 
-	
-	--{'#trinket2', 'player.area(40,95).heal>=3'},
 }
 
 local Moving = {
 	{AoE_Healing},
-	
+
 	{{
 		{'Light of the Martyr', '!player&tank.health<=UI(T_LotM)', 'tank'},
 		{'Light of the Martyr', '!player&tank2.health<=UI(T_LotM)', 'tank2'},
 		{'Light of the Martyr', '!player&lowestp.health<=UI(L_LotM)', 'lowestp'},
 	}, 'player.health>=40'},
-	
+
 	{'Holy Shock', 'tank.health<=UI(T_HS)', 'tank'},
 	{'Holy Shock', 'lowestp.health<=UI(L_HS)', 'lowestp'},
-	
+
 	{'Judgment', 'target.enemy'},
 }
 
@@ -251,7 +245,6 @@ local inCombat = {
 	{Moving, 'player.moving'},
 	{Mana_Restore, 'player.mana<=UI(P_MR)'},
 	{Healing, '!player.moving&player.mana>=UI(P_MR)'},
-	{DPS, 'toggle(dps)&target.enemy&target.inFront'},
 }
 
 local outCombat = {
