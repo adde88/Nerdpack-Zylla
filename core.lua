@@ -27,14 +27,6 @@ local classTaunt = {
 -- Temp Hack
 function Zylla.ExeOnLoad()
   Zylla.Splash()
-	--[[
-NeP.Interface:AddToggle({
-	key = 'xopener',
-	name = 'Opener rotation',
-	text = 'Start opener rotation',
-	icon = 'Interface\\Icons\\Ability_warrior_charge',
-})
-	]]--
 end
 
 -- Global Variables used on many if not all routines.
@@ -110,55 +102,6 @@ function Zylla.ShortNumber(number)
 end
 
 --------------------------------------------------------------------------------
---------------------------NeP CombatHelper Targeting ---------------------------
---------------------------------------------------------------------------------
---[[
-local NeP_forceTarget = {
-  -- WOD DUNGEONS/RAIDS
-  [75966] = 100, -- Defiled Spirit (Shadowmoon Burial Grounds)
-  [75911] = 100, -- Defiled Spirit (Shadowmoon Burial Grounds)
-}
-
-local function getTargetPrio(Obj)
-  local objectType, _, _, _, _, npc_id, _ = strsplit('-', UnitGUID(Obj))
-  local ID = tonumber(npc_id) or '0'
-  local prio = 1
-  -- Elite
-  if NeP.DSL:Get('elite')(Obj) then
-    prio = prio + 30
-  end
-  -- If its forced
-  if NeP_forceTarget[tonumber(Obj)] ~= nil then
-    prio = prio + NeP_forceTarget[tonumber(Obj)]
-  end
-  return prio
-end
-
-function Zylla.Targeting()
-  -- If dont have a target, target is friendly or dead
-  if not UnitExists('target') or UnitIsFriend('player', 'target') or UnitIsDeadOrGhost('target') then
-    local setPrio = {}
-    for GUID, Obj in pairs(NeP.OM:Get('Enemy')) do
-      if UnitExists(Obj.key) and Obj.distance <= 40 then
-        if (UnitAffectingCombat(Obj.key) or NeP.DSL:Get('isdummy')(Obj.key))
-        and NeP.Protected:LineOfSight('player', Obj.key) then
-          setPrio[#setPrio+1] = {
-            key = Obj.key,
-            bonus = getTargetPrio(Obj.key),
-            name = Obj.name
-          }
-        end
-      end
-    end
-    table.sort(setPrio, function(a,b) return a.bonus > b.bonus end)
-    if setPrio[1] then
-      NeP.Protected.Macro('/target '..setPrio[1].key)
-    end
-  end
-end
-]]--
-
---------------------------------------------------------------------------------
 ------------------------------ Auto Dotting ------------------------------------
 --------------------------------------------------------------------------------
 --/dump GetSpellInfo('Frostbolt')
@@ -208,18 +151,18 @@ function Zylla.AutoDoT2(debuff)
     for _, Obj in pairs(NeP.OM:Get('Enemy')) do
         if UnitExists(Obj.key) then
             if (NeP.DSL:Get('combat')(Obj.key) or Obj.isdummy) then
-								local objRange = NeP.DSL:Get('range')(Obj.key)
-							  local _,_,_,_, minRange, maxRange = GetSpellInfo(debuff)
-                if (NeP.DSL:Get('infront')(Obj.key) and objRange >= minRange and objRange <= maxRange) then
-                    if (NeP.DSL:Get('debuff.duration')(Obj.key, debuff) < NeP.DSL:Get('gcd')()) then
-                        local _, _, _, lagWorld = GetNetStats()
-                        local latency = lagWorld / 1000
-                        C_Timer.After(latency, function ()
-                        if (NeP.DSL:Get('debuff.duration')(Obj.key, debuff) < NeP.DSL:Get('gcd')()) then
-                            NeP:Queue(debuff, Obj.key)
-                            return true
-                        end
-                    end)
+				local objRange = NeP.DSL:Get('range')(Obj.key)
+				local _,_,_,_, minRange, maxRange = GetSpellInfo(debuff)
+					if (NeP.DSL:Get('infront')(Obj.key) and objRange >= minRange and objRange <= maxRange) then
+						if (NeP.DSL:Get('debuff.duration')(Obj.key, debuff) < NeP.DSL:Get('gcd')()) then
+							local _, _, _, lagWorld = GetNetStats()
+							local latency = lagWorld / 1000
+							C_Timer.After(latency, function ()
+							if (NeP.DSL:Get('debuff.duration')(Obj.key, debuff) < NeP.DSL:Get('gcd')()) then
+								NeP:Queue(debuff, Obj.key)
+								return true
+							end
+						end)
                     end
                 end
             end
@@ -330,29 +273,6 @@ local apBase, apPos, apNeg = UnitAttackPower('player')
 --Versatility rating
 local vers = 1 + ((GetCombatRatingBonus(29) + GetVersatilityBonus(30)) / 100)
 
---[[
---Dragon Skin
---check artifact traits
-local currentRank = 0
-local loaded = true
-if loaded then
-  artifactID = NeP.DSL:Get('artifact.active_id')()
-  if not artifactID then
-    NeP.DSL:Get['artifact.force_update']()
-  end
-  local _, traits = NeP.DSL:Get('artifact.traits')(artifactID)
-  if traits then
-    for _,v in ipairs(traits) do
-      if v.spellID == 203225 then
-        currentRank = v.currentRank
-        break
-      end
-    end
-  end
-end
-local trait = 1 + 0.02 * currentRank
---]]
-
 --Dragon Scales
 local scales = UnitBuff('player', GetSpellInfo(203581)) and 1.6 or 1
 
@@ -395,18 +315,6 @@ local castIP = math.min(diff, newIP)
 local castPerc = Zylla.Round((castIP / cap) * 100)
 local curPerc = Zylla.Round((curIP / cap) * 100)
 
---[[
-if showPercentage then
-  if simpleOutput then
-    return string.format('|c%s%.1f%%%%|r', color, curPerc*100)
-  end
-  return string.format('|c%s%.1f%%%%|r\n%.1f%%%%', color, castPerc*100, curPerc*100)
-end
-if simpleOutput then
-  return string.format('|c%s%s|r', color, shortenNumber(curIP))
-end
-return string.format('|c%s%s|r\n%s', color, shortenNumber(castIP), shortenNumber(curIP))
---]]
 return cap, diff, curIP, curPerc, castIP, castPerc, maxIP, newIP, minRage, maxRage, calcRage
 --maxIP = 268634.7
 end
@@ -1126,32 +1034,6 @@ function Zylla.TravelTime(unit, spell)
 		return 0
 	end
 end
-
---[[
---Travel Time Track Listener
-
-Zylla.TTTL_table = {}
-Zylla.TTTL_enable = false
-Zylla.start_timer = nil
-
---/dump NeP.DSL:Get('tttlz')()
-function Zylla.TTTL_calc_tt()
-for k,v in pairs(Zylla.TTTL_table) do
-  if k and v.finish then
-		print(v.finish..' '..v.start)
-    v.travel_time = v.finish - v.start
-    if v.travel_time ~= 0 then
-      v.travel_speed = v.distance / v.travel_time
-     	local write_itx = "["..v.spellID.."] = "..v.travel_speed..", -- "..v.name.."\n"
-			local write_it = v.travel_speed.."\n"
-      print(write_itx)
-      WriteFile('mage.lua', write_it, true)
-    end
-    wipe(Zylla.TTTL_table)
-  end
-end
-end
---]]
 
 --------------------------------------------------------------------------------
 ----------------------------- MISC LISTENERS -----------------------------------
