@@ -964,56 +964,16 @@ NeP.DSL:Register('variable.use_multishot', function()
     return false
 end)
 
---------------------------------------------------------------------------------
----------------------------------- WIP -----------------------------------------
---------------------------------------------------------------------------------
-
 --/dump NeP.DSL:Get('travel_time')('target','Frostbolt')
 NeP.DSL:Register('travel_time', function(unit, spell)
     return Zylla.TravelTime(unit, spell)
 end)
 
---[[
---/dump NeP.DSL:Get('tttlz')()
-NeP.DSL:Register('tttlz', function()
-    return Zylla.TTTL_table
-end)
-
---/dump NeP.DSL:Get('dist')('player', 'target')
-NeP.DSL:Register('dist', function(unit1, unit2)
-    return Zylla.ComputeDistance(unit1, unit2)
-end)
-
---/dump NeP.DSL:Get('tttlz.wipe')()
-NeP.DSL:Register('tttlz.wipe', function()
-    return wipe(Zylla.TTTL_table)
-end)
---]]
-
-----------------------------------------------------------------------------------
------------------------------------RAID-------------------------------------------
-----------------------------------------------------------------------------------
--- partycheck= 1 (SOLO), partycheck= 2 (PARTY), partycheck= 3 (RAID)
-NeP.DSL:Register('partycheck', function()
-        if IsInRaid() then
-            return 3
-        elseif IsInGroup() then
-            return 2
-        else
-            return 1
-        end
-end)
-
-----------------------------------------------------------------------------------
------------------------------------AREA RECOGNITION-------------------------------------------
-----------------------------------------------------------------------------------
 --  inareaid = ID
 --/dump NeP.DSL:Get('inareaid')()
 NeP.DSL:Register('inareaid', function()
     return  GetCurrentMapAreaID()
 end)
-
--- More custom stuff
 
 local setsTable = {
 	["DEATH KNIGHT"] = {
@@ -1153,3 +1113,265 @@ NeP.DSL:Register("set_bonus", function(_, set)
 	return counter
 end)
 
+--[[
+RABBS CONDITIONS BELOW
+]]--
+NeP.DSL:Register('rejuvraid.heals', function()
+    return (((100+GetMasteryEffect())/100)*((100+GetCritChance())/100)*(UnitStat("player", 4))*10)
+end)
+
+NeP.DSL:Register('germraid.heals', function()
+    return (((100+GetMasteryEffect())/100)*((100+GetCritChance())/100)*(UnitStat("player", 4))*4.9/((NeP.DSL:Get('mana')('player')/100)^.66))*3
+end)
+
+NeP.DSL:Register('htraid.heals', function()
+    return (((100+GetMasteryEffect())/100)*((100+GetCritChance())/100)*(UnitStat("player", 4))*4.9/((NeP.DSL:Get('mana')('player')/100)^.4))*1.5
+end)
+
+NeP.DSL:Register('wgraid.heals', function()
+    return (((100+GetMasteryEffect())/100)*((100+GetCritChance())/100)*(UnitStat("player", 4))*4.9)*2
+end)
+
+NeP.DSL:Register('regrowthraid.heals', function()
+    return (((100+GetMasteryEffect())/100)*((100+GetCritChance())/100)*(UnitStat("player", 4))*4.9/((NeP.DSL:Get('mana')('player')/100)^1.25))*5
+end)
+
+NeP.DSL:Register('smraid.heals', function()
+    return (((100+GetMasteryEffect())/100)*((100+GetCritChance())/100)*(UnitStat("player", 4))*4.9)*3
+end)
+
+NeP.DSL:Register('cwraid.heals', function()
+    return math.sqrt((UnitStat("player", 4)*GetMasteryEffect()*8)^2/NeP.DSL:Get('mana')('player'))
+end)
+
+NeP.DSL:Register('rejuvparty.heals', function()
+    return math.sqrt((UnitStat("player", 4)*GetMasteryEffect()*5.5)^2/NeP.DSL:Get('mana')('player'))
+end)
+
+NeP.DSL:Register('htparty.heals', function()
+    return math.sqrt((UnitStat("player", 4)*GetMasteryEffect()*4)^2/NeP.DSL:Get('mana')('player'))
+end)
+
+NeP.DSL:Register('htpartytank.heals', function()
+    return math.sqrt((UnitStat("player", 4)*GetMasteryEffect()*3)^2/NeP.DSL:Get('mana')('player'))
+end)
+
+NeP.DSL:Register('htpartyhealer.heals', function()
+    return math.sqrt((UnitStat("player", 4)*GetMasteryEffect()*3.2)^2/NeP.DSL:Get('mana')('player'))
+end)
+
+NeP.DSL:Register('htpartydamager.heals', function()
+    return math.sqrt((UnitStat("player", 4)*GetMasteryEffect()*3.2)^2/NeP.DSL:Get('mana')('player'))
+end)
+
+NeP.DSL:Register('wgparty.heals', function()
+    return math.sqrt((UnitStat("player", 4)*GetMasteryEffect()*4.5)^2/NeP.DSL:Get('mana')('player'))
+end)
+
+NeP.DSL:Register('regrowthparty.heals', function()
+    return math.sqrt((UnitStat("player", 4)*GetMasteryEffect()*7)^2/NeP.DSL:Get('mana')('player'))
+end)
+
+NeP.DSL:Register('regrowthpartytank.heals', function()
+    return math.sqrt((UnitStat("player", 4)*GetMasteryEffect()*6.6)^2/NeP.DSL:Get('mana')('player'))
+end)
+
+NeP.DSL:Register('regrowthpartyhealer.heals', function()
+    return math.sqrt((UnitStat("player", 4)*GetMasteryEffect()*6.8)^2/NeP.DSL:Get('mana')('player'))
+end)
+
+NeP.DSL:Register('regrowthpartydamager.heals', function()
+    return math.sqrt((UnitStat("player", 4)*GetMasteryEffect()*7)^2/NeP.DSL:Get('mana')('player'))
+end)
+
+NeP.DSL:Register('smparty.heals', function()
+    return math.sqrt((UnitStat("player", 4)*GetMasteryEffect()*6)^2/NeP.DSL:Get('mana')('player'))
+end)
+
+NeP.DSL:Register('cwparty.heals', function()
+    return math.sqrt((UnitStat("player", 4)*GetMasteryEffect()*6)^2/NeP.DSL:Get('mana')('player'))
+end)
+
+NeP.DSL:Register('rejuvsolo.heals', function()
+    return math.sqrt((UnitStat("player", 4)*GetMasteryEffect()*4)^2/NeP.DSL:Get('mana')('player'))
+end)
+
+NeP.DSL:Register('htsolo.heals', function()
+    return math.sqrt((UnitStat("player", 4)*GetMasteryEffect()*3)^2/NeP.DSL:Get('mana')('player'))
+end)
+
+NeP.DSL:Register('wgsolo.heals', function()
+    return math.sqrt((UnitStat("player", 4)*GetMasteryEffect()*5.5)^2/NeP.DSL:Get('mana')('player'))
+end)
+
+NeP.DSL:Register('regrowthsolo.heals', function()
+    return math.sqrt((UnitStat("player", 4)*GetMasteryEffect()*5)^2/NeP.DSL:Get('mana')('player'))
+end)
+
+NeP.DSL:Register('smsolo.heals', function()
+    return math.sqrt((UnitStat("player", 4)*GetMasteryEffect()*5.5)^2/NeP.DSL:Get('mana')('player'))
+end)
+
+NeP.DSL:Register('cwsolo.heals', function()
+    return math.sqrt((UnitStat("player", 4)*GetMasteryEffect()*2)^2/NeP.DSL:Get('mana')('player'))
+end)
+
+
+NeP.DSL:Register('chainheal.heals', function()
+    return math.sqrt((UnitStat("player", 4)*GetCombatRatingBonus(CR_VERSATILITY_DAMAGE_DONE)*GetCombatRatingBonus(CR_CRIT_SPELL)*1.2)^2/NeP.DSL:Get('mana')('player'))
+end)
+
+NeP.DSL:Register('healingsurge.heals', function()
+    return math.sqrt((UnitStat("player", 4)*GetCombatRatingBonus(CR_VERSATILITY_DAMAGE_DONE)*GetCombatRatingBonus(CR_CRIT_SPELL)*1.44)^2/NeP.DSL:Get('mana')('player'))
+end)
+
+NeP.DSL:Register('healingwave.heals', function()
+    return math.sqrt((UnitStat("player", 4)*GetCombatRatingBonus(CR_VERSATILITY_DAMAGE_DONE)*GetCombatRatingBonus(CR_CRIT_SPELL)*1.44)^2/NeP.DSL:Get('mana')('player'))
+end)
+
+NeP.DSL:Register('riptide.heals', function()
+    return math.sqrt((UnitStat("player", 4)*GetCombatRatingBonus(CR_VERSATILITY_DAMAGE_DONE)*GetCombatRatingBonus(CR_CRIT_SPELL)*1.6)^2/NeP.DSL:Get('mana')('player'))
+end)
+
+NeP.DSL:Register('holyshockraid.heals', function()
+    return (((100+GetMasteryEffect())/100)*((100+GetCritChance())/100)*(UnitStat("player", 4))*3)
+end)
+
+NeP.DSL:Register('holyshockparty.heals', function()
+    return (((100+GetMasteryEffect())/100)*((100+GetCritChance())/100)*(UnitStat("player", 4))*3)
+end)
+
+NeP.DSL:Register('holyshocksolo.heals', function()
+    return (((100+GetMasteryEffect())/100)*((100+GetCritChance())/100)*(UnitStat("player", 4))*3)
+end)
+
+NeP.DSL:Register('bfraid.heals', function()
+    return (((100+GetMasteryEffect())/100)*((100+GetCritChance())/100)*(UnitStat("player", 4))*6)
+end)
+
+NeP.DSL:Register('bfshockparty.heals', function()
+    return (((100+GetMasteryEffect())/100)*((100+GetCritChance())/100)*(UnitStat("player", 4))*6)
+end)
+
+NeP.DSL:Register('bfshocksolo.heals', function()
+    return (((100+GetMasteryEffect())/100)*((100+GetCritChance())/100)*(UnitStat("player", 4))*6)
+end)
+
+NeP.DSL:Register('folraid.heals', function()
+    return (((100+GetMasteryEffect())/100)*((100+GetCritChance())/100)*(UnitStat("player", 4))*7/((NeP.DSL:Get('mana')('player')/100)^.7))
+end)
+
+NeP.DSL:Register('folparty.heals', function()
+    return (((100+GetMasteryEffect())/100)*((100+GetCritChance())/100)*(UnitStat("player", 4))*6.5/((NeP.DSL:Get('mana')('player')/100)^.7))
+end)
+
+NeP.DSL:Register('folsolo.heals', function()
+    return (((100+GetMasteryEffect())/100)*((100+GetCritChance())/100)*(UnitStat("player", 4))*6/((NeP.DSL:Get('mana')('player')/100)^.7))
+end)
+
+NeP.DSL:Register('holiraid.heals', function()
+    return (((100+GetMasteryEffect())/100)*((100+GetCritChance())/100)*(UnitStat("player", 4))*3/((NeP.DSL:Get('mana')('player')/100)^.2))
+end)
+
+NeP.DSL:Register('holiparty.heals', function()
+    return (((100+GetMasteryEffect())/100)*((100+GetCritChance())/100)*(UnitStat("player", 4))*3/((NeP.DSL:Get('mana')('player')/100)^.2))
+end)
+
+NeP.DSL:Register('holisolo.heals', function()
+    return (((100+GetMasteryEffect())/100)*((100+GetCritChance())/100)*(UnitStat("player", 4))*3/((NeP.DSL:Get('mana')('player')/100)^.2))
+end)
+
+NeP.DSL:Register('loh.heals', function()
+    return (NeP.DSL:Get('health.actual')('player')*.8)
+end)
+
+NeP.DSL:Register('lohraidtank.heals', function()
+    return (NeP.DSL:Get('health.actual')('player')*1)
+end)
+
+NeP.DSL:Register('targetcheck', function()
+        if UnitExists('target') and (UnitIsEnemy("player","target")) and not UnitIsDeadOrGhost('target') then
+            return 1
+            else
+            return 0
+        end
+end)
+
+NeP.DSL:Register('partycheck', function()
+        if IsInRaid() then
+            return 3
+        elseif IsInGroup() then
+            return 2
+        else
+            return 1
+        end
+end)
+
+NeP.DSL:Register('totemcheck', function()
+        local haveTotem, name = GetTotemInfo(1)
+            if haveTotem then
+            return 2
+        else
+            return 1
+        end
+end)
+
+NeP.DSL:Register('trinket1', function()
+        if IsUsableItem(GetInventoryItemID("player", GetInventorySlotInfo("Trinket0Slot"))) then
+            local start, duration, enable = GetItemCooldown(GetInventoryItemID("player", GetInventorySlotInfo("Trinket0Slot")))
+					if (duration==0) then
+            return 1
+                
+        else
+            return 0
+        end
+        end
+end)
+
+NeP.DSL:Register('trinket2', function()
+        if IsUsableItem(GetInventoryItemID("player", GetInventorySlotInfo("Trinket1Slot"))) then
+            local start, duration, enable = GetItemCooldown(GetInventoryItemID("player", GetInventorySlotInfo("Trinket1Slot")))
+					if (duration==0) then
+            return 1
+                
+        else
+            return 0
+        end
+        end
+end)
+
+NeP.DSL:Register('deadcheck', function()
+            if UnitExists("target") then
+                if UnitIsDeadOrGhost("target") then
+                    return false
+                else
+                    return true
+                end
+            end
+end)
+
+
+NeP.DSL:Register('checkdebuff', function(debuff)
+	-- If dont have a target, target is friendly or dead
+  
+		local setPrio = {}
+		for _, Obj in pairs(NeP.OM:Get('Enemy')) do
+				if not NeP.DSL:Get('debuff')(Obj.key, debuff) then
+					setPrio[#setPrio+1] = {
+						key = Obj.key,
+						name = Obj.name,
+                        guid = GUID
+					}
+                end
+		end
+		table.sort(setPrio, function(a,b) return a.guid > b.guid end)
+		if setPrio[1] then
+			return setPrio[1]
+        elseif setPrio[2] then
+            return setPrio[2]
+        else
+            return setPrio
+		end
+        
+	
+end)
