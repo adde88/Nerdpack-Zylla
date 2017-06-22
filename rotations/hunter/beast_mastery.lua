@@ -121,7 +121,7 @@ local inCombat = {
 	{Interrupts, 'target.interruptAt(80)&toggle(Interrupts)&target.inFront&target.range<=40'},
 	{xCombat, 'target.range<=40&target.inFront'},
 	{xPetCombat},
-	{xPvP, 'target.player&target.enemy'},
+	{xPvP},
 }
 
 local outCombat = {
