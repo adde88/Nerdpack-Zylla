@@ -34,7 +34,7 @@ end
 _G['Zylla.Trinkets'] = {
 	{'#trinket1', 'UI(kT1)'},
 	{'#trinket2', 'UI(kT2)'},
-	{'#Ring of Collapsing Futures', 'equipped(142173)&!player.debuff(Temptation)&UI(kRoCF)', 'target.enemy'},
+	{'#Ring of Collapsing Futures', 'equipped(142173)&!player.debuff(Temptation)&UI(kRoCF)', 'target'},
 }
 
 _G['Zylla.Heirlooms'] = {
