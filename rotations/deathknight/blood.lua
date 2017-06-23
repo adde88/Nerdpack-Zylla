@@ -22,7 +22,7 @@ local GUI = {
 	{type = 'checkbox', text = 'Ring of Collapsing Futures', key = 'kRoCF', default = true},
 	{type = 'checkbox', text = 'Use Heirloom Necks When Below X% HP', key = 'k_HEIR', default = true},
 	{type = 'spinner',	text = '', key = 'k_HeirHP', default = 40},
-} 
+}
 
 local exeOnLoad = function()
 	 Zylla.ExeOnLoad()
@@ -31,7 +31,7 @@ local exeOnLoad = function()
 	print('|cffADFF2F --- |rDeath-Knight |cffADFF2FBlood |r')
 	print('|cffADFF2F --- |rRecommended Talents: COMING SOON...')
 	print('|cffADFF2F ----------------------------------------------------------------------|r')
-	
+
 end
 
 local PreCombat = {
@@ -44,9 +44,9 @@ local Survival = {
 }
 
 local Keybinds = {
-	-- Pause       
+	-- Pause
 	{'%pause', 'keybind(lshift)&UI(kPause)'},
-	{'Death and Decay', 'keybind(lcontrol)', 'cursor.ground'},
+	{'!Death and Decay', 'keybind(lcontrol)', 'cursor.ground'},
 }
 
 local Cooldowns = {
@@ -55,9 +55,9 @@ local Cooldowns = {
 }
 
 local Interrupts = {
-	{'Mind Freeze', 'target.inFront&target.inMelee'},
-	{'Asphyxiate', 'target.range<=20&cooldown(Mind Freeze).remains>gcd&!prev_gcd(Mind Freeze)'},
-	{'Arcane Torrent', 'target.inMelee&cooldown(Mind Freeze).remains>gcd&!prev_gcd(Mind Freeze)'},
+	{'!Mind Freeze', 'target.inFront&target.inMelee'},
+	{'!Asphyxiate', 'target.range<=20&cooldown(Mind Freeze).remains>gcd&!prev_gcd(Mind Freeze)'},
+	{'!Arcane Torrent', 'target.inMelee&cooldown(Mind Freeze).remains>gcd&!prev_gcd(Mind Freeze)'},
 }
 
 local xCombat = {
@@ -66,9 +66,9 @@ local xCombat = {
 	{'Marrowrend', 'player.buff(Bone Shield).duration<=3&target.inFront&target.inMelee'},
 	{'Marrowrend', 'player.buff(Bone Shield).count<=6&talent(3,1)&target.inFront&target.inMelee'},
 	{'Blood Boil', '!target.debuff(Blood Plague)&target.range<=10'},
-	{'Death and Decay', 'target.range<=30&{{talent(2,1)&player.buff(Crimson Scourge)}||{player.area(10).enemies>1&player.buff(Crimson Scourge}}', 'player.ground'},
-	{'Death and Decay', 'target.range<=30&{{talent(2,1)&player.runes>=3}||{player.area(10).enemies>=3}}', 'player.ground'},
-	{'Death and Decay', '!talent(2,1)&target.range<=30&player.area(10).enemies=1&player.buff(Crimson Scourge)', 'player.ground'},
+	{'Death and Decay', 'target.range<=30&{{talent(2,1)&player.buff(Crimson Scourge)}||{player.area(10).enemies>1&player.buff(Crimson Scourge}}', 'target.ground'},
+	{'Death and Decay', 'target.range<=30&{{talent(2,1)&player.runes>=3}||{player.area(10).enemies>=3}}', 'target.ground'},
+	{'Death and Decay', '!talent(2,1)&target.range<=30&player.area(10).enemies=1&player.buff(Crimson Scourge)', 'target.ground'},
 	{'Death Strike', 'player.runicpower>=75&target.inFront&target.inMelee'},
 	{'Heart Strike', 'player.runes>=3&target.inFront&target.inMelee'},
 	{'Consumption', 'target.inFront&target.inMelee'},
