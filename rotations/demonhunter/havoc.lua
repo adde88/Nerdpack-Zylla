@@ -21,7 +21,7 @@ local GUI = {
 	{type = 'checkbox', text = 'Ring of Collapsing Futures', key = 'kRoCF', default = true},
 	{type = 'checkbox', text = 'Use Heirloom Necks When Below X% HP', key = 'k_HEIR', default = true},
 	{type = 'spinner',	text = '', key = 'k_HeirHP', default = 40},
-} 
+}
 
 local exeOnLoad = function()
 	 Zylla.ExeOnLoad()
@@ -37,7 +37,7 @@ local Survival = {
 }
 
 local Interrupts = {
-	{'Consume Magic'}
+	{'!Consume Magic'}
 }
 
 local Keybinds = {
@@ -48,19 +48,23 @@ local Cooldowns = {
 	{'Metamorphosis', nil, 'target.ground'}
 }
 
+local xCombat = {
+	{'Vengeful Retreat', 'target.range<=6&player.spell(Fel Rush).charges>=2&player.fury<=85'},
+	{'Fel Rush', 'player.spell(Fel Rush).charges>=2', 'target.range>5'},
+	{'Blade Dance', 'toggle(AoE)&player.area(8).enemies>=4'},
+	{'Chaos Strike', 'player.fury>=70'},
+	{'Demon\'s Bite'},
+}
+
 local inCombat = {
 	{Util},
 	{Trinkets},
 	{Heirlooms},
 	{Keybinds},
 	{Survival, 'player.health<100'},
-	{Interrupts, 'target.interruptAt(50)'},
+	{Interrupts, 'target.interruptAt(80)'},
 	{Cooldowns, 'toggle(Cooldowns)'},
-	{'Vengeful Retreat', {'target.range<=6', 'player.spell(Fel Rush).charges>=2', 'player.fury<=85'}},
-	{'Fel Rush', {'player.spell(Fel Rush).charges>=2', 'target.range>5'}},
-	{'Blade Dance', {'toggle(AoE)', 'player.area(8).enemies>=4'}},
-	{'Chaos Strike', 'player.fury>=70'},
-	{'Demon\'s Bite'},
+	{xCombat, 'target.inMelee&target.inFront'},
 }
 
 local outCombat = {
