@@ -21,7 +21,7 @@ local GUI = {
 	{type = 'checkbox', text = 'Ring of Collapsing Futures', key = 'kRoCF', default = true},
 	{type = 'checkbox', text = 'Use Heirloom Necks When Below X% HP', key = 'k_HEIR', default = true},
 	{type = 'spinner',	text = '', key = 'k_HeirHP', default = 40},
-} 
+}
 
 local exeOnLoad = function()
 	 Zylla.ExeOnLoad()
@@ -40,13 +40,13 @@ local Keybinds = {
 }
 
 local Interrupts = {
-	{'Consume Magic', 'target.interruptAt(50)&target.inFront&target.inMelee'},
-	{'Sigil of Silence', 'target.interruptAt(1)&target.range<=29&spell(Consume Magic).cooldown>gcd&!prev_gcd(Consume Magic)', 'player.ground'},
-	{'Arcane Torrent', 'target.interruptAt(50)&target.inFront&target.inMelee&spell(Consume Magic).cooldown>gcd&!prev_gcd(Consume Magic)'},
+	{'Consume Magic', 'target.interruptAt(80)&target.inFront&target.inMelee'},
+	{'Sigil of Silence', 'target.interruptAt(1)&target.range<=29&spell(Consume Magic).cooldown>gcd&!prev_gcd(Consume Magic)', 'target.ground'},
+	{'Arcane Torrent', 'target.interruptAt(80)&target.inFront&target.inMelee&spell(Consume Magic).cooldown>gcd&!prev_gcd(Consume Magic)'},
 }
 
 local ST = {
-	{'Sigil of Flame', 'target.range<=15&!target.debuff(Sigil of Flame)', 'player.ground'},
+	{'Sigil of Flame', 'target.range<=15&!target.debuff(Sigil of Flame)', 'target.ground'},
 	--{'Infernal Strike', 'talent(3,2)&'},
 	{'Fiery Brand', '!player.buff(Demon Spikes)&!player.buff(Metamorphosis)'},
 	{'Demon Spikes', '{spell(Demon Spikes)charges=2||!player.buff(Demon Spikes)}&!target.debuff(Fiery Brand)&!player.buff(Metamorphosis)'},
