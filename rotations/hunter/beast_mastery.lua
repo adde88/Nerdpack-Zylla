@@ -17,7 +17,7 @@ local GUI = {
 	{type = 'checkbox', text = 'Pause Enabled', key = 'kPause', default = true},
 	{type = 'checkbox', text = 'Summon Pet', key = 'kPet', default = true},
 	{type = 'checkbox', text = 'Barrage Enabled', key = 'kBarrage', default = false},
-   	{type = 'checkbox', text = 'Volley Enabled', key = 'kVolley', default = true},
+  {type = 'checkbox', text = 'Volley Enabled', key = 'kVolley', default = true},
 	{type = 'checkbox', text = 'Misdirect Focus/Pet', key = 'kMisdirect', default = true},
 	{type = 'ruler'},	{type = 'spacer'},
 	-- Trinkets + Heirlooms for leveling
@@ -27,7 +27,7 @@ local GUI = {
 	{type = 'checkbox', text = 'Ring of Collapsing Futures', key = 'kRoCF', default = true},
 	{type = 'checkbox', text = 'Use Heirloom Necks When Below X% HP', key = 'k_HEIR', default = true},
 	{type = 'spinner',	text = '', key = 'k_HeirHP', default = 40},
-} 
+}
 
 local exeOnLoad = function()
 	 Zylla.ExeOnLoad()
@@ -36,14 +36,14 @@ local exeOnLoad = function()
 	print('|cffADFF2F --- |rHunter |cffADFF2FBeast Mastery [T-19] |r')
 	print('|cffADFF2F --- |rRecommended Talents: 1/2 - 2/1 - 3/X - 4/2 - 5/X - 6/1 - 7/2')
 	print('|cffADFF2F ----------------------------------------------------------------------|r')
-	
+
 	NeP.Interface:AddToggle({
 		key = 'xMisdirect',
 		name = 'Misdirection',
 		text = 'Automatically use Misdirection on current Focus-target or Pet.',
 		icon = 'Interface\\Icons\\ability_hunter_misdirection',
 	})
-	
+
 end
 
 local PreCombat = {
@@ -56,9 +56,9 @@ local PreCombat = {
 
 local Keybinds = {
 	{'%pause', 'keybind(lshift)&UI(kPause)'},
-	{'Binding Shot', 'keybind(lalt)', 'cursor.ground'},
-	{'Tar Trap', 'keybind(lcontrol)', 'cursor.ground'},
-	{'Freezing Trap', 'keybind(ralt)', 'cursor.ground'},
+	{'!Binding Shot', 'keybind(lalt)', 'cursor.ground'},
+	{'!Tar Trap', 'keybind(lcontrol)', 'cursor.ground'},
+	{'!Freezing Trap', 'keybind(ralt)', 'cursor.ground'},
 }
 
 local Survival = {
@@ -75,8 +75,8 @@ local Cooldowns = {
 }
 
 local Interrupts = {
-	{'Counter Shot'},
-	{'Intimidation', 'talent(6,3)&spell(Counter Shot).cooldown>gcd&!prev_gcd(Counter Shot)&!target.immune(Stun)'},
+	{'!Counter Shot'},
+	{'!Intimidation', 'talent(6,3)&spell(Counter Shot).cooldown>gcd&!prev_gcd(Counter Shot)&!immune(Stun)'},
 }
 
 local xCombat = {
@@ -117,8 +117,8 @@ local inCombat = {
 	{Heirlooms},
 	{Keybinds},
 	{Survival, 'player.health<100'},
+	{Interrupts, 'interruptAt(80)&toggle(Interrupts)&inFront&range<=40', 'enemies'},
 	{Cooldowns, 'toggle(Cooldowns)'},
-	{Interrupts, 'target.interruptAt(80)&toggle(Interrupts)&target.inFront&target.range<=40'},
 	{xCombat, 'target.range<=40&target.inFront'},
 	{xPetCombat},
 	{xPvP},
@@ -127,6 +127,7 @@ local inCombat = {
 local outCombat = {
 	{Keybinds},
 	{PreCombat},
+	{Interrupts, 'interruptAt(80)&toggle(Interrupts)&inFront&range<=40', 'enemies'},
 }
 
 NeP.CR:Add(253, {
