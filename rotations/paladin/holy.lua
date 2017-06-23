@@ -14,6 +14,7 @@ local Heirlooms = _G['Zylla.Heirlooms']
 --]]
 
 local GUI = {
+	{type = 'checkspin',text = 'Mana Potion',							key = 'P_MP', 		default = false},
 	{type = 'header', 	text = 'Generic', align = 'center'},
 	{type = 'spinner', 	text = 'DPS while lowest above % ', 			key = 'G_DPS', 		default = 70},
 	{type = 'checkbox', text = 'Auto-Target Enemies while DPSing',		key = 'kAutoTarget',default = true},
@@ -21,7 +22,7 @@ local GUI = {
 	{type = 'spinner', 	text = 'Mana Restore', 							key = 'P_MR', 		default = 20},
 	{type = 'checkbox',	text = 'Offensive Holy Shock',					key = 'O_HS', 		default = true},
 	{type = 'ruler'},	{type = 'spacer'},
-	
+
 	--------------------------------
 	-- Toggles
 	--------------------------------
@@ -34,18 +35,18 @@ local GUI = {
 	{type = 'checkspin',text = 'Healing Potion',						key = 'P_HP', 		default = false},
 	{type = 'checkspin',text = 'Mana Potion',							key = 'P_MP', 		default = false},
 	{type = 'ruler'},	{type = 'spacer'},
-		
+
 	--------------------------------
 	-- TANK
 	--------------------------------
-	{type = 'header', 	text = 'Tank', align = 'center'},											
-	{type = 'spinner', 	text = 'Blessing of Sacrifice (Health %)', 		key = 'T_BoS', 		default = 30},	
+	{type = 'header', 	text = 'Tank', align = 'center'},
+	{type = 'spinner', 	text = 'Blessing of Sacrifice (Health %)', 		key = 'T_BoS', 		default = 30},
 	{type = 'spinner', 	text = 'Light of the Martyr (Health %)', 		key = 'T_LotM', 	default = 35},
 	{type = 'spinner', 	text = 'Holy Shock (Health %)', 				key = 'T_HS', 		default = 90},
 	{type = 'spinner', 	text = 'Flash of Light (Health %)', 			key = 'T_FoL', 		default = 75},
 	{type = 'spinner', 	text = 'Holy Light (Health %)', 				key = 'T_HL', 		default = 90},
 	{type = 'ruler'},	{type = 'spacer'},
-	
+
 	--------------------------------
 	-- LOWEST
 	--------------------------------
@@ -73,15 +74,17 @@ local exeOnLoad=function()
 		text = 'DPS while healing',
 		icon='Interface\\Icons\\spell_holy_crusaderstrike',
 	})
+
 	NeP.Interface:AddToggle({
 		key = 'disp',
 		name='Dispell',
 		text = 'ON/OFF Dispel All',
-		icon='Interface\\ICONS\\spell_holy_purify', 
+		icon='Interface\\ICONS\\spell_holy_purify',
 	})
+
 end
 
-local Kebinds = {
+local Keybinds = {
 	{'%pause', 'keybind(lalt)'},
 	{Top_Up, 'keybind(lcontrol)'},
 }
@@ -115,7 +118,7 @@ local DPS = {
 local Tank = {
 	{'Beacon of Light', '!talent(7,3)&!tank.buff(Beacon of Faith)&!tank.buff(Beacon of Light)', 'tank'},
 	{'Beacon of Faith', '!talent(7,3)&!tank2.buff(Beacon of Faith)&!tank2.buff(Beacon of Light)', 'tank2'},
-	
+
 	{'Bestow Faith', '!tank.buff&talent(1,1)&tank.health<=90', 'tank'},
 	{'Bestow Faith', '!tank2.buff&talent(1,1)&tank2.health<=90', 'tank2'},
 }
@@ -130,7 +133,7 @@ local AoE_Healing = {
 	{'Light of Dawn', 'area(15,90).heal.inFront>=3'},
 	{'Light of Dawn', 'player.buff(Divine Purpose)'},
 	{'Holy Prism', 'target.area(15,80).heal>=3'},
-	
+
 	{'Tyr\'s Deliverance', 'player.area(15,75).heal>=3'},
 	{'Tyr\'s Deliverance', 'player.area(22,75).heal>=3&player.buff(Rule of Law)'},
 }
@@ -140,8 +143,8 @@ local Healing = {
 	--(Wings and Holy Avenger and Tyrs pre-cast)
 	--(Bestow Faith or Hammer pre-cast)
 	--(Divine Shield pre-cast)
-	--Judgement of Light 
-	--Aura Mastery 
+	--Judgement of Light
+	--Aura Mastery
 
 	{{
 		{'Avenging Wrath'},
@@ -150,42 +153,42 @@ local Healing = {
 		{'Light of Dawn'},
 		{'Flash of Light', nil, 'lowestp'},
 	}, 'player.buff(Aura Mastery)&talent(5,2)'},
-		
+
 	{AoE_Healing},
 	{Encounters, 'UI(ENC)'},
-	
+
 	{'Light of the Martyr', '!player&player.buff(Maraad\'s Dying Breath)&lowestp.health<=UI(L_FoL)', 'lowestp'},
-	
+
 	-- Infusion of Light
 	--{'Flash of Light', 'player.buff(Infusion of Light).count>=2', 'lowestp'},
 	{'Flash of Light', 'lowestp.health<=UI(L_FoL)&player.buff(Infusion of Light)', 'lowestp'},
 	{'Flash of Light', 'player.buff(Infusion of Light).duration<=3&player.buff(Infusion of Light)', 'lowestp'},
-	
+
 	-- Need player health spinner added
 	{{
 		{'Light of the Martyr', '!player&tank.health<=UI(T_LotM)', 'tank'},
 		{'Light of the Martyr', '!player&tank2.health<=UI(T_LotM)', 'tank2'},
 		{'Light of the Martyr', '!player&lowestp.health<=UI(L_LotM)', 'lowestp'},
 	}, 'player.health>=40'},
-	
+
 	{'Holy Shock', 'tank.health<=UI(T_HS)', 'tank'},
 	{'Holy Shock', 'tank2.health<=UI(T_HS)', 'tank2'},
 	{'Holy Shock', 'lowestp.health<=UI(L_HS)', 'lowestp'},
 	{'Holy Shock', 'mouseover.health<=UI(L_HS)&!mouseover.enemy', 'mouseover'},
-	
+
 	{'Flash of Light', 'lbuff(Tyr\'s Deliverance).health<=UI(L_FoL)', 'lbuff(Tyr\'s Deliverance)'},
-	
+
 	{'Flash of Light', 'tank.health<=UI(T_FoL)', 'tank'},
 	{'Flash of Light', 'tank2.health<=UI(T_FoL)', 'tank2'},
-	
-	{'!Flash of Light', 'lowestp.health<=UI(L_FoL)&player.casting(Holy Light)&player.casting.percent<=50', 'lowestp'}, 
+
+	{'!Flash of Light', 'lowestp.health<=UI(L_FoL)&player.casting(Holy Light)&player.casting.percent<=50', 'lowestp'},
 	{'Flash of Light', 'lowestp.health<=UI(L_FoL)', 'lowestp'},
 	{'Flash of Light', 'mouseover.health<=UI(L_FoL)&!mouseover.enemy', 'mouseover'},
-	
+
 	{'Judgment', 'target.enemy'}, -- Keep up dmg reduction buff
-	
+
 	{'Holy Light', 'tank.health<=UI(T_HL)', 'tank'},
-	{'Holy Light', 'tank2.health<=UI(                                                                                                                                                                                                                                                                        T_HL)', 'tank2'},
+	{'Holy Light', 'tank2.health<=UI(T_HL)', 'tank2'},
 	{'Holy Light', 'mouseover.health<=UI(L_FoL)&!mouseover.enemy', 'mouseover'},
 	{'Holy Light', 'lowestp.health<=UI(L_HL)', 'lowestp'},
 }
@@ -203,8 +206,8 @@ local Cooldowns = {
 	{'Avenging Wrath', 'UI(AW)&player.area(35,65).heal>=4&cooldon(Holy Shock).remains<gcd'},
 	{'Holy Avenger', 'UI(HA)&player.area(40,75).heal>=3&cooldon(Holy Shock).remains<gcd'},
 
-	{'Blessing of Sacrifice', 'tank.health<=UI(T_BoS)', 'tank'}, 
-	{'Blessing of Sacrifice', 'tank2.health<=UI(T_BoS)', 'tank2'}, 
+	{'Blessing of Sacrifice', 'tank.health<=UI(T_BoS)', 'tank'},
+	{'Blessing of Sacrifice', 'tank2.health<=UI(T_BoS)', 'tank2'},
 }
 
 local Moving = {
@@ -235,7 +238,7 @@ local inCombat = {
 	{Trinkets},
 	{Heirlooms},
 	{Keybinds},
-	{Survival}, 
+	{Survival},
 	{Interrupts, 'target.interruptAt(35)'},
 	{'%dispelall', 'toggle(disp)&spell(Cleanse).cooldown<gcd'},
 	{Cooldowns, 'toggle(cooldowns)'},
