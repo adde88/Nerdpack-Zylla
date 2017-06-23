@@ -8,52 +8,66 @@ local Heirlooms = _G['Zylla.Heirlooms']
 
 local GUI = {
 	-- General
-	{type = 'header',text = 'General', align = 'center'},
-	{type='checkbox', text = 'Automatic Res', key='auto_res', default=false},
-	{type='checkbox', text = '5 min DPS test', key='dpstest', default=false},
-	{type = 'checkbox', text = 'Pause Enabled', key = 'kPause', default = true},
-	
+	{type = 'header',	text = 'General:',															align = 'center'},
+	{type = 'checkbox',	text = 'Automatic Res',														key = 'auto_res',		default = true},
+	{type = 'checkbox',	text = '5 min DPS test', 													key = 'dpstest',		default = false},
+	{type = 'checkbox',	text = 'Pause Enabled', 													key = 'kPause',			default = true},
+
 	-- Survival
-	{type='spacer'},{type='rule'},
-	{type = 'header', text = 'Survival', align = 'center'},
-	{type='spinner', text = 'Healthstone & Healing Tonic', key='Healthstone', default=35},
-	{type='spinner', text = 'Effuse', key='effuse', default=30},
-	{type='spinner', text = 'Healing Elixir', key='Healing Elixir', default=50},
+	{type = 'spacer'},	{type = 'rule'},
+	{type = 'header',	text = 'Survival:', 														align = 'center'},
+	{type = 'spinner',	text = 'Healthstone & Healing Tonic',										key = 'Healthstone',	default = 35},
+	{type = 'spinner',	text = 'Effuse',															key = 'effuse',			default = 30},
+	{type = 'spinner',	text = 'Healing Elixir',													key = 'Healing Elixir',	default = 50},
 
 	-- Offensive
-	{type='spacer'},{type='rule'},
-	{type = 'header', text = 'Offensive', align = 'center'},
-	{type='checkbox', text = 'SEF usage', key='sef_toggle', default=true},
-	{type='checkbox', text = 'Automatic CJL at range', key='auto_cjl', default=false},
-	{type='checkbox', text = 'Automatic Chi Wave at pull', key='auto_cw', default=true},
-	{type='checkbox', text = 'Automatic Mark of the Crane Dotting', key='auto_dot', default=true},
-	{type='checkbox', text = 'Automatic CJL in melee to maintain Hit Combo', key='auto_cjl_hc', default=false},
+	{type = 'spacer'},{type = 'rule'},
+	{type = 'header',	text = 'Offensive:',														align = 'center'},
+	{type = 'checkbox',	text = 'Storm Earth Fire Usage',											key = 'sef_toggle', 	default = true},
+	{type = 'checkbox',	text = 'Automatic Crackling Jade Lightning at Range',						key = 'auto_cjl',		default = true},
+	{type = 'checkbox',	text = 'Automatic Chi Wave at Pull',										key = 'auto_cw',		default = true},
+	{type = 'checkbox',	text = 'Automatic Mark of the Crane Dotting',								key = 'auto_dot',		default = true},
+	{type = 'checkbox',	text = 'Automatic Crackling Jade Lightning in Melee to Maintain Hit Combo', key = 'auto_cjl_hc',	default = true},
 	{type = 'ruler'},	{type = 'spacer'},
 	-- Trinkets + Heirlooms for leveling
-	{type = 'header', 	text = 'Trinkets/Heirlooms', align = 'center'},
-	{type = 'checkbox', text = 'Use Trinket #1', key = 'kT1', default = true},
-	{type = 'checkbox', text = 'Use Trinket #2', key = 'kT2', default = true},
-	{type = 'checkbox', text = 'Ring of Collapsing Futures', key = 'kRoCF', default = true},
-	{type = 'checkbox', text = 'Use Heirloom Necks When Below X% HP', key = 'k_HEIR', default = true},
+	{type = 'header', 	text = 'Trinkets/Heirlooms:',												align = 'center'},
+	{type = 'checkbox', text = 'Use Trinket #1',													key = 'kT1',			default = true},
+	{type = 'checkbox', text = 'Use Trinket #2',													key = 'kT2',			default = true},
+	{type = 'checkbox', text = 'Ring of Collapsing Futures',										key = 'kRoCF',			default = true},
+	{type = 'checkbox', text = 'Use Heirloom Necks When Below X% HP',								key = 'k_HEIR',			default = true},
+	{type = 'ruler'},	{type = 'spacer'},
 }
 
 local exeOnLoad = function()
 	 Zylla.ExeOnLoad()
 
 	print("|cffADFF2F ---------------------------------------------------------------------------|r")
-	print("|cffADFF2F --- |rMonk |cffADFF2FWindwalker  |r")
-	print("|cffADFF2F --- |rRecommended Talents: Routine not ready yet...")
+	print("|cffADFF2F --- |rMonk |cffADFF2FWindwalker|r")
+	print("|cffADFF2F --- |")
+	print("|cffADFF2F --- |rRecommended Talents: IN DEVELOPMENT...")
+	print("|cffADFF2F --- |rFirst time users: CHECK OUT SETTINGS!")
+	print("|cffADFF2F --- |")
+	print("|cffADFF2F --- |rKeybinds:")
+	print("|cffADFF2F --- |rL-CTRL: Transcendence/Transfer")
+	print("|cffADFF2F --- |rL-ALT: Touch of Karma")
+	print("|cffADFF2F --- |rL-SHIFT: Pause")
 	print("|cffADFF2F ---------------------------------------------------------------------------|r")
-	
+
 end
 
-local All = {
+local Keybinds = {
 	-- Keybinds
-	{'Leg Sweep', 'keybind(lcontrol)'},
 	{'Touch of Karma', 'keybind(lalt)'},
+	-- Pause
+	{'%pause', 'keybind(lshift)&UI(kPause)'},
+	-- DPS TEST
 	{'/stopcasting\n/stopattack\n/cleartarget\n/stopattack\n/cleartarget\n/nep mt', 'player.combat.time>=300&UI(dpstest)'},
-	-- Cancel CJL when we're in melee range
+	-- Cancel CJL WHEN WE'RE IN MELEE RANGE
 	{'!/stopcasting', 'target.inMelee&player.casting(Crackling Jade Lightning)'},
+	-- TRANSCENDENCE
+	{'Transcendence', 'keybind(lcontrol)&!player.buff(Transcendence)'},
+	{'Transcendence: Transfer', 'keybind(lcontrol)&player.buff(Transcendence)'},
+	{'/cancelaura Transcendence', 'keybind(lcontrol)&player.buff(Transcendence)&lastcast(Transcendence: Transfer)'},
 	-- FREEDOOM!
 	{'Tiger\'s Lust', 'player.state.disorient||player.state.stun||player.state.root||player.state.snare'},
 }
@@ -62,9 +76,9 @@ local Cooldowns = {
 	{'Tiger Palm', 'player.combat.time<4&player.energydiff=0&player.chi<=1&!lastgcd(Tiger Palm)&@Zylla.hitcombo(Tiger Palm)&target.inMelee'},
 	-- TODO: add logic to handle ToD interaction with legendary item 137057 (Hidden Masters Forbidden Touch)
 	-- No Serenity
-	{'Touch of Death', 'target.inMelee&target.deathin>=8&{!player.spell.usable(Gale Burst)||{player.spell.usable(Gale Burst)&!talent(7,3)&player.spell(Strike of the Windlord).cooldown<8&player.spell(Fists of Fury).cooldown<=4&player.spell(Rising Sun Kick).cooldown<7&player.chi>=2}}'},
+	{'Touch of Death', 'target.inMelee&target.DeathIn>=8&{!player.spell.usable(Gale Burst)||{player.spell.usable(Gale Burst)&!talent(7,3)&player.spell(Strike of the Windlord).cooldown<8&player.spell(Fists of Fury).cooldown<=4&player.spell(Rising Sun Kick).cooldown<7&player.chi>=2}}'},
 	-- Serenity
-	{'Touch of Death', 'target.inMelee&target.deathin>=8&{!player.spell.usable(Gale Burst)||{player.spell.usable(Gale Burst)&talent(7,3)&player.spell(Strike of the Windlord).cooldown<8&player.spell(Fists of Fury).cooldown<=4&player.spell(Rising Sun Kick).cooldown<7}}'},
+	{'Touch of Death', 'target.inMelee&target.DeathIn>=8&{!player.spell.usable(Gale Burst)||{player.spell.usable(Gale Burst)&talent(7,3)&player.spell(Strike of the Windlord).cooldown<8&player.spell(Fists of Fury).cooldown<=4&player.spell(Rising Sun Kick).cooldown<7}}'},
 	{'Lifeblood'},
 	{'Berserking'},
 	{'Blood Fury'},
@@ -76,26 +90,26 @@ local Cooldowns = {
 
 local Survival = {
 	{'Healing Elixir', 'player.health<=UI(Healing Elixir)', 'player'},
-	{'#Healthstone', 'player.health<=UI(Healthstone)', 'player'}, -- Healthstone
+	{'#Healthstone', 'player.health<=UI(Healthstone)', 'player'},			-- Healthstone
 	{'#Ancient Healing Potion', 'player.health<=UI(Healthstone)', 'player'}, -- Ancient Healing Potion
-	{'Effuse', 'player.energy>=60&player.lastmoved>=0.5&player.health<=UI(effuse)', 'player'},
+	{'Effuse', 'player.energy>=60&!player.moving&player.health<=UI(effuse)', 'player'},
 	{'Detox', 'player.dispellable(Detox)', 'player'},
 }
 
 local Interrupts = {
-	-- Ring of Peace when SHS is on CD
+	{'Spear Hand Strike'},
+	-- Ring of Peace when Spear Hand Strike is on CD
 	{'Ring of Peace', '!target.debuff(Spear Hand Strike)&player.spell(Spear Hand Strike).cooldown>1&!lastcast(Spear Hand Strike)'},
-	-- Leg Sweep when SHS is on CD
+	-- Leg Sweep when Spear Hand Strike is on CD
 	{'Leg Sweep', 'player.spell(Spear Hand Strike).cooldown>1&target.inMelee&!lastcast(Spear Hand Strike)'},
-	-- Quaking Palm when SHS is on CD
+	-- Quaking Palm when Spear Hand Strike is on CD
 	{'Quaking Palm', '!target.debuff(Spear Hand Strike)&player.spell(Spear Hand Strike).cooldown>1&!lastcast(Spear Hand Strike)'},
-	{'Spear Hand Strike'}, -- Spear Hand Strike
 }
 
 local SEF = {
 	{'Tiger Palm', 'player.energydiff=0&player.chi<=1&!lastgcd(Tiger Palm)&@Zylla.hitcombo(Tiger Palm)&target.inMelee'},
 	{'Storm, Earth, and Fire', '{{!toggle(AoE)&@Zylla.sef(nil)}||!player.buff(Storm, Earth, and Fire)}&{player.spell(Touch of Death).cooldown<=8||player.spell(Touch of Death).cooldown>85}'},
-	{'Storm, Earth, and Fire', '{{!toggle(AoE)&@Zylla.sef(nil)}||!player.buff(Storm, Earth, and Fire)}&target.deathin<=25'},
+	{'Storm, Earth, and Fire', '{{!toggle(AoE)&@Zylla.sef(nil)}||!player.buff(Storm, Earth, and Fire)}&target.DeathIn<=25'},
 	{'Storm, Earth, and Fire', '{{!toggle(AoE)&@Zylla.sef(nil)}||!player.buff(Storm, Earth, and Fire)}&{player.spell(Fists of Fury).cooldown<=1&player.chi>=3}'},
 	{'Fists of Fury', 'target.inMelee&player.buff(Storm, Earth, and Fire)'},
 	{'Rising Sun Kick', 'target.inMelee&player.buff(Storm, Earth, and Fire)&player.chi=2&player.energydiff>0' }
@@ -159,7 +173,7 @@ local Melee = {
 	-- Last resort TP when we don't have hit combo up
 	{'Tiger Palm', '!player.buff(Hit Combo)&target.inMelee'},
 	--[[ Last resort TP when at 100 energy - doing this because it's sometimes
-	 getting parried/missed and we're stuck thinking it was latcast and
+	 getting parried/missed and we're stuck thinking it was lastcast and
 	 don't do anything, so as a fallthrough we'll cast when at 100 energy
 	 no matter what. May replace with CJL when @ 100 energy instead --]]
 	{'Tiger Palm', 'player.energy>=100&target.inMelee'},
@@ -169,8 +183,6 @@ local inCombat = {
 	{Util},
 	{Trinkets},
 	{Heirlooms},
-	{'%pause', 'keybind(lshift)&UI(kPause)'},
-	{All},
 	{Survival, 'player.health<100'},
 	{Interrupts, 'target.interruptAt(55)&target.inMelee'},
 	{Cooldowns, 'toggle(cooldowns)&target.inMelee'},
@@ -182,10 +194,9 @@ local inCombat = {
 }
 
 local outCombat = {
+	{Keybinds},
 	{'Effuse', 'player.health<=50&player.lastmoved>=1', 'player'},
-	-- Automatic res of dead party members
 	{'%ressdead(Resuscitate)', 'UI(auto_res)'},
-	-- TODO: Add support for (optional) automatic potion use w/pull timer
 }
 
 NeP.CR:Add(269, {
