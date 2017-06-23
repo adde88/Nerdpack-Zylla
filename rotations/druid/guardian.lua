@@ -19,8 +19,8 @@ local Heirlooms = _G['Zylla.Heirlooms']
 	{type = 'checkbox', text = 'Use Trinket #2', key = 'kT2', default = true},
 	{type = 'checkbox', text = 'Ring of Collapsing Futures', key = 'kRoCF', default = true},
 	{type = 'checkbox', text = 'Use Heirloom Necks When Below X% HP', key = 'k_HEIR', default = true},
-	{type = 'spinner',	text = '', key = 'k_HeirHP', default = 40},	
-} 
+	{type = 'spinner',	text = '', key = 'k_HeirHP', default = 40},
+}
 
 local exeOnLoad = function()
 	Zylla.ExeOnLoad()
@@ -40,9 +40,9 @@ local PreCombat = {
 }
 
 local Interrupts = {
-	{'Skull Bash'},
-	{'Typhoon', 'talent(4,3)&cooldown(Skull Bash).remains>gcd'},
-	{'Mighty Bash', 'talent(4,1)&cooldown(Skull Bash).remains>gcd'},
+	{'!Skull Bash'},
+	{'!Typhoon', 'talent(4,3)&cooldown(Skull Bash).remains>gcd'},
+	{'!Mighty Bash', 'talent(4,1)&cooldown(Skull Bash).remains>gcd'},
 }
 
 local Survival = {
@@ -82,6 +82,7 @@ local inCombat = {
 	{Trinkets},
 	{Heirlooms},
 	{Keybinds},
+	{Interrupts, 'target.interruptAt(80)&toggle(Interrupts)&target.inFront&target.inMelee'},
 	{Survival, 'player.health<100'},
 	{Cooldowns, 'toggle(Cooldowns)'},
 	{'Bear Form', 'form~=1'},

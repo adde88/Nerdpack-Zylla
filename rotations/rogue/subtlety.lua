@@ -28,18 +28,18 @@ local Heirlooms = _G['Zylla.Heirlooms']
 local exeOnLoad = function()
 	 Zylla.ExeOnLoad()
 
-	print('|cffADFF2F ----------------------------------------------------------------------|r')
- 	print('|cffADFF2F --- |rRogue |cffADFF2FSubtlety |r')
- 	print('|cffADFF2F --- |rRecommended Talents: 1/2 - 2/2 - 3/1 - 4/X - 5/X - 6/1 - 7/1')
- 	print('|cffADFF2F ----------------------------------------------------------------------|r')
+	 print('|cffADFF2F ----------------------------------------------------------------------|r')
+	 print('|cffADFF2F --- |rRogue |cffADFF2FSubtlety |r')
+	 print('|cffADFF2F --- |rRecommended Talents: 1/2 - 2/2 - 3/1 - 4/X - 5/X - 6/1 - 7/1')
+	 print('|cffADFF2F ----------------------------------------------------------------------|r')
 
-	NeP.Interface:AddToggle({
-		key='opener',
-		name='Opener',
-		text = 'If Enabled we will Open with Ambush when Stealthed. If not Cheap Shot will be used.',
-		icon='Interface\\Icons\\ability_rogue_ambush',
-	})
-	
+	 NeP.Interface:AddToggle({
+		 key='opener',
+		 name='Opener',
+		 text = 'If Enabled we will Open with Ambush when Stealthed. If not Cheap Shot will be used.',
+		 icon='Interface\\Icons\\ability_rogue_ambush',
+	 })
+
 end
 
 local PreCombat = {
@@ -47,6 +47,21 @@ local PreCombat = {
 	{'Shadowstrike', 'stealthed&target.range<=15&target.inFront'},
 }
 
+local Keybinds = {
+	-- Pause
+	{'%pause', 'keybind(lshift)&UI(kPause)'},
+}
+
+local Interrupts = {
+	{'!Kick'},
+	{'!Cheap Shot', 'cooldown(Kick).remains>gcd&player.buff(Stealth)&target.inFront&target.inMelee'},
+	{'!Kidney Shot', 'cooldown(Kick).remains>gcd&combo_points>0&target.inFront&target.inMelee'},
+	{'!Blind', 'cooldown(Kick).remains>gcd&target.inFront&target.range<=15&cooldown(Kidney Shot).remains>gcd'},
+}
+
+local Survival ={
+	{'Crimson Vial', 'player.health<=UI(k_CVHP)'},
+}
 
 local Builders = {
 	{'Shuriken Storm', 'player.area(10).enemies>=2'},
@@ -94,28 +109,12 @@ local xCombat = {
 	{Builders, 'variable.ed_threshold'},
 }
 
-local Keybinds = {
-	-- Pause
-	{'%pause', 'keybind(lshift)&UI(kPause)'},
-}
-
-local Interrupts = {
-	{'Kick'},
-	{'Cheap Shot', 'cooldown(Kick).remains>gcd&player.buff(Stealth)&target.inFront&target.inMelee'},
-	{'Kidney Shot', 'cooldown(Kick).remains>gcd&combo_points>0&target.inFront&target.inMelee'},
-	{'Blind', 'cooldown(Kick).remains>gcd&target.inFront&target.range<=15&cooldown(Kidney Shot).remains>gcd'},
-}
-
-local Survival ={
-	{'Crimson Vial', 'player.health<=UI(k_CVHP)'},
-}
-
 local inCombat = {
 	{Util},
 	{Trinkets},
 	{Heirlooms},
 	{Keybinds},
-	{Interrupts, 'target.interruptAt(47)&toggle(Interrupts)&target.inFront&target.inMelee'},
+	{Interrupts, 'target.interruptAt(80)&toggle(Interrupts)&target.inFront&target.inMelee'},
 	{Survival, 'player.health<100'},
 	{xCombat, 'target.inMelee&target.inFront'},
 }

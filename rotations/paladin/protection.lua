@@ -47,9 +47,9 @@ local Keybinds = {
 }
 
 local Interrupts = {
-	{'Rebuke'},
-	{'Hammer of Justice', 'cooldown(Rebuke).remains>gcd'},
-	{'Arcane Torrent', 'target.inMelee&spell(Rebuke).cooldown>gcd&!prev_gcd(Rebuke)'},
+	{'!Rebuke'},
+	{'!Hammer of Justice', 'cooldown(Rebuke).remains>gcd'},
+	{'!Arcane Torrent', 'target.inMelee&spell(Rebuke).cooldown>gcd&!prev_gcd(Rebuke)'},
 }
 
 local Survival ={
@@ -58,7 +58,6 @@ local Survival ={
 }
 
 local PreCombat = {
-
 }
 
 local Cooldowns = {
@@ -105,10 +104,10 @@ local inCombat = {
 	{Heirlooms},
 	{Keybinds},
 	{Survival, 'player.health<100'},
-	{Interrupts, 'target.interruptAt(50)&toggle(Interrupts)&target.inFront&target.inMelee'},
+	{Interrupts, 'target.interruptAt(80)&toggle(Interrupts)&target.inFront&target.inMelee'},
 	{Cooldowns, 'toggle(Cooldowns)'},
 	{AoE, 'toggle(AoE)&player.area(8).enemies>=3'},
-	{ST, 'target.inFront'}
+	{ST, 'target.inFront&yarget.inMelee'}
 }
 
 local outCombat = {

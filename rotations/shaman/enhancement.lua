@@ -19,7 +19,7 @@ local GUI = {
 	{type = 'checkbox', text = 'Ring of Collapsing Futures', key = 'kRoCF', default = true},
 	{type = 'checkbox', text = 'Use Heirloom Necks When Below X% HP', key = 'k_HEIR', default = true},
 	{type = 'spinner',	text = '', key = 'k_HeirHP', default = 40},
-} 
+}
 
 local exeOnLoad = function()
 	 Zylla.ExeOnLoad()
@@ -34,15 +34,16 @@ end
 local Keybinds = {
 	-- Pause
 	{'%pause', 'keybind(lshift)&UI(kPause)'},
-	{'Lightning Surge Totem', 'keybind(lcontrol)' , 'cursor.ground'}
+	{'!Lightning Surge Totem', 'keybind(lcontrol)' , 'cursor.ground'}
 }
 
 local PreCombat = {
-	{'Ghost Wolf', '!player.buff(Ghost Wolf)'},
+	{'Healing Surge', '!moving&player.health<=70', 'player'},
+	{'Ghost Wolf', 'movingfor>=2&!player.buff(Ghost Wolf)'},
 }
 
 local Survival = {
-	{'Healing Surge', 'player.health<=70&player.maelstrom>=20', 'player'},
+	{'!Healing Surge', 'player.health<=70&player.maelstrom>=20', 'player'},
 }
 
 local Cooldowns = {
@@ -50,7 +51,7 @@ local Cooldowns = {
 }
 
 local Interrupts = {
-	{'Wind Shear'},
+	{'!Wind Shear'},
 }
 
 local xCombat = {
@@ -94,7 +95,7 @@ local inCombat = {
 	{Trinkets},
 	{Heirlooms},
 	{Keybinds},
-	{Interrupts, 'target.interruptAt(50)&toggle(Interrupts)&target.inFront&target.range<=30'},
+	{Interrupts, 'target.interruptAt(80)&toggle(Interrupts)&target.inFront&target.range<=30'},
 	{Survival, 'player.health<100'},
 	{Cooldowns, 'toggle(Cooldowns)'},
 	{AoE, 'toggle(AoE)&player.area(8).enemies>=3'},

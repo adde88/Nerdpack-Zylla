@@ -22,7 +22,7 @@ local Heirlooms = _G['Zylla.Heirlooms']
 	{type = 'checkbox', text = 'Ring of Collapsing Futures', key = 'kRoCF', default = true},
 	{type = 'checkbox', text = 'Use Heirloom Necks When Below X% HP', key = 'k_HEIR', default = true},
 	{type = 'spinner',	text = '', key = 'k_HeirHP', default = 40},
-} 
+}
 
 local exeOnLoad = function()
 	 Zylla.ExeOnLoad()
@@ -38,14 +38,14 @@ end
 local Keybinds = {
 	-- Pause
 	{'%pause', 'keybind(lshift)&UI(kPause)'},
-	{'Heroic Leap', 'keybind(lcontrol)' , 'cursor.ground'}
+	{'!Heroic Leap', 'keybind(lcontrol)' , 'cursor.ground'}
 }
 
 local Interrupts = {
-	{'Pummel', '!target.immune(stun)'},
-	{'Storm Bolt', 'target.inFront&target.range<=20&talent(2,2)&!target.immune(stun)&spell(Pummel).cooldown>gcd&!prev_gcd(Pummel)'},
-	{'Arcane Torrent', 'target.inMelee&!target.immune(stun)&spell(Pummel).cooldown>gcd&!prev_gcd(Pummel)'},
-	{'Shockwave', 'target.inFront&target.inMelee&talent(2,1)&!target.immune(stun)&spell(Pummel).cooldown>gcd&!prev_gcd(Pummel)'},
+	{'!Pummel', 'target.inMelee&target.inFront'},
+	{'!Storm Bolt', 'target.inFront&target.range<=20&talent(2,2)&!target.immune(stun)&spell(Pummel).cooldown>gcd&!prev_gcd(Pummel)'},
+	{'!Arcane Torrent', 'target.inMelee&spell(Pummel).cooldown>gcd&!prev_gcd(Pummel)'},
+	{'!Shockwave', 'target.inFront&target.inMelee&talent(2,1)&!target.immune(stun)&spell(Pummel).cooldown>gcd&!prev_gcd(Pummel)'},
 }
 
 local Survival = {
@@ -57,7 +57,7 @@ local Cooldowns = {
 	{'Avatar', 'talent(3,3)&player.buff(Battle Cry)'},
 	{'Bloodbath', 'talent(6,1)&{player.buff(Dragon Roar)||{!talent(7,3)&{player.buff(Battle Cry)||spell(Battle Cry).cooldown>10}}}'},
 	{'Blood Fury', 'player.buff(Battle Cry)'},
-	{'Berserking', 'player.buff(Battle Cry)'},	
+	{'Berserking', 'player.buff(Battle Cry)'},
 }
 
 local Bladestorm = {
@@ -118,7 +118,7 @@ local inCombat = {
 	{Trinkets},
 	{Heirlooms},
 	{Keybinds},
-	{Interrupts, 'target.interruptAt(75)&toggle(Interrupts)'},
+	{Interrupts, 'target.interruptAt(80)&toggle(Interrupts)'},
 	{Survival, 'player.health<100'},
 	{Cooldowns, 'toggle(Cooldowns)&target.inMelee'},
 	{TwoTargets, 'player.area(8).enemies=2||player.area(8).enemies=3'},
@@ -128,7 +128,8 @@ local inCombat = {
 }
 
 local outCombat = {
-	{Keybinds}
+	{Keybinds},
+	{Interrupts, 'target.interruptAt(80)&toggle(Interrupts)'},
 }
 
 NeP.CR:Add(72, {

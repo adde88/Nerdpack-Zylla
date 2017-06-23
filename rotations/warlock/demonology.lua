@@ -83,7 +83,7 @@ local Cooldowns = {
 	{'&Arcane Torrent'},
 	{'&Berserking'},
 	{'&Blood Fury'},
-	{'Grimoire: Felguard', 'talent(6,2)'},	
+	{'Grimoire: Felguard', 'talent(6,2)'},
 	{'Summon Doomguard', '!talent(6,1)&target.area(10).enemies<=2'},
 	{'Summon Infernal', '!talent(6,1)&target.area(10).enemies>2&!advanced', 'cursor.ground'},
 	{'Summon Infernal', '!talent(6,1)&target.area(10).enemies>2&advanced', 'target.ground'},
@@ -127,6 +127,7 @@ local inCombat = {
 	{Trinkets},
 	{Heirlooms},
 	{Keybinds},
+	{Interrupts, 'toggle(Interrupts)&target.inFront&target.range<=40'},
 	{Survival},
 	{Player, '!player.moving'},
 	{Cooldowns, 'toggle(cooldowns)'},
@@ -135,6 +136,7 @@ local inCombat = {
 
 local outCombat = {
 	{'Life Tap', 'player.mana<=60&player.health>=60'},
+	{Interrupts, 'toggle(Interrupts)&target.inFront&target.range<=40'},
 	--{'Create Healthstone', "xitems('player', 5512)=0"},
 }
 

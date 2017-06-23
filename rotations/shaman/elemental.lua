@@ -61,61 +61,38 @@ local exeOnLoad = function()
 		text = 'Enable/Disable: Automatic removal of curses',
 		icon = 'Interface\\ICONS\\ability_shaman_cleansespirit',
 	})
+
 end
 
 local Survival = {
-	-- Astral Shift usage if enabled in UI.
 	{'&Astral Shift', 'UI(S_ASE)&player.health<=UI(S_AS)'},
-	-- Earth Elemental usage if enabled in UI.
 	{'Earth Elemental', '!ingroup&UI(S_EEE)&player.health<=UI(S_EE)'},
-	-- Gift of the Naaru usage if enabled in UI.
 	{'&Gift of the Naaru', 'UI(S_GOTNE)&{!player.debuff(Ignite Soul)}&player.health<=UI(S_GOTN)'},
-	-- Healthstone usage if enabled in UI.
 	{'#Healthstone', 'UI(S_HSE)&{!player.debuff(Ignite Soul)}&player.health<=UI(S_HS)'},
-	-- Ancient Healing Potion usage if enabled in UI.
 	{'#Ancient Healing Potion', 'UI(S_AHPE)&{!player.debuff(Ignite Soul)}&player.health<=UI(S_AHP)'},
 }
 
 local Player = {
-	-- Healing Surge usage if enabled in UI.
 	{'!Healing Surge', 'UI(S_HSGE)&{!player.debuff(Ignite Soul)}&player.health<=UI(S_HSG)', 'player'},
 }
 
 local Emergency = {
-	-- Healing Surge usage if enabled in UI.
 	{'!Healing Surge', 'UI(E_HSGE)&{!lowest.debuff(Ignite Soul)}&lowest.health<=UI(E_HSG)', 'lowest'},
 }
 
 local Keybinds = {
-	-- Liquid Magma Totem at cursor on Left-Shift if enabled in UI.
 	{'!Liquid Magma Totem', 'UI(K_LMT)&talent(6,1)&keybind(lshift)', 'cursor.ground'},
-	-- Lightning Surge Totem at cursor on Left-Control if enabled in UI.
 	{'!Lightning Surge Totem', 'UI(K_LST)&keybind(lcontrol)', 'cursor.ground'},
-	-- Earthbind Totem at cursor on Left-Alt if enabled in UI.
 	{'!Earthbind Totem', 'UI(K_ET)&keybind(lalt)', 'cursor.ground'},
 }
 
 local Interrupts = {
-	{'&Wind Shear'},
+	{'!Wind Shear'},
 }
 
 local Dispel = {
 	{'%dispelself'},
 }
-
--- ####################################################################################
--- Primairly sourced from legion-dev SimC with additions from Storm, Earth and Lava.
--- Updates to rotations from sources are considered for implementation.
--- ####################################################################################
-
--- SimC APL 1/16/2017
--- https://github.com/simulationcraft/simc/blob/legion-dev/profiles/Tier19M/Shaman_Elemental_T19M.simc
--- Lightning Rod Rotation 1/10/2017
--- http://www.stormearthandlava.com/elemental-shaman-hub/lightning-rod-build-guide/
--- Icefury Rotaion 1/16/2017
--- http://www.stormearthandlava.com/elemental-shaman-hub/icefury-build-guide/
--- Ascendance Rotaion 1/14/2017
--- http://www.stormearthandlava.com/elemental-shaman-hub/ascendance-build-guide/
 
 local AoE = {
 	{'Totem Mastery', '{!moving||moving}&talent(1,3)&{totem(Totem Mastery).duration<1||!player.buff(Tailwind Totem)||!player.buff(Storm Totem)||!player.buff(Resonance Totem)||!player.buff(Ember Totem)}'},
@@ -235,15 +212,15 @@ local inCombat = {
 	{Util},
 	{Trinkets},
 	{Heirlooms},
-	{Keybinds, '{!moving||moving}'},
-	{Dispel, '{!moving||moving}&toggle(yuPS)&spell(Cleanse Spirit).cooldown=0'},
-	{Survival, '{!moving||moving}'},
-	{Player, '!moving&{!ingroup||ingroup}'},
+	{Keybinds},
+	{Dispel, 'toggle(yuPS)&spell(Cleanse Spirit).cooldown=0'},
+	{Survival},
+	{Player, '!moving'},
 	{Emergency, '!moving&ingroup'},
-	{Interrupts, '{!moving||moving}&toggle(Interrupts)&target.interruptAt(70)&target.inFront&target.range<=30'},
-	{LRCooldowns, '{!moving||moving}&talent(7,2)&toggle(Cooldowns)'},
-	{IFCooldowns, '{!moving||moving}&talent(7,3)&toggle(Cooldowns)'},
-	{ASCooldowns, '{!moving||moving}&talent(7,1)&toggle(Cooldowns)'},
+	{Interrupts, 'toggle(Interrupts)&target.interruptAt(80)&target.inFront&target.range<=30'},
+	{LRCooldowns, '&talent(7,2)&toggle(Cooldowns)'},
+	{IFCooldowns, 'talent(7,3)&toggle(Cooldowns)'},
+	{ASCooldowns, 'talent(7,1)&toggle(Cooldowns)'},
 	{AoE, 'toggle(aoe)&player.area(40).enemies>2'},
 	{LRSingle, 'talent(7,2)&target.inFront&target.range<=40'},
 	{IFSingle, 'talent(7,3)&target.inFront&target.range<=40'},
@@ -251,8 +228,8 @@ local inCombat = {
 }
 
 local outCombat = {
-	{Dispel, '{!moving||moving}&toggle(yuPS)&spell(Cleanse Spirit).cooldown=0'},
-	{Interrupts, '{!moving||moving}&toggle(Interrupts)&target.interruptAt(70)&target.inFront&target.range<=30'},
+	{Dispel, 'toggle(yuPS)&spell(Cleanse Spirit).cooldown<gcd'},
+	{Interrupts, 'toggle(Interrupts)&target.interruptAt(80)&target.inFront&target.range<=30'},
 	{Emergency, '!moving&ingroup'},
 	{'Healing Surge', '!moving&player.health<=70', 'player'},
 	{'Ghost Wolf', 'movingfor>=2&!player.buff(Ghost Wolf)'},

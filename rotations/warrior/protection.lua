@@ -15,14 +15,14 @@ local GUI = {
 	{type = 'checkbox', text = 'Pause enabled', key = 'kPause', default = true},
 	{type = 'checkbox', text = 'Intercept enabled', key = 'kIntercept', default = false},
 	{type = 'ruler'},	{type = 'spacer'},
-	-- Trinkets + Heirlooms for leveling	
+	-- Trinkets + Heirlooms for leveling
 	{type = 'header', 	text = 'Trinkets/Heirlooms', align = 'center'},
 	{type = 'checkbox', text = 'Use Trinket #1', key = 'kT1', default = true},
 	{type = 'checkbox', text = 'Use Trinket #2', key = 'kT2', default = true},
 	{type = 'checkbox', text = 'Ring of Collapsing Futures', key = 'kRoCF', default = true},
 	{type = 'checkbox', text = 'Use Heirloom Necks When Below X% HP', key = 'k_HEIR', default = true},
 	{type = 'spinner',	text = '', key = 'k_HeirHP', default = 40},
-} 
+}
 
 local exeOnLoad = function()
 	Zylla.ExeOnLoad()
@@ -31,18 +31,10 @@ local exeOnLoad = function()
 	print("|cffADFF2F --- |rWarrior |cffADFF2FProtection |r")
 	print("|cffADFF2F --- |rRecommended Talents: 1/1 - 2/1 - 3/2 - 4/2 - 5/3 - 6/1 - 7/2")
 	print("|cffADFF2F ----------------------------------------------------------------------|r")
-	
-	--[[
-	NeP.Interface:AddToggle({
-		key = 'AutoTaunt',
-		name = 'Auto Taunt',
-		text = 'Automatically taunt nearby enemies.',
-		icon = 'Interface\\Icons\\spell_nature_shamanrage',
-	})
-	]]--
+
 end
 
-local _Zylla = {
+local Etc = {
 	{'Impending Victory', '{!player.buff(Victorious)&player.rage>10&player.health<=85}||{player.buff(Victorious)&player.health<=70}'},
 	{'Heroic Throw', '!target.inMelee&target.range<=30&target.inFront'},
 	{'Shockwave', '!target.immune(stun)&player.area(6).enemies>=3&target.inMelee&target.inFront'},
@@ -52,28 +44,24 @@ local _Zylla = {
 local Keybinds = {
 	-- Pause
 	{'%pause', 'keybind(lshift)&UI(kPause)'},
-	{'Heroic Leap', 'keybind(lcontrol)' , 'cursor.ground'}
+	{'!Heroic Leap', 'keybind(lcontrol)' , 'cursor.ground'}
 }
 
 local Interrupts = {
-	{'Pummel', 'target.inFront&target.inMelee'},
-	{'Arcane Torrent', 'target.inMelee&spell(Pummel).cooldown>gcd&!prev_gcd(Pummel)'},
-	{'Shockwave', 'talent(1,1)&!target.immune(stun)&spell(Pummel).cooldown>gcd&!prev_gcd(Pummel)&target.inFront&target.inMelee'},
-	{'Spell Reflection', '{target.inMelee&spell(Pummel).cooldown>gcd&!prev_gcd(Pummel)}||{target.range>=10&!spell(Pummel).cooldown}'}
+	{'!Pummel', 'target.inFront&target.inMelee'},
+	{'!Arcane Torrent', 'target.inMelee&spell(Pummel).cooldown>gcd&!prev_gcd(Pummel)'},
+	{'!Shockwave', 'talent(1,1)&!target.immune(stun)&spell(Pummel).cooldown>gcd&!prev_gcd(Pummel)&target.inFront&target.inMelee'},
+	{'!Spell Reflection', '{target.inMelee&spell(Pummel).cooldown>gcd&!prev_gcd(Pummel)}||{target.range>=10&!spell(Pummel).cooldown}'}
 }
 
-local Cooldowns = {
-	--# Cooldowns goes here
-}
+local Cooldowns = {}
 
 local PreCombat = {
-	--# Executed before combat begins. Accepts non-harmful actions only.
 	{'Intercept', '!target.inMelee&target.range<25&target.enemy&!prev_gcd(Heroic Leap)&UI(kIntercept)&target.alive'},
 	{'Heroic Throw', '!target.inMelee&target.range<=30&target.inFront&target.alive&target.enemy&!UI(kIntercept'}
 }
 
 local Something = {
-	--# Same skills in same order in both parts of the rotation... placed them here :)
 	{'Focused Rage', 'talent(3,2)&player.buff(Ultimatum)&!talent(6,1)'},
 	{'Battle Cry', '{talent(6,1)&talent(3,2)&spell(Shield Slam).cooldown<=4.5-gcd}||!talent(6,1)'},
 	{'Demoralizing Shout', 'talent(6,3)&player.buff(Battle Cry)'},
@@ -106,20 +94,20 @@ local ST = {
 }
 
 local inCombat = {
-	{_Zylla},
 	{Util},
 	{Trinkets},
 	{Heirlooms},
+	{Etc},
 	{Keybinds},
-	{Interrupts, 'target.interruptAt(50)&toggle(Interrupts)'},
+	{Interrupts, 'target.interruptAt(80)&toggle(Interrupts)'},
 	{Cooldowns, 'toggle(Cooldowns)'},
-	{Trinkets},
 	{ST, 'target.inMelee&target.inFront'},
 }
 
 local outCombat = {
 	{Keybinds},
-	{PreCombat}
+	{PreCombat},
+	{Interrupts, 'target.interruptAt(80)&toggle(Interrupts)'},
 }
 
 NeP.CR:Add(73, {

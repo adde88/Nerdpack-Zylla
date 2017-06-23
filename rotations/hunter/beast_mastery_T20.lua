@@ -27,7 +27,7 @@ local GUI = {
 	{type = 'checkbox', text = 'Ring of Collapsing Futures', key = 'kRoCF', default = true},
 	{type = 'checkbox', text = 'Use Heirloom Necks When Below X% HP', key = 'k_HEIR', default = true},
 	{type = 'spinner',	text = '', key = 'k_HeirHP', default = 40},
-} 
+}
 
 local exeOnLoad = function()
 	 Zylla.ExeOnLoad()
@@ -36,14 +36,14 @@ local exeOnLoad = function()
 	print('|cffADFF2F --- |rHunter |cffADFF2FBeast Mastery [T-20] |r')
 	print('|cffADFF2F --- |rRecommended Talents: 1/2 - 2/2 - 3/X - 4/2 - 5/X - 6/1 - 7/2')
 	print('|cffADFF2F ----------------------------------------------------------------------|r')
-	
+
 	NeP.Interface:AddToggle({
 		key = 'xMisdirect',
 		name = 'Misdirection',
 		text = 'Automatically use Misdirection on current Focus-target or Pet.',
 		icon = 'Interface\\Icons\\ability_hunter_misdirection',
 	})
-	
+
 end
 
 local PreCombat = {
@@ -54,36 +54,11 @@ local PreCombat = {
 	{'Volley', 'talent(6,3)&player.buff(Volley)&!UI(kVolley)'},
 }
 
-local Util = {
-	-- ETC.
-	{'%pause' , 'player.debuff(200904)||player.debuff(Sapped Soul)'}, -- Vault of the Wardens, Sapped Soul
-}
-
 local Keybinds = {
 	{'%pause', 'keybind(lshift)&UI(kPause)'},
-	{'Binding Shot', 'keybind(lalt)', 'cursor.ground'},
-	{'Tar Trap', 'keybind(lcontrol)', 'cursor.ground'},
-	{'Freezing Trap', 'keybind(ralt)', 'cursor.ground'},
-}
-
-local Trinkets = {
-	{'#trinket1', 'UI(kT1)'},
-	{'#trinket2', 'UI(kT2)'},
-	{'#Ring of Collapsing Futures', 'equipped(142173)&!player.debuff(Temptation)&UI(kRoCF)', 'target.enemy'},
-}
-
-local Heirlooms = {
-	{'#Eternal Horizon Choker', 'equipped(122664)&UI(k_HEIR)&player.health<=UI(k_HeirHP)'},
-	{'#Eternal Amulet of the Redeemed', 'equipped(122663)&UI(k_HEIR)&player.health<=UI(k_HeirHP)'},
-	{'#Eternal Woven Ivy Necklace', 'equipped(122666)&UI(k_HEIR)&player.health<=UI(k_HeirHP)'},
-	{'#Eternal Emberfury Talisman', 'equipped(122667)&UI(k_HEIR)&player.health<=UI(k_HeirHP)'},
-	{'#Eternal Will of the Martyr', 'equipped(122668)&UI(k_HEIR)&player.health<=UI(k_HeirHP)'},
-	{'#Touch of the Void', 'equipped(128318)&UI(k_HEIR)&player.area(8).enemies>=3'},
-	{'#Inherited Mark of Tyranny', 'equipped(122530)&UI(k_HEIR)&player.incdmg(2.5)>player.health.max*0.50'},
-	{'#Inherited Insignia of the Alliance', 'equipped(44098)&UI(k_HEIR)&{player.state.incapacitate||player.state.stun||player.state.fear||player.state.horror||player.state.sleep||player.state.charm}'},
-	{'#Inherited Insignia of the Horde', 'equipped(44097)&UI(k_HEIR)&{player.state.incapacitate||player.state.stun||player.state.fear||player.state.horror||player.state.sleep||player.state.charm}'},
-	{'#Returning Champion', 'equipped(126949)&UI(k_HEIR)&{player.incdmg(2.5)>player.health.max*0.50}||{player.health<=20}'},
-	{'#Defending Champion', 'equipped(126948)&UI(k_HEIR)&{player.incdmg(2.5)>player.health.max*0.50}||{player.health<=20}'},
+	{'!Binding Shot', 'keybind(lalt)', 'cursor.ground'},
+	{'!Tar Trap', 'keybind(lcontrol)', 'cursor.ground'},
+	{'!Freezing Trap', 'keybind(ralt)', 'cursor.ground'},
 }
 
 local Survival = {
@@ -103,8 +78,8 @@ local Cooldowns = {
 }
 
 local Interrupts = {
-	{'Counter Shot'},
-	{'Intimidation', 'talent(6,3)&spell(Counter Shot).cooldown>gcd&!prev_gcd(Counter Shot)&!target.immune(Stun)'},
+	{'!Counter Shot'},
+	{'!Intimidation', 'talent(6,3)&spell(Counter Shot).cooldown>gcd&!prev_gcd(Counter Shot)&!target.immune(Stun)'},
 }
 
 local xCombat = {
@@ -146,10 +121,10 @@ local inCombat = {
 	{Keybinds},
 	{Survival, 'player.health<100'},
 	{Cooldowns, 'toggle(Cooldowns)'},
-	{Interrupts, 'target.interruptAt(50)&toggle(Interrupts)&target.inFront&target.range<=40'},
+	{Interrupts, 'target.interruptAt(80)&toggle(Interrupts)&target.inFront&target.range<=40'},
 	{xCombat, 'target.range<=40&target.inFront'},
 	{xPetCombat},
-	{xPvP, 'target.player&target.enemy'},
+	{xPvP},
 }
 
 local outCombat = {

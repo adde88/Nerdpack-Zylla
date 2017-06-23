@@ -16,8 +16,8 @@ local Heirlooms = _G['Zylla.Heirlooms']
 	{type = 'checkbox', text = 'Use Trinket #1', key = 'kT1', default = true},
 	{type = 'checkbox', text = 'Use Trinket #2', key = 'kT2', default = true},
 	{type = 'checkbox', text = 'Ring of Collapsing Futures', key = 'kRoCF', default = true},
-	{type = 'checkbox', text = 'Use Heirloom Necks When Below X% HP', key = 'k_HEIR', default = true},	
-} 
+	{type = 'checkbox', text = 'Use Heirloom Necks When Below X% HP', key = 'k_HEIR', default = true},
+}
 
 local exeOnLoad = function()
 	 Zylla.ExeOnLoad()
@@ -46,9 +46,9 @@ local Survival = {
 }
 
 local Interrupts = {
-	{'Rebuke'},
-	{'Hammer of Justice', 'cooldown(Rebuke).remains>gcd'},
-	{'Arcane Torrent', 'target.inMelee&cooldown(Rebuke).remains>gcd&!prev_gcd(Rebuke)'},
+	{'!Rebuke'},
+	{'!Hammer of Justice', 'cooldown(Rebuke).remains>gcd'},
+	{'!Arcane Torrent', 'target.inMelee&cooldown(Rebuke).remains>gcd&!prev_gcd(Rebuke)'},
 }
 
 local Cooldowns = {
@@ -98,7 +98,7 @@ local inCombat = {
 	{Trinkets},
 	{Heirlooms},
 	{Keybinds},
-	{Interrupts, 'target.interruptAt(50)&toggle(Interrupts)&target.inFront&target.inMelee'},
+	{Interrupts, 'target.interruptAt(80)&toggle(Interrupts)&target.inFront&target.inMelee'},
 	{Survival, 'player.health<100'},
 	{Cooldowns, 'toggle(Cooldowns)'},
 	{xCombat, 'target.inMelee&target.inFront'},

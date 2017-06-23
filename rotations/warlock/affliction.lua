@@ -18,7 +18,7 @@ local Heirlooms = _G['Zylla.Heirlooms']
 	{type = 'checkbox', text = 'Ring of Collapsing Futures', key = 'kRoCF', default = true},
 	{type = 'checkbox', text = 'Use Heirloom Necks When Below X% HP', key = 'k_HEIR', default = true},
 	{type = 'spinner',	text = '', key = 'k_HeirHP', default = 40},
-} 
+}
 
 local exeOnLoad = function()
 	 Zylla.ExeOnLoad()
@@ -30,6 +30,8 @@ local exeOnLoad = function()
 
 end
 
+local PreCombat = {}
+
 local xCombat = {
 	{'Corruption', '!target.dot(Corruption).ticking'},
 	{'Drain Life'},
@@ -39,6 +41,8 @@ local Keybinds = {
 	-- Pause
 	{'%pause', 'keybind(lshift)&UI(kPause)'},
 }
+
+local Interrupts = {}
 
 local Survival = {
 	{'#Healthstone', 'player.health<80'},
@@ -55,9 +59,10 @@ local inCombat = {
 	{Trinkets},
 	{Heirlooms},
 	{Keybinds},
+	{Interrupts, 'toggle(Interrupts)&target.inFront&target.range<=40'},
 	{Survival, 'player.health<100'},
 	{Cooldowns, 'toggle(Cooldowns)'},
-	{xCombat, {'target.range<=40', 'target.inFront'}}
+	{xCombat, 'target.range<=40&target.inFront'}
 }
 
 local outCombat = {

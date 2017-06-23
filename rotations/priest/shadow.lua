@@ -7,7 +7,7 @@ local Trinkets = _G['Zylla.Trinkets']
 local Heirlooms = _G['Zylla.Heirlooms']
 
 local GUI = {
-	-- GUI Header 
+	-- GUI Header
 	{type = 'texture',
 	texture = 'Interface\\AddOns\\Nerdpack-Zylla\\media\\shadow.blp',
 	width = 512,
@@ -39,7 +39,7 @@ local Heirlooms = _G['Zylla.Heirlooms']
 	{type = 'checkbox', text = 'ON/OFF', key = 'dps_fiend', width = 55, default =  true},
     {type = 'spinner', text = 'Shadowfiend Stacks', key = 'dps_SFspin', align = 'left', width = 55, step = 1, default = 22},
     {type = 'text', text = 'Void Torrent', align = 'center'},
-    {type = 'checkbox', text = 'ON/OFF', key = 'dps_void', width = 55, default =  true}, 
+    {type = 'checkbox', text = 'ON/OFF', key = 'dps_void', width = 55, default =  true},
 	{type = 'text', text = 'Dispersion', align = 'center'},
 	{type = 'checkbox', text = 'ON/OFF', key = 'dps_D', width = 55, default =  true},
 	{type = 'spinner', text = 'Target<=35%', key = 'dps_Dspin', align = 'left', width = 55, min = 15, max = 50, step = 1, default = 44},
@@ -98,7 +98,7 @@ local exeOnLoad=function()
 	print('|cffADFF2F ----------------------------------------------------------------------|r')
 	print('|cffADFF2F --- |rQuestions or Issues? @Zylla NerdPack Discord|')
 	print('|cffADFF2F ----------------------------------------------------------------------|r')
-	
+
 	NeP.Interface:AddToggle({
 		key = 'abc',
 		name='Mind Bomb AoE',
@@ -112,7 +112,7 @@ local exeOnLoad=function()
 		text = 'Enable/Disable: Automatic S2M',
 		icon='Interface\\ICONS\\Achievement_boss_generalvezax_01',
 	})
-	
+
 end
 
 local Survival = {
@@ -163,17 +163,17 @@ local Surrender = {
 }
 
 local Insight = {
-	{'!Mindblast', '!spell(Void Eruption).cooldown=0'}, 
+	{'!Mindblast', '!spell(Void Eruption).cooldown=0'},
 }
 
 local Emergency = {
 	{'!Dispersion', 'player.spell(Shadow Word: Death).charges<1&!spell(Void Torrent).cooldown=0&player.insanity<=20&!talent(7,1)&!talent(7,2)&UI(dps_D)'},
-	{'!Arcane Torrent', 'UI(dps_at)&player.insanity<=35&{!player.spell(shadow word: death).cooldown=0||!target.health<=35}&!player.spell(dispersion).cooldown=0'}, 
+	{'!Arcane Torrent', 'UI(dps_at)&player.insanity<=35&{!player.spell(shadow word: death).cooldown=0||!target.health<=35}&!player.spell(dispersion).cooldown=0'},
 	{'!Power Infusion', 'talent(6,1)&player.buff(voidform).count>=80&spell(Shadow Word: Death).charges<1&player.insanity<=60&UI(dps_PI)'},
 }
 
 local cooldowns = {
-	{'!Void Torrent', 'player.spell(Void Eruption).cooldown>0&UI(dps_void)'}, 
+	{'!Void Torrent', 'player.spell(Void Eruption).cooldown>0&UI(dps_void)'},
 	{'!Power Infusion', 'talent(6,1)&player.buff(Surrender to Madness)&player.buff(voidform).count>=50&player.insanity>=50&!spell(Void Eruption).cooldown=0&!spell(Void Torrent).cooldown=0&!spell(Dispersion).cooldown=0&UI(dps_PI)', 'player'},
 	{'Power Infusion', 'talent(6,1)&!player.buff(Surrender to Madness)&player.buff(voidform).count>=UI(dps_PIspin1)&target.health<=35&UI(dps_PI)', 'player'},
 	{'Power Infusion', 'talent(6,1)&!player.buff(Surrender to Madness)&player.buff(voidform).count>=UI(dps_PIspin2)&target.health>35&UI(dps_PI)', 'player'},
@@ -192,11 +192,11 @@ local ST1 = {
 	{'!Void Eruption','target.debuff(Vampiric Touch).duration>13&player.buff(Surrender to Madness)&target.debuff(Vampiric Touch)&target.debuff(Shadow Word: Pain)'},
 	{'!Void Eruption', 'target.debuff(Vampiric Touch).duration>4&!player.buff(Surrender to Madness)&target.debuff(Vampiric Touch)&target.debuff(Shadow Word: Pain)'},
 	{'!Shadow Word: Death', '{talent(7,1)&!player.insanity>=65&!player.channeling(Void Eruption)}||{target.health<=35&talent(7,3) ||talent(7,2)&!player.insanity = 100&!player.channeling(Void Eruption)}'},
-	{'!Vampiric Touch', '!target.debuff(Shadow Word: Pain)&talent(6,2)'}, 
+	{'!Vampiric Touch', '!target.debuff(Shadow Word: Pain)&talent(6,2)'},
 	{'!Mind Blast', 'player.channeling(Mind Flay)'},
 	{'Mind Blast', '{talent(6,1)&!player.insanity>=65}||{talent(7,3) ||talent(7,2)&!player.insanity = 100}'},
 	{'Shadow Word: Pain', '{target.debuff(Shadow Word: Pain).duration<3&!talent(6,2)}||{!target.debuff(Shadow Word: Pain)&!talent(6,2)}'},
-	{'!Vampiric Touch', '{target.debuff(Vampiric Touch).duration<=3&!lastcast(Vampiric Touch)}||{!target.debuff(Vampiric Touch)&!lastcast(Vampiric Touch)}||{{target.debuff(Shadow Word: Pain).duration<=1.3||!target.debuff(Shadow Word: Pain)}&talent(6,2)}'}, 
+	{'!Vampiric Touch', '{target.debuff(Vampiric Touch).duration<=3&!lastcast(Vampiric Touch)}||{!target.debuff(Vampiric Touch)&!lastcast(Vampiric Touch)}||{{target.debuff(Shadow Word: Pain).duration<=1.3||!target.debuff(Shadow Word: Pain)}&talent(6,2)}'},
 	{'Mind Flay', '!spell(Mind Blast).cooldown=0&target.debuff(Shadow Word: Pain)&target.debuff(Vampiric Touch)&{talent(7,1)&!player.insanity>=65}||{talent(7,3) ||talent(7,2)&!player.insanity = 100}'},
 }
 
@@ -205,11 +205,11 @@ local lotv1 = {
 	{'!Dispersion', 'player.buff(voidform).count>=UI(dps_D2spin)&UI(dps_D)&!player.buff(Surrender to Madness)&player.insanity<=30&target.health>35&!player.spell(Void Torrent).cooldown=0'},
 	{'!Shadow Word: Death', '{!player.channeling(Mind Blast)&player.spell(Shadow Word: Death).charges>1&player.insanity<=70}||{!player.channeling(Mind Blast)&player.insanity<=35}'},
 	{'!Void Eruption', '!player.channeling(Mind Blast)||player.insanity<=20'},
-	{'!Vampiric Touch', '!target.debuff(Shadow Word: Pain)&talent(6,2)'},  
+	{'!Vampiric Touch', '!target.debuff(Shadow Word: Pain)&talent(6,2)'},
 	{'Mind Blast', 'player.spell(Void Eruption).cooldown>gcd'},
 	{'!Mind Blast', 'player.spell(Void Eruption).cooldown>gcd&target.debuff(Vampiric Touch)&target.debuff(Shadow Word: Pain)&player.channeling(Mind Flay)'},
 	{'Shadow Word: Pain', '{target.debuff(Shadow Word: Pain).duration<3&!talent(6,2)}||{!target.debuff(Shadow Word: Pain)&!talent(6,2)}||{moving&!target.debuff(Shadow Word: Pain)}'},
-	{'!Vampiric Touch', '{target.debuff(Vampiric Touch).duration<=3&!lastcast(Vampiric Touch)}||{!target.debuff(Vampiric Touch)&!lastcast(Vampiric Touch)}||{{target.debuff(Shadow Word: Pain).duration<=1.3||!target.debuff(Shadow Word: Pain)}&talent(6,2)}'},  
+	{'!Vampiric Touch', '{target.debuff(Vampiric Touch).duration<=3&!lastcast(Vampiric Touch)}||{!target.debuff(Vampiric Touch)&!lastcast(Vampiric Touch)}||{{target.debuff(Shadow Word: Pain).duration<=1.3||!target.debuff(Shadow Word: Pain)}&talent(6,2)}'},
 	{'Mind Flay', '!player.spell(Void Eruption).cooldown=0&!player.spell(Mind Blast).cooldown=0&target.debuff(Shadow Word: Pain)&target.debuff(Vampiric Touch)'},
 }
 
@@ -217,13 +217,13 @@ local s2m1 = {
 	{'!Dispersion', 'player.buff(voidform).count>=6&player.buff(voidform).count<10&!lastcast(Void Torrent)&UI(dps_D)'},
 	{'!Void Torrent', 'UI(dps_void)'},
 	{'!Shadow Word: Death', 'player.buff(voidform).count<10&target.debuff(Shadow Word: Pain).duration>6&target.debuff(Vampiric Touch).duration>6'},
-	{'!Shadow Word: Death', 'player.insanity<30'}, 
+	{'!Shadow Word: Death', 'player.insanity<30'},
 	{'!Void Eruption', '!player.channeling(Mind Blast)||player.insanity<=40'},
-	{'!Vampiric Touch', '!target.debuff(Shadow Word: Pain)&talent(6,2)'}, 
+	{'!Vampiric Touch', '!target.debuff(Shadow Word: Pain)&talent(6,2)'},
 	{'Mind Blast', '!player.spell(Void Eruption).cooldown=0'},
 	{'!Mind Blast', '!player.spell(Void Eruption).cooldown=0&target.debuff(Vampiric Touch)&target.debuff(Shadow Word: Pain)&player.channeling(Mind Flay)'},
 	{'!Shadow Word: Pain', 'target.debuff(Shadow Word: Pain).duration<3||!target.debuff(Shadow Word: Pain)'},
-	{'!Vampiric Touch', 'target.debuff(Vampiric Touch).duration<=3||!target.debuff(Vampiric Touch)'}, 
+	{'!Vampiric Touch', 'target.debuff(Vampiric Touch).duration<=3||!target.debuff(Vampiric Touch)'},
 	{'Mind Flay', '!player.spell(Void Eruption).cooldown=0&!player.spell(Mind Blast).cooldown=0&target.debuff(Shadow Word: Pain)&target.debuff(Vampiric Touch)'},
 }
 
@@ -231,12 +231,12 @@ local ST2 = {
 	{'!Void Eruption','target.debuff(Vampiric Touch).duration>13&player.buff(Surrender to Madness)&target.debuff(Vampiric Touch)&target.debuff(Shadow Word: Pain)'},
 	{'!Void Eruption', 'target.debuff(Vampiric Touch).duration>4&!player.buff(Surrender to Madness)&target.debuff(Vampiric Touch)&target.debuff(Shadow Word: Pain)'},
 	{'!Shadow Word: Death', '{talent(7,1)&!player.insanity>=65&!player.channeling(Void Eruption)}||{target.health<=35&talent(7,3) ||talent(7,2)&!player.insanity = 100&!player.channeling(Void Eruption)}'},
-	{'!Vampiric Touch', '!target.debuff(Shadow Word: Pain)&talent(6,2)'}, 
+	{'!Vampiric Touch', '!target.debuff(Shadow Word: Pain)&talent(6,2)'},
 	{'!Mind Blast', 'player.channeling(Mind Flay)'},
 	{'Mind Blast', 'target.debuff(Shadow Word: Pain)&target.debuff(Vampiric Touch)'},
 	{'Mind Blast', '!target.debuff(Shadow Word: Pain)&!target.debuff(Vampiric Touch)&!lastcast(Mind Blast)&{talent(7,1)&!player.insanity>=65}||{talent(7,3) ||talent(7,2)&!player.insanity = 100}'},
 	{'Shadow Word: Pain', 'target.debuff(Shadow Word: Pain).duration<3||!target.debuff(Shadow Word: Pain)'},
-	{'!Vampiric Touch', '{target.debuff(Vampiric Touch).duration<=3&!lastcast(Vampiric Touch)}||{!target.debuff(Vampiric Touch)&!lastcast(Vampiric Touch)}||{{target.debuff(Shadow Word: Pain).duration<=1.3||!target.debuff(Shadow Word: Pain)}&talent(6,2)}'}, 
+	{'!Vampiric Touch', '{target.debuff(Vampiric Touch).duration<=3&!lastcast(Vampiric Touch)}||{!target.debuff(Vampiric Touch)&!lastcast(Vampiric Touch)}||{{target.debuff(Shadow Word: Pain).duration<=1.3||!target.debuff(Shadow Word: Pain)}&talent(6,2)}'},
 	{'Mind Flay', '!spell(Mind Blast).cooldown=0&target.debuff(Shadow Word: Pain)&target.debuff(Vampiric Touch)&{talent(7,1)&!player.insanity>=65}||{talent(7,3) ||talent(7,2)&!player.insanity = 100}'},
 }
 
@@ -245,12 +245,12 @@ local lotv2 = {
 	{'!Dispersion', 'player.buff(voidform).count>=UI(dps_D2spin)&UI(dps_D)&!player.buff(Surrender to Madness)&player.insanity<=30&target.health>35'},
 	{'!Void Torrent', '{player.buff(voidform).count>=23&spell(Shadow Word: Death).charges<1&player.insanity<=30&UI(dps_void)}||{player.buff(voidform).count>=16&!player.buff(Surrender to Madness)&player.insanity<=30&target.health>35&UI(dps_void)} '},
 	{'!Shadow Word: Death', '{player.insanity<=40}||{target.health<=35&player.buff(voidform).count<=15&player.insanity<70}'},
-	{'!Void Eruption', '!player.channeling(Mind Blast)||player.insanity<=40'}, 
-	{'!Vampiric Touch', '!target.debuff(Shadow Word: Pain)&talent(6,2)'}, 
+	{'!Void Eruption', '!player.channeling(Mind Blast)||player.insanity<=40'},
+	{'!Vampiric Touch', '!target.debuff(Shadow Word: Pain)&talent(6,2)'},
 	{'Mind Blast', '!player.spell(Void Eruption).cooldown=0'},
 	{'!Mind Blast', '!player.spell(Void Eruption).cooldown=0&target.debuff(Vampiric Touch)&target.debuff(Shadow Word: Pain)&player.channeling(Mind Flay)'},
 	{'Shadow Word: Pain', '{target.debuff(Shadow Word: Pain).duration<3&!talent(6,2)}||{!target.debuff(Shadow Word: Pain)&!talent(6,2)}||{moving&!target.debuff(Shadow Word: Pain)}'},
-	{'!Vampiric Touch', '{target.debuff(Vampiric Touch).duration<=3&!lastcast(Vampiric Touch)}||{!target.debuff(Vampiric Touch)&!lastcast(Vampiric Touch)}||{{target.debuff(Shadow Word: Pain).duration<=1.3||!target.debuff(Shadow Word: Pain)}&talent(6,2)}'}, 
+	{'!Vampiric Touch', '{target.debuff(Vampiric Touch).duration<=3&!lastcast(Vampiric Touch)}||{!target.debuff(Vampiric Touch)&!lastcast(Vampiric Touch)}||{{target.debuff(Shadow Word: Pain).duration<=1.3||!target.debuff(Shadow Word: Pain)}&talent(6,2)}'},
 	{'Mind Flay', '!player.spell(Void Eruption).cooldown=0&!player.spell(Mind Blast).cooldown=0&target.debuff(Shadow Word: Pain)&target.debuff(Vampiric Touch)'},
 }
 
@@ -258,13 +258,13 @@ local s2m2 = {
 	{'!Dispersion', 'player.buff(voidform).count>=6&player.buff(voidform).count<10&!lastcast(Void Torrent)&UI(dps_D)'},
 	{'!Void Torrent', 'UI(dps_void)'},
 	{'!Shadow Word: Death', 'player.buff(voidform).count<10&target.debuff(Shadow Word: Pain).duration>6&target.debuff(Vampiric Touch).duration>6'},
-	{'!Shadow Word: Death', 'player.insanity<30'}, 
-	{'!Void Eruption', '!player.channeling(Mind Blast)||player.insanity<=40'}, 
-	{'!Vampiric Touch', '!target.debuff(Shadow Word: Pain)&talent(6,2)'}, 
+	{'!Shadow Word: Death', 'player.insanity<30'},
+	{'!Void Eruption', '!player.channeling(Mind Blast)||player.insanity<=40'},
+	{'!Vampiric Touch', '!target.debuff(Shadow Word: Pain)&talent(6,2)'},
 	{'Mind Blast', '!player.spell(Void Eruption).cooldown=0'},
 	{'!Mind Blast', '!player.spell(Void Eruption).cooldown=0&target.debuff(Vampiric Touch)&target.debuff(Shadow Word: Pain)&player.channeling(Mind Flay)'},
 	{'!Shadow Word: Pain', 'target.debuff(Shadow Word: Pain).duration<3||!target.debuff(Shadow Word: Pain)'},
-	{'!Vampiric Touch', 'target.debuff(Vampiric Touch).duration<=3||!target.debuff(Vampiric Touch)'}, 
+	{'!Vampiric Touch', 'target.debuff(Vampiric Touch).duration<=3||!target.debuff(Vampiric Touch)'},
 	{'Mind Flay', '!player.spell(Void Eruption).cooldown=0&player.spell(Mind Blast).charges<1&target.debuff(Shadow Word: Pain)&target.debuff(Vampiric Touch)'},
 }
 
@@ -275,23 +275,23 @@ local inCombat = {
 	--Shadowform if no voidform and no shadowform.
 	{'Shadowform', '!player.buff(Voidform)&!player.buff(Shadowform)'},
 	{Movement, '!player.buff(Voidform||{player.buff Voidform&!spell(Void Eruption).cooldown=0&!player.channeling(Void Torrent)}'},
-	{Surrender, '!player.channeling(Void Torrent)'}, 
+	{Surrender, '!player.channeling(Void Torrent)'},
 	{'Mind Bomb', '{toggle(abc)&target.area(8).enemies>=3&!player.buff(Surrender To Madness)&!player.channeling(Void Torrent)&!talent(7,2)}||{toggle(abc)&target.area(8).enemies>=3&talent(7,2)&spell(Shadow Crash).cooldown=0&player.buff(Voidform)&!player.channeling(Void Torrent)}'},
 	{Emergency, '!player.channeling(Void Torrent)'},
 	{Potions, '!player.channeling(Void Torrent)'},
 	{Survival, 'player.health<100&!player.channeling(Void Torrent)&!player.buff(Surrender to Madness)'},
 	{Support, '!player.buff(Surrender to Madness)&!player.channeling(Void Torrent)'},
-	{cooldowns, 'player.buff(voidform)&!player.channeling(Void Torrent)&toggle(cooldowns)'}, 
+	{cooldowns, 'player.buff(voidform)&!player.channeling(Void Torrent)&toggle(cooldowns)'},
 	{Insight, 'player.buff(Shadowy Insight)&{!player.channeling(Void Torrent)&{talent(7,1)&!player.insanity>=65}||{talent(7,3) ||talent(7,2)&!player.insanity = 100}}||{player.moving&!player.buff(Surrender to Madness)}'},
 	{Keybinds},
 	{Trinkets, '!player.channeling(Void Torrent)'},
 	{Interrupts, 'toggle(interrupts)&target.interruptAt(80)&target.inFront&target.range<=30&!player.channeling(Void Torrent)'},
-	{AOE, 'talent(7,2)&!player.channeling(Void Torrent)'}, 
+	{AOE, 'talent(7,2)&!player.channeling(Void Torrent)'},
 	{s2m2, "equipped(Mangaza's Madness)&player.buff(voidform)&!player.channeling(Void Torrent)&player.buff(Surrender to Madness)"},
 	{s2m1, 'player.buff(Voidform)&!player.channeling(Void Torrent)&player.buff(Surrender to Madness)'},
-	{lotv2, "{equipped(Mangaza's Madness)&player.buff(voidform)&!player.channeling(Void Torrent)&talent(7,1)}||{talent(7,3)&!player.buff(Surrender to Madness)&equipped(Mangaza's Madness)&player.buff(voidform)&!player.channeling(Void Torrent)}||{talent(7,2)&!player.buff(Surrender to Madness)&!equipped(Mangaza's Madness)&player.buff(voidform)&!player.channeling(Void Torrent)}"}, 
-	{lotv1, "{player.buff(voidform)&!player.channeling(Void Torrent)&talent(7,1)}||{talent(7,3)&!player.buff(Surrender to Madness)&!equipped(Mangaza's Madness)&player.buff(voidform)&!player.channeling(Void Torrent)}||{talent(7,2)&!player.buff(Surrender to Madness)&!equipped(Mangaza's Madness)&player.buff(voidform)&!player.channeling(Void Torrent)}"}, 
-	{ST2, "equipped(Mangaza's Madness)&!player.buff(voidform)&!player.channeling(Void Torrent)"}, 
+	{lotv2, "{equipped(Mangaza's Madness)&player.buff(voidform)&!player.channeling(Void Torrent)&talent(7,1)}||{talent(7,3)&!player.buff(Surrender to Madness)&equipped(Mangaza's Madness)&player.buff(voidform)&!player.channeling(Void Torrent)}||{talent(7,2)&!player.buff(Surrender to Madness)&!equipped(Mangaza's Madness)&player.buff(voidform)&!player.channeling(Void Torrent)}"},
+	{lotv1, "{player.buff(voidform)&!player.channeling(Void Torrent)&talent(7,1)}||{talent(7,3)&!player.buff(Surrender to Madness)&!equipped(Mangaza's Madness)&player.buff(voidform)&!player.channeling(Void Torrent)}||{talent(7,2)&!player.buff(Surrender to Madness)&!equipped(Mangaza's Madness)&player.buff(voidform)&!player.channeling(Void Torrent)}"},
+	{ST2, "equipped(Mangaza's Madness)&!player.buff(voidform)&!player.channeling(Void Torrent)"},
 	{ST1, "!player.buff(voidform)&!player.channeling(Void Torrent)"},
 	{'Mind Flay'},
 }

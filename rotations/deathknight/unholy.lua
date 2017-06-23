@@ -20,8 +20,8 @@ local GUI = {
 	{type = 'checkbox', text = 'Use Trinket #2', key = 'kT2', default = true},
 	{type = 'checkbox', text = 'Ring of Collapsing Futures', key = 'kRoCF', default = true},
 	{type = 'checkbox', text = 'Use Heirloom Necks When Below X% HP', key = 'k_HEIR', default = true},
-	{type = 'spinner',	text = '', key = 'k_HeirHP', default = 40},	
-} 
+	{type = 'spinner',	text = '', key = 'k_HeirHP', default = 40},
+}
 
 local exeOnLoad = function()
 	 Zylla.ExeOnLoad()
@@ -30,8 +30,13 @@ local exeOnLoad = function()
 	print("|cffADFF2F --- |rDEATH KNIGHT |cffADFF2FUnholy|r")
 	print("|cffADFF2F --- |rRecommended Talents: Not ready yet.")
 	print("|cffADFF2F ---------------------------------------------------------------------------|r")
-	
+
 end
+
+local Keybinds = {
+	{'%pause', 'keybind(lshift)&UI(kPause)'},
+	{'!Death and Decay', 'keybind(shift)', 'cursor.ground'},
+}
 
 local Survival = {
 
@@ -67,11 +72,6 @@ local inCombat = {
 	{Cooldowns, 'toggle(Cooldowns)'},
 	{AoE, 'toggle(AoE)&player.area(8).enemies>=3'},
 	{ST, 'target.inMelee&target.inFront'}
-}
-
-local Keybinds = {
-	{'%pause', 'keybind(lshift)&UI(kPause)'},
-	{'Death and Decay', 'keybind(shift)', 'cursor.ground'},
 }
 
 local outCombat = {

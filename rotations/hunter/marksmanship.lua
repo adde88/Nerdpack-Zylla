@@ -27,7 +27,7 @@ local GUI = {
 	{type = 'checkbox', text = 'Ring of Collapsing Futures', key = 'kRoCF', default = true},
 	{type = 'checkbox', text = 'Use Heirloom Necks When Below X% HP', key = 'k_HEIR', default = true},
 	{type = 'spinner',	text = '', key = 'k_HeirHP', default = 40},
-} 
+}
 
 local exeOnLoad = function()
 	 Zylla.ExeOnLoad()
@@ -36,7 +36,7 @@ local exeOnLoad = function()
 	print('|cffADFF2F --- |rHunter |cffADFF2FMarksmanship |r')
 	print('|cffADFF2F --- |rRecommended Talents: 1/1 - 2/1 - 3/X - 4/3 - 5/X - 6/2 - 7/1')
 	print('|cffADFF2F ----------------------------------------------------------------------|r')
-	
+
 end
 
 local PreCombat = {
@@ -49,9 +49,9 @@ local PreCombat = {
 local Keybinds = {
 	-- Pause
 	{'%pause', 'keybind(lshift)&UI(kPause)'},
-	{'Binding Shot', 'keybind(lalt)', 'cursor.ground'},
-	{'Tar Trap', 'keybind(lcontrol)', 'cursor.ground'},
-	{'Freezing Trap', 'keybind(ralt)', 'cursor.ground'},
+	{'!Binding Shot', 'keybind(lalt)', 'target.ground'},
+	{'!Tar Trap', 'keybind(lcontrol)', 'target.ground'},
+	{'!Freezing Trap', 'keybind(ralt)', 'target.ground'},
 }
 
 local Survival = {
@@ -67,7 +67,7 @@ local Cooldowns = {
 }
 
 local Interrupts = {
-	{'Counter Shot'},
+	{'!Counter Shot'},
 }
 
 local TargetDie = {
@@ -103,7 +103,7 @@ local Non_Patient_Sniper = {
 	{'Arcane Shot', '!variable.use_multishot'},
 	{'Multi-Shot', 'variable.use_multishot'},
 }
-	
+
 local Opener = {
 	{'A Murder of Crows'},
 	{'True Shot'},
@@ -174,7 +174,7 @@ local inCombat = {
 	{Heirlooms},
 	{Keybinds},
 	{Survival},
-	{Interrupts, 'target.interruptAt(50)&toggle(Interrupts)&target.inFront&target.range<=50'},
+	{Interrupts, 'target.interruptAt(80)&toggle(Interrupts)&target.inFront&target.range<=50'},
 	{Cooldowns, 'toggle(Cooldowns)'},
 	{xCombat,'target.range<50&target.inFront'},
 	{xPetCombat, 'UI(kPet)'},

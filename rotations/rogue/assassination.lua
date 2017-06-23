@@ -10,7 +10,7 @@ local GUI= {
 	{type='checkbox',		text = 'Multi-Dot (Target/Focus/MousOver)',		key='multi', 	default=true},
 	{type='checkbox',		text = 'Mantle of the Master Assassin',			key='mantle', 	default=false},
 	{type = 'checkbox', 	text = 'Pause Enabled', 						key = 'kPause', default = true},
-	{type='ruler'},			{type='spacer'},	
+	{type='ruler'},			{type='spacer'},
 	-- Survival
 	{type = 'header', 		text = 'Survival', align = 'center'},
 	{type='spinner', 		text = 'Crimson Vial', 							key='cv', 		default_spin=65},
@@ -30,8 +30,8 @@ local GUI= {
 	{type = 'checkbox', text = 'Use Trinket #2', key = 'kT2', default = true},
 	{type = 'checkbox', text = 'Ring of Collapsing Futures', key = 'kRoCF', default = true},
 	{type = 'checkbox', text = 'Use Heirloom Necks When Below X% HP', key = 'k_HEIR', default = true},
-}  
- 
+}
+
 local exeOnLoad=function()
 	 Zylla.ExeOnLoad()
 
@@ -40,13 +40,13 @@ local exeOnLoad=function()
 	print("|cffADFF2F ---")
 	print("|cffADFF2F --- |rRecommended Talents: 1,1 / 2,1 / 3,3 / any / any / 6,1 or 6,2 / 7,1")
 	print("|cffADFF2F ---------------------------------------------------------------------------|r")
-	
+
 end
 
 local Interrupts = {
-	{'Kick', 'target.inMelee'},
-	{'Kidney Shot', 'target.inMelee&cooldown(Kick).remains>gcd&!player.lastcast(Kick)&player.combopoints>0'},
-	{'Arcane Torrent', 'target.inMelee&spell(Kick).cooldown>gcd&!prev_gcd(Kick)'},
+	{'!Kick', 'target.inMelee&target.inFront'},
+	{'!Kidney Shot', 'target.inMelee&&target.inFront&cooldown(Kick).remains>gcd&!player.lastcast(Kick)&player.combopoints>0'},
+	{'!Arcane Torrent', 'target.inMelee&spell(Kick).cooldown>gcd&!prev_gcd(Kick)'},
 }
 
 local preCombat = {
@@ -93,7 +93,7 @@ local Poisons = {
 }
 
 local xCombat = {
-	{Survival},	
+	{Survival},
 	-- Rupture
 	{'Rupture', 'player.buff(Vanish)&toggle(cooldowns)'},
 	{'Rupture', 'target.debuff.duration<=7.2&player.combopoints>=4&player.spell(Vanish).cooldown&target.ttd>=6'},
@@ -122,7 +122,7 @@ local inCombat = {
 	{Trinkets},
 	{Heirlooms},
 	{Keybinds},
-	{Interrupts, 'target.interruptAt(70)'},
+	{Interrupts, 'target.interruptAt(80)&toggle(Interrupts)'},
 	{TricksofTrade},
 	{Cooldowns, 'toggle(cooldowns)'},
 	{xCombat, 'target.inMelee&!player.buff(Stealth)'},

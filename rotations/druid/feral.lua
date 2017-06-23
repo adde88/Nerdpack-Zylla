@@ -21,7 +21,7 @@ local GUI = {
 	{type = 'checkbox', text = 'Ring of Collapsing Futures', key = 'kRoCF', default = true},
 	{type = 'checkbox', text = 'Use Heirloom Necks When Below X% HP', key = 'k_HEIR', default = true},
 	{type = 'spinner',	text = '', key = 'k_HeirHP', default = 40},
-} 
+}
 
 local exeOnLoad = function()
 	Zylla.ExeOnLoad()
@@ -40,9 +40,9 @@ local Keybinds = {
 }
 
 local Interrupts = {
-	{'Skull Bash'},
-	{'Typhoon', 'talent(4,3)&cooldown(Skull Bash).remains>gcd'},
-	{'Mighty Bash', 'talent(4,1)&cooldown(Skull Bash).remains>gcd'},
+	{'!Skull Bash'},
+	{'!Typhoon', 'talent(4,3)&cooldown(Skull Bash).remains>gcd'},
+	{'!Mighty Bash', 'talent(4,1)&cooldown(Skull Bash).remains>gcd'},
 }
 
 -- Pool START
@@ -97,8 +97,8 @@ local PreCombat = {
 	{'Travel Form', '!indoors&!player.buff(Travel Form)&!player.buff(Prowl)&{!target.enemy||target.enemy&!target.alive}'},
 	{Regrowth_Pool, 'talent(7,2)&target.enemy&target.alive&!player.buff(Prowl)&!prev(Regrowth)&player.buff(Bloodtalons).stack<2'},
 	{'Cat Form', '!player.buff(Cat Form)&!player.buff(Travel Form)'},
- 	{'Prowl', '!player.buff(Prowl)&target.enemy&target.alive'},
- 	{'Rake', 'player.buff(Prowl)&target.range<5&target.inFront'},
+	{'Prowl', '!player.buff(Prowl)&target.enemy&target.alive'},
+	{'Rake', 'player.buff(Prowl)&target.range<5&target.inFront'},
 }
 
 local SBT_Opener = {
@@ -165,7 +165,7 @@ local inCombat = {
 	{Trinkets},
 	{Heirlooms},
 	{Keybinds},
-	{Interrupts, 'target.interruptAt(70)&toggle(Interrupts)&target.inFront&target.inMelee'},
+	{Interrupts, 'target.interruptAt(80)&toggle(Interrupts)&target.inFront&target.inMelee'},
 	{Survival, 'player.health<100'},
 	{'Cat Form', '!player.buff(Frenzied Regeneration)&{!player.buff(Cat Form)&{!player.buff(Travel Form)||player.area(8).enemies>=1}}'},
 	{Cooldowns, '!player.buff(Frenzied Regeneration)&toggle(Cooldowns)'},

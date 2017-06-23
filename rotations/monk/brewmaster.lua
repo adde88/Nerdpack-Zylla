@@ -61,10 +61,10 @@ end
 
 local Keybinds = {
 	{'%pause', 'keybind(lshift)&UI(kPause)'},
-	{'Summon Black Ox Statue', 'talent(4,2)&keybind(lalt)', 'cursor.ground'},
-	{'Transcendence', 'keybind(lcontrol)&!player.buff(Transcendence)'},
-	{'Transcendence: Transfer', 'keybind(lcontrol)&player.buff(Transcendence)'},
-	{'/cancelaura Transcendence', 'keybind(lcontrol)&player.buff(Transcendence)&lastcast(Transcendence: Transfer)'},
+	{'!Summon Black Ox Statue', 'talent(4,2)&keybind(lalt)', 'cursor.ground'},
+	{'!Transcendence', 'keybind(lcontrol)&!player.buff(Transcendence)'},
+	{'!Transcendence: Transfer', 'keybind(lcontrol)&player.buff(Transcendence)'},
+	{'!/cancelaura Transcendence', 'keybind(lcontrol)&player.buff(Transcendence)&lastcast(Transcendence: Transfer)'},
 }
 
 local Snares = {
@@ -92,12 +92,12 @@ local Survival = {
 }
 
 local Interrupts = {
-	{'Spear Hand Strike'},
-	{'&Paralysis', '!target.immune(incapacitate)&target.range<=20&player.energy=>20&spell(Spear Hand Strike).cooldown>gcd&!lastcast(Spear Hand Strike)'},
-	{'&Paralysis', '!immune(incapacitate)&range<=20&player.energy=>20&player.area(20).enemies>=2', 'endebuff(Paralysis)'},
-	{'&Ring of Peace', 'talent(4,1)&!target.debuff(Spear Hand Strike)&spell(Spear Hand Strike).cooldown>gcd&!lastcast(Spear Hand Strike)'},
-	{'&Leg Sweep', '!target.immune(stun)&talent(4,3)&spell(Spear Hand Strike).cooldown>gcd&target.inMelee&!lastcast(Spear Hand Strike)'},
-	{'&Quaking Palm', '!target.immune(incapacitate)&!target.debuff(Spear Hand Strike)&spell(Spear Hand Strike).cooldown>gcd&!lastcast(Spear Hand Strike)'},
+	{'!Spear Hand Strike'},
+	{'!Paralysis', '!target.immune(incapacitate)&target.range<=20&player.energy=>20&spell(Spear Hand Strike).cooldown>gcd&!lastcast(Spear Hand Strike)'},
+	{'!Paralysis', '!immune(incapacitate)&range<=20&player.energy=>20&player.area(20).enemies>=2', 'endebuff(Paralysis)'},
+	{'!Ring of Peace', 'talent(4,1)&!target.debuff(Spear Hand Strike)&spell(Spear Hand Strike).cooldown>gcd&!lastcast(Spear Hand Strike)'},
+	{'!Leg Sweep', '!target.immune(stun)&talent(4,3)&spell(Spear Hand Strike).cooldown>gcd&target.inMelee&!lastcast(Spear Hand Strike)'},
+	{'!Quaking Palm', '!target.immune(incapacitate)&!target.debuff(Spear Hand Strike)&spell(Spear Hand Strike).cooldown>gcd&!lastcast(Spear Hand Strike)'},
 }
 
 local Artifact = {

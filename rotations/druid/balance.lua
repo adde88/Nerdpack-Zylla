@@ -20,7 +20,7 @@ local Heirlooms = _G['Zylla.Heirlooms']
 	{type = 'checkbox', text = 'Ring of Collapsing Futures', key = 'kRoCF', default = true},
 	{type = 'checkbox', text = 'Use Heirloom Necks When Below X% HP', key = 'k_HEIR', default = true},
 	{type = 'spinner',	text = '', key = 'k_HeirHP', default = 40},
-} 
+}
 
 local exeOnLoad = function()
 	Zylla.ExeOnLoad()
@@ -39,6 +39,26 @@ local PreCombat = {
 	--{'New Moon', 'artifact(New Moon).enabled'},
 }
 
+local Keybinds = {
+	-- Pause
+	{'%pause', 'keybind(lshift)&UI(kPause)'},
+}
+
+local Interrupts = {
+	{'!Skull Bash'},
+	{'!Typhoon', 'talent(4,3)'},
+	{'!Mighty Bash', 'talent(4,1)'},
+}
+
+local Survival = {
+	{'/run CancelShapeshiftForm()', 'form>0&talent(3,3)&!player.buff(Rejuvenation)'},
+	{'Rejuvenation', 'talent(3,3)&!player.buff(Rejuvenation)', 'player'},
+	{'/run CancelShapeshiftForm()', 'form>0&talent(3,3)&player.health<=75'},
+	{'Swiftmend', 'talent(3,3)&player.health<=75', 'player'},
+}
+
+local Cooldowns = {
+}
 
 local CA = {
 	{'Starfall', '{target.area(15).enemies>=2&talent(5,3)||target.area(15).enemies>=3}&{{talent(7,1)&cooldown(Fury of Elune).remains>12&!player.buff(Fury of Elune)}||!talent(7,1)}', 'target.ground'},
@@ -133,31 +153,9 @@ local xCombat = {
 	{ST},
 }
 
-local Keybinds = {
-	-- Pause
-	{'%pause', 'keybind(lshift)&UI(kPause)'},
-}
-
-local Interrupts = {
-	{'Skull Bash'},
-	{'Typhoon', 'talent(4,3)'},
-	{'Mighty Bash', 'talent(4,1)'},
-}
-
-local Survival = {
-	{'/run CancelShapeshiftForm()', 'form>0&talent(3,3)&!player.buff(Rejuvenation)'},
-	{'Rejuvenation', 'talent(3,3)&!player.buff(Rejuvenation)', 'player'},
-	{'/run CancelShapeshiftForm()', 'form>0&talent(3,3)&player.health<=75'},
-	{'Swiftmend', 'talent(3,3)&player.health<=75', 'player'},
-}
-
-local Cooldowns = {
-
-}
-
 local inCombat = {
 	{Keybinds},
-	{Interrupts, 'target.interruptAt(50)&toggle(Interrupts)&target.inFront&target.range<=40'},
+	{Interrupts, 'target.interruptAt(80)&toggle(Interrupts)&target.inFront&target.range<=40'},
 	{Survival, 'player.health<100'},
 	{Cooldowns, 'toggle(Cooldowns)'},
 	{xCombat, 'target.range<=40&target.inFront'},

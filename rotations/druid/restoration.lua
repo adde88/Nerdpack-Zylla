@@ -17,7 +17,7 @@ local GUI = {
 	{type = 'spinner', 	text = 'Critical Health %',					key = 'k_CH',	default = 33},
 	{type = 'spinner', 	text = 'DPS while ppl. are above HP %',		key = 'k_DPSHP',default = 90},
 	-- TANK
-	{type = 'header', 	text = 'Tank Healing',						align = 'center'},											
+	{type = 'header', 	text = 'Tank Healing',						align = 'center'},
 	{type = 'spinner', 	text = 'Rejuvenation',						key = 'trejuv',	default = 99},
 	{type = 'spinner', 	text = 'Germination',						key = 'tgerm',	default = 90},
 	{type = 'spinner', 	text = 'Swiftmend',							key = 'tsm',	default = 80},
@@ -38,7 +38,7 @@ local GUI = {
 	{type='checkbox',	text='Use Trinket #2', 						key='kT2',		default=true},
 	{type='checkbox',	text='Ring of Collapsing Futures', 			key='kRoCF',	default=true},
 	{type='checkbox',	text='Use Heirloom Necks When Below X% HP',	key='k_HEIR',	default=true},
-	{type='spinner',	text='', 									key='k_HeirHP',	default=40},	
+	{type='spinner',	text='', 									key='k_HeirHP',	default=40},
 }
 
 local exeOnLoad = function()
@@ -47,7 +47,7 @@ local exeOnLoad = function()
 	print('|cffADFF2F ----------------------------------------------------------------------|r')
 	print('|cffADFF2F --- |rDRUID |cffADFF2FGuardian |r')
 	print('|cffADFF2F --- |')
-	print('|cffADFF2F --- |rCheck Setting to go over important healing stuff! |r')	
+	print('|cffADFF2F --- |rCheck Setting to go over important healing stuff! |r')
 	print('|cffADFF2F --- |rRecommended Talents: COMING SOON.')
 	print('|cffADFF2F ----------------------------------------------------------------------|r')
 
@@ -57,7 +57,7 @@ local exeOnLoad = function()
 		text = 'Do damage in combat when possible.',
 		icon = 'Interface\\Icons\\ability_backstab',
 	})
-	
+
 end
 
 local PreCombat = {
@@ -68,7 +68,11 @@ local PreCombat = {
 
 local Keybinds = {
 	{'%pause', 'keybind(lshift)'},
-	{'Efflorescence', 'keybind(lcontrol)', 'cursor.ground'},
+	{'!Efflorescence', 'keybind(lcontrol)', 'cursor.ground'},
+}
+
+local Interrupts = {
+	{'!Mighty Bash', 'talent(4,1)'},
 }
 
 local DPS = {
@@ -89,10 +93,6 @@ local TreeForm = {
 local Emergency = {
 	{'!Swiftmend', nil, 'lowest'},
 	{'!Regrowth', nil, 'lowest'},
-}
-
-local Interrupts = {
-	{'Mighty Bash', 'talent(4,1)'},
 }
 
 local Cooldowns = {
@@ -120,27 +120,27 @@ local Moving = {
 	{'Rejuvenation', 'talent(6,3)&tank.buff(Rejuvenation)&!tank.buff(Rejuvenation (Germination))&tank.health<=UI(lgerm)', 'tank'},
 	{'Rejuvenation', 'talent(6,3)&tank2.buff(Rejuvenation)&!tank2.buff(Rejuvenation (Germination))&tank2.health<=UI(lgerm)', 'tank2'},
 	{'Rejuvenation', 'talent(6,3)&buff(Rejuvenation)&health<=UI(lgerm)', 'lnbuff(Rejuvenation (Germination))'},
-	
+
 	{'Swiftmend', 'tank.health<=UI(tsm)', 'tank'},
 	{'Swiftmend', 'tank2.health<=UI(tsm)', 'tank2'},
 	{'Swiftmend', 'lowest.health<=UI(lsm)', 'lowest'},
 }
 
 local xHealing = {
-	{Emergency, 'lowest.health<=UI(k_CH)'}, 
+	{Emergency, 'lowest.health<=UI(k_CH)'},
 	{Innervate, 'player.buff(Innervate)'},
 	{'Lifebloom', 'tank.buff(Lifebloom).duration<=4.5&tank.health>=UI(tsm)||!tank.buff(Lifebloom)', 'tank'},
-	
+
 	{'Cenarion Ward', 'talent(1,2)&!tank.buff(Cenarion Ward)', 'tank'},
 	{'Cenarion Ward', 'talent(1,2)&!tank2.buff(Cenarion Ward)', 'tank2'},
 	{'Cenarion Ward', 'talent(1,2)', 'lnbuff(Cenarion Ward)'},
-	
-	{'Wild Growth', 'lowest.area(30,75).heal>=3', 'lowest'}, 
-	{'Essence of G\'Hanir', 'player.area(30,75).heal>=3'}, 
-	{'Flourish', 'talent(7,3)&player.lastcast(Wild Growth)&lowest.health<=50'}, 
-	
+
+	{'Wild Growth', 'lowest.area(30,75).heal>=3', 'lowest'},
+	{'Essence of G\'Hanir', 'player.area(30,75).heal>=3'},
+	{'Flourish', 'talent(7,3)&player.lastcast(Wild Growth)&lowest.health<=50'},
+
 	{'Regrowth', 'player.buff(Clearcasting)', 'lowest'},
-	
+
 	-- Rejuv
 	{'Rejuvenation', 'tank.health<=UI(trejuv)&!tank.buff(Rejuvenation)', 'tank'},
 	{'Rejuvenation', 'tank2.health<=UI(trejuv)&!tank2.buff(Rejuvenation)', 'tank2)'},
@@ -149,7 +149,7 @@ local xHealing = {
 	{'Rejuvenation', 'talent(6,3)&tank.buff(Rejuvenation)&!tank.buff(Rejuvenation (Germination))&tank.health<=UI(lgerm)', 'tank'},
 	{'Rejuvenation', 'talent(6,3)&tank2.buff(Rejuvenation)&!tank2.buff(Rejuvenation (Germination))&tank2.health<=UI(lgerm)', 'tank2'},
 	{'Rejuvenation', 'talent(6,3)&buff(Rejuvenation)&health<=UI(lgerm)&!buff', 'lnbuff(Rejuvenation (Germination))'},
-	
+
 	{'Swiftmend', 'tank.health<=UI(tsm)', 'tank'},
 	{'Swiftmend', 'tank2.health<=UI(tsm)', 'tank2'},
 	{'Swiftmend', 'lowest.health<=UI(lsm)', 'lowest'},
@@ -157,7 +157,7 @@ local xHealing = {
 	{'Regrowth', 'tank.health<=UI(trg)', 'tank'},
 	{'Regrowth', 'tank2.health<=UI(trg)', 'tank2'},
 	{'Regrowth', 'lowest.health<=UI(lrg)', 'lowest'},
-	
+
 	{'Healing Touch', 'tank.health<=UI(tht)', 'tank'},
 	{'Healing Touch', 'tank2.health<=UI(tht)', 'tank2'},
 	{'Healing Touch', 'lowest.health<=UI(lht)', 'lowest'},
@@ -168,7 +168,7 @@ local inCombat = {
 	{Trinkets},
 	{Heirlooms},
 	{Keybinds},
-	{Interrupts, 'toggle(Interrupts)&target.inMelee&target.inFront'},
+	{Interrupts, 'target.interruptAt(80)&toggle(Interrupts)&target.inFront&target.inMelee'},
 	{Mitigations},
 	{Cooldowns, 'toggle(Cooldowns)'},
 	{xHealing, '!player.moving'},

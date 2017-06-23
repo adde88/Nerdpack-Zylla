@@ -45,8 +45,8 @@ end
 
 local Keybinds = {
 	{'%pause', 'keybind(lshift)&UI(kPause)'},
-	{'Rune of Power', 'keybind(lalt)'},
-	{'Flamestrike', 'keybind(lcontrol)', 'cursor.ground'}
+	{'!Rune of Power', 'keybind(lalt)'},
+	{'!Flamestrike', 'keybind(lcontrol)', 'cursor.ground'}
 }
 
 local PreCombat = {
@@ -54,8 +54,8 @@ local PreCombat = {
 }
 
 local Interrupts = {
-	{'Counterspell'},
-	{'Arcane Torrent', 'target.inMelee&spell(Counterspell).cooldown>gcd&!player.lastcast(Counterspell)'}
+	{'!Counterspell'},
+	{'!Arcane Torrent', 'target.inMelee&spell(Counterspell).cooldown>gcd&!player.lastcast(Counterspell)'}
 }
 
 local Cooldowns = {
@@ -136,7 +136,7 @@ local inCombat = {
 	{Trinkets},
 	{Heirlooms},
 	{Keybinds},
-	{Interrupts, 'target.interruptAt(50)&toggle(interrupts)&target.inFront&target.range<=40'},
+	{Interrupts, 'target.interruptAt(80)&toggle(interrupts)&target.inFront&target.range<=40'},
 	{Cooldowns, 'toggle(cooldowns)'},
 	{Survival, 'player.health<100'},
 	{xCombat, 'target.range<=40&target.inFront'},

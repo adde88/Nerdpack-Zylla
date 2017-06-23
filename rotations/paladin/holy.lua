@@ -91,8 +91,8 @@ local Keybinds = {
 
 -- Cast that should be interrupted
 local Interrupts = {
-	{'Hammer of Justice', nil, 'target'},
-	{'Blinding Light', 'target.range<=7'},
+	{'!Hammer of Justice', nil, 'target'},
+	{'!Blinding Light', 'target.range<=7'},
 }
 
 local Survival = {
@@ -102,8 +102,8 @@ local Survival = {
 }
 
 local Top_Up = {
-	{'Holy Shock', nil, 'mouseover'},
-	{'Flash of Light', nil, 'mouseover'},
+	{'!Holy Shock', nil, 'mouseover'},
+	{'!Flash of Light', nil, 'mouseover'},
 }
 
 local DPS = {
@@ -239,7 +239,7 @@ local inCombat = {
 	{Heirlooms},
 	{Keybinds},
 	{Survival},
-	{Interrupts, 'target.interruptAt(35)'},
+	{Interrupts, 'target.interruptAt(80)&target.inMelee&target.inFront'},
 	{'%dispelall', 'toggle(disp)&spell(Cleanse).cooldown<gcd'},
 	{Cooldowns, 'toggle(cooldowns)'},
 	{Emergency, 'lowestp.health<=UI(G_CHP)&!player.casting(200652)'},

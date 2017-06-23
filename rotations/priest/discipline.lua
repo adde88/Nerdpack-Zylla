@@ -11,111 +11,56 @@ local GUI = {
 	{type = 'text', 	text = 'Left Alt: ', align = 'center'},
 	{type = 'text', 	text = 'Right Alt: ', align = 'center'},
 	{type = 'checkbox', text = 'Pause Enabled', key = 'kPause', default = true},
+	{type = 'checkbox', text = 'Mass Dispel enabled', key = 'kMD', default = false},
+	{type = 'checkbox', text = 'Power Word: Barrier enabled', key = 'kPWB', default = false},
 	{type = 'ruler'},	{type = 'spacer'},
 	-- Trinkets + Heirlooms for leveling
 	{type = 'header', 	text = 'Trinkets/Heirlooms', align = 'center'},
 	{type = 'checkbox', text = 'Use Trinket #1', key = 'kT1', default = true},
 	{type = 'checkbox', text = 'Use Trinket #2', key = 'kT2', default = true},
 	{type = 'checkbox', text = 'Ring of Collapsing Futures', key = 'kRoCF', default = true},
-	{type = 'checkbox', text = 'Use Heirloom Necks When Below X% HP', key = 'k_HEIR', default = true},	
-} 
-
-local _Zylla = {
-    {'/targetenemy [dead][noharm]', '{target.dead||!target.exists}&!player.area(40).enemies=0'},
-} 
-
-local GUI = {
-	--KEYBINDS
-	{type = 'header', 	text = 'Keybinds', align = 'center'},
-	{type = 'text', 	text = 'Left Shift: Pause', align = 'center'},
-	{type = 'text', 	text = 'Left Ctrl: Mass Dispel', align = 'center'},
-	{type = 'text', 	text = 'Left Alt: Power Word: Barrier', align = 'center'},
-	{type = 'checkbox', text = 'Pause enabled', key = 'kPause', default = false},
-	{type = 'checkbox', text = 'Mass Dispel enabled', key = 'kMD', default = false},
-	{type = 'checkbox', text = 'Power Word: Barrier enabled', key = 'kPWB', default = false}
-
+	{type = 'checkbox', text = 'Use Heirloom Necks When Below X% HP', key = 'k_HEIR', default = true},
 }
 
 local exeOnLoad = function()
-	Zylla.ExeOnLoad()
+	 Zylla.ExeOnLoad()
+
+	print("|cffADFF2F ---------------------------------------------------------------------------|r")
+	print("|cffADFF2F --- |PRIEST |cffADFF2FDiscipline|r")
+	print("|cffADFF2F --- |rRecommended Talents: Not ready yet.")
+	print("|cffADFF2F ---------------------------------------------------------------------------|r")
 end
-
---[[
-UNIT.lastgcd(SPELL)
-UNIT.area(HEALTH, DISTANCE).heal>= #
-UNIT.area(HEALTH, DISTANCE).heal.inFront>=#
-UNIT.area(DISTANCE).enemies.inFront>=#
-UNIT.area(DISTANCE).friendly.inFront>=#
-]]--
-
-NeP.FakeUnits:Add('lnbuff', function(num, buff)
-    local tempTable = {}
-    for _, Obj in pairs(NeP.Healing:GetRoster()) do
-        if not NeP.DSL:Get('buff')(Obj.key, buff) then
-            tempTable[#tempTable+1] = {
-                key = Obj.key,
-                health = Obj.health
-            }
-        end
-    end
-    table.sort( tempTable, function(a,b) return a.health<b.health end )
-    return tempTable[num] and tempTable[num].key
-end)
 
 local Keybinds = {
 	{'%pause', 'keybind(lshift)&UI(kPause)'}, -- Pause.
-	{'Mass Dispel', 'keybind(lctrl)&UI(kMD)', 'cursor.ground'}, --Mass Dispel.
-	{'Power Word: Barrier', 'keybind(lalt)&UI(kPWB)', 'cursor.ground'} --Power Word: Barrier.
+	{'!Mass Dispel', 'keybind(lctrl)&UI(kMD)', 'cursor.ground'}, --Mass Dispel.
+	{'!Power Word: Barrier', 'keybind(lalt)&UI(kPWB)', 'cursor.ground'} --Power Word: Barrier.
 }
-
---[[
-function Ato.Buff(eval, args)
-   local spell = NeP.Engine:Spell(args)
-    if not spell then return end
-    for i=1,#NeP.OM['unitFriendly'] do
-        local Obj = NeP.OM['unitFriendly'][i]
-        local Threat = UnitThreatSituation('player', Obj.key)
-        if Threat and Threat>=0 and Threat<3 and Obj.distance<=30 then
-            eval.spell = spell
-            eval.target = Obj.key
-            return NeP.Engine:STRING(eval)
-        end
-    end
-end
-]]--
-
-local Keybinds = {
-	{'%pause', 'keybind(lshift)&UI(kPause)'}, -- Pause.
-	{'Mass Dispel', 'keybind(control)', 'cursor.ground'}, --Mass Dispel.
-	{'Power Word: Barrier', 'keybind(alt)', 'cursor.ground'} --Power Word: Barrier.
-}
-
 
 local Cooldowns = {
 	{'Mindbender', nil, 'target'}, --Mind Bender for better Mana Regen and dps boost.
 	{'Power Infusion'}, --Power Infusion for some BOOOST YO!
 	{'Divine Star', 'player.area(20).enemies.inFront>=3', 'target'}, -- Divine Star (if selected) for some small AoE dmg dealing.
-	{'Light\'s Wrath', 'target.debuff(Schism)&player.buff(Overloaded with Light)', 'target'},
+	{'Light\'s Wrath', 'debuff(Schism)&player.buff(Overloaded with Light)', 'target'},
 }
 
 local Tank = {
-    {'Clarity of Will', 'talent(6,1)&tank.incdmg(7) => tank.health.max*0.70||tank.area(5).enemies>= 3', 'tank'}, --Clarity of Will (if selected) to keep our tank secure and healthy.
-	{'Power Word: Shield', {'!tank.buff(Power Word: Shield)||player.buff(Rapture)'}, 'tank'}, --Power Word: Shield the Tank
-	{'Pain Suppression', 'tank.health<=20', 'tank'}, --Pain Suppression for less damage intake.
-	{'Shadow Mend', 'tank.health<=40', 'tank'}, --Shadow Mend for huge direct heal.
+  {'Clarity of Will', 'talent(6,1)&incdmg(7)=>health.max*0.70||area(5).enemies>=3', 'tank'}, --Clarity of Will (if selected) to keep our tank secure and healthy.
+	{'Power Word: Shield', '!buff(Power Word: Shield)||player.buff(Rapture)', 'tank'}, --Power Word: Shield the Tank
+	{'Pain Suppression', 'health<=20', 'tank'}, --Pain Suppression for less damage intake.
+	{'Shadow Mend', 'health<=40', 'tank'}, --Shadow Mend for huge direct heal.
 }
 
 local Lowest = {
-	{'Plea', '!lowest.buff(Atonement)&lowest.health<=90', 'lowest'}, --Plea for an instant Atonement.
-	{'Power Word: Shield', 'lowest.health<=90||player.buff(Rapture)&!lowest.buff(Power Word: Shield)', 'lowest'}, --Power Word: Shield Use to absorb low to moderate damage and to apply Atonement.
-	{'Shadow Mend', 'lowest.health<=60', 'lowest'}, --Shadow Mend for a decent direct heal.
-	{'Penance', 'lowest.health<=80&talent(1,1)', 'lowest'}, -- Penance (if talent "Penitent" selected)
-	{'Plea', 'lowest.health<=90', 'lowest'}, --Plea for an efficient direct heal and to apply Atonement.
+	{'Plea', '!buff(Atonement)&health<=90', 'lowest'}, --Plea for an instant Atonement.
+	{'Power Word: Shield', 'health<=90||player.buff(Rapture)&!buff(Power Word: Shield)', 'lowest'}, --Power Word: Shield Use to absorb low to moderate damage and to apply Atonement.
+	{'Shadow Mend', 'health<=60', 'lowest'}, --Shadow Mend for a decent direct heal.
+	{'Penance', 'health<=80&talent(1,1)', 'lowest'}, -- Penance (if talent "Penitent" selected)
+	{'Plea', 'health<=90', 'lowest'}, --Plea for an efficient direct heal and to apply Atonement.
 	{'Divine Star', 'player.area(80, 20).heal>=3'} -- Divine Star (if selected) for a quick heal&dmg dealing.
 }
 
 local Player = {
-
 }
 
 local Atonement = {
@@ -143,7 +88,7 @@ local inCombat = {
 
 local outCombat = {
 		{Keybinds},
-		{'Plea', '!lowest.buff(Atonement)&lowest.health <=95', 'lowest'}
+		{'Plea', '!buff(Atonement)&health<=95', 'lowest'}
 }
 
 NeP.CR:Add(256, {

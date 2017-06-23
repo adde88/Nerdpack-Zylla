@@ -21,7 +21,7 @@ local Heirlooms = _G['Zylla.Heirlooms']
 	{type = 'checkbox', text = 'Ring of Collapsing Futures', key = 'kRoCF', default = true},
 	{type = 'checkbox', text = 'Use Heirloom Necks When Below X% HP', key = 'k_HEIR', default = true},
 	{type = 'spinner',	text = '', key = 'k_HeirHP', default = 40},
-} 
+}
 
 local exeOnLoad = function()
 	 Zylla.ExeOnLoad()
@@ -75,19 +75,17 @@ local xCombat = {
 	{'Frostbolt', 'xmoving=0||player.buff(Ice Floes)'},
 }
 
-
 local Keybinds = {
 	-- Pause
 	{'%pause', 'keybind(lshift)&UI(kPause)'},
 }
 
 local Interrupts = {
-	{'Counterspell'},
-	{'Arcane Torrent', 'target.inMelee&spell(Counterspell).cooldown>gcd&!prev_gcd(Counterspell)'},
+	{'!Counterspell'},
+	{'!Arcane Torrent', 'target.inMelee&spell(Counterspell).cooldown>gcd&!prev_gcd(Counterspell)'},
 }
 
 local Survival = {
-
 }
 
 local inCombat = {
@@ -95,7 +93,7 @@ local inCombat = {
 	{Trinkets},
 	{Heirlooms},
 	{Keybinds},
-	{Interrupts, 'target.interruptAt(50)&toggle(Interrupts)&target.inFront&target.range<=40'},
+	{Interrupts, 'target.interruptAt(80)&toggle(Interrupts)&target.inFront&target.range<=40'},
 	{Survival, 'player.health<100'},
 	{xCombat, 'target.range<=40&target.inFront'}
 }

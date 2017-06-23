@@ -19,7 +19,7 @@ local GUI = {
 	{type = 'checkbox', text = 'Ring of Collapsing Futures', key = 'kRoCF', default = true},
 	{type = 'checkbox', text = 'Use Heirloom Necks When Below X% HP', key = 'k_HEIR', default = true},
 	{type = 'spinner',	text = '', key = 'k_HeirHP', default = 40},
-} 
+}
 
 local exeOnLoad = function()
 	 Zylla.ExeOnLoad()
@@ -35,7 +35,7 @@ local exeOnLoad = function()
 		text = 'If Enabled we will Open with Ambush when Stealthed. If not Cheap Shot will be used.',
 		icon='Interface\\Icons\\ability_rogue_ambush',
 	})
-	
+
 end
 
 local Survival ={
@@ -46,15 +46,15 @@ local Survival ={
 
 local Keybinds = {
 	{'%pause', 'keybind(lshift)&UI(kPause)'},
-	{'Cannonball Barrage', 'keybind(lcontrol)', 'cursor.ground'},
-	{'Grappling Hook', 'talent(2,1)&keybind(lalt)', 'cursor.ground'},
+	{'!Cannonball Barrage', 'keybind(lcontrol)', 'cursor.ground'},
+	{'!Grappling Hook', 'talent(2,1)&keybind(lalt)', 'cursor.ground'},
 }
 
 local Interrupts = {
-	{'Kick', 'target.inMelee'},
-	{'Between the Eyes', 'target.range<=20&cooldown(Kick).remains>gcd&combo_points>0'},
-	{'Blind', 'target.range<=15&cooldown(Kick).remains>gcd&cooldown(Between the Eyes)>gcd'},
-	{'Cloak of Shadows', 'cooldown(Kick).remains>gcd&cooldown(Between the Eyes)>gcd&cooldown(Blind)>gcd'},
+	{'!Kick', 'target.inMelee'},
+	{'!Between the Eyes', 'target.range<=20&cooldown(Kick).remains>gcd&combo_points>0'},
+	{'!Blind', 'target.range<=15&cooldown(Kick).remains>gcd&cooldown(Between the Eyes)>gcd'},
+	{'!Cloak of Shadows', 'cooldown(Kick).remains>gcd&cooldown(Between the Eyes)>gcd&cooldown(Blind)>gcd'},
 }
 
 local Build = {
@@ -113,7 +113,7 @@ local inCombat = {
 	{Trinkets},
 	{Heirlooms},
 	{Keybinds},
-	{Interrupts, 'target.interruptAt(70)&toggle(Interrupts)&target.inFront&target.inMelee'},
+	{Interrupts, 'target.interruptAt(80)&toggle(Interrupts)&target.inFront&target.inMelee'},
 	{Survival, 'player.health<100'},
 	{xCombat, 'target.inFront&target.inMelee'},
 	{TricksofTrade},

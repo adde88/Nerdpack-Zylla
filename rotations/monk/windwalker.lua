@@ -57,19 +57,19 @@ end
 
 local Keybinds = {
 	-- Keybinds
-	{'Touch of Karma', 'keybind(lalt)'},
+	{'!Touch of Karma', 'keybind(lalt)'},
 	-- Pause
 	{'%pause', 'keybind(lshift)&UI(kPause)'},
 	-- DPS TEST
-	{'/stopcasting\n/stopattack\n/cleartarget\n/stopattack\n/cleartarget\n/nep mt', 'player.combat.time>=300&UI(dpstest)'},
+	{'!/stopcasting\n/stopattack\n/cleartarget\n/stopattack\n/cleartarget\n/nep mt', 'player.combat.time>=300&UI(dpstest)'},
 	-- Cancel CJL WHEN WE'RE IN MELEE RANGE
 	{'!/stopcasting', 'target.inMelee&player.casting(Crackling Jade Lightning)'},
 	-- TRANSCENDENCE
-	{'Transcendence', 'keybind(lcontrol)&!player.buff(Transcendence)'},
-	{'Transcendence: Transfer', 'keybind(lcontrol)&player.buff(Transcendence)'},
-	{'/cancelaura Transcendence', 'keybind(lcontrol)&player.buff(Transcendence)&lastcast(Transcendence: Transfer)'},
+	{'!Transcendence', 'keybind(lcontrol)&!player.buff(Transcendence)'},
+	{'!Transcendence: Transfer', 'keybind(lcontrol)&player.buff(Transcendence)'},
+	{'!/cancelaura Transcendence', 'keybind(lcontrol)&player.buff(Transcendence)&lastcast(Transcendence: Transfer)'},
 	-- FREEDOOM!
-	{'Tiger\'s Lust', 'player.state.disorient||player.state.stun||player.state.root||player.state.snare'},
+	{'!Tiger\'s Lust', 'player.state.disorient||player.state.stun||player.state.root||player.state.snare'},
 }
 
 local Cooldowns = {
@@ -184,7 +184,7 @@ local inCombat = {
 	{Trinkets},
 	{Heirlooms},
 	{Survival, 'player.health<100'},
-	{Interrupts, 'target.interruptAt(55)&target.inMelee'},
+	{Interrupts, 'target.interruptAt(80)&target.inMelee'},
 	{Cooldowns, 'toggle(cooldowns)&target.inMelee'},
 	{Serenity, 'toggle(cooldowns)&target.inMelee&talent(7,3)&!player.casting(Fists of Fury)&{player.spell(Serenity).cooldown=0||player.buff(Serenity)}'},
 	-- TODO: handle legendary Drinking Horn Cover

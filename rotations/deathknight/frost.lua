@@ -20,8 +20,8 @@ local GUI = {
 	{type = 'checkbox', text = 'Use Trinket #2', key = 'kT2', default = true},
 	{type = 'checkbox', text = 'Ring of Collapsing Futures', key = 'kRoCF', default = true},
 	{type = 'checkbox', text = 'Use Heirloom Necks When Below X% HP', key = 'k_HEIR', default = true},
-	{type = 'spinner',	text = '', key = 'k_HeirHP', default = 40},	
-} 
+	{type = 'spinner',	text = '', key = 'k_HeirHP', default = 40},
+}
 
 local exeOnLoad = function()
 	 Zylla.ExeOnLoad()
@@ -51,8 +51,8 @@ local Keybinds = {
 }
 
 local Interrupts = {
-	{'Mind Freeze'},
-	{'Arcane Torrent', 'target.inMelee&spell(Mind Freeze).cooldown>gcd&!prev_gcd(Mind Freeze)'},
+	{'!Mind Freeze'},
+	{'!Arcane Torrent', 'target.inMelee&spell(Mind Freeze).cooldown>gcd&!prev_gcd(Mind Freeze)'},
 }
 
 local Survival = {

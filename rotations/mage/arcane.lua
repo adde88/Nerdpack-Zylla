@@ -18,9 +18,9 @@ local Heirlooms = _G['Zylla.Heirlooms']
 	{type = 'checkbox', text = 'Use Trinket #1', key = 'kT1', default = true},
 	{type = 'checkbox', text = 'Use Trinket #2', key = 'kT2', default = true},
 	{type = 'checkbox', text = 'Ring of Collapsing Futures', key = 'kRoCF', default = true},
-	{type = 'checkbox', text = 'Use Heirloom Necks When Below X% HP', key = 'k_HEIR', default = true},
-	{type = 'spinner',	text = '', key = 'k_HeirHP', default = 40},	
-} 
+	{type = 'checkbox', text = 'Use Heirloom Necks When Below X%', key = 'k_HEIR', default = true},
+	{type = 'spinner',	text = '', key = 'k_HeirHP', default = 40},
+}
 
 local exeOnLoad = function()
 	 Zylla.ExeOnLoad()
@@ -31,7 +31,7 @@ local exeOnLoad = function()
 	print("|cffADFF2F --- |r")
 	print("|cffADFF2F --- |rThis rotation does nothing at the moment!|")
 	print("|cffADFF2F ---------------------------------------------------------------------------|r")
-	
+
 end
 
 local Survival = {
@@ -62,8 +62,8 @@ local inCombat = {
 	{Keybinds},
 	{Survival, 'player.health<100'},
 	{Cooldowns, 'toggle(Cooldowns)'},
-	{AoE, 'toggle(AoE)', 'player.area(8).enemies>=3'},
-	{ST, 'target.range<=40', 'target.inFront'}
+	{AoE, 'toggle(AoE)&player.area(8).enemies>=3'},
+	{ST, 'target.range<=40&target.inFront'}
 }
 
 local outCombat = {
