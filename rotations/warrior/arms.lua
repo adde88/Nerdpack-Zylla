@@ -18,8 +18,8 @@ local GUI = {
 	{type = 'checkbox', text = 'Use Trinket #2', key = 'kT2', default = true},
 	{type = 'checkbox', text = 'Ring of Collapsing Futures', key = 'kRoCF', default = true},
 	{type = 'checkbox', text = 'Use Heirloom Necks When Below X% HP', key = 'k_HEIR', default = true},
-	{type = 'spinner',	text = '', key = 'k_HeirHP', default = 40},	
-} 
+	{type = 'spinner',	text = '', key = 'k_HeirHP', default = 40},
+}
 
 local exeOnLoad = function()
 	 Zylla.ExeOnLoad()
@@ -31,9 +31,18 @@ local exeOnLoad = function()
 
 end
 
-local PreCombat = {
+local PreCombat = {}
+
+local Keybinds = {
+	-- Pause
+	{'%pause', 'keybind(lshift)&UI(kPause)'},
+	{'!Heroic Leap', 'keybind(lcontrol)' , 'cursor.ground'}
 }
 
+local Interrupts = {
+	{'!Pummel'},
+	{'!Arcane Torrent', 'target.inMelee&cooldown(Pummel).remains>gcd&!prev_gcd(Pummel)'},
+}
 
 local Survival = {
 	{'Victory Rush', 'player.health<=70'},
@@ -139,26 +148,15 @@ local ST = {
 	{'Bladestorm'},
 }
 
-local Keybinds = {
-	-- Pause
-	{'%pause', 'keybind(lshift)&UI(kPause)'},
-	{'Heroic Leap', 'keybind(lcontrol)' , 'cursor.ground'}
-}
-
-local Interrupts = {
-	{'Pummel'},
-	{'Arcane Torrent', 'target.inMelee&cooldown(Pummel).remains>gcd&!prev_gcd(Pummel)'},
-}
-
 local inCombat = {
 	{Util},
 	{Trinkets},
 	{Heirlooms},
 	{Keybinds},
-	{Interrupts, 'target.interruptAt(50)&toggle(Interrupts)&target.inFront&target.inMelee'},
+	{Interrupts, 'target.interruptAt(80)&toggle(Interrupts)&target.inFront&target.inMelee'},
 	{Survival, 'player.health<100'},
 	{Cooldowns, 'toggle(Cooldowns)&target.inMelee'},
-	{Etc, 'target.inMelee'},
+	{Etc, 'target.inMelee&target.inFront'},
 	{Cleave, 'toggle(aoe)&player.area(8).enemies>=2&talent(1,3)'},
 	{AoE, 'toggle(aoe)&player.area(8).enemies>=5&!talent(1,3)'},
 	{Execute, 'target.inMelee&target.inFront&target.health<=20&player.area(8).enemies<5'},
@@ -167,7 +165,8 @@ local inCombat = {
 
 local outCombat = {
 	{Keybinds},
-	{PreCombat}
+	{PreCombat},
+	{Interrupts, 'target.interruptAt(80)&toggle(Interrupts)&target.inFront&target.inMelee'},
 }
 
 NeP.CR:Add(71, {
