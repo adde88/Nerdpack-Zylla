@@ -22,7 +22,8 @@ local GUI = {
 	{type = 'checkbox', text = 'Use Trinket #2', key = 'kT2', default = true},
 	{type = 'checkbox', text = 'Ring of Collapsing Futures', key = 'kRoCF', default = true},
 	{type = 'checkbox', text = 'Use Heirloom Necks When Below X% HP', key = 'k_HEIR', default = true},
-	{type = 'spinner',	text = '', key = 'k_HeirHP', default = 40},	
+	{type = 'spinner',	text = '', key = 'k_HeirHP', default = 40},
+	{type = 'ruler'},	{type = 'spacer'},
 }
 
 local exeOnLoad = function()
@@ -49,6 +50,7 @@ local Keybinds = {
 }
 
 local PreCombat = {
+	{'Blazing Barrier' , '!player.buff(Blazing Barrier)&player.area(40).enemies>0'},
 }
 
 local Interrupts = {
@@ -62,7 +64,8 @@ local Cooldowns = {
 }
 
 local Survival = {
-	{'Ice Block', 'player.health<=20||player.debuff(Cauterize)'}
+	{'Ice Block', 'player.health<=20||player.debuff(Cauterize)'},
+	{'Blazing Barrier' , '!player.buff(Blazing Barrier)'},
 }
 
 local Talents = {
@@ -104,7 +107,7 @@ local MainRotation = {
 	{'Pyroblast', 'player.buff(Hot Streak!)&player.buff(Hot Streak!).remains<action(Fireball).execute_time'},
 	{'Phoenix\'s Flames', 'artifact(Phoenix\'s Flames).enabled&{action(Phoenix\'s Flames).charges>2.7&target.area(8).enemies>2}'},
 	{'Flamestrike', 'talent(6,3)&target.area(10).enemies>2&player.buff(Hot Streak!)', 'target.ground'},
-	{'&Pyroblast', 'player.buff(Hot Streak!)&!player.lastgcd(Pyroblast)&{player.casting(Fireball).percent>90||player.lastcast(Fireball)}'},--&player.casting(Fireball).percent>90
+	{'&Pyroblast', 'player.buff(Hot Streak!)&!player.lastgcd(Pyroblast)&{player.casting(Fireball).percent>90||player.lastcast(Fireball)}'},
 	{'Pyroblast', 'player.buff(Hot Streak!)&target.health<=25&equipped(132454)'},
 	{'Pyroblast', 'player.buff(Kael\'thas\'s Ultimate Ability)'},
 	{Talents},
@@ -118,14 +121,14 @@ local MainRotation = {
 	{'Fireball', 'xmoving=0||player.buff(Ice Floes)'},
 	{'Ice Barrier', '!player.buff(Ice Barrier)&!player.buff(Combustion)&!player.buff(Rune of Power)'},
 	{'Scorch', 'xmoving=1&!player.buff(Ice Floes)'},
-	{'Blazing Barrier' , '!player.buff(Blazing Barrier)'}
+	{'Dragon\'s Breath', 'target.range<=12&player.area(10).enemies>1'},
 }
 
 local xCombat = {
 	{'Rune of Power', 'xmoving=0&toggle(cooldowns)&{cooldown(Combustion).remains>40}&{!player.buff(Combustion)&{cooldown(Flame On).remains<5||cooldown(Flame On).remains>30}&!talent(7,1)||target.time_to_die<11||talent(7,1)&{action(Rune of Power).charges>1.8||xtime<40}&{cooldown(Combustion).remains>40)}}'},
 	{Combustion, 'xmoving=0&{cooldown(Combustion).remains<=action(Rune of Power).cast_time+gcd||player.buff(Combustion)}'},
 	{RoP, 'xmoving=0&player.buff(Rune of Power)&!player.buff(Combustion)'},
-	{MainRotation, '!player.casting(Rune of Power)'}
+	{MainRotation, '!player.casting(Rune of Power)'},
 }
 
 local inCombat = {
@@ -136,7 +139,7 @@ local inCombat = {
 	{Interrupts, 'target.interruptAt(50)&toggle(interrupts)&target.inFront&target.range<=40'},
 	{Cooldowns, 'toggle(cooldowns)'},
 	{Survival, 'player.health<100'},
-	{xCombat, 'target.range<=40&target.inFront'}
+	{xCombat, 'target.range<=40&target.inFront'},
 }
 
 local outCombat = {
