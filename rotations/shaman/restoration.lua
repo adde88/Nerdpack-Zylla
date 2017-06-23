@@ -7,8 +7,8 @@ local Heirlooms = _G['Zylla.Heirlooms']
 local GUI = {
 	-- Trinkets + Heirlooms for leveling
 	{type = 'header', 	text = 'Trinkets/Heirlooms', align = 'center'},
-	{type = 'checkbox', text = 'Use Trinket #1', key = 'kT1', default = false},
-	{type = 'checkbox', text = 'Use Trinket #2', key = 'kT2', default = false},
+	{type = 'checkbox', text = 'Use Trinket #1', key = 'kT1', default = true},
+	{type = 'checkbox', text = 'Use Trinket #2', key = 'kT2', default = true},
 	{type = 'checkbox', text = 'Ring of Collapsing Futures', key = 'kRoCF', default = true},
 	{type = 'checkbox', text = 'Use Heirloom Necks When Below X% HP', key = 'k_HEIR', default = true},
 	{type = 'spinner',	text = '', key = 'k_HeirHP', default = 40},
@@ -84,9 +84,6 @@ local GUI = {
 	{type = 'spinner', text = '', key = 'L_FRT', default = 80},
 	{type = 'text', text = 'Healing Surge'},
 	{type = 'spinner', text = '', key = 'L_HS', default = 70},
-	{type = 'text', text = '|cffff0000Elemental DPS rotation is dependent on the value set for Healing Wave.|r'},
-	{type = 'text', text = '|cffff0000@ 100% = Healing Wave filler spam at all times.|r'},
-	{type = 'text', text = '|cffff0000@ < 100% = Elemental DPS takes precedence.|r'},
 	{type = 'text', text = 'Healing Wave'},
 	{type = 'spinner', text = '', key = 'L_HW', default = 100},
 	{type = 'spacer'},
@@ -111,36 +108,25 @@ local exeOnLoad = function()
 end
 
 local Survival = {
-	-- Astral Shift usage if enabled in UI.
 	{'&Astral Shift', 'UI(S_ASE)&player.health<=UI(S_AS)'},
-	-- Gift of the Naaru usage if enabled in UI.
 	{'&Gift of the Naaru', 'UI(S_GOTNE)&{!player.debuff(Ignite Soul)}&player.health<=UI(S_GOTN)'},
-	-- Healthstone usage if enabled in UI.
 	{'#5512', 'UI(S_HSE)&{!player.debuff(Ignite Soul)}&player.health<=UI(S_HS)'},
-	-- Ancient Healing Potion usage if enabled in UI.
 	{'#127834', 'UI(S_AHPE)&{!player.debuff(Ignite Soul)}&player.health<=UI(S_AHP)'},
 }
 
 local Keybinds = {
-	-- Healing Rain at cursor on Left-Shift if enabled in UI.
 	{'!Healing Rain', 'UI(K_HR)&keybind(lshift)', 'cursor.ground'},
-	-- Lightning Surge Totem at cursor on Left-Control if enabled in UI.
 	{'!Lightning Surge Totem', 'UI(K_LST)&keybind(lcontrol)', 'cursor.ground'},
-	-- Cloudburst Totem at cursor on Left-Alt if enabled in UI.
 	{'!Cloudburst Totem', 'UI(K_CT)&keybind(lalt)', 'cursor.ground'},
 }
 
 local Totems = {
-	-- Healing Stream Totem usage if enabled in UI.
 	{'Healing Stream Totem', 'UI(To_HSTE)'},
-	-- Earthen Shield Totem usage if enabled in UI.
 	{'Earthen Shield Totem', 'advanced&UI(To_ESTE)', 'tank.ground'},
 }
 
 local Emergency = {
-	-- Riptide usage if enabled in UI.
 	{'!Riptide', '{!moving||moving}&{!lowest.debuff(Ignite Soul)}&UI(E_EH)&lowest.health<=UI(E_RT)', 'lowest'},
-	-- Healing Surge usage if enabled in UI.
 	{'!Healing Surge', '!moving&UI(E_EH)&{!lowest.debuff(Ignite Soul)}&lowest.health<=UI(E_HSG)', 'lowest'},
 }
 
@@ -178,7 +164,7 @@ local Player = {
 }
 
 local Lowest = {
-	{'Riptide', '{!moving||moving}&lowest.buff(Riptide).duration<=5||lowest.health<=UI(L_FRT)', 'lowest'},
+	{'Riptide', 'buff(Riptide).duration<=5||health<=UI(L_FRT)', 'lnbuff(Riptide)'},
 	{{ -- Spiritwalker's Grace
 		{'Healing Wave', 'lowest.health<=UI(L_HW)', 'lowest'},
 		{'Healing Rain', 'advanced&UI(L_HRE)&toggle(AoE)&lowest.area(10,90).heal>=2', 'lowest.ground'},
@@ -191,22 +177,22 @@ local inCombat = {
 	{Util},
 	{Trinkets},
 	{Heirlooms},
-	{Keybinds, '{!moving||moving}'},
-	{Dispel, '{!moving||moving}&toggle(yuPS)&spell(Purify Spirit).cooldown=0'},
-	{Survival, '{!moving||moving}'},
+	{Keybinds},
+	{Dispel, '&toggle(yuPS)&spell(Purify Spirit).cooldown<gcd'},
+	{Survival},
 	{Emergency},
-	{Totems, '{!moving||moving}'},
+	{Totems},
 	{Tank, 'tank.exists&tank.health<100'},
 	{Lowest, 'lowest.health<100'},
 	{Player, 'player.health<100'},
-	{Interrupts, '{!moving||moving}&toggle(interrupts)&target.interruptAt(70)&target.infront&target.range<=30'},
-	{DPS, 'toggle(yuDPS)&target.range<40&target.infront'},
+	{Interrupts, 'toggle(interrupts)&target.interruptAt(70)&target.inFront&target.range<=30'},
+	{DPS, 'toggle(yuDPS)&target.range<40&target.inFront'},
 }
 
 local outCombat = {
-	{Dispel, '{!moving||moving}&toggle(yuPS)&spell(Purify Spirit).cooldown=0'},
-	{Interrupts, '{!moving||moving}&toggle(interrupts)&target.interruptAt(70)&target.infront&target.range<=30'},
-	{'Riptide', '{!moving||moving}&lowest.health<100', 'lowest'},
+	{Dispel, 'toggle(yuPS)&spell(Purify Spirit).cooldown<gcd'},
+	{Interrupts, 'toggle(interrupts)&target.interruptAt(70)&target.inFront&target.range<=30'},
+	{'Riptide', 'health<100', 'lnbuff(Riptide)'},
 	{Lowest, 'lowest.health<100'},
 }
 
