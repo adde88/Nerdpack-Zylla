@@ -49,9 +49,9 @@ local PreCombat = {
 local Keybinds = {
 	-- Pause
 	{'%pause', 'keybind(lshift)&UI(kPause)'},
-	{'!Binding Shot', 'keybind(lalt)', 'target.ground'},
-	{'!Tar Trap', 'keybind(lcontrol)', 'target.ground'},
-	{'!Freezing Trap', 'keybind(ralt)', 'target.ground'},
+	{'!Binding Shot', 'keybind(lalt)', 'cursor.ground'},
+	{'!Tar Trap', 'keybind(lcontrol)', 'cursor.ground'},
+	{'!Freezing Trap', 'keybind(ralt)', 'cursor.ground'},
 }
 
 local Survival = {

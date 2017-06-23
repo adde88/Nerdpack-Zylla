@@ -138,7 +138,7 @@ local inCombat = {
 	{Keybinds},
 	{Snares},
 	{Survival, 'player.health<100'},
-	{Interrupts, 'target.interruptAt(70)&target.inMelee'},
+	{Interrupts, 'target.interruptAt(80)&target.inMelee'},
 	{Mitigations, 'target.inMelee&{!talent(7,2)||!player.buff(Blackout Combo)||player.spell(Keg Smash).cooldown>=2.5}'},
 	{Cooldowns, 'toggle(Cooldowns)'},
 	{xCombat},

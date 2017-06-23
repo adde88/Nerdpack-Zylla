@@ -27,7 +27,7 @@ local GUI = {
 	{type = 'checkbox', text = 'Ring of Collapsing Futures', key = 'kRoCF', default = true},
 	{type = 'checkbox', text = 'Use Heirloom Necks When Below X% HP', key = 'k_HEIR', default = true},
 	{type = 'spinner',	text = '', key = 'k_HeirHP', default = 40},
-} 
+}
 
 local exeOnLoad = function()
 	 Zylla.ExeOnLoad()
@@ -36,22 +36,28 @@ local exeOnLoad = function()
 	print('|cffADFF2F --- |rHunter |cffADFF2FSurvival |r')
 	print('|cffADFF2F --- |WARNING: This rotation is in development, and it\'s not complete!')
 	print('|cffADFF2F ----------------------------------------------------------------------|r')
-	
+
 end
 
 local Keybinds = {
 	{'%pause', 'keybind(lshift)&UI(kPause)'},
-	{'Explosive Trap', 'keybind(lalt)', 'cursor.ground'},
-	{'Tar Trap', 'keybind(lcontrol)', 'cursor.ground'},
-	{'Freezing Trap', 'keybind(ralt)', 'cursor.ground'},
+	{'!Explosive Trap', 'keybind(lalt)', 'cursor.ground'},
+	{'!Tar Trap', 'keybind(lcontrol)', 'cursor.ground'},
+	{'!Freezing Trap', 'keybind(ralt)', 'cursor.ground'},
+}
+
+local Pet = {
+	{'Mend Pet', 'pet.health<100'},
+	{'Revive Pet', 'pet.dead'},
+	{'/cast Call Pet 2', '!pet.exists&!pet.dead'},
 }
 
 local Interrupts = {
-	{'Muzzle'},	
+	{'!Muzzle'},
 }
 
 local PreCombat = {
-	{Pet},	
+	{Pet},
 }
 
 local Survival = {
@@ -60,12 +66,6 @@ local Survival = {
 	{'#Healthstone', 'player.health<38'},
 	{'Aspect of the Turtle', 'player.health<22'},
 	{'Feign Death', 'player.health<19&equipped(137064)'},
-}
-
-local Pet = {
-	{'Mend Pet', 'pet.health<100'},
-	{'Revive Pet', 'pet.dead'},
-	{'/cast Call Pet 2', '!pet.exists&!pet.dead'},
 }
 
 local RangedNoMok = {
@@ -130,7 +130,7 @@ local AoEMok = {
 	{'Butchery', 'talent(6,1)&player.focus>65'},
 	{'Dragonsfire Grenade', 'talent(6,2)&player.buff(Mongoose Fury).duration>=gcd&cooldown(Mongoose Bite).charges>=0&player.buff(Mongoose Fury).stack<4'},
 	{'Fury of the Eagle', '{player.buff(201082).remains>4&(player.buff(Mongoose Fury).stack=6&cooldown(Mongoose Bite).charges<=0||player.buff(Mongoose Fury)&player.buff(Mongoose Fury).remains<=2*gcd}}'},
-	{'Fury of the Eagle', 'player.buff(201082).remains>4&player.buff(Mongoose Fury).stack=6&cooldown(Mongoose Bite).charges<=2'},	
+	{'Fury of the Eagle', 'player.buff(201082).remains>4&player.buff(Mongoose Fury).stack=6&cooldown(Mongoose Bite).charges<=2'},
 }
 
 local AoEnoMok = {

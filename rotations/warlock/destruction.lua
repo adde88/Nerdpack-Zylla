@@ -25,7 +25,7 @@ local GUI = {
 	{type = 'spinner',		text = 'Use Drain Life At X% HP',						key = 'k_DLHP',		default = 40},
 	{type = 'spinner',		text = 'Use Health Funnel When Pet is below X% HP',		key = 'k_HFHP',		default = 30},
 	{type = 'spinner',		text = 'Use Health Funnel When Player is above X% HP',	key = 'k_HFHP2',	default = 40},
-} 
+}
 
 local exeOnLoad = function()
 	 Zylla.ExeOnLoad()
@@ -34,7 +34,7 @@ local exeOnLoad = function()
 	print('|cffADFF2F --- |rWarlock |cffADFF2FDestruction |r')
 	print('|cffADFF2F --- |rRecommended Talents: COMING SOON...')
 	print('|cffADFF2F ----------------------------------------------------------------------|r')
-	
+
 end
 
 local Survival = {
@@ -56,12 +56,12 @@ local Cooldowns = {
 local Keybinds = {
 	-- Pause
 	{'%pause', 'keybind(lshift)&UI(kPause)'},
-	{'Cataclysm', 'keybind(lcontrol)'},
-	{'Rain of Fire', 'keybind(lalt)'},
+	{'!Cataclysm', 'keybind(lcontrol)'},
+	{'!Rain of Fire', 'keybind(lalt)'},
 }
 
 local Interrupts = {
-	{'Fear', 'target.inFront&target.range<=30&UI(k_FEAR)'},
+	{'!Fear', 'target.inFront&target.range<=30&UI(k_FEAR)'},
 }
 
 local xCombat = {
@@ -85,8 +85,8 @@ local inCombat = {
 	{Util},
 	{Trinkets},
 	{Heirlooms},
-	{Interrupts, 'target.interruptAt(30)&toggle(Interrupts)'},
 	{Keybinds},
+	{Interrupts, 'toggle(Interrupts)&target.inFront&target.range<=40'},
 	{Survival, 'player.health<100'},
 	{Cooldowns, 'toggle(Cooldowns)'},
 	{xCombat, 'target.range<=40&target.inFront'},
@@ -94,6 +94,7 @@ local inCombat = {
 
 local outCombat = {
 	{Keybinds},
+	{Interrupts, 'toggle(Interrupts)&target.inFront&target.range<=40'},
 	{'Summon Imp', '!pet.exists||!pet.alive'},
 }
 
