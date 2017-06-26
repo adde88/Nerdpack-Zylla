@@ -96,6 +96,7 @@ local outCombat = {
 	{Keybinds},
 	{Interrupts, 'toggle(Interrupts)&target.inFront&target.range<=40'},
 	{'Summon Imp', '!pet.exists||!pet.alive'},
+	{'Create Healthstone', 'item.count(Healthstone)=0&!lastcast(Create Healthstone)'},
 }
 
 NeP.CR:Add(267, {
