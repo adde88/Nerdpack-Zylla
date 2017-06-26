@@ -119,7 +119,7 @@ local ST = {
 	{'Demonwrath', 'movingfor>=2&player.combat.time>2'},
 	{'Demonbolt', '!player.moving&talent(7,2)&!player.soulshards=4'},
 	{'Shadow Bolt', '!player.moving&!talent(7,2)&!player.soulshards=4'},
-	{'&89751', 'spell.cooldown(89751)<gcd&pet_range<=8&player.area(8).enemies>=3'},
+	{'!89751', 'spell.cooldown(89751)<gcd&pet_range<=8&player.area(8).enemies>=3'},
 }
 
 local inCombat = {
@@ -137,7 +137,7 @@ local inCombat = {
 local outCombat = {
 	{'Life Tap', 'player.mana<=60&player.health>=60'},
 	{Interrupts, 'toggle(Interrupts)&target.inFront&target.range<=40'},
-	--{'Create Healthstone', "xitems('player', 5512)=0"},
+	{'Create Healthstone', 'item.count(Healthstone)=0&!lastcast(Create Healthstone)'},
 }
 
 NeP.CR:Add(266, {
