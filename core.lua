@@ -486,6 +486,8 @@ NeP.Listener:Add('Zylla_Warlock_Pets', 'COMBAT_LOG_EVENT_UNFILTERED', function(t
     if ((combatevent == "SPELL_AURA_APPLIED" or combatevent == "SPELL_AURA_REFRESH") and spellID == 193396 and sourceName == UnitName("player")) then
       --print('Demonic Empowerment')
       if(Zylla.IsMinion(destName)) then
+		print('Zylla.IsMinion is TRUE')
+		print(Zylla.IsMinion(destName))
         Zylla.active_demons[destGUID].empower_time = GetTime()
       end
     end
@@ -1205,33 +1207,21 @@ NeP.Library:Add('Zylla', {
 		local stagger = UnitStagger("player");
 		local percentOfHealth = (100/UnitHealthMax("player")*stagger);
 		-- TODO: We are targetting 4.5% stagger value - too low?  I think we used 25% or heavy stagger before as the trigger
-		--if (percentOfHealth > 4.5) or UnitDebuff("player", GetSpellInfo(124273)) then
-		return percentOfHealth > 4.5
-	end,
-
-	purifyingCapped = function()
-		local MaxBrewCharges = 3;
-		if NeP.DSL:Get('talent')(nil, '3,1') then
-			MaxBrewCharges = MaxBrewCharges + 1;
-		end
-		local PurifyingCapped = (
-		(NeP.DSL:Get('spell.charges')('player', 'Purifying Brew') == MaxBrewCharges) or ((NeP.DSL:Get('spell.charges')('player', 'Purifying Brew') == MaxBrewCharges - 1) and NeP.DSL:Get('spell.recharge')('player', 'Purifying Brew') < 3 ) ) or false;
-		return PurifyingCapped
-	end,
-
-	--[[ for future use, call it via {"@Zylla.synclast"}, at the TOP of the combat section
-	synclast = function()
-		local _, LastCast = NeP.DSL:Get('lastcast')('player')
-		local _, _, _, _, _, _, spellID = GetSpellInfo(LastCast)
-		if spellID then
-			if MasterySpells[spellID] then
-				-- If NeP.Engine.lastCast is in the MasterySpells list, set HitComboLastCast to this spellID
-				HitComboLastCast = spellID
-				--print("windwalker_sync flagging "..LastCast);
-			end
+		if (percentOfHealth > 4.5) or UnitDebuff("player", GetSpellInfo(124273)) then
+			return true
 		end
 		return false
 	end,
-	]]--
+
+	purifyingCapped = function()
+		local MaxBrewCharges = 3
+		if NeP.DSL:Get('talent')(nil, '3,1') then
+			MaxBrewCharges = MaxBrewCharges + 1
+		end
+		if (NeP.DSL:Get('spell.charges')('player', 'Purifying Brew') == MaxBrewCharges) or ((NeP.DSL:Get('spell.charges')('player', 'Purifying Brew') == MaxBrewCharges - 1) and NeP.DSL:Get('spell.recharge')('player', 'Purifying Brew') < 3 ) then
+		return true
+		end
+		return false
+	end,
 	
 })
