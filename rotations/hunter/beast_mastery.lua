@@ -27,6 +27,7 @@ local GUI = {
 	{type = 'checkbox', text = 'Ring of Collapsing Futures', key = 'kRoCF', default = true},
 	{type = 'checkbox', text = 'Use Heirloom Necks When Below X% HP', key = 'k_HEIR', default = true},
 	{type = 'spinner',	text = '', key = 'k_HeirHP', default = 40},
+	{type = 'ruler'},	{type = 'spacer'},
 }
 
 local exeOnLoad = function()
@@ -76,7 +77,7 @@ local Cooldowns = {
 
 local Interrupts = {
 	{'!Counter Shot'},
-	{'!Intimidation', 'talent(6,3)&spell(Counter Shot).cooldown>gcd&!prev_gcd(Counter Shot)&!immune(Stun)'},
+	{'!Intimidation', 'talent(6,3)&player.spell(Counter Shot).cooldown>gcd&!prev_gcd(Counter Shot)&!target.immune(Stun)'},
 }
 
 local xCombat = {
@@ -117,7 +118,7 @@ local inCombat = {
 	{Heirlooms},
 	{Keybinds},
 	{Survival, 'player.health<100'},
-	{Interrupts, 'interruptAt(80)&toggle(Interrupts)&inFront&range<=40', 'enemies'},
+	{Interrupts, 'target.interruptAt(70)&toggle(Interrupts)&target.inFront&target.range<=40'},
 	{Cooldowns, 'toggle(Cooldowns)'},
 	{xCombat, 'target.range<=40&target.inFront'},
 	{xPetCombat},
@@ -127,7 +128,7 @@ local inCombat = {
 local outCombat = {
 	{Keybinds},
 	{PreCombat},
-	{Interrupts, 'interruptAt(80)&toggle(Interrupts)&inFront&range<=40', 'enemies'},
+	{Interrupts, 'target.interruptAt(70)&toggle(Interrupts)&target.inFront&target.range<=40'},
 }
 
 NeP.CR:Add(253, {
