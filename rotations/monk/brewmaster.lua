@@ -59,12 +59,16 @@ local exeOnLoad=function()
 
 end
 
+local TransferBack = {
+    {'!Transcendence: Transfer'},
+    {'!/cancelaura Transcendence', 'lastcast(Transcendence: Transfer)'},
+}
+
 local Keybinds = {
 	{'%pause', 'keybind(lshift)&UI(kPause)'},
 	{'!Summon Black Ox Statue', 'talent(4,2)&keybind(lalt)', 'cursor.ground'},
-	{'!Transcendence', 'keybind(lcontrol)&!player.buff(Transcendence)'},
-	{'!Transcendence: Transfer', 'keybind(lcontrol)&player.buff(Transcendence)'},
-	{'!/cancelaura Transcendence', 'keybind(lcontrol)&player.buff(Transcendence)&lastcast(Transcendence: Transfer)'},
+    {'!Transcendence', 'keybind(lcontrol)&!player.buff(Transcendence)'},
+    {TransferBack, 'keybind(lcontrol)&player.buff(Transcendence)'},
 }
 
 local Snares = {
@@ -78,9 +82,9 @@ local Cooldowns = {
 
 local Mitigations = {
 	{'Black Ox Brew', 'player.spell(Purifying Brew).charges<1&player.spell(purifying brew).recharge>2'},
-	{'Purifying Brew', '@Zylla.staggered(nil)&player.spell(Purifying Brew).charges>=1'},
+	{'Purifying Brew', '@Zylla.staggered&player.spell(Purifying Brew).charges>=1'},
 	{'Ironskin Brew', 'player.health<=UI(Ironskin Brew)&player.spell(Purifying Brew).charges>=2&!player.buff(Ironskin Brew)'},
-	{'Ironskin Brew', '@Zylla.purifyingCapped(nil)&player.health<100&!player.buff(Ironskin Brew)'},
+	{'Ironskin Brew', '@Zylla.purifyingCapped&player.health<100&!player.buff(Ironskin Brew)'},
 }
 
 local Survival = {
@@ -114,7 +118,7 @@ local Taunts = {
 
 local xCombat = {
 	{'Blackout Strike', 'target.inMelee&target.inFront&talent(7,2)&!player.buff(Blackout Combo)&{player.spell(Keg Smash).cooldown>3||player.spell(Keg Smash).cooldown<1.5}'},
-	{'Keg Smash', 'target.range<=15&target.inFront&talent(7,2)&{player.buff(Blackout Combo)||@Zylla.purifyingCapped(nil)}'},
+	{'Keg Smash', 'target.range<=15&target.inFront&talent(7,2)&{player.buff(Blackout Combo)||@Zylla.purifyingCapped}'},
 	{'Keg Smash', 'target.range<=15&target.inFront&!talent(7,2)'},
 	{{
 		{'Blackout Strike', 'target.inMelee&target.inFront&!player.buff(Blackout Combo)&talent(7,2)&player.area(10).enemies>=1'},
@@ -127,7 +131,7 @@ local xCombat = {
 		{'Chi Wave', 'target.range<=40&target.inFront&player.area(10).enemies>=2', 'target.enemy'},
 		{'Rushing Jade Wind', 'talent(6,1)&player.area(8).enemies>=2'},
 		{'Tiger Palm', 'target.inMelee&target.inFront&!talent(7,2)||{target.inMelee&target.inFront&player.energy>=70&{player.energy>=55||player.spell(Keg Smash).cooldown>3}}'},
-	},	{'player.spell(Keg Smash).cooldown>=0.5||{!talent(7,2)&!player.buff(Blackout Combo)&player.spell(Keg Smash).cooldown>=2&@Zylla.purifyingCapped(nil)}'}},
+	},	{'player.spell(Keg Smash).cooldown>=0.5||{!talent(7,2)&!player.buff(Blackout Combo)&player.spell(Keg Smash).cooldown>=2&@Zylla.purifyingCapped}'}},
 }
 
 local inCombat = {
