@@ -119,6 +119,7 @@ local inCombat = {
 	{Trinkets},
 	{Heirlooms},
 	{Keybinds},
+	{'Cobra Shot', 'player.focus>=85&player.spell(Kill Command).cooldown&target.area(10).enemies<4'},
 	{Survival, 'player.health<100'},
 	{Interrupts, 'target.interruptAt(70)&toggle(Interrupts)&target.inFront&target.range<=40'},
 	{Cooldowns, 'toggle(Cooldowns)'},
