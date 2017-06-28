@@ -30,7 +30,12 @@ function Zylla.ExeOnLoad()
 end
 
 -- Global Variables used on many if not all routines.
-
+--[[
+_G['Zylla.Blacklist'] = {
+		units = {"UNIT_ID", ####},
+		buffs = {{name = "special_buff", count = 2}, "special_buff", ####},
+		debuff = {####, ####, ####}
+--]]
 _G['Zylla.Trinkets'] = {
 	{'#trinket1', 'UI(kT1)'},
 	{'#trinket2', 'UI(kT2)'},
