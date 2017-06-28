@@ -110,7 +110,7 @@ local xPetCombat = {
 }
 
 local xPvP = {
-	{'Gladiator\'s Medallion', 'spell.exists(208683)&{player.state.incapacitate||player.state.stun||player.state.fear||player.state.horror||player.state.sleep||player.state.charm}'},
+	{'Gladiator\'s Medallion', 'spell.exists(208683)&{player.state(incapacitate)||player.state(stun)||player.state(fear)||player.state(horror)||player.state(sleep)||player.state(charm)}'},
 	{'Viper Sting', 'spell.exists(Viper Sting)&target.range<=40&target.health<80'},
 	{'Scorpid Sting', 'spell.exists(Scorpid Sting)&target.inMelee'},
 	{'Spider Sting', 'spell.exists(Spider Sting)&target.range<=40'},
