@@ -15,7 +15,7 @@ local GUI = {
 	-- Settings
 	{type = 'header', 	text = 'Class Settings', align = 'center'},
 	{type = 'checkbox', text = 'Pause Enabled', key = 'kPause', default = true},
-	{type = 'checkbox', text = 'Summon Pet', key = 'kPet', default = true},
+	{type = 'checkbox', text = 'Summon Pet', key = 'kPet', default = false},
 	{type = 'checkbox', text = 'Barrage Enabled', key = 'kBarrage', default = false},
    	{type = 'checkbox', text = 'Volley Enabled', key = 'kVolley', default = true},
 	{type = 'checkbox', text = 'Misdirect Focus/Pet', key = 'kMisdirect', default = true},
