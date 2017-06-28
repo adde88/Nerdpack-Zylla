@@ -135,8 +135,9 @@ local outCombat = {
 
 NeP.CR:Add(253, {
 	name = '[|cff'..Zylla.addonColor..'Zylla\'s|r] Hunter - Beast Mastery',
-	  ic = inCombat,
-	 ooc = outCombat,
-	 gui = GUI,
+	ic = inCombat,
+	ooc = outCombat,
+	gui = GUI,
 	load = exeOnLoad
+	--blacklist = _G['Zylla.Blacklist']
 })
