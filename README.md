@@ -1,5 +1,5 @@
 # NerdPack - Zylla's Routines
-This respository contains my private NerdPack routines for World of Warcraft.  
+This repository contains my private NerdPack routines for World of Warcraft.  
 
 [![paypal](https://www.paypalobjects.com/en_US/NO/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=23HX4QKDAD4YG)
 
