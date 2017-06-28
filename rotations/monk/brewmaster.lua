@@ -72,8 +72,8 @@ local Keybinds = {
 }
 
 local Snares = {
-	{'Nimble Brew', 'spell.exists(213664)&{player.state.disorient||player.state.stun||player.state.fear||player.state.horror}'},
-	{'Tiger\'s Lust', 'talent(2,2)&{player.state.disorient||player.state.stun||player.state.root||player.state.snare}'},
+	{'Nimble Brew', 'spell.exists(213664)&{player.state.disorient||player.state(stun)||player.state(fear)||player.state(horror)}'},
+	{'Tiger\'s Lust', 'talent(2,2)&{player.state.disorient||player.state(stun)||player.state.root||player.state.snare}'},
 }
 
 local Cooldowns = {

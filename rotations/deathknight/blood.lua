@@ -40,7 +40,7 @@ local PreCombat = {
 local Survival = {
 	{'Icebound Fortitude', 'player.health<=25||player.incdmg(2.5)>player.health.max*0.50||player.state(stun)'},
 	{'Anti-Magic Shell', 'player.incdmg(2.5).magic>player.health.max*0.50'},
-	{'Wraith Walk', 'player.state.root'},
+	{'Wraith Walk', 'player.state(root)'},
 }
 
 local Keybinds = {
