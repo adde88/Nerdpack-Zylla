@@ -62,7 +62,7 @@ local inCombat = {
 	{Heirlooms},
 	{Keybinds},
 	{Survival, 'player.health<100'},
-	{Interrupts, 'target.interruptAt(80)'},
+	{Interrupts, 'target.interruptAt(70)'},
 	{Cooldowns, 'toggle(Cooldowns)'},
 	{xCombat, 'target.inMelee&target.inFront'},
 }

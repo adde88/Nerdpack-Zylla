@@ -121,7 +121,7 @@ local inCombat = {
 	{Keybinds},
 	{Survival, 'player.health<100'},
 	{Cooldowns, 'toggle(Cooldowns)'},
-	{Interrupts, 'target.interruptAt(80)&toggle(Interrupts)&target.inFront&target.range<=40'},
+	{Interrupts, 'target.interruptAt(70)&toggle(Interrupts)&target.inFront&target.range<=40'},
 	{xCombat, 'target.range<=40&target.inFront'},
 	{xPetCombat},
 	{xPvP},

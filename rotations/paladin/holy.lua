@@ -239,7 +239,7 @@ local inCombat = {
 	{Heirlooms},
 	{Keybinds},
 	{Survival},
-	{Interrupts, 'target.interruptAt(80)&target.inMelee&target.inFront'},
+	{Interrupts, 'target.interruptAt(70)&target.inMelee&target.inFront'},
 	{'%dispelall', 'toggle(disp)&spell(Cleanse).cooldown<gcd'},
 	{Cooldowns, 'toggle(cooldowns)'},
 	{Emergency, 'lowestp.health<=UI(G_CHP)&!player.casting(200652)'},

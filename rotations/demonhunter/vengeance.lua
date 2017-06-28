@@ -40,9 +40,9 @@ local Keybinds = {
 }
 
 local Interrupts = {
-	{'Consume Magic', 'target.interruptAt(80)&target.inFront&target.inMelee'},
+	{'Consume Magic', 'target.interruptAt(70)&target.inFront&target.inMelee'},
 	{'Sigil of Silence', 'target.interruptAt(1)&target.range<=29&spell(Consume Magic).cooldown>gcd&!prev_gcd(Consume Magic)', 'target.ground'},
-	{'Arcane Torrent', 'target.interruptAt(80)&target.inFront&target.inMelee&spell(Consume Magic).cooldown>gcd&!prev_gcd(Consume Magic)'},
+	{'Arcane Torrent', 'target.interruptAt(70)&target.inFront&target.inMelee&spell(Consume Magic).cooldown>gcd&!prev_gcd(Consume Magic)'},
 }
 
 local ST = {

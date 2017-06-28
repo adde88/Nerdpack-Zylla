@@ -285,7 +285,7 @@ local inCombat = {
 	{Insight, 'player.buff(Shadowy Insight)&{!player.channeling(Void Torrent)&{talent(7,1)&!player.insanity>=65}||{talent(7,3) ||talent(7,2)&!player.insanity = 100}}||{player.moving&!player.buff(Surrender to Madness)}'},
 	{Keybinds},
 	{Trinkets, '!player.channeling(Void Torrent)'},
-	{Interrupts, 'toggle(interrupts)&target.interruptAt(80)&target.inFront&target.range<=30&!player.channeling(Void Torrent)'},
+	{Interrupts, 'toggle(interrupts)&target.interruptAt(70)&target.inFront&target.range<=30&!player.channeling(Void Torrent)'},
 	{AOE, 'talent(7,2)&!player.channeling(Void Torrent)'},
 	{s2m2, "equipped(Mangaza's Madness)&player.buff(voidform)&!player.channeling(Void Torrent)&player.buff(Surrender to Madness)"},
 	{s2m1, 'player.buff(Voidform)&!player.channeling(Void Torrent)&player.buff(Surrender to Madness)'},

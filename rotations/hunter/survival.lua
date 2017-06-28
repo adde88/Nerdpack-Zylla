@@ -163,7 +163,7 @@ local inCombat = {
 	{'Mongoose Bite', 'lastcast(Mongoose Bite)'},
 	{Keybinds},
 	{Survival, 'player.health<100'},
-	{Interrupts, 'target.interruptAt(50)&toggle(Interrupts)&target.inFront&target.range<=5'},
+	{Interrupts, 'target.interruptAt(70)&toggle(Interrupts)&target.inFront&target.range<=5'},
 	{Pet, 'pet.exists&pet.alive'},
 	{AoE, 'toggle(AoE)&player.area(8).enemies>=3'},
 	{Melee, 'target.inMelee&target.inFront'},

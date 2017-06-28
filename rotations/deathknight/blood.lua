@@ -80,7 +80,7 @@ local inCombat = {
 	{Heirlooms},
 	{Keybinds},
 	{Trinkets},
-	{Interrupts, 'target.interruptAt(80)&toggle(Interrupts)'},
+	{Interrupts, 'target.interruptAt(70)&toggle(Interrupts)'},
 	{Survival},
 	{Cooldowns, 'toggle(Cooldowns)'},
 	{xCombat},

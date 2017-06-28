@@ -99,7 +99,7 @@ local inCombat = {
 	{Heirlooms},
 	{Etc},
 	{Keybinds},
-	{Interrupts, 'target.interruptAt(80)&toggle(Interrupts)'},
+	{Interrupts, 'target.interruptAt(70)&toggle(Interrupts)'},
 	{Cooldowns, 'toggle(Cooldowns)'},
 	{ST, 'target.inMelee&target.inFront'},
 }
@@ -107,7 +107,7 @@ local inCombat = {
 local outCombat = {
 	{Keybinds},
 	{PreCombat},
-	{Interrupts, 'target.interruptAt(80)&toggle(Interrupts)'},
+	{Interrupts, 'target.interruptAt(70)&toggle(Interrupts)'},
 }
 
 NeP.CR:Add(73, {

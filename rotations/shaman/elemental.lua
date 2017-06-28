@@ -217,7 +217,7 @@ local inCombat = {
 	{Survival},
 	{Player, '!moving'},
 	{Emergency, '!moving&ingroup'},
-	{Interrupts, 'toggle(Interrupts)&target.interruptAt(80)&target.inFront&target.range<=30'},
+	{Interrupts, 'toggle(Interrupts)&target.interruptAt(70)&target.inFront&target.range<=30'},
 	{LRCooldowns, '&talent(7,2)&toggle(Cooldowns)'},
 	{IFCooldowns, 'talent(7,3)&toggle(Cooldowns)'},
 	{ASCooldowns, 'talent(7,1)&toggle(Cooldowns)'},
@@ -229,7 +229,7 @@ local inCombat = {
 
 local outCombat = {
 	{Dispel, 'toggle(yuPS)&spell(Cleanse Spirit).cooldown<gcd'},
-	{Interrupts, 'toggle(Interrupts)&target.interruptAt(80)&target.inFront&target.range<=30'},
+	{Interrupts, 'toggle(Interrupts)&target.interruptAt(70)&target.inFront&target.range<=30'},
 	{Emergency, '!moving&ingroup'},
 	{'Healing Surge', '!moving&player.health<=70', 'player'},
 	{'Ghost Wolf', 'movingfor>=2&!player.buff(Ghost Wolf)'},

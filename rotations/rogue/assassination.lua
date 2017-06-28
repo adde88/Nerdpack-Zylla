@@ -122,7 +122,7 @@ local inCombat = {
 	{Trinkets},
 	{Heirlooms},
 	{Keybinds},
-	{Interrupts, 'target.interruptAt(80)&toggle(Interrupts)'},
+	{Interrupts, 'target.interruptAt(70)&toggle(Interrupts)'},
 	{TricksofTrade},
 	{Cooldowns, 'toggle(cooldowns)'},
 	{xCombat, 'target.inMelee&!player.buff(Stealth)'},

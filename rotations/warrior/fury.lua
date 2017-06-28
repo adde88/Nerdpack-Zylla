@@ -118,7 +118,7 @@ local inCombat = {
 	{Trinkets},
 	{Heirlooms},
 	{Keybinds},
-	{Interrupts, 'target.interruptAt(80)&toggle(Interrupts)'},
+	{Interrupts, 'target.interruptAt(70)&toggle(Interrupts)'},
 	{Survival, 'player.health<100'},
 	{Cooldowns, 'toggle(Cooldowns)&target.inMelee'},
 	{TwoTargets, 'player.area(8).enemies=2||player.area(8).enemies=3'},
@@ -129,7 +129,7 @@ local inCombat = {
 
 local outCombat = {
 	{Keybinds},
-	{Interrupts, 'target.interruptAt(80)&toggle(Interrupts)'},
+	{Interrupts, 'target.interruptAt(70)&toggle(Interrupts)'},
 }
 
 NeP.CR:Add(72, {

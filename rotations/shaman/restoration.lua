@@ -185,13 +185,13 @@ local inCombat = {
 	{Tank, 'tank.exists&tank.health<100'},
 	{Lowest, 'lowest.health<100'},
 	{Player, 'player.health<100'},
-	{Interrupts, 'toggle(interrupts)&target.interruptAt(80)&target.inFront&target.range<=30'},
+	{Interrupts, 'toggle(interrupts)&target.interruptAt(70)&target.inFront&target.range<=30'},
 	{DPS, 'toggle(yuDPS)&target.range<40&target.inFront'},
 }
 
 local outCombat = {
 	{Dispel, 'toggle(yuPS)&spell(Purify Spirit).cooldown<gcd'},
-	{Interrupts, 'toggle(interrupts)&target.interruptAt(80)&target.inFront&target.range<=30'},
+	{Interrupts, 'toggle(interrupts)&target.interruptAt(70)&target.inFront&target.range<=30'},
 	{'Riptide', 'health<100', 'lnbuff(Riptide)'},
 	{Lowest, 'lowest.health<100'},
 	{'Ghost Wolf', 'movingfor>=2&!player.buff(Ghost Wolf)'},

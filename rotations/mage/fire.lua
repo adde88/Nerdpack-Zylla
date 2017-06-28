@@ -136,7 +136,7 @@ local inCombat = {
 	{Trinkets},
 	{Heirlooms},
 	{Keybinds},
-	{Interrupts, 'target.interruptAt(80)&toggle(interrupts)&target.inFront&target.range<=40'},
+	{Interrupts, 'target.interruptAt(70)&toggle(interrupts)&target.inFront&target.range<=40'},
 	{Cooldowns, 'toggle(cooldowns)'},
 	{Survival, 'player.health<100'},
 	{xCombat, 'target.range<=40&target.inFront'},

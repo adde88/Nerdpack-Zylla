@@ -184,7 +184,7 @@ local inCombat = {
 	{Trinkets},
 	{Heirlooms},
 	{Survival, 'player.health<100'},
-	{Interrupts, 'target.interruptAt(80)&target.inMelee'},
+	{Interrupts, 'target.interruptAt(70)&target.inMelee'},
 	{Cooldowns, 'toggle(cooldowns)&target.inMelee'},
 	{Serenity, 'toggle(cooldowns)&target.inMelee&talent(7,3)&!player.casting(Fists of Fury)&{player.spell(Serenity).cooldown=0||player.buff(Serenity)}'},
 	-- TODO: handle legendary Drinking Horn Cover
