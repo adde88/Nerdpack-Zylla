@@ -13,7 +13,37 @@ local frame = CreateFrame('GameTooltip', 'Zylla_ScanningTooltip', UIParent, 'Gam
 Zylla.class = select(3,UnitClass("player"))
 Zylla.spell_timers = {}
 
---[[
+Zylla.isAFK = false;
+
+-- Toggles off the CR if the player becomes AFK. 
+-- And toggle back on when player is un-AFKed.
+function Zylla.onFlagChange(self, event, ...)
+	if (UnitIsAFK("player") and not isAFK) then
+		-- Player has become AFK
+		if (C_PetBattles.IsInBattle()==false) then
+			-- This should contain the stuff to execute when player is flagged AFK
+			NeP.Interface:toggleToggle('mastertoggle')
+		end
+		DEFAULT_CHAT_FRAME:AddMessage("Player is AFK. Stopping Zylla's Rotation.");
+		isAFK = true;
+	elseif (not UnitIsAFK("player") and isAFK) then
+		-- Player has been flagged un-AFK
+		-- This should contain the stuff to execute when player is flagged as not AFK
+		NeP.Interface:toggleToggle('mastertoggle')
+		DEFAULT_CHAT_FRAME:AddMessage("Player is unAFK. Restarting Zylla's Rotation.")
+		isAFK = false;
+	-- else
+	-- Player's flag change concerned DND, not becoming AFK or un-AFK
+	end
+end
+
+function Zylla.AFKCheck()
+	local frame = CreateFrame("FRAME", "AfkFrame");
+	frame:RegisterEvent("PLAYER_FLAGS_CHANGED"); -- "PLAYER_FLAGS_CHANGED" This will trigger when the player becomes unAFK and unDND
+	frame:SetScript("OnEvent", Zylla.onFlagChange);
+end
+
+-- Different Classes Taunt Abilities
 local classTaunt = {
   [1] = 'Taunt',
   [2] = 'Hand of Reckoning',
@@ -22,9 +52,7 @@ local classTaunt = {
   [11] = 'Growl',
   [12] = 'Torment'
 }
---]]
 
--- Temp Hack
 function Zylla.ExeOnLoad()
   Zylla.Splash()
 end
