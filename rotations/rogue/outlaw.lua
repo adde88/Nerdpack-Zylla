@@ -22,7 +22,8 @@ local GUI = {
 }
 
 local exeOnLoad = function()
-	 Zylla.ExeOnLoad()
+	Zylla.ExeOnLoad()
+	Zylla.AFKCheck()
 
 	print("|cffFFFF00 ----------------------------------------------------------------------|r")
 	print("|cffFFFF00 --- |rRogue |cffFFF569Outlaw |r")

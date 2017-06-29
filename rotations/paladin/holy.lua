@@ -67,7 +67,10 @@ local GUI = {
 	{type = 'ruler'},	{type = 'spacer'},
 }
 
-local exeOnLoad=function()
+local exeOnLoad = function()
+	Zylla.ExeOnLoad()
+	Zylla.AFKCheck()
+
 	NeP.Interface:AddToggle({
 		key = 'dps',
 		name='DPS',

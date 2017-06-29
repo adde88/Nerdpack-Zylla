@@ -25,7 +25,8 @@ local Heirlooms = _G['Zylla.Heirlooms']
 }
 
 local exeOnLoad = function()
-	 Zylla.ExeOnLoad()
+	Zylla.ExeOnLoad()
+	Zylla.AFKCheck()
 
 	print("|cffADFF2F ----------------------------------------------------------------------|r")
 	print("|cffADFF2F --- |rWarrior |cffADFF2FFury |r")

@@ -45,6 +45,7 @@ local GUI = {
 
 local exeOnLoad = function()
 	Zylla.ExeOnLoad()
+	Zylla.AFKCheck()
 
 	print('|cff0070de ----------------------------------------------------------------------|r')
 	print('|cff0070de --- |rShaman: |cff0070deELEMENTAL|r')

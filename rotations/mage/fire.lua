@@ -27,7 +27,8 @@ local GUI = {
 }
 
 local exeOnLoad = function()
-	 Zylla.ExeOnLoad()
+	Zylla.ExeOnLoad()
+	Zylla.AFKCheck()
 
 	print('|cffADFF2F ----------------------------------------------------------------------|r')
 	print('|cffADFF2F --- |rMage |cffADFF2FFire |r')
@@ -60,11 +61,12 @@ local Interrupts = {
 
 local Cooldowns = {
 	--# Executed every time the actor is available.
-	{'Time Warp', 'toggle(xTimeWarp)&{{xtime=0&!player.buff(Bloodlust)}||{!player.buff(Bloodlust)&xequipped(132410)}}'},
+	{'Time Warp', 'toggle(xTimeWarp)&{{xtime=0&!player.buff(Bloodlust)}||{!player.buff(Bloodlust)&equipped(132410)}}'},
+	{'#trinket2', 'target.range<=40&target.area(10).enemies>=4'},
 }
 
 local Survival = {
-	{'Ice Block', 'player.health<=20||player.debuff(Cauterize)'},
+	{'!Ice Block', 'player.health<=20||player.debuff(Cauterize)'},
 	{'Blazing Barrier' , '!player.buff(Blazing Barrier)'},
 }
 
