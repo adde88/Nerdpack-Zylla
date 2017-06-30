@@ -72,8 +72,8 @@ local Finishers = {
 }
 
 local Blade_Flurry = {
-	{'Blade Flurry', 'player.area(7).enemies>3&!player.buff(Blade Flurry)'},
-	{'Blade Flurry', 'player.area(7).enemies<2&player.buff(Blade Flurry)'},
+	{'Blade Flurry', 'player.area(7).enemies>=3&!player.buff(Blade Flurry)'},
+	{'Blade Flurry', 'player.area(7).enemies<=2&player.buff(Blade Flurry)'},
 }
 
 local Cooldowns = {
