@@ -45,7 +45,7 @@ end
 
 local PreCombat = {
 	{'Stealth', '!player.buff(Stealth)||!player.buff(Shadowmeld)'},
-	{'Shadowstrike', 'stealthed&target.range<=15&target.inFront'},
+	{'Shadowstrike', 'stealthed&target.range<25&target.inFront'},
 }
 
 local Keybinds = {
@@ -57,7 +57,7 @@ local Interrupts = {
 	{'!Kick'},
 	{'!Cheap Shot', 'cooldown(Kick).remains>gcd&player.buff(Stealth)&target.inFront&target.inMelee'},
 	{'!Kidney Shot', 'cooldown(Kick).remains>gcd&combo_points>0&target.inFront&target.inMelee'},
-	{'!Blind', 'cooldown(Kick).remains>gcd&target.inFront&target.range<=15&cooldown(Kidney Shot).remains>gcd'},
+	{'!Blind', 'cooldown(Kick).remains>gcd&target.inFront&target.range<25&cooldown(Kidney Shot).remains>gcd'},
 }
 
 local Survival ={
@@ -65,7 +65,7 @@ local Survival ={
 }
 
 local Builders = {
-	{'Shuriken Storm', 'player.area(10).enemies>=2'},
+	{'Shuriken Storm', 'player.area(10).enemies>1'},
 	--{'Gloomblade'},
 	{'Backstab'},
 }
@@ -75,29 +75,29 @@ local Cooldowns ={
 	{'Berserking', 'stealthed'},
 	{'Shadow Blades', '!stealthed||!player.buff(Shadowmeld)'},
 	{'Goremaw\'s Bite', '!player.buff(Shadow Dance)&{{combo_points.deficit>={4-parser_bypass2}*2&energy.deficit>{50+talent(3,3).enabled*25-parser_bypass3}*15}||target.time_to_die<8}'},
-	{'Marked for Death', 'target.time_to_die<combo_points.deficit||combo_points.deficit>=5'},
+	{'Marked for Death', 'target.time_to_die<combo_points.deficit||combo_points.deficit>4'},
 }
 
 local Finishers = {
 	{'Enveloping Shadows', 'player.buff(Enveloping Shadows).remains<target.time_to_die&player.buff(Enveloping Shadows).remains<=combo_points*1.8'},
-	{'Death from Above', 'player.area(8).enemies>=6'},
+	{'Death from Above', 'player.area(8).enemies>5'},
 	{'Nightblade', 'target.time_to_die>8&{{dot.refreshable(Nightblade){!artifact(Finality).enabled||player.buff(Finality: Nightblade)}}||target.dot(Nightblade).remains<target.dot(Nightblade).tick_time}'},
 	{'Death from Above'},
 	{'Eviscerate'},
 }
 
 local Stealth_Cooldowns = {
-	{'Shadow Dance', '!stealthed&cooldown(Shadow Dance).charges>=2.65'},
+	{'Shadow Dance', '!stealthed&cooldown(Shadow Dance).charges>1.65'},
 	{'Vanish', '!stealthed'},
-	{'Shadow Dance', '!stealthed&cooldown(Shadow Dance).charges>=2&combo_points<=1'},
-	{'Shadowmeld', 'player.energy>=40-variable.ssw_er&energy.deficit>10'},
-	{'Shadow Dance', '!stealthed&combo_points<=1'},
+	{'Shadow Dance', '!stealthed&cooldown(Shadow Dance).charges>1&combo_points<2'},
+	{'Shadowmeld', 'player.energy>30-variable.ssw_er&energy.deficit>10'},
+	{'Shadow Dance', '!stealthed&combo_points<2'},
 }
 
 local Stealthed = {
 	{'Symbols of Death', '!player.buff(Shadowmeld)&{{player.buff(Symbols of Death).remains<target.time_to_die-4&player.buff(Symbols of Death).remains<=player.buff(Symbols of Death).duration*0.3}||{xequipped(137032)&energy.time_to_max<0.25}}'},
-	{Finishers, 'combo_points>=5'},
-	{'Shuriken Storm', '!player.buff(Shadowmeld)&{{combo_points.deficit>=3&player.area(10).enemies>=2+talent(6,1).enabled+xequipped(137032)}||player.buff(The Dreadlord\'s Deceit).stack>=29}'},
+	{Finishers, 'combo_points>4'},
+	{'Shuriken Storm', '!player.buff(Shadowmeld)&{{combo_points.deficit>2&player.area(10).enemies>1+talent(6,1).enabled+xequipped(137032)}||player.buff(The Dreadlord\'s Deceit).stack>19}'},
 	{'Shadowstrike'},
 }
 
@@ -105,8 +105,8 @@ local xCombat = {
 	{Cooldowns, 'toggle(Cooldowns)'},
 	--# Fully switch to the Stealthed Rotation {by doing so, it forces pooling if nothing is available}
 	{Stealthed, 'stealthed||player.buff(Shadowmeld)'},
-	{Finishers, 'combo_points>=5||{combo_points>=4&player.area(10).enemies>=3&player.area(10).enemies<=4}'},
-	{Stealth_Cooldowns, 'combo_points.deficit>=2+talent(6,1).enabled&{variable.ed_threshold||{cooldown(Shadowmeld).up&!cooldown(Vanish).up&cooldown(Shadow Dance).charges<=1}||target.time_to_die<12||player.area(10).enemies>=5}'},
+	{Finishers, 'combo_points>4||{combo_points>3&player.area(10).enemies>2&player.area(10).enemies<5}'},
+	{Stealth_Cooldowns, 'combo_points.deficit>1+talent(6,1).enabled&{variable.ed_threshold||{cooldown(Shadowmeld).up&!cooldown(Vanish).up&cooldown(Shadow Dance).charges<2}||target.time_to_die<12||player.area(10).enemies>4}'},
 	{Builders, 'variable.ed_threshold'},
 }
 

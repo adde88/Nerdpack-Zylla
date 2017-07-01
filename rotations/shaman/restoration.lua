@@ -142,34 +142,34 @@ local Dispel = {
 local DPS = {
 	{'Flame Shock', '{!moving||moving}&!target.debuff(Flame Shock)'},
 	{'Lava Burst', 'target.debuff(Flame Shock).duration>spell(Lava Burst).casttime'},
-	{'Chain Lightning', 'player.area(40).enemies>=2', 'target'},
+	{'Chain Lightning', 'player.area(40).enemies>1', 'target'},
 	{'Lightning Bolt', nil, 'target'},
 }
 
 local Tank = {
-	{'Riptide', '{!moving||moving}&tank.buff(Riptide).duration<=5||tank.health<=UI(T_FRT)', 'tank'},
+	{'Riptide', '{!moving||moving}&tank.buff(Riptide).duration<6||tank.health<=UI(T_FRT)', 'tank'},
 	{{ -- Spiritwalker's Grace
 		{'Healing Surge', 'tank.health<=UI(T_HS)', 'tank'},
-		{'Healing Rain', 'advanced&UI(T_HRE)&toggle(AoE)&tank.area(10,90).heal>=1', 'tank.ground'},
-		{'Chain Heal', 'UI(T_CHE)&toggle(AoE)&tank.area(40,80).heal>=2', 'tank'},
+		{'Healing Rain', 'advanced&UI(T_HRE)&toggle(AoE)&tank.area(10,90).heal>0', 'tank.ground'},
+		{'Chain Heal', 'UI(T_CHE)&toggle(AoE)&tank.area(40,80).heal>1', 'tank'},
 	}, {'!moving||player.buff(Spiritwalker\'s Grace)&moving'}},
 }
 
 local Player = {
-	{'Riptide', '{!moving||moving}&player.buff(Riptide).duration<=5||player.health<=UI(P_FRT)', 'player'},
+	{'Riptide', '{!moving||moving}&player.buff(Riptide).duration<6||player.health<=UI(P_FRT)', 'player'},
 	{{ -- Spiritwalker's Grace
 		{'Healing Surge', 'player.health<=UI(P_HS)', 'player'},
-		{'Healing Rain', 'advanced&UI(P_HRE)&toggle(AoE)&player.area(10,90).heal>=2', 'player.ground'},
-		{'Chain Heal', 'UI(P_CHE)&toggle(AoE)&player.area(40,80).heal>=2', 'player'},
+		{'Healing Rain', 'advanced&UI(P_HRE)&toggle(AoE)&player.area(10,90).heal>1', 'player.ground'},
+		{'Chain Heal', 'UI(P_CHE)&toggle(AoE)&player.area(40,80).heal>1', 'player'},
 	}, {'!moving||player.buff(Spiritwalker\'s Grace)&moving'}},
 }
 
 local Lowest = {
-	{'Riptide', 'buff(Riptide).duration<=5||health<=UI(L_FRT)', 'lnbuff(Riptide)'},
+	{'Riptide', 'buff(Riptide).duration<6||health<=UI(L_FRT)', 'lnbuff(Riptide)'},
 	{{ -- Spiritwalker's Grace
 		{'Healing Wave', 'lowest.health<=UI(L_HW)', 'lowest'},
-		{'Healing Rain', 'advanced&UI(L_HRE)&toggle(AoE)&lowest.area(10,90).heal>=2', 'lowest.ground'},
-		{'Chain Heal', 'UI(L_CHE)&toggle(AoE)&lowest.area(40,80).heal>=2', 'lowest'},
+		{'Healing Rain', 'advanced&UI(L_HRE)&toggle(AoE)&lowest.area(10,90).heal>1', 'lowest.ground'},
+		{'Chain Heal', 'UI(L_CHE)&toggle(AoE)&lowest.area(40,80).heal>1', 'lowest'},
 		{'Healing Surge', 'lowest.health<=UI(L_HS)', 'lowest'},
 	}, {'!moving||player.buff(Spiritwalker\'s Grace)&moving'}},
 }
@@ -186,16 +186,16 @@ local inCombat = {
 	{Tank, 'tank.exists&tank.health<100'},
 	{Lowest, 'lowest.health<100'},
 	{Player, 'player.health<100'},
-	{Interrupts, 'toggle(interrupts)&target.interruptAt(70)&target.inFront&target.range<=30'},
+	{Interrupts, 'toggle(interrupts)&target.interruptAt(70)&target.inFront&target.range<40'},
 	{DPS, 'toggle(yuDPS)&target.range<40&target.inFront'},
 }
 
 local outCombat = {
 	{Dispel, 'toggle(yuPS)&spell(Purify Spirit).cooldown<gcd'},
-	{Interrupts, 'toggle(interrupts)&target.interruptAt(70)&target.inFront&target.range<=30'},
+	{Interrupts, 'toggle(interrupts)&target.interruptAt(70)&target.inFront&target.range<40'},
 	{'Riptide', 'health<100', 'lnbuff(Riptide)'},
 	{Lowest, 'lowest.health<100'},
-	{'Ghost Wolf', 'movingfor>=2&!player.buff(Ghost Wolf)'},
+	{'Ghost Wolf', 'movingfor>1&!player.buff(Ghost Wolf)'},
 }
 
 NeP.CR:Add(264, {

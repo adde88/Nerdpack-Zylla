@@ -62,11 +62,11 @@ local Interrupts = {
 local Cooldowns = {
 	--# Executed every time the actor is available.
 	{'Time Warp', 'toggle(xTimeWarp)&{{xtime=0&!player.buff(Bloodlust)}||{!player.buff(Bloodlust)&equipped(132410)}}'},
-	{'#trinket2', 'target.range<=40&target.area(10).enemies>=4'},
+	{'#trinket2', 'target.range<50&target.area(10).enemies>3'},
 }
 
 local Survival = {
-	{'!Ice Block', 'player.health<=20||player.debuff(Cauterize)'},
+	{'!Ice Block', 'player.health<30||player.debuff(Cauterize)'},
 	{'Blazing Barrier' , '!player.buff(Blazing Barrier)'},
 }
 
@@ -101,7 +101,7 @@ local RoP = {
 	{'Pyroblast', 'player.buff(Kael\'thas\'s Ultimate Ability)'},
 	{'&Fire Blast', 'player.buff(Heating Up)&!player.lastcast(Fire Blast)&!player.casting(Rune of Power)&!player.lastcast(Phoenix\'s Flames)'},
 	{'Phoenix\'s Flames', '!player.lastgcd(Phoenix\'s Flames)'},
-	{'Scorch', 'target.health<=25&equipped(132454)'},
+	{'Scorch', 'target.health<35&equipped(132454)'},
 	{'Fireball'}
 }
 
@@ -110,7 +110,7 @@ local MainRotation = {
 	{'Phoenix\'s Flames', 'artifact(Phoenix\'s Flames).enabled&{action(Phoenix\'s Flames).charges>2.7&target.area(8).enemies>2}'},
 	{'Flamestrike', 'talent(6,3)&target.area(10).enemies>2&player.buff(Hot Streak!)', 'target.ground'},
 	{'&Pyroblast', 'player.buff(Hot Streak!)&!player.lastgcd(Pyroblast)&{player.casting(Fireball).percent>90||player.lastcast(Fireball)}'},
-	{'Pyroblast', 'player.buff(Hot Streak!)&target.health<=25&equipped(132454)'},
+	{'Pyroblast', 'player.buff(Hot Streak!)&target.health<35&equipped(132454)'},
 	{'Pyroblast', 'player.buff(Kael\'thas\'s Ultimate Ability)'},
 	{Talents},
 	--{'&Fire Blast', 'player.buff(Heating Up)&!prev_off_gcd(Fire Blast)&action(Fire Blast).charges>0&cooldown(Combustion).remains<action(Fire Blast).cooldown_to_max'},
@@ -118,12 +118,12 @@ local MainRotation = {
 	{'&Fire Blast', 'player.casting(Fireball).percent>40&xtime>3&!player.casting(Rune of Power)&talent(7,1)&player.buff(Heating Up)&!player.lastcast(Fire Blast)&{!talent(3,2)||action(Fire Blast).charges>1.5||cooldown(Combustion).remains<40}&{3-action(Fire Blast).charges}*{18*spell_haste}<=cooldown(Combustion).remains+3'},
 	{'Phoenix\'s Flames', '{player.buff(Combustion)||player.buff(Rune of Power)||player.buff(Incanter\'s Flow).stack>3||talent(3,1)}&{4-action(Phoenix\'s Flames).charges}*13<cooldown(Combustion).remains+5||target.time_to_die<10'},
 	{'Phoenix\'s Flames', '{player.buff(Combustion)||player.buff(Rune of Power)}&{4-action(Phoenix\'s Flames).charges}*30<cooldown(Combustion).remains+5'},
-	{'Scorch', 'target.health<=25&equipped(132454)'},
+	{'Scorch', 'target.health<35&equipped(132454)'},
 	{'Ice Floes', 'cooldown(61304).remains<0.5&xmoving=1&!player.lastcast(Ice Floes)&!player.buff(Ice Floes)'},
 	{'Fireball', 'xmoving=0||player.buff(Ice Floes)'},
 	{'Ice Barrier', '!player.buff(Ice Barrier)&!player.buff(Combustion)&!player.buff(Rune of Power)'},
 	{'Scorch', 'xmoving=1&!player.buff(Ice Floes)'},
-	{'Dragon\'s Breath', 'target.range<=12&player.area(10).enemies>1'},
+	{'Dragon\'s Breath', 'target.range<22&player.area(10).enemies>1'},
 }
 
 local xCombat = {
@@ -138,10 +138,10 @@ local inCombat = {
 	{Trinkets},
 	{Heirlooms},
 	{Keybinds},
-	{Interrupts, 'target.interruptAt(70)&toggle(interrupts)&target.inFront&target.range<=40'},
+	{Interrupts, 'target.interruptAt(70)&toggle(interrupts)&target.inFront&target.range<50'},
 	{Cooldowns, 'toggle(cooldowns)'},
 	{Survival, 'player.health<100'},
-	{xCombat, 'target.range<=40&target.inFront'},
+	{xCombat, 'target.range<50&target.inFront'},
 }
 
 local outCombat = {

@@ -51,14 +51,14 @@ local Interrupts = {
 }
 
 local preCombat = {
-	{'Tricks of the Trade', '!focus.buff&pull_timer<=4', 'focus'},
-	{'Tricks of the Trade', '!tank.buff&pull_timer<=4', 'tank'},
-	{'#Potion of the Old War', '!player.buff&pull_timer<=2&UI(ow)'},
+	{'Tricks of the Trade', '!focus.buff&pull_timer<5', 'focus'},
+	{'Tricks of the Trade', '!tank.buff&pull_timer<5', 'tank'},
+	{'#Potion of the Old War', '!player.buff&pull_timer<3&UI(ow)'},
 }
 
 local Survival = {
 	--{'Feint', ''},
-	{'Crimson Vial', 'player.health<=UI(cv)&player.energy>=35'},
+	{'Crimson Vial', 'player.health<=UI(cv)&player.energy>25'},
 	{'Evasion', 'player.health<=UI(E_HP)'},
 	{'#Ancient Healing Potion', 'UI(hp_check)&player.health<=UI(hp_spin)'},
 	{'#Healthstone', 'UI(hs_check)&player.health<=UI(hs_spin)'},
@@ -66,9 +66,9 @@ local Survival = {
 }
 
 local Cooldowns= {
-	{'Vendetta', 'player.energy<=50'},
-	{'Vanish', '!player.buff(Stealth)&player.combopoints>=4&UI(van)'},
-	{'#Potion of the Old War', 'UI(ow)&player.hashero||UI(ow)&target.ttd<=25'},
+	{'Vendetta', 'player.energy<60'},
+	{'Vanish', '!player.buff(Stealth)&player.combopoints>3&UI(van)'},
+	{'#Potion of the Old War', 'UI(ow)&player.hashero||UI(ow)&target.ttd<35'},
 }
 
 local TricksofTrade = {
@@ -77,45 +77,45 @@ local TricksofTrade = {
 }
 
 local Ranged = {
-	{'Poisoned Knife', 'player.energy>=160&player.combopoints<=4'},
-	{'Poisoned Knife', '&target.debuff(Agonizing Poison).duration<=2'},
+	{'Poisoned Knife', 'player.energy>060&player.combopoints<5'},
+	{'Poisoned Knife', '&target.debuff(Agonizing Poison).duration<3'},
 }
 
 local inStealth = {
-	{'Rupture', 'player.lastcast(Vanish)&player.combopoints>=5'},
-	{'Garrote', 'player.buff(Stealth)&player.combopoints<=4&target.debuff.duration<=5.4'},
+	{'Rupture', 'player.lastcast(Vanish)&player.combopoints>4'},
+	{'Garrote', 'player.buff(Stealth)&player.combopoints<5&target.debuff.duration<6.4'},
 }
 
 local Poisons = {
-	{'Deadly Poison', 'player.buff.duration<=600&!player.lastcast&!talent(6,1)'},
-	{'Agonizing Poison', 'player.buff.duration<=600&!player.lastcast&talent(6,1)'},
-	{'Leeching Poison', 'player.buff.duration<=600&!player.lastcast&talent(4,1)'},
-	{'Crippling Poison', 'player.buff.duration<=600&!player.lastcast&!talent(4,1)'},
+	{'Deadly Poison', 'player.buff.duration<700&!player.lastcast&!talent(6,1)'},
+	{'Agonizing Poison', 'player.buff.duration<700&!player.lastcast&talent(6,1)'},
+	{'Leeching Poison', 'player.buff.duration<700&!player.lastcast&talent(4,1)'},
+	{'Crippling Poison', 'player.buff.duration<700&!player.lastcast&!talent(4,1)'},
 }
 
 local xCombat = {
 	{Survival},
 	-- Rupture
 	{'Rupture', 'player.buff(Vanish)&toggle(cooldowns)'},
-	{'Rupture', 'target.debuff.duration<=7.2&player.combopoints>=4&player.spell(Vanish).cooldown&target.ttd>=6'},
+	{'Rupture', 'target.debuff.duration<8.2&player.combopoints>3&player.spell(Vanish).cooldown&target.ttd>5'},
 	-- Multi DoT Rupture
-	{'Rupture', 'target.enemy&target.inMelee&target.debuff.duration<=7.2&player.combopoints>=4', 'target'},
-	{'Rupture', 'focus.enemy&focus.inMelee&focus.debuff.duration<=7.2&player.combopoints>=4&focus.enemy&UI(multi)', 'focus'},
-	{'Rupture', 'mouseover.enemy&mouseover.inMelee&mouseover.debuff.duration<=7.2&player.combopoints>=4&UI(multi)', 'mouseover'},
-	{'Garrote', 'target.debuff.duration<=5.4&player.combopoints<=4&target.inMelee'},
+	{'Rupture', 'target.enemy&target.inMelee&target.debuff.duration<8.2&player.combopoints>3', 'target'},
+	{'Rupture', 'focus.enemy&focus.inMelee&focus.debuff.duration<8.2&player.combopoints>3&focus.enemy&UI(multi)', 'focus'},
+	{'Rupture', 'mouseover.enemy&mouseover.inMelee&mouseover.debuff.duration<8.2&player.combopoints>3&UI(multi)', 'mouseover'},
+	{'Garrote', 'target.debuff.duration<6.4&player.combopoints<5&target.inMelee'},
 	-- Use Mutilate till 4/5 combopoints for rupture
-	{'Mutilate', '!target.debuff(Rupture)&player.combopoints<=3&target.inMelee'},
-	{'Kingsbane', '!talent(6,3)&player.buff(Envenom)&target.debuff(Vendetta)&target.debuff(Surge of Toxins)&target.ttd>=10'},
-	{'Kingsbane', '!talent(6,3)&player.buff(Envenom)&player.spell(Vendetta).cooldown<=5.8&target.ttd>=10'},
-	{'Kingsbane', '!talent(6,3)&player.buff(Envenom)&player.spell(Vendetta).cooldown>=10&target.ttd>=10'},
-	{'Envenom', 'player.combopoints>=3&target.debuff(Surge of Toxins).duration<=0.5&target.debuff(Vendetta)'},
-	{'Envenom', 'player.combopoints>=4&target.debuff(Vendetta)'},
-	{'Envenom', 'player.combopoints>=4&target.debuff(Surge of Toxins).duration<=0.5'},
-	{'Envenom', 'player.combopoints>=4&player.energy>=160'},
-	{'Fan of Knives', 'player.area(10).enemies>=3&player.combopoints<=4'},
-	{'Mutilate', 'player.combopoints<=3&player.buff(Envenom)&target.inMelee'},
-	{'Mutilate', 'player.spell(Vendetta).cooldown<=5&player.combopoints<=3&target.inMelee'},
-	{'Mutilate', 'player.combopoints<=3&target.inMelee'},
+	{'Mutilate', '!target.debuff(Rupture)&player.combopoints<4&target.inMelee'},
+	{'Kingsbane', '!talent(6,3)&player.buff(Envenom)&target.debuff(Vendetta)&target.debuff(Surge of Toxins)&target.ttd>00'},
+	{'Kingsbane', '!talent(6,3)&player.buff(Envenom)&player.spell(Vendetta).cooldown<6.8&target.ttd>00'},
+	{'Kingsbane', '!talent(6,3)&player.buff(Envenom)&player.spell(Vendetta).cooldown>00&target.ttd>00'},
+	{'Envenom', 'player.combopoints>2&target.debuff(Surge of Toxins).duration<=0.5&target.debuff(Vendetta)'},
+	{'Envenom', 'player.combopoints>3&target.debuff(Vendetta)'},
+	{'Envenom', 'player.combopoints>3&target.debuff(Surge of Toxins).duration<=0.5'},
+	{'Envenom', 'player.combopoints>3&player.energy>060'},
+	{'Fan of Knives', 'player.area(10).enemies>2&player.combopoints<5'},
+	{'Mutilate', 'player.combopoints<4&player.buff(Envenom)&target.inMelee'},
+	{'Mutilate', 'player.spell(Vendetta).cooldown<6&player.combopoints<4&target.inMelee'},
+	{'Mutilate', 'player.combopoints<4&target.inMelee'},
 }
 
 local inCombat = {
@@ -135,7 +135,7 @@ local outCombat= {
 	-- Poisons
 	{Poisons},
 	{'Rupture', 'target.inMelee&target.enemy&player.buff(Vanish)'},
-	{'Garrote', 'target.inMelee&target.enemy&player.buff(Stealth)&player.combopoints<=4&target.debuff.duration<=5.4'},
+	{'Garrote', 'target.inMelee&target.enemy&player.buff(Stealth)&player.combopoints<5&target.debuff.duration<6.4'},
 	{'Stealth', '!player.buff&!player.buff(Vanish)&!nfly'},
 	{Keybinds},
 	{preCombat},

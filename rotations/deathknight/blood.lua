@@ -39,7 +39,7 @@ local PreCombat = {
 }
 
 local Survival = {
-	{'Icebound Fortitude', 'player.health<=25||player.incdmg(2.5)>player.health.max*0.50||player.state(stun)'},
+	{'Icebound Fortitude', 'player.health<35||player.incdmg(2.5)>player.health.max*0.50||player.state(stun)'},
 	{'Anti-Magic Shell', 'player.incdmg(2.5).magic>player.health.max*0.50'},
 	{'Wraith Walk', 'player.state(root)'},
 }
@@ -51,27 +51,27 @@ local Keybinds = {
 }
 
 local Cooldowns = {
-	{'Dancing Rune Weapon', 'target.inFront&target.inMelee&{{player.incdmg(2.5)>player.health.max*0.50}||{player.health<=20}}'},
-	{'Vampiric Blood', 'player.incdmg(2.5)>player.health.max*0.50||player.health<=40'},
+	{'Dancing Rune Weapon', 'target.inFront&target.inMelee&{{player.incdmg(2.5)>player.health.max*0.50}||{player.health<30}}'},
+	{'Vampiric Blood', 'player.incdmg(2.5)>player.health.max*0.50||player.health<50'},
 }
 
 local Interrupts = {
 	{'!Mind Freeze', 'target.inFront&target.inMelee'},
-	{'!Asphyxiate', 'target.range<=20&cooldown(Mind Freeze).remains>gcd&!prev_gcd(Mind Freeze)'},
+	{'!Asphyxiate', 'target.range<30&cooldown(Mind Freeze).remains>gcd&!prev_gcd(Mind Freeze)'},
 	{'!Arcane Torrent', 'target.inMelee&cooldown(Mind Freeze).remains>gcd&!prev_gcd(Mind Freeze)'},
 }
 
 local xCombat = {
-	{'Death Grip', '!target.inMelee&target.range<=30&target.threat<99&target.combat'},
-	{'Death\'s Caress', 'target.range<=30&{{!target.debuff(Blood Plague)}||{target.debuff(Blood Plague).remains<=2}}'},
-	{'Marrowrend', 'player.buff(Bone Shield).duration<=3&target.inFront&target.inMelee'},
-	{'Marrowrend', 'player.buff(Bone Shield).count<=6&talent(3,1)&target.inFront&target.inMelee'},
-	{'Blood Boil', '!target.debuff(Blood Plague)&target.range<=10'},
-	{'Death and Decay', 'target.range<=30&{{talent(2,1)&player.buff(Crimson Scourge)}||{player.area(10).enemies>1&player.buff(Crimson Scourge}}', 'target.ground'},
-	{'Death and Decay', 'target.range<=30&{{talent(2,1)&player.runes>=3}||{player.area(10).enemies>=3}}', 'target.ground'},
-	{'Death and Decay', '!talent(2,1)&target.range<=30&player.area(10).enemies=1&player.buff(Crimson Scourge)', 'target.ground'},
-	{'Death Strike', 'player.runicpower>=75&target.inFront&target.inMelee'},
-	{'Heart Strike', 'player.runes>=3&target.inFront&target.inMelee'},
+	{'Death Grip', '!target.inMelee&target.range<40&target.threat<99&target.combat'},
+	{'Death\'s Caress', 'target.range<40&{{!target.debuff(Blood Plague)}||{target.debuff(Blood Plague).remains<3}}'},
+	{'Marrowrend', 'player.buff(Bone Shield).duration<4&target.inFront&target.inMelee'},
+	{'Marrowrend', 'player.buff(Bone Shield).count<7&talent(3,1)&target.inFront&target.inMelee'},
+	{'Blood Boil', '!target.debuff(Blood Plague)&target.range<20'},
+	{'Death and Decay', 'target.range<40&{{talent(2,1)&player.buff(Crimson Scourge)}||{player.area(10).enemies>1&player.buff(Crimson Scourge}}', 'target.ground'},
+	{'Death and Decay', 'target.range<40&{{talent(2,1)&player.runes>2}||{player.area(10).enemies>2}}', 'target.ground'},
+	{'Death and Decay', '!talent(2,1)&target.range<40&player.area(10).enemies=1&player.buff(Crimson Scourge)', 'target.ground'},
+	{'Death Strike', 'player.runicpower>65&target.inFront&target.inMelee'},
+	{'Heart Strike', 'player.runes>2&target.inFront&target.inMelee'},
 	{'Consumption', 'target.inFront&target.inMelee'},
 }
 

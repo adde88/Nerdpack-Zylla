@@ -41,16 +41,16 @@ end
 local Survival = {
 	{'Life Tap', 'player.moving&player.health>=UI(k_LTHP)'},
 	{'Life Tap', '{talent(2,3)&!player.buff(Empowered Life Tap)}&player.health>=UI(k_LTHP)'},
-	{'Unending Resolve', 'player.health<=30'},
-	{'Dark Pact', 'player.health<=30&pet.health>=35'},
+	{'Unending Resolve', 'player.health<40'},
+	{'Dark Pact', 'player.health<40&pet.health>25'},
 	{'Drain Life', 'player.health<=UI(k_DLHP)'},
 	{'Health Funnel', 'pet.health<=UI(k_HFHP)&player.health>=UI(k_HFHP2)'},
-	{'119899', 'player.health<=55'}
+	{'119899', 'player.health<65'}
 }
 
 local Cooldowns = {
-	{'Summon Doomguard', '!target.area(10).enemies>=3||!player.area(10).enemies>=3'},
-	{'Summon Infernal', 'target.area(10).enemies>=3||player.area(10).enemies>=3'},
+	{'Summon Doomguard', '!target.area(10).enemies>2||!player.area(10).enemies>2'},
+	{'Summon Infernal', 'target.area(10).enemies>2||player.area(10).enemies>2'},
 	{'Grimoire: Imp'},
 }
 
@@ -62,23 +62,23 @@ local Keybinds = {
 }
 
 local Interrupts = {
-	{'!Fear', 'target.inFront&target.range<=30&UI(k_FEAR)'},
+	{'!Fear', 'target.inFront&target.range<40&UI(k_FEAR)'},
 }
 
 local xCombat = {
-	{'Immolate', 'target.debuff(Immolate).duration<=5.4'},
+	{'Immolate', 'target.debuff(Immolate).duration<6.4'},
 	{'Summon Infernal', 'artifact(Lord of Flames).enabled'},
 	{'Soul Harvest', 'target.debuff(Immolate)'},
 	{'Chaos Bolt', 'player.soulshards=5'},
-	{'Dimensional Rift', '{player.spell(Dimensional Rift).charges>=2}||{player.soulshards<5&player.moving}'},
+	{'Dimensional Rift', '{player.spell(Dimensional Rift).charges>1}||{player.soulshards<5&player.moving}'},
 	{'Channel Demonfire', 'target.debuff(Immolate)'},
-	{'Rain of Fire', 'target.area(10).enemies>=4||player.area(10).enemies>=4'},
+	{'Rain of Fire', 'target.area(10).enemies>3||player.area(10).enemies>3'},
 	{'Conflagrate', 'player.soulshards<5'},
-	{'Shadowburn', 'talent(1,3)&player.soulshards<=2'},
+	{'Shadowburn', 'talent(1,3)&player.soulshards<3'},
 	{'Chaos Bolt'},
 	{'Incinerate'},
 	{'Havoc', '!focus.debuff(Havoc)', 'focus.enemy'},
-	{'Cataclysm', 'talent(4,1)&target.area(8).enemies>=3'},
+	{'Cataclysm', 'talent(4,1)&target.area(8).enemies>2'},
 	{'Summon Imp', '!pet.exist||!pet.alive'},
 }
 
@@ -87,15 +87,15 @@ local inCombat = {
 	{Trinkets},
 	{Heirlooms},
 	{Keybinds},
-	{Interrupts, 'toggle(Interrupts)&target.inFront&target.range<=40'},
+	{Interrupts, 'toggle(Interrupts)&target.inFront&target.range<50'},
 	{Survival, 'player.health<100'},
 	{Cooldowns, 'toggle(Cooldowns)'},
-	{xCombat, 'target.range<=40&target.inFront'},
+	{xCombat, 'target.range<50&target.inFront'},
 }
 
 local outCombat = {
 	{Keybinds},
-	{Interrupts, 'toggle(Interrupts)&target.inFront&target.range<=40'},
+	{Interrupts, 'toggle(Interrupts)&target.inFront&target.range<50'},
 	{'Summon Imp', '!pet.exists||!pet.alive'},
 	{'Create Healthstone', 'item.count(Healthstone)=0&!lastcast(Create Healthstone)'},
 }

@@ -71,7 +71,7 @@ local inCombat = {
 	{Keybinds},
 	{Survival, 'player.health<100'},
 	{Cooldowns, 'toggle(Cooldowns)'},
-	{AoE, 'toggle(AoE)&player.area(8).enemies>=3'},
+	{AoE, 'toggle(AoE)&player.area(8).enemies>2'},
 	{ST, 'target.inMelee&target.inFront'}
 }
 

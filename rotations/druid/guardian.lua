@@ -49,8 +49,8 @@ local Interrupts = {
 local Survival = {
 	--{'/run CancelShapeshiftForm()', 'form>0&talent(3,3)&!player.buff(Rejuvenation)'},
 	--{'Rejuvenation', 'talent(3,3)&!player.buff(Rejuvenation)', 'player'},
-	--{'/run CancelShapeshiftForm()', 'form>0&talent(3,3)&player.health<=75'},
-	--{'Swiftmend', 'talent(3,3)&player.health<=75', 'player'},
+	--{'/run CancelShapeshiftForm()', 'form>0&talent(3,3)&player.health<85'},
+	--{'Swiftmend', 'talent(3,3)&player.health<85', 'player'},
 	{'Barkskin'},
 	{'Bristling Fur', 'player.buff(Ironfur).remains<2&player.rage<40'},
 	{'Mark of Ursol', '!player.buff(Mark of Ursol)&player.incdmg_magic(5)>1'},
@@ -64,17 +64,17 @@ local Cooldowns = {
 }
 
 local xCombat = {
-	{'Moonfire', 'player.buff(Galactic Guardian)&rage.deficit>=20'},
+	{'Moonfire', 'player.buff(Galactic Guardian)&rage.deficit>10'},
 	{'Pulverize', 'talent(7,3)&!player.buff(Pulverize)'},
 	{'Mangle'},
 	{'Pulverize', 'talent(7,3)&player.buff(Pulverize).remains<gcd'},
 	{'Lunar Beam'},
 	{'Incarnation: Guardian of Ursoc'},
-	{'Thrash', 'player.area(8).enemies>=2'},
+	{'Thrash', 'player.area(8).enemies>1'},
 	{'Pulverize', 'talent(7,3)&player.buff(Pulverize).remains<3.6'},
 	{'Thrash', 'talent(7,3)&player.buff(Pulverize).remains<3.6'},
 	{'Moonfire', '!target.dot(Moonfire).ticking||target.dot(Moonfire).remains<=gcd'},
-	{'&Maul', 'rage.deficit<=20'},
+	{'&Maul', 'rage.deficit<30'},
 	{'Swipe'},
 }
 

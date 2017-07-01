@@ -40,8 +40,8 @@ local exeOnLoad = function()
 end
 
 local Survival ={
-	{'Crimson Vial', 'player.health<=65'},
-	{'Riposte', 'player.health<=45||player.incdmg(5)>player.health.max*0.20'},
+	{'Crimson Vial', 'player.health<75'},
+	{'Riposte', 'player.health<55||player.incdmg(5)>player.health.max*0.20'},
 	{'Cloak of Shadows', 'incdmg(5).magic>player.health.max'},
 }
 
@@ -53,40 +53,40 @@ local Keybinds = {
 
 local Interrupts = {
 	{'!Kick', 'target.inMelee'},
-	{'!Between the Eyes', 'target.range<=20&cooldown(Kick).remains>gcd&combo_points>0'},
-	{'!Blind', 'target.range<=15&cooldown(Kick).remains>gcd&cooldown(Between the Eyes)>gcd'},
+	{'!Between the Eyes', 'target.range<30&cooldown(Kick).remains>gcd&combo_points>0'},
+	{'!Blind', 'target.range<25&cooldown(Kick).remains>gcd&cooldown(Between the Eyes)>gcd'},
 	{'!Cloak of Shadows', 'cooldown(Kick).remains>gcd&cooldown(Between the Eyes)>gcd&cooldown(Blind)>gcd'},
 }
 
 local Build = {
-	{'Ghostly Strike', 'target.inMelee&combo_points.deficit>=1&target.debuff(Ghostly Strike).duration<2'},
-	{'Pistol Shot', 'target.range<=20&player.buff(Opportunity)&combo_points<5'},
-	{'Saber Slash', 'target.inMelee&{combo_points<5||{combo_points<=5&player.buff(Broadsides)}}'},
+	{'Ghostly Strike', 'target.inMelee&combo_points.deficit>0&target.debuff(Ghostly Strike).duration<2'},
+	{'Pistol Shot', 'target.range<30&player.buff(Opportunity)&combo_points<5'},
+	{'Saber Slash', 'target.inMelee&{combo_points<5||{combo_points<6&player.buff(Broadsides)}}'},
 }
 
 local Finishers = {
-	{'Between the Eyes', 'target.range<=20&combo_points>=5&player.buff(Shark Infested Waters)'},
-	{'Run Through', 'target.inMelee&combo_points>=5'},
-	{'Death from Above', 'talent(7,3)&target.area(8).enemies>=5&combo_points>=5'},
-	{'Slice and Dice', 'talent(7,1)&combo_points>=5&player.buff(Slice and Dice).remains<=2'},
+	{'Between the Eyes', 'target.range<30&combo_points>4&player.buff(Shark Infested Waters)'},
+	{'Run Through', 'target.inMelee&combo_points>4'},
+	{'Death from Above', 'talent(7,3)&target.area(8).enemies>4&combo_points>4'},
+	{'Slice and Dice', 'talent(7,1)&combo_points>4&player.buff(Slice and Dice).remains<3'},
 }
 
 local Blade_Flurry = {
-	{'Blade Flurry', 'player.area(7).enemies>=3&!player.buff(Blade Flurry)'},
-	{'Blade Flurry', 'player.area(7).enemies<=2&player.buff(Blade Flurry)'},
+	{'Blade Flurry', 'player.area(7).enemies>2&!player.buff(Blade Flurry)'},
+	{'Blade Flurry', 'player.area(7).enemies<3&player.buff(Blade Flurry)'},
 }
 
 local Cooldowns = {
-	{'Cannonball Barrage', 'target.area(10).enemies<=3', 'target.ground'},
+	{'Cannonball Barrage', 'target.area(10).enemies<4', 'target.ground'},
 	{'Adrenaline Rush', 'target.inMelee&energy.deficit>0'},
-	{'Marked for Death', 'talent(7,2)&{combo_points<=5&player.energy>=26}||pull_timer<=10'},
-	{'Curse of the Dreadblades', 'combo_points.deficit>=4&{!talent(1,1)||target.debuff(Ghostly Strike)}'},
+	{'Marked for Death', 'talent(7,2)&{combo_points<6&player.energy>16}||pull_timer<20'},
+	{'Curse of the Dreadblades', 'combo_points.deficit>3&{!talent(1,1)||target.debuff(Ghostly Strike)}'},
 	{'Killing Spree', 'talent(6,3)&energy.time_to_max>5||player.energy<15'},
 }
 
 local RollingBones ={
-	{'Roll the Bones', 'player.combopoints>=5&!player.talent(7,1)&!player.buff(Broadsides)&!player.buff(Jolly Roger)&!player.buff(Grand Melee)&!player.buff(Shark Infested Waters)&!player.buff(True Bearing)&!player.buff(Buried Treasure)'},
-	{'Roll the Bones', 'player.combopoints>=5&!player.talent(7,1)&player.spell(Adrenaline Rush).cooldown>15&player.spell(Curse of the Dreadblades).cooldown>15&!player.talent(7,1)&player.buff(Broadsides)&!player.buff(Jolly Roger)&!player.buff(Grand Melee)&!player.buff(Shark Infested Waters)&!player.buff(True Bearing)&!player.buff(Buried Treasure)||player.combopoints>=5&!player.talent(7,1)&player.spell(Adrenaline Rush).cooldown>15&player.spell(Curse of the Dreadblades).cooldown>15&!player.buff(Broadsides)&player.buff(Jolly Roger)&!player.buff(Grand Melee)&!player.buff(Shark Infested Waters)&!player.buff(True Bearing)&!player.buff(Buried Treasure)||player.combopoints>=5&!player.talent(7,1)&player.spell(Adrenaline Rush).cooldown>15&player.spell(Curse of the Dreadblades).cooldown>15&!player.buff(Broadsides)&!player.buff(Jolly Roger)&player.buff(Grand Melee)&!player.buff(Shark Infested Waters)&!player.buff(True Bearing)&!player.buff(Buried Treasure)||player.combopoints>=5&!player.talent(7,1)&player.spell(Adrenaline Rush).cooldown>15&player.spell(Curse of the Dreadblades).cooldown>15&!player.buff(Broadsides)&!player.buff(Jolly Roger)&!player.buff(Grand Melee)&player.buff(Shark Infested Waters)&!player.buff(True Bearing)&!player.buff(Buried Treasure)||player.combopoints>=5&!player.talent(7,1)&player.spell(Adrenaline Rush).cooldown>15&player.spell(Curse of the Dreadblades).cooldown>15&!player.buff(Broadsides)&!player.buff(Jolly Roger)&!player.buff(Grand Melee)&!player.buff(Shark Infested Waters)&!player.buff(True Bearing)&player.buff(Buried Treasure)'},
+	{'Roll the Bones', 'player.combopoints>4&!player.talent(7,1)&!player.buff(Broadsides)&!player.buff(Jolly Roger)&!player.buff(Grand Melee)&!player.buff(Shark Infested Waters)&!player.buff(True Bearing)&!player.buff(Buried Treasure)'},
+	{'Roll the Bones', 'player.combopoints>4&!player.talent(7,1)&player.spell(Adrenaline Rush).cooldown>15&player.spell(Curse of the Dreadblades).cooldown>15&!player.talent(7,1)&player.buff(Broadsides)&!player.buff(Jolly Roger)&!player.buff(Grand Melee)&!player.buff(Shark Infested Waters)&!player.buff(True Bearing)&!player.buff(Buried Treasure)||player.combopoints>4&!player.talent(7,1)&player.spell(Adrenaline Rush).cooldown>15&player.spell(Curse of the Dreadblades).cooldown>15&!player.buff(Broadsides)&player.buff(Jolly Roger)&!player.buff(Grand Melee)&!player.buff(Shark Infested Waters)&!player.buff(True Bearing)&!player.buff(Buried Treasure)||player.combopoints>4&!player.talent(7,1)&player.spell(Adrenaline Rush).cooldown>15&player.spell(Curse of the Dreadblades).cooldown>15&!player.buff(Broadsides)&!player.buff(Jolly Roger)&player.buff(Grand Melee)&!player.buff(Shark Infested Waters)&!player.buff(True Bearing)&!player.buff(Buried Treasure)||player.combopoints>4&!player.talent(7,1)&player.spell(Adrenaline Rush).cooldown>15&player.spell(Curse of the Dreadblades).cooldown>15&!player.buff(Broadsides)&!player.buff(Jolly Roger)&!player.buff(Grand Melee)&player.buff(Shark Infested Waters)&!player.buff(True Bearing)&!player.buff(Buried Treasure)||player.combopoints>4&!player.talent(7,1)&player.spell(Adrenaline Rush).cooldown>15&player.spell(Curse of the Dreadblades).cooldown>15&!player.buff(Broadsides)&!player.buff(Jolly Roger)&!player.buff(Grand Melee)&!player.buff(Shark Infested Waters)&!player.buff(True Bearing)&player.buff(Buried Treasure)'},
 	{'Roll the Bones', '!RtB'},
 }
 

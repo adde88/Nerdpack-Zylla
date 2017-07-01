@@ -95,7 +95,7 @@ local Keybinds = {
 -- Cast that should be interrupted
 local Interrupts = {
 	{'!Hammer of Justice', nil, 'target'},
-	{'!Blinding Light', 'target.range<=7'},
+	{'!Blinding Light', 'target.range<8'},
 }
 
 local Survival = {
@@ -110,8 +110,8 @@ local Top_Up = {
 }
 
 local DPS = {
-	{'Consecration', 'target.range<=6&target.enemy&!player.moving'},
-	{'Blinding Light', 'player.area(8).enemies>=3'},
+	{'Consecration', 'target.range<7&target.enemy&!player.moving'},
+	{'Blinding Light', 'player.area(8).enemies>2'},
 	{'Holy Shock', 'UI(O_HS)', 'target'},
 	{'Holy Prism', nil, 'target'},
 	{'Judgment'},
@@ -122,23 +122,23 @@ local Tank = {
 	{'Beacon of Light', '!talent(7,3)&!tank.buff(Beacon of Faith)&!tank.buff(Beacon of Light)', 'tank'},
 	{'Beacon of Faith', '!talent(7,3)&!tank2.buff(Beacon of Faith)&!tank2.buff(Beacon of Light)', 'tank2'},
 
-	{'Bestow Faith', '!tank.buff&talent(1,1)&tank.health<=90', 'tank'},
-	{'Bestow Faith', '!tank2.buff&talent(1,1)&tank2.health<=90', 'tank2'},
+	{'Bestow Faith', '!tank.buff&talent(1,1)&tank.health<100', 'tank'},
+	{'Bestow Faith', '!tank2.buff&talent(1,1)&tank2.health<100', 'tank2'},
 }
 
 local Encounters = {
 }
 
 local AoE_Healing = {
-	{'Beacon of Virtue', 'lowestp.area(30,95).heal>=3&talent(7,3)'},
-	{'Rule of Law', 'area(22,90).heal.inFront>=3&!player.buff&cooldown(Light of Dawn).remains<gcd'},
-	{'Light of Dawn', 'area(15,90).heal.inFront>=3&player.buff(Rule of Law)'},
-	{'Light of Dawn', 'area(15,90).heal.inFront>=3'},
+	{'Beacon of Virtue', 'lowestp.area(30,95).heal>2&talent(7,3)'},
+	{'Rule of Law', 'area(22,90).heal.inFront>2&!player.buff&cooldown(Light of Dawn).remains<gcd'},
+	{'Light of Dawn', 'area(15,90).heal.inFront>2&player.buff(Rule of Law)'},
+	{'Light of Dawn', 'area(15,90).heal.inFront>2'},
 	{'Light of Dawn', 'player.buff(Divine Purpose)'},
-	{'Holy Prism', 'target.area(15,80).heal>=3'},
+	{'Holy Prism', 'target.area(15,80).heal>2'},
 
-	{'Tyr\'s Deliverance', 'player.area(15,75).heal>=3'},
-	{'Tyr\'s Deliverance', 'player.area(22,75).heal>=3&player.buff(Rule of Law)'},
+	{'Tyr\'s Deliverance', 'player.area(15,75).heal>2'},
+	{'Tyr\'s Deliverance', 'player.area(22,75).heal>2&player.buff(Rule of Law)'},
 }
 
 local Healing = {
@@ -163,16 +163,16 @@ local Healing = {
 	{'Light of the Martyr', '!player&player.buff(Maraad\'s Dying Breath)&lowestp.health<=UI(L_FoL)', 'lowestp'},
 
 	-- Infusion of Light
-	--{'Flash of Light', 'player.buff(Infusion of Light).count>=2', 'lowestp'},
+	--{'Flash of Light', 'player.buff(Infusion of Light).count>1', 'lowestp'},
 	{'Flash of Light', 'lowestp.health<=UI(L_FoL)&player.buff(Infusion of Light)', 'lowestp'},
-	{'Flash of Light', 'player.buff(Infusion of Light).duration<=3&player.buff(Infusion of Light)', 'lowestp'},
+	{'Flash of Light', 'player.buff(Infusion of Light).duration<4&player.buff(Infusion of Light)', 'lowestp'},
 
 	-- Need player health spinner added
 	{{
 		{'Light of the Martyr', '!player&tank.health<=UI(T_LotM)', 'tank'},
 		{'Light of the Martyr', '!player&tank2.health<=UI(T_LotM)', 'tank2'},
 		{'Light of the Martyr', '!player&lowestp.health<=UI(L_LotM)', 'lowestp'},
-	}, 'player.health>=40'},
+	}, 'player.health>30'},
 
 	{'Holy Shock', 'tank.health<=UI(T_HS)', 'tank'},
 	{'Holy Shock', 'tank2.health<=UI(T_HS)', 'tank2'},
@@ -184,7 +184,7 @@ local Healing = {
 	{'Flash of Light', 'tank.health<=UI(T_FoL)', 'tank'},
 	{'Flash of Light', 'tank2.health<=UI(T_FoL)', 'tank2'},
 
-	{'!Flash of Light', 'lowestp.health<=UI(L_FoL)&player.casting(Holy Light)&player.casting.percent<=50', 'lowestp'},
+	{'!Flash of Light', 'lowestp.health<=UI(L_FoL)&player.casting(Holy Light)&player.casting.percent<60', 'lowestp'},
 	{'Flash of Light', 'lowestp.health<=UI(L_FoL)', 'lowestp'},
 	{'Flash of Light', 'mouseover.health<=UI(L_FoL)&!mouseover.enemy', 'mouseover'},
 
@@ -205,9 +205,9 @@ local Emergency = {
 local Cooldowns = {
 	-- Need to re-write for Raid and 5 Man
 	{'Lay on Hands', 'UI(LoH)&lowestp.health<=UI(L_LoH)&!lowestp.debuff(Forbearance).any', 'lowestp'},
-	{'Aura Mastery', 'UI(AM)&player.area(40,40).heal>=4'},
-	{'Avenging Wrath', 'UI(AW)&player.area(35,65).heal>=4&cooldon(Holy Shock).remains<gcd'},
-	{'Holy Avenger', 'UI(HA)&player.area(40,75).heal>=3&cooldon(Holy Shock).remains<gcd'},
+	{'Aura Mastery', 'UI(AM)&player.area(40,40).heal>3'},
+	{'Avenging Wrath', 'UI(AW)&player.area(35,65).heal>3&cooldon(Holy Shock).remains<gcd'},
+	{'Holy Avenger', 'UI(HA)&player.area(40,75).heal>2&cooldon(Holy Shock).remains<gcd'},
 
 	{'Blessing of Sacrifice', 'tank.health<=UI(T_BoS)', 'tank'},
 	{'Blessing of Sacrifice', 'tank2.health<=UI(T_BoS)', 'tank2'},
@@ -220,7 +220,7 @@ local Moving = {
 		{'Light of the Martyr', '!player&tank.health<=UI(T_LotM)', 'tank'},
 		{'Light of the Martyr', '!player&tank2.health<=UI(T_LotM)', 'tank2'},
 		{'Light of the Martyr', '!player&lowestp.health<=UI(L_LotM)', 'lowestp'},
-	}, 'player.health>=40'},
+	}, 'player.health>30'},
 
 	{'Holy Shock', 'tank.health<=UI(T_HS)', 'tank'},
 	{'Holy Shock', 'lowestp.health<=UI(L_HS)', 'lowestp'},
@@ -258,8 +258,8 @@ local outCombat = {
 	{Tank},
 	{Keybinds},
 	-- Precombat
-	{'Bestow Faith', 'pull_timer<=3', 'tank'},
-	{'#Potion of Prolonged Power', '!player.buff&pull_timer<=2'},
+	{'Bestow Faith', 'pull_timer<4', 'tank'},
+	{'#Potion of Prolonged Power', '!player.buff&pull_timer<3'},
 	{'%dispelall', 'toggle(disp)&cooldown(Cleanse).remains<gcd'},
 }
 

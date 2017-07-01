@@ -44,13 +44,13 @@ local Keybinds = {
 
 local Interrupts = {
 	{'!Pummel', 'target.inMelee&target.inFront'},
-	{'!Storm Bolt', 'target.inFront&target.range<=20&talent(2,2)&!target.immune(stun)&spell(Pummel).cooldown>gcd&!prev_gcd(Pummel)'},
+	{'!Storm Bolt', 'target.inFront&target.range<30&talent(2,2)&!target.immune(stun)&spell(Pummel).cooldown>gcd&!prev_gcd(Pummel)'},
 	{'!Arcane Torrent', 'target.inMelee&spell(Pummel).cooldown>gcd&!prev_gcd(Pummel)'},
 	{'!Shockwave', 'target.inFront&target.inMelee&talent(2,1)&!target.immune(stun)&spell(Pummel).cooldown>gcd&!prev_gcd(Pummel)'},
 }
 
 local Survival = {
-	{'Victory Rush', 'player.health<=70'},
+	{'Victory Rush', 'player.health<80'},
 }
 
 local Cooldowns = {
@@ -66,7 +66,7 @@ local Bladestorm = {
 }
 
 local Ranged = {
-	{'Storm Bolt', 'talent(2,2)&target.range<=20'},
+	{'Storm Bolt', 'talent(2,2)&target.range<30'},
 }
 
 local AoE = {
@@ -77,7 +77,7 @@ local AoE = {
 	{'Rampage', 'player.buff(Meat Cleaver)'},
 	{'Bloodthirst'},
 	{'Whirlwind'},
-	{'Shockwave', 'talent(2,1)&!target.immune(stun)&player.area(6).enemies>=3&target.inMelee&target.inFront'},
+	{'Shockwave', 'talent(2,1)&!target.immune(stun)&player.area(6).enemies>2&target.inMelee&target.inFront'},
 }
 
 local ST = {
@@ -85,10 +85,10 @@ local ST = {
 	{'Execute', '{artifact(Juggernaut).enabled&{!player.buff(Juggernaut)||player.buff(Juggernaut).remains<2}}||player.buff(Stone Heart)'},
 	{'Rampage', 'player.rage=100&{target.health>20||{target.health<20&!talent(5,1)}||{player.buff(Massacre)&player.buff(Enrage).remains<1}}'},
 	{'Berserker Rage', 'talent(3,2)&spell(Odyn\'s Fury).cooldown<gcd&!player.buff(Enrage)'},
-	{'Dragon Roar', '!spell(Odyn\'s Fury).cooldown<=10||spell(Odyn\'s Fury).cooldown<3'},
+	{'Dragon Roar', '!spell(Odyn\'s Fury).cooldown<20||spell(Odyn\'s Fury).cooldown<3'},
 	{'Odyn\'s Fury', 'artifact(Odyn\'s Fury).equipped&player.buff(Battle Cry)&player.buff(Enrage)'},
 	{'Rampage', '!player.buff(Enrage)&!player.buff(Juggernaut)'},
-	{'Furious Slash', 'talent(6,2)&{!player.buff(Frenzy)||player.buff(Frenzy).stack<=3}'},
+	{'Furious Slash', 'talent(6,2)&{!player.buff(Frenzy)||player.buff(Frenzy).stack<4}'},
 	{'Raging Blow', '!player.buff(Juggernaut)&player.buff(Enrage)'},
 	{'Whirlwind', 'talent(3,1)&player.buff(Wrecking Ball)&player.buff(Enrage)'},
 	{'Execute', 'talent(6,3)||{!talent(6,3)&player.rage>50}'},

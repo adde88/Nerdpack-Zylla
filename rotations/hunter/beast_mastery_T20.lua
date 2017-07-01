@@ -74,8 +74,8 @@ local Cooldowns = {
 	{Heirlooms},
 	{'#Tarnished Sentinel Medallion', 'xequipped(147017)'},
 	{'Bestial Wrath'},
-	--actions+=/titans_thunder,if=(talent.dire_frenzy.enabled&(buff.bestial_wrath.up|cooldown.bestial_wrath.remains>35))|cooldown.dire_beast.remains>=3|(buff.bestial_wrath.up&pet.dire_beast.active)
-	{'Titan\'s Thunder', '{talent(2,2)&{player.buff(Bestial Wrath)||cooldown(Bestial Wrath).remains>35}}||cooldown(Dire Beast).remains>=3||player.buff(Bestial Wrath)&player.buff(Dire Beast)'},
+	--actions+=/titans_thunder,if=(talent.dire_frenzy.enabled&(buff.bestial_wrath.up|cooldown.bestial_wrath.remains>35))|cooldown.dire_beast.remains>2|(buff.bestial_wrath.up&pet.dire_beast.active)
+	{'Titan\'s Thunder', '{talent(2,2)&{player.buff(Bestial Wrath)||cooldown(Bestial Wrath).remains>35}}||cooldown(Dire Beast).remains>2||player.buff(Bestial Wrath)&player.buff(Dire Beast)'},
 }
 
 local Interrupts = {
@@ -87,10 +87,10 @@ local xCombat = {
 	{'Blood Fury'},
 	{'Berserking'},
 	{'A Murder of Crows', 'talent(6,1)'},
-	{'Stampede', 'talent(7,1)&{player.buff(Bloodlust)||player.buff(Bestial Wrath)||cooldown(Bestial Wrath).remains<=2}||target.time_to_die<=14'},
+	{'Stampede', 'talent(7,1)&{player.buff(Bloodlust)||player.buff(Bestial Wrath)||cooldown(Bestial Wrath).remains<3}||target.time_to_die<24'},
 	{'Dire Beast', 'cooldown(Bestial Wrath).remains>3'},
-	--actions+=/dire_frenzy,if=(pet.cat.buff.dire_frenzy.remains<=gcd.max*1.2)|(charges_fractional>=1.8)|target.time_to_die<9
-	{'Dire Frenzy', 'talent(2,2)&{pet.buff(Dire Frenzy).remains<=gcd.max*1.2}||action(Dire Frenzy).fractional>=1.8||target.ttd<9'},
+	--actions+=/dire_frenzy,if=(pet.cat.buff.dire_frenzy.remains<=gcd.max*1.2)|(charges_fractional>0.8)|target.time_to_die<9
+	{'Dire Frenzy', 'talent(2,2)&{pet.buff(Dire Frenzy).remains<=gcd.max*1.2}||action(Dire Frenzy).fractional>0.8||target.ttd<9'},
 	{'Aspect of the Wild', 'player.buff(Bestial Wrath)||target.time_to_die<12'},
 	{'Barrage', 'UI(kBarrage)&talent(6,1)&{target.area(15).enemies>1}'},
 	{'Multi-Shot', 'target.area(10).enemies>4&{pet.buff(Beast Cleave).remains<gcd.max||!pet.buff(Beast Cleave)}'},
@@ -112,9 +112,9 @@ local xPetCombat = {
 
 local xPvP = {
 	{'Gladiator\'s Medallion', 'spell.exists(208683)&{player.state(incapacitate)||player.state(stun)||player.state(fear)||player.state(horror)||player.state(sleep)||player.state(charm)}'},
-	{'Viper Sting', 'spell.exists(Viper Sting)&target.range<=40&target.health<80'},
+	{'Viper Sting', 'spell.exists(Viper Sting)&target.range<50&target.health<80'},
 	{'Scorpid Sting', 'spell.exists(Scorpid Sting)&target.inMelee'},
-	{'Spider Sting', 'spell.exists(Spider Sting)&target.range<=40'},
+	{'Spider Sting', 'spell.exists(Spider Sting)&target.range<50'},
 }
 
 local inCombat = {
@@ -122,8 +122,8 @@ local inCombat = {
 	{Keybinds},
 	{Survival, 'player.health<100'},
 	{Cooldowns, 'toggle(Cooldowns)'},
-	{Interrupts, 'target.interruptAt(70)&toggle(Interrupts)&target.inFront&target.range<=40'},
-	{xCombat, 'target.range<=40&target.inFront'},
+	{Interrupts, 'target.interruptAt(70)&toggle(Interrupts)&target.inFront&target.range<50'},
+	{xCombat, 'target.range<50&target.inFront'},
 	{xPetCombat},
 	{xPvP},
 }

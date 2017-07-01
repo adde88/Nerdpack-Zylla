@@ -57,7 +57,7 @@ local Interrupts = {
 }
 
 local Survival = {
-	{'Death Strike', 'player.health<=80&player.buff(Dark Succor)'},
+	{'Death Strike', 'player.health<90&player.buff(Dark Succor)'},
 }
 
 local BoS_check = {
@@ -75,14 +75,14 @@ local Cooldowns = {
 	{'Blood Fury', '!talent(7,2)||target.dot(Breath of Sindragosa).ticking'},
 	{'Berserking', 'player.buff(Pillar of Frost)'},
 	{'Pillar of Frost'},
-	{'Sindragosa\'s Fury', 'player.buff(Pillar of Frost)&target.debuff(Razorice).count>=5'},
+	{'Sindragosa\'s Fury', 'player.buff(Pillar of Frost)&target.debuff(Razorice).count>4'},
 	{'Obliteration'},
-	{'Breath of Sindragosa', 'talent(7,2)&runic_power>=50'},
+	{'Breath of Sindragosa', 'talent(7,2)&runic_power>40'},
 	{BoS_check},
 }
 
 local Core = {
-	{'Frostscythe', 'talent(6,1)&!talent(7,2)&{player.buff(Killing Machine)||player.area(8).enemies>=4}'},
+	{'Frostscythe', 'talent(6,1)&!talent(7,2)&{player.buff(Killing Machine)||player.area(8).enemies>3}'},
 	{'Glacial Advance', 'talent(7,3)'},
 	{'Frost Strike', 'player.buff(Obliteration)&!player.buff(Killing Machine)'},
 	{'Obliterate', 'player.buff(Killing Machine)'},
@@ -96,7 +96,7 @@ local IcyTalons = {
 	{'Frost Strike', 'player.buff(Icy Talons).remains<1.5'},
 	{'Howling Blast', '!target.dot(Frost Fever).ticking'},
 	{'Howling Blast', 'player.buff(Rime)'},
-	{'Frost Strike', 'runic_power>=80||player.buff(Icy Talons).stack<3'},
+	{'Frost Strike', 'runic_power>70||player.buff(Icy Talons).stack<3'},
 	{Core},
 	{BoS_check},
 }
@@ -105,7 +105,7 @@ local BoS = {
 	{'Howling Blast', '!target.dot(Frost Fever).ticking'},
 	{Core},
 	{'Horn of Winter', 'talent(2,3)'},
-	{'Empower Rune Weapon', 'runic_power<=70'},
+	{'Empower Rune Weapon', 'runic_power<80'},
 	{'Hungering Rune Weapon', 'talent(3,2)'},
 	{'Howling Blast', 'player.buff(Rime)'},
 }
@@ -113,7 +113,7 @@ local BoS = {
 local Generic = {
 	{'Howling Blast', '!target.dot(Frost Fever).ticking'},
 	{'Howling Blast', 'player.buff(Rime)'},
-	{'Frost Strike', 'runic_power>=80'},
+	{'Frost Strike', 'runic_power>70'},
 	{Core},
 	{BoS_check},
 }
@@ -131,8 +131,8 @@ local MACHINEGUN = {
 	{'Frost Strike', 'player.buff(Icy Talons).remains<1.5'},
 	{'Howling Blast', '!target.dot(Frost Fever).ticking'},
 	{'Howling Blast', 'player.buff(Rime)'},
-	{'Frost Strike', 'runic_power>=80||player.buff(Icy Talons).stack<3'},
-	{'Frostscythe', 'talent(6,1)&!talent(7,2)&{player.buff(Killing Machine)||player.area(8).enemies>=4}'},
+	{'Frost Strike', 'runic_power>70||player.buff(Icy Talons).stack<3'},
+	{'Frostscythe', 'talent(6,1)&!talent(7,2)&{player.buff(Killing Machine)||player.area(8).enemies>3}'},
 	{'Glacial Advance', 'talent(7,3)'},
 	{'Frost Strike', 'player.buff(Obliteration)&!player.buff(Killing Machine)'},
 	{'Remorseless Winter', '!cooldown(Remorseless Winter)'},
@@ -153,7 +153,7 @@ local inCombat = {
 	{Trinkets},
 	{Heirlooms},
 	{Keybinds},
-	{Interrupts, 'target.interruptAt(70)&toggle(Interrupts)&target.inFront&target.range<=15'},
+	{Interrupts, 'target.interruptAt(70)&toggle(Interrupts)&target.inFront&target.range<25'},
 	{Survival, 'player.health<100'},
 	{Cooldowns, 'toggle(Cooldowns)&target.inMelee'},
 	{MACHINEGUN, 'toggle(xMACHINEGUN)&target.inMelee&target.inFront'},

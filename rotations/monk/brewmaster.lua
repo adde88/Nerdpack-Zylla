@@ -83,30 +83,30 @@ local Cooldowns = {
 
 local Mitigations = {
 	{'Black Ox Brew', 'player.spell(Purifying Brew).charges<1&player.spell(purifying brew).recharge>2'},
-	{'Purifying Brew', '@Zylla.staggered&player.spell(Purifying Brew).charges>=1'},
-	{'Ironskin Brew', 'player.health<=UI(Ironskin Brew)&player.spell(Purifying Brew).charges>=2&!player.buff(Ironskin Brew)'},
+	{'Purifying Brew', '@Zylla.staggered&player.spell(Purifying Brew).charges>0'},
+	{'Ironskin Brew', 'player.health<=UI(Ironskin Brew)&player.spell(Purifying Brew).charges>1&!player.buff(Ironskin Brew)'},
 	{'Ironskin Brew', '@Zylla.purifyingCapped&player.health<100&!player.buff(Ironskin Brew)'},
 }
 
 local Survival = {
-	{'Healing Elixir', 'player.spell(Healing Elixir).charges>=2||{player.spell(Healing Elixir).charges=1&player.spell(Healing Elixir).cooldown<3}&!lastcast(Healing Elixir)&player.health<=UI(Healing Elixir)', 'player'},
+	{'Healing Elixir', 'player.spell(Healing Elixir).charges>1||{player.spell(Healing Elixir).charges=1&player.spell(Healing Elixir).cooldown<3}&!lastcast(Healing Elixir)&player.health<=UI(Healing Elixir)', 'player'},
 	{'#Healthstone', 'player.health<=UI(Health Stone)', 'player'},
 	{'#Ancient Healing Potion', 'player.health<=UI(Healthstone)', 'player'},
-	{'Expel Harm', 'player.health<=UI(Expel Harm)&player.spell(Expel Harm).count>=1', 'player'},
-	{'Effuse', 'player.health<=UI(E_HP)&player.lastmoved>=1&UI(kEffuse)', 'player'},
+	{'Expel Harm', 'player.health<=UI(Expel Harm)&player.spell(Expel Harm).count>0', 'player'},
+	{'Effuse', 'player.health<=UI(E_HP)&player.lastmoved>0&UI(kEffuse)', 'player'},
 }
 
 local Interrupts = {
 	{'!Spear Hand Strike'},
-	{'!Paralysis', '!target.immune(incapacitate)&target.range<=20&player.energy=>20&spell(Spear Hand Strike).cooldown>gcd&!lastcast(Spear Hand Strike)'},
-	{'!Paralysis', '!immune(incapacitate)&range<=20&player.energy=>20&player.area(20).enemies>=2', 'endebuff(Paralysis)'},
+	{'!Paralysis', '!target.immune(incapacitate)&target.range<30&player.energy=>20&spell(Spear Hand Strike).cooldown>gcd&!lastcast(Spear Hand Strike)'},
+	{'!Paralysis', '!immune(incapacitate)&range<30&player.energy=>20&player.area(20).enemies>1', 'endebuff(Paralysis)'},
 	{'!Ring of Peace', 'talent(4,1)&!target.debuff(Spear Hand Strike)&spell(Spear Hand Strike).cooldown>gcd&!lastcast(Spear Hand Strike)'},
 	{'!Leg Sweep', '!target.immune(stun)&talent(4,3)&spell(Spear Hand Strike).cooldown>gcd&target.inMelee&!lastcast(Spear Hand Strike)'},
 	{'!Quaking Palm', '!target.immune(incapacitate)&!target.debuff(Spear Hand Strike)&spell(Spear Hand Strike).cooldown>gcd&!lastcast(Spear Hand Strike)'},
 }
 
 local Artifact = {
-	{'Exploding Keg', 'target.range<=40&{{target.area(8).enemies>=3}||{player.incdmg(5)>=health.max*0.70}}', 'target.ground'},
+	{'Exploding Keg', 'target.range<50&{{target.area(8).enemies>2}||{player.incdmg(5)>=health.max*0.70}}', 'target.ground'},
 }
 
 local Crackle = {
@@ -114,25 +114,25 @@ local Crackle = {
 }
 
 local Taunts = {
-	{'Provoke', 'target.range<=35&target.combat&target.threat<=99&toggle(xTaunt)'},
+	{'Provoke', 'target.range<45&target.combat&target.threat<109&toggle(xTaunt)'},
 }
 
 local xCombat = {
 	{'Blackout Strike', 'target.inMelee&target.inFront&talent(7,2)&!player.buff(Blackout Combo)&{player.spell(Keg Smash).cooldown>3||player.spell(Keg Smash).cooldown<1.5}'},
-	{'Keg Smash', 'target.range<=15&target.inFront&talent(7,2)&{player.buff(Blackout Combo)||@Zylla.purifyingCapped}'},
-	{'Keg Smash', 'target.range<=15&target.inFront&!talent(7,2)'},
+	{'Keg Smash', 'target.range<25&target.inFront&talent(7,2)&{player.buff(Blackout Combo)||@Zylla.purifyingCapped}'},
+	{'Keg Smash', 'target.range<25&target.inFront&!talent(7,2)'},
 	{{
-		{'Blackout Strike', 'target.inMelee&target.inFront&!player.buff(Blackout Combo)&talent(7,2)&player.area(10).enemies>=1'},
-		{'Breath of Fire', 'target.range<=12&target.inFront&player.buff(Blackout Combo)&talent(7,2)&player.area(10).enemies>=1'},
-		{'Blackout Strike', 'target.inMelee&talent(7,2)&!player.buff(Blackout Combo)&{player.energy>=45||player.spell(Keg Smash).cooldown>3}'},
+		{'Blackout Strike', 'target.inMelee&target.inFront&!player.buff(Blackout Combo)&talent(7,2)&player.area(10).enemies>0'},
+		{'Breath of Fire', 'target.range<22&target.inFront&player.buff(Blackout Combo)&talent(7,2)&player.area(10).enemies>0'},
+		{'Blackout Strike', 'target.inMelee&talent(7,2)&!player.buff(Blackout Combo)&{player.energy>35||player.spell(Keg Smash).cooldown>3}'},
 		{'Tiger Palm', 'target.inMelee&target.inFront&talent(7,2)&player.buff(Blackout Combo)'},
 		{'Blackout Strike', 'target.inMelee&target.inFront&'},
-		{'Breath of Fire', 'target.range<=12&target.inFront&target.debuff(Keg Smash)&!talent(7,2)&player.area(10).enemies>=1'},
-		{'Chi Burst', 'talent(1,1)&target.inFront&player.area(40).enemies>=1'},
-		{'Chi Wave', 'target.range<=40&target.inFront&player.area(10).enemies>=2', 'target.enemy'},
-		{'Rushing Jade Wind', 'talent(6,1)&player.area(8).enemies>=2'},
-		{'Tiger Palm', 'target.inMelee&target.inFront&!talent(7,2)||{target.inMelee&target.inFront&player.energy>=70&{player.energy>=55||player.spell(Keg Smash).cooldown>3}}'},
-	},	{'player.spell(Keg Smash).cooldown>=0.5||{!talent(7,2)&!player.buff(Blackout Combo)&player.spell(Keg Smash).cooldown>=2&@Zylla.purifyingCapped}'}},
+		{'Breath of Fire', 'target.range<22&target.inFront&target.debuff(Keg Smash)&!talent(7,2)&player.area(10).enemies>0'},
+		{'Chi Burst', 'talent(1,1)&target.inFront&player.area(40).enemies>0'},
+		{'Chi Wave', 'target.range<50&target.inFront&player.area(10).enemies>1', 'target.enemy'},
+		{'Rushing Jade Wind', 'talent(6,1)&player.area(8).enemies>1'},
+		{'Tiger Palm', 'target.inMelee&target.inFront&!talent(7,2)||{target.inMelee&target.inFront&player.energy>60&{player.energy>45||player.spell(Keg Smash).cooldown>3}}'},
+	},	{'player.spell(Keg Smash).cooldown>=0.5||{!talent(7,2)&!player.buff(Blackout Combo)&player.spell(Keg Smash).cooldown>1&@Zylla.purifyingCapped}'}},
 }
 
 local inCombat = {
@@ -144,7 +144,7 @@ local inCombat = {
 	{Snares},
 	{Survival, 'player.health<100'},
 	{Interrupts, 'target.interruptAt(70)&target.inMelee'},
-	{Mitigations, 'target.inMelee&{!talent(7,2)||!player.buff(Blackout Combo)||player.spell(Keg Smash).cooldown>=2.5}'},
+	{Mitigations, 'target.inMelee&{!talent(7,2)||!player.buff(Blackout Combo)||player.spell(Keg Smash).cooldown>1.5}'},
 	{Cooldowns, 'toggle(Cooldowns)'},
 	{xCombat},
 	{Crackle, '!target.inMelee&target.inRanged'},
@@ -153,7 +153,7 @@ local inCombat = {
 local outCombat={
 	{Keybinds},
 	{'%ressdead(Resuscitate)', 'UI(auto_res)'},
-	{'Effuse', 'player.health<=50&player.lastmoved>=1', 'player'},
+	{'Effuse', 'player.health<60&player.lastmoved>0', 'player'},
 }
 
 NeP.CR:Add(268, {

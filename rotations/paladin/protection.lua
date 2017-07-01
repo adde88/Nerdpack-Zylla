@@ -54,15 +54,15 @@ local Interrupts = {
 }
 
 local Survival ={
-	{'Flash of Light', 'player.health<=UI(E_FoL)&player.lastmoved>=1&UI(kFoL)', 'player'},
-	{'Light of the Protector', 'player.health<=68&player.buff(Consecration)'},
+	{'Flash of Light', 'player.health<=UI(E_FoL)&player.lastmoved>0&UI(kFoL)', 'player'},
+	{'Light of the Protector', 'player.health<78&player.buff(Consecration)'},
 }
 
 local PreCombat = {
 }
 
 local Cooldowns = {
-	{'Seraphim', 'talent(7,2)&spell(Shield of the Righteous).charges>=2'},
+	{'Seraphim', 'talent(7,2)&spell(Shield of the Righteous).charges>1'},
 	{'Shield of the Righteous', 'target.inMelee&target.inFront&{!talent(7,2)||spell(Shield of the Righteous).charges>2}&!{player.buff(Eye of Tyr)&player.buff(Aegis of Light)&player.buff(Ardent Defender)&player.buff(Guardian of Ancient Kings)&player.buff(Divine Shield)}'},
 	{'Bastion of Light', 'talent(2,2)&spell(Shield of the Righteous).charges<1'},
 	{'Light of the Protector', 'player.health<40'},
@@ -107,7 +107,7 @@ local inCombat = {
 	{Survival, 'player.health<100'},
 	{Interrupts, 'target.interruptAt(70)&toggle(Interrupts)&target.inFront&target.inMelee'},
 	{Cooldowns, 'toggle(Cooldowns)'},
-	{AoE, 'toggle(AoE)&player.area(8).enemies>=3'},
+	{AoE, 'toggle(AoE)&player.area(8).enemies>2'},
 	{ST, 'target.inFront&yarget.inMelee'}
 }
 

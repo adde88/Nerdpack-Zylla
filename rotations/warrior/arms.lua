@@ -46,15 +46,15 @@ local Interrupts = {
 }
 
 local Survival = {
-	{'Victory Rush', 'player.health<=70'},
+	{'Victory Rush', 'player.health<80'},
 }
 
 local Cooldowns = {
 	{'Blood Fury', 'player.buff(Battle Cry)'},
 	{'Berserking', 'player.buff(Battle Cry)'},
 	{'Arcane Torrent', 'player.buff(Battle Cry)&talent(6,1)&rage.deficit>40'},
-	{'Battle Cry', '{player.buff(Bloodlust)||xtime>=1}&gcd.remains<0.5&{player.buff(Shattered Defenses)||{cooldown(Colossus Smash).remains>gcd&cooldown(Warbreaker).remains>gcd}}'},
-	{'Avatar', 'talent(3,3)&{player.buff(Bloodlust)||xtime>=1}'},
+	{'Battle Cry', '{player.buff(Bloodlust)||xtime>0}&gcd.remains<0.5&{player.buff(Shattered Defenses)||{cooldown(Colossus Smash).remains>gcd&cooldown(Warbreaker).remains>gcd}}'},
+	{'Avatar', 'talent(3,3)&{player.buff(Bloodlust)||xtime>0}'},
 }
 
 local Opener = {
@@ -90,31 +90,31 @@ local Etc = {
 }
 
 local AoE = {
-	{'Mortal Strike', 'player.buff(Focused Rage).stack>=2'},
+	{'Mortal Strike', 'player.buff(Focused Rage).stack>1'},
 	{'Execute', 'player.buff(Ayala\'s Stone Heart)'},
 	{'Colossus Smash', '!player.buff(Shattered Defenses)&!player.buff(Precise Strikes)'},
 	{'Warbreaker', '!player.buff(Shattered Defenses)'},
 	{'Whirlwind', 'talent(3,1)&{target.debuff(Colossus Smash)||rage.deficit<50}&{!talent(5,3)||{player.buff(Battle Cry)&talent(6,1)}||player.buff(Cleave)}'},
-	{'Rend', 'talent(3,2)&target.debuff(Rend).remains<=4.5'},
+	{'Rend', 'talent(3,2)&target.debuff(Rend).remains<5.5'},
 	{'Bladestorm'},
 	{'Cleave'},
-	{'Execute', 'player.rage>=90'},
-	{'Whirlwind', 'player.rage>=40'},
+	{'Execute', 'player.rage>80'},
+	{'Whirlwind', 'player.rage>30'},
 	{'Shockwave', 'talent(2,1)'},
 	{'Storm Bolt', 'talent(2,2)'}
 }
 
 local Cleave = {
-	{'Mortal Strike', 'player.buff(Focused Rage).stack>=2'},
+	{'Mortal Strike', 'player.buff(Focused Rage).stack>1'},
 	{'Execute', 'player.buff(Ayala\'s Stone Heart)'},
 	{'Colossus Smash', '!player.buff(Shattered Defenses)&!player.buff(Precise Strikes)'},
 	{'Warbreaker', '!player.buff(Shattered Defenses)'},
 	{'Focused Rage', '!player.buff(Shattered Defenses)'},
 	{'Whirlwind', 'talent(3,1)&{target.debuff(Colossus Smash)||rage.deficit<50}&{!talent(5,3)||{player.buff(Battle Cry)&talent(6,1)}||player.buff(Cleave)}'},
-	{'Rend', 'talent(3,2)&target.debuff(Rend).remains<=4.5'},
+	{'Rend', 'talent(3,2)&target.debuff(Rend).remains<5.5'},
 	{'Bladestorm'},
 	{'Cleave'},
-	{'Whirlwind', 'player.rage>=100||player.buff(Focused Rage).stack=3'},
+	{'Whirlwind', 'player.rage>000||player.buff(Focused Rage).stack=3'},
 	{'Shockwave', 'talent(2,1)'},
 	{'Storm Bolt', 'talent(2,2)'}
 }
@@ -123,7 +123,7 @@ local Execute = {
 	{'Mortal Strike', 'player.buff(Battle Cry)&player.buff(Focused Rage).stack=3'},
 	{'Execute', 'player.buff(Battle Cry)&talent(6,1)'},
 	{'Colossus Smash', '!player.buff(Shattered Defenses)'},
-	{'Warbreaker', '!player.buff(Shattered Defenses)&player.rage<=30'},
+	{'Warbreaker', '!player.buff(Shattered Defenses)&player.rage<40'},
 	{'Execute', 'player.buff(Shattered Defenses)&player.rage>22'},
 	{'Execute', '!player.buff(Shattered Defenses)&{{xequipped(137060)&rage>40}||!xequipped(137060)}'},
 	{'Mortal Strike', 'xequipped(137060)'},
@@ -132,18 +132,18 @@ local Execute = {
 }
 
 local ST = {
-	{'Mortal Strike', 'player.buff(Battle Cry)&player.buff(Focused Rage).stack>=1&cooldown(Battle Cry).remains<gcd'},
+	{'Mortal Strike', 'player.buff(Battle Cry)&player.buff(Focused Rage).stack>0&cooldown(Battle Cry).remains<gcd'},
 	{'Colossus Smash', '!player.buff(Shattered Defenses)'},
 	{'Warbreaker', '!player.buff(Shattered Defenses)&cooldown(Mortal Strike).remains<gcd'},
 	{'Focused Rage', '{{{!player.buff(Focused Rage)&prev_gcd(Mortal Strike)}||!prev_gcd(Mortal Strike)}&player.buff(Focused Rage).stack<3&{player.buff(Shattered Defenses)||cooldown(Colossus Smash).remains>gcd}}&player.rage>60'},
-	{'Mortal Strike', 'player.buff(Focused Rage).stack>=1'},
+	{'Mortal Strike', 'player.buff(Focused Rage).stack>0'},
 	{'Execute', 'player.buff(Ayala\'s Stone Heart)'},
 	--Whirlwind instead of Slam if "Fevor of Battle" is picked
-	{'Whirlwind', 'talent(3,1)&{{player.buff(Battle Cry)&talent(6,1)}||player.buff(Focused Rage).stack=3||rage.deficit<=30}'},
-	{'Slam', '!talent(3,1)&{{player.buff(Battle Cry)&talent(6,1)}||player.buff(Focused Rage).stack=3||rage.deficit<=30}'},
+	{'Whirlwind', 'talent(3,1)&{{player.buff(Battle Cry)&talent(6,1)}||player.buff(Focused Rage).stack=3||rage.deficit<40}'},
+	{'Slam', '!talent(3,1)&{{player.buff(Battle Cry)&talent(6,1)}||player.buff(Focused Rage).stack=3||rage.deficit<40}'},
 	{'Mortal Strike', '!talent(5,3)'},
-	{'Whirlwind', 'player.area(8).enemies>1||talent(3,1)&player.rage>=45'},
-	{'Slam', '!talent(3,1)&player.area(8).enemies=1&player.rage>=32'},
+	{'Whirlwind', 'player.area(8).enemies>1||talent(3,1)&player.rage>35'},
+	{'Slam', '!talent(3,1)&player.area(8).enemies=1&player.rage>22'},
 	{'Execute', 'xequipped(137060)'},
 	{'Focused Rage', 'xequipped(137060)'},
 	{'Bladestorm'},
@@ -158,9 +158,9 @@ local inCombat = {
 	{Survival, 'player.health<100'},
 	{Cooldowns, 'toggle(Cooldowns)&target.inMelee'},
 	{Etc, 'target.inMelee&target.inFront'},
-	{Cleave, 'toggle(aoe)&player.area(8).enemies>=2&talent(1,3)'},
-	{AoE, 'toggle(aoe)&player.area(8).enemies>=5&!talent(1,3)'},
-	{Execute, 'target.inMelee&target.inFront&target.health<=20&player.area(8).enemies<5'},
+	{Cleave, 'toggle(aoe)&player.area(8).enemies>1&talent(1,3)'},
+	{AoE, 'toggle(aoe)&player.area(8).enemies>4&!talent(1,3)'},
+	{Execute, 'target.inMelee&target.inFront&target.health<30&player.area(8).enemies<5'},
 	{ST, 'target.inMelee&target.inFront&target.health>20'}
 }
 

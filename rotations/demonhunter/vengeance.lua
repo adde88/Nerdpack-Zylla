@@ -42,31 +42,31 @@ local Keybinds = {
 
 local Interrupts = {
 	{'Consume Magic', 'target.interruptAt(70)&target.inFront&target.inMelee'},
-	{'Sigil of Silence', 'target.interruptAt(1)&target.range<=29&spell(Consume Magic).cooldown>gcd&!prev_gcd(Consume Magic)', 'target.ground'},
+	{'Sigil of Silence', 'target.interruptAt(1)&target.range<39&spell(Consume Magic).cooldown>gcd&!prev_gcd(Consume Magic)', 'target.ground'},
 	{'Arcane Torrent', 'target.interruptAt(70)&target.inFront&target.inMelee&spell(Consume Magic).cooldown>gcd&!prev_gcd(Consume Magic)'},
 }
 
 local ST = {
-	{'Sigil of Flame', 'target.range<=15&!target.debuff(Sigil of Flame)', 'target.ground'},
+	{'Sigil of Flame', 'target.range<25&!target.debuff(Sigil of Flame)', 'target.ground'},
 	--{'Infernal Strike', 'talent(3,2)&'},
 	{'Fiery Brand', '!player.buff(Demon Spikes)&!player.buff(Metamorphosis)'},
 	{'Demon Spikes', '{spell(Demon Spikes)charges=2||!player.buff(Demon Spikes)}&!target.debuff(Fiery Brand)&!player.buff(Metamorphosis)'},
 	{'!Empower Wards', 'target.casting.percent>80'},
-	{'Spirit Bomb', '!target.debuff(Frailty)&player.buff(Soul Fragments).count>=1'},
+	{'Spirit Bomb', '!target.debuff(Frailty)&player.buff(Soul Fragments).count>0'},
 	{'Soul Carver', 'target.debuff(Fiery Brand)'},
-	{'Immolation Aura', 'player.pain<=80'},
-	{'Felblade', 'talent(3,1)&player.pain<=70'},
+	{'Immolation Aura', 'player.pain<90'},
+	{'Felblade', 'talent(3,1)&player.pain<80'},
 	{'Soul Barrier', 'talent(7,3)'},
 	{'Metamorphosis', '!player.buff(Demon Spikes)&!target.dot(Fiery Brand).ticking&!player.buff(Metamorphosis)&player.incdmg(5)>=player.health.max*0.70'},
 	{'Fel Devastation', 'talent(6,1)&player.incdmg(5)>=player.health.max*0.70'},
 	{'Fel Eruption', 'talent(3,3)'},
 	{'Soul Cleave', 'player.buff(Soul Fragments).count=5'},
 	{'Soul Cleave', 'player.incdmg(5)>=player.health.max*0.70'},
-	{'Soul Cleave', 'player.pain>=80&player.buff(Soul Fragments).count<4&player.incdmg(4)<=player.health.max*0.20'},
-	{'Soul Cleave', 'player.pain>=80'},
+	{'Soul Cleave', 'player.pain>70&player.buff(Soul Fragments).count<4&player.incdmg(4)<=player.health.max*0.20'},
+	{'Soul Cleave', 'player.pain>70'},
 	{'Shear', 'player.buff(Blade Turning)'},
 	{'Shear'},
-	{'Fracture', 'talent(4,2)&player.pain>=60'},
+	{'Fracture', 'talent(4,2)&player.pain>50'},
 }
 
 local Ranged = {
@@ -79,7 +79,7 @@ local inCombat = {
 	{Heirlooms},
 	{Keybinds},
 	{Interrupts, 'toggle(Interrupts)'},
-	{Ranged, '!target.inMelee&target.range<=30'},
+	{Ranged, '!target.inMelee&target.range<40'},
 	{ST, 'target.inFront&target.inMelee'}
 }
 

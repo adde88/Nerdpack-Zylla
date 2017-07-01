@@ -41,24 +41,24 @@ local Keybinds = {
 local Cooldowns = {
 	{'Mindbender', nil, 'target'}, --Mind Bender for better Mana Regen and dps boost.
 	{'Power Infusion'}, --Power Infusion for some BOOOST YO!
-	{'Divine Star', 'player.area(20).enemies.inFront>=3', 'target'}, -- Divine Star (if selected) for some small AoE dmg dealing.
+	{'Divine Star', 'player.area(20).enemies.inFront>2', 'target'}, -- Divine Star (if selected) for some small AoE dmg dealing.
 	{'Light\'s Wrath', 'debuff(Schism)&player.buff(Overloaded with Light)', 'target'},
 }
 
 local Tank = {
-  {'Clarity of Will', 'talent(6,1)&incdmg(7)=>health.max*0.70||area(5).enemies>=3', 'tank'}, --Clarity of Will (if selected) to keep our tank secure and healthy.
+  {'Clarity of Will', 'talent(6,1)&incdmg(7)=>health.max*0.70||area(5).enemies>2', 'tank'}, --Clarity of Will (if selected) to keep our tank secure and healthy.
 	{'Power Word: Shield', '!buff(Power Word: Shield)||player.buff(Rapture)', 'tank'}, --Power Word: Shield the Tank
-	{'Pain Suppression', 'health<=20', 'tank'}, --Pain Suppression for less damage intake.
-	{'Shadow Mend', 'health<=40', 'tank'}, --Shadow Mend for huge direct heal.
+	{'Pain Suppression', 'health<30', 'tank'}, --Pain Suppression for less damage intake.
+	{'Shadow Mend', 'health<50', 'tank'}, --Shadow Mend for huge direct heal.
 }
 
 local Lowest = {
-	{'Plea', '!buff(Atonement)&health<=90', 'lowest'}, --Plea for an instant Atonement.
-	{'Power Word: Shield', 'health<=90||player.buff(Rapture)&!buff(Power Word: Shield)', 'lowest'}, --Power Word: Shield Use to absorb low to moderate damage and to apply Atonement.
-	{'Shadow Mend', 'health<=60', 'lowest'}, --Shadow Mend for a decent direct heal.
-	{'Penance', 'health<=80&talent(1,1)', 'lowest'}, -- Penance (if talent "Penitent" selected)
-	{'Plea', 'health<=90', 'lowest'}, --Plea for an efficient direct heal and to apply Atonement.
-	{'Divine Star', 'player.area(80, 20).heal>=3'} -- Divine Star (if selected) for a quick heal&dmg dealing.
+	{'Plea', '!buff(Atonement)&health<100', 'lowest'}, --Plea for an instant Atonement.
+	{'Power Word: Shield', 'health<100||player.buff(Rapture)&!buff(Power Word: Shield)', 'lowest'}, --Power Word: Shield Use to absorb low to moderate damage and to apply Atonement.
+	{'Shadow Mend', 'health<70', 'lowest'}, --Shadow Mend for a decent direct heal.
+	{'Penance', 'health<90&talent(1,1)', 'lowest'}, -- Penance (if talent "Penitent" selected)
+	{'Plea', 'health<100', 'lowest'}, --Plea for an efficient direct heal and to apply Atonement.
+	{'Divine Star', 'player.area(80, 20).heal>2'} -- Divine Star (if selected) for a quick heal&dmg dealing.
 }
 
 local Player = {
@@ -89,7 +89,7 @@ local inCombat = {
 
 local outCombat = {
 		{Keybinds},
-		{'Plea', '!buff(Atonement)&health<=95', 'lowest'}
+		{'Plea', '!buff(Atonement)&health<105', 'lowest'}
 }
 
 NeP.CR:Add(256, {

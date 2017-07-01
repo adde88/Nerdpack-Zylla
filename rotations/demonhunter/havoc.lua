@@ -34,7 +34,7 @@ local exeOnLoad = function()
 end
 
 local Survival = {
-	{'Blur', 'player.health<=60'}
+	{'Blur', 'player.health<70'}
 }
 
 local Interrupts = {
@@ -50,10 +50,10 @@ local Cooldowns = {
 }
 
 local xCombat = {
-	{'Vengeful Retreat', 'target.range<=6&player.spell(Fel Rush).charges>=2&player.fury<=85'},
-	{'Fel Rush', 'player.spell(Fel Rush).charges>=2', 'target.range>5'},
-	{'Blade Dance', 'toggle(AoE)&player.area(8).enemies>=4'},
-	{'Chaos Strike', 'player.fury>=70'},
+	{'Vengeful Retreat', 'target.range<7&player.spell(Fel Rush).charges>1&player.fury<95'},
+	{'Fel Rush', 'player.spell(Fel Rush).charges>1', 'target.range>5'},
+	{'Blade Dance', 'toggle(AoE)&player.area(8).enemies>3'},
+	{'Chaos Strike', 'player.fury>60'},
 	{'Demon\'s Bite'},
 }
 

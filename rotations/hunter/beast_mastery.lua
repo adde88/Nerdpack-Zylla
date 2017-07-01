@@ -64,16 +64,16 @@ local Keybinds = {
 }
 
 local Survival = {
-	{'Exhilaration', 'player.health<=66'},
-	{'#Ancient Healing Potion', 'player.health<=42'},
-	{'#Healthstone', 'player.health<=40'},
-	{'Aspect of the Turtle', 'player.health<=22'},
-	{'Feign Death', 'player.health<=15&equipped(137064)'},
+	{'Exhilaration', 'player.health<76'},
+	{'#Ancient Healing Potion', 'player.health<52'},
+	{'#Healthstone', 'player.health<50'},
+	{'Aspect of the Turtle', 'player.health<32'},
+	{'Feign Death', 'player.health<25&equipped(137064)'},
 }
 
 local Cooldowns = {
 	{'Bestial Wrath'},
-	{'Titan\'s Thunder', 'talent(2,2)||player.spell(Dire Beast).cooldown>=3||{player.buff(Bestial Wrath)&player.buff(Dire Beast)}'},
+	{'Titan\'s Thunder', 'talent(2,2)||player.spell(Dire Beast).cooldown>2||{player.buff(Bestial Wrath)&player.buff(Dire Beast)}'},
 	{'Aspect of the Wild', 'player.buff(Bestial Wrath)||target.time_to_die<12'},
 }
 
@@ -86,10 +86,10 @@ local xCombat = {
 	{'Blood Fury'},
 	{'Berserking'},
 	{'A Murder of Crows', 'talent(6,1)'},
-	{'Stampede', 'talent(7,1)&{player.buff(Bloodlust)||player.buff(Bestial Wrath)||player.spell(Bestial Wrath).cooldown<=2}||target.time_to_die<=14'},
+	{'Stampede', 'talent(7,1)&{player.buff(Bloodlust)||player.buff(Bestial Wrath)||player.spell(Bestial Wrath).cooldown<3}||target.time_to_die<24'},
 	{'Dire Beast', 'player.spell(Bestial Wrath).cooldown>3'},
-	--actions+=/dire_frenzy,if=(pet.cat.buff.dire_frenzy.remains<=gcd.max*1.2)|(charges_fractional>=1.8)|target.time_to_die<9  ** Dire Frenzy tweaked 28.06.2016 - Zylla.
-	{'Dire Frenzy', 'talent(2,2)&{pet.buff(Dire Frenzy).remains<=gcd.max*1.2}||action(Dire Frenzy).fractional>=1.8||target.ttd<9'},
+	--actions+=/dire_frenzy,if=(pet.cat.buff.dire_frenzy.remains<=gcd.max*1.2)|(charges_fractional>0.8)|target.time_to_die<9  ** Dire Frenzy tweaked 28.06.2016 - Zylla.
+	{'Dire Frenzy', 'talent(2,2)&{pet.buff(Dire Frenzy).remains<=gcd.max*1.2}||action(Dire Frenzy).fractional>0.8||target.ttd<9'},
 	{'Barrage', 'toggle(aoe)&UI(kBarrage)&talent(6,1)&{target.area(15).enemies>1||{target.area(15).enemies=1&player.focus>90}}'},
 	{'Multi-Shot', 'toggle(aoe)&target.area(10).enemies>4&{pet.buff(Beast Cleave).remains<gcd.max||!pet.buff(Beast Cleave)}'},
 	{'Multi-Shot', 'toggle(aoe)&target.area(10).enemies>1&{pet.buff(Beast Cleave).remains<gcd.max*2||!pet.buff(Beast Cleave)}'},
@@ -110,9 +110,9 @@ local xPetCombat = {
 
 local xPvP = {
 	{'Gladiator\'s Medallion', 'spell.exists(208683)&{player.state(incapacitate)||player.state(stun)||player.state(fear)||player.state(horror)||player.state(sleep)||player.state(charm)}'},
-	{'Viper Sting', 'spell.exists(Viper Sting)&target.range<=40&target.health<80'},
+	{'Viper Sting', 'spell.exists(Viper Sting)&target.range<50&target.health<80'},
 	{'Scorpid Sting', 'spell.exists(Scorpid Sting)&target.inMelee'},
-	{'Spider Sting', 'spell.exists(Spider Sting)&target.range<=40'},
+	{'Spider Sting', 'spell.exists(Spider Sting)&target.range<50'},
 }
 
 local inCombat = {
@@ -120,11 +120,11 @@ local inCombat = {
 	{Trinkets},
 	{Heirlooms},
 	{Keybinds},
-	{'Cobra Shot', 'player.focus>=85&player.spell(Kill Command).cooldown&target.area(10).enemies<4'},
+	{'Cobra Shot', 'player.focus>75&player.spell(Kill Command).cooldown&target.area(10).enemies<4'},
 	{Survival, 'player.health<100'},
-	{Interrupts, 'target.interruptAt(70)&toggle(Interrupts)&target.inFront&target.range<=40'},
+	{Interrupts, 'target.interruptAt(70)&toggle(Interrupts)&target.inFront&target.range<50'},
 	{Cooldowns, 'toggle(Cooldowns)'},
-	{xCombat, 'target.range<=40&target.inFront'},
+	{xCombat, 'target.range<50&target.inFront'},
 	{xPetCombat},
 	{xPvP},
 }
@@ -132,7 +132,7 @@ local inCombat = {
 local outCombat = {
 	{Keybinds},
 	{PreCombat},
-	{Interrupts, 'target.interruptAt(70)&toggle(Interrupts)&target.inFront&target.range<=40'},
+	{Interrupts, 'target.interruptAt(70)&toggle(Interrupts)&target.inFront&target.range<50'},
 }
 
 NeP.CR:Add(253, {

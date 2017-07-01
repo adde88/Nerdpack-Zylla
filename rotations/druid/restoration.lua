@@ -97,18 +97,18 @@ local Emergency = {
 }
 
 local Cooldowns = {
-	{'Tranquility', 'player.area(40,75).heal>=3'},
-	{'Innervate', 'player.mana<=50'},
+	{'Tranquility', 'player.area(40,75).heal>2'},
+	{'Innervate', 'player.mana<60'},
 }
 
 local Mitigations = {
-	{'Barkskin', 'player.health<=30'},
-	{'Ironbark', 'tank.health<=20', 'tank'},
-	{'Ironbark', 'lowest.health<=20', 'lowest'},
+	{'Barkskin', 'player.health<40'},
+	{'Ironbark', 'tank.health<30', 'tank'},
+	{'Ironbark', 'lowest.health<30', 'lowest'},
 }
 
 local Moving = {
-	{'Lifebloom', 'tank.buff(Lifebloom).duration<=4.5', 'tank'},
+	{'Lifebloom', 'tank.buff(Lifebloom).duration<5.5', 'tank'},
 
 	{'Cenarion Ward', 'talent(1,2)&!tank.buff(Cenarion Ward)', 'tank'},
 	{'Cenarion Ward', 'talent(1,2)&!tank2.buff(Cenarion Ward)', 'tank2'},
@@ -130,15 +130,15 @@ local Moving = {
 local xHealing = {
 	{Emergency, 'lowest.health<=UI(k_CH)'},
 	{Innervate, 'player.buff(Innervate)'},
-	{'Lifebloom', 'tank.buff(Lifebloom).duration<=4.5&tank.health>=UI(tsm)||!tank.buff(Lifebloom)', 'tank'},
+	{'Lifebloom', 'tank.buff(Lifebloom).duration<5.5&tank.health>=UI(tsm)||!tank.buff(Lifebloom)', 'tank'},
 
 	{'Cenarion Ward', 'talent(1,2)&!tank.buff(Cenarion Ward)', 'tank'},
 	{'Cenarion Ward', 'talent(1,2)&!tank2.buff(Cenarion Ward)', 'tank2'},
 	{'Cenarion Ward', 'talent(1,2)', 'lnbuff(Cenarion Ward)'},
 
-	{'Wild Growth', 'lowest.area(30,75).heal>=3', 'lowest'},
-	{'Essence of G\'Hanir', 'player.area(30,75).heal>=3'},
-	{'Flourish', 'talent(7,3)&player.lastcast(Wild Growth)&lowest.health<=50'},
+	{'Wild Growth', 'lowest.area(30,75).heal>2', 'lowest'},
+	{'Essence of G\'Hanir', 'player.area(30,75).heal>2'},
+	{'Flourish', 'talent(7,3)&player.lastcast(Wild Growth)&lowest.health<60'},
 
 	{'Regrowth', 'player.buff(Clearcasting)', 'lowest'},
 

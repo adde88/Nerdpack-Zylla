@@ -62,7 +62,7 @@ local Keybinds = {
 	-- Pause
 	{'%pause', 'keybind(lshift)&UI(kPause)'},
 	-- DPS TEST
-	{'!/stopcasting\n/stopattack\n/cleartarget\n/stopattack\n/cleartarget\n/nep mt', 'player.combat.time>=300&UI(dpstest)'},
+	{'!/stopcasting\n/stopattack\n/cleartarget\n/stopattack\n/cleartarget\n/nep mt', 'player.combat.time>200&UI(dpstest)'},
 	-- Cancel CJL WHEN WE'RE IN MELEE RANGE
 	{'!/stopcasting', 'target.inMelee&player.casting(Crackling Jade Lightning)'},
 	-- TRANSCENDENCE
@@ -74,12 +74,12 @@ local Keybinds = {
 }
 
 local Cooldowns = {
-	{'Tiger Palm', 'player.combat.time<4&player.energydiff=0&player.chi<=1&!lastgcd(Tiger Palm)&@Zylla.hitcombo(Tiger Palm)&target.inMelee'},
+	{'Tiger Palm', 'player.combat.time<4&player.energydiff=0&player.chi<2&!lastgcd(Tiger Palm)&@Zylla.hitcombo(Tiger Palm)&target.inMelee'},
 	-- TODO: add logic to handle ToD interaction with legendary item 137057 (Hidden Masters Forbidden Touch)
 	-- No Serenity
-	{'Touch of Death', 'target.inMelee&target.DeathIn>=8&{!player.spell.usable(Gale Burst)||{player.spell.usable(Gale Burst)&!talent(7,3)&player.spell(Strike of the Windlord).cooldown<8&player.spell(Fists of Fury).cooldown<=4&player.spell(Rising Sun Kick).cooldown<7&player.chi>=2}}'},
+	{'Touch of Death', 'target.inMelee&target.DeathIn>7&{!player.spell.usable(Gale Burst)||{player.spell.usable(Gale Burst)&!talent(7,3)&player.spell(Strike of the Windlord).cooldown<8&player.spell(Fists of Fury).cooldown<5&player.spell(Rising Sun Kick).cooldown<7&player.chi>1}}'},
 	-- Serenity
-	{'Touch of Death', 'target.inMelee&target.DeathIn>=8&{!player.spell.usable(Gale Burst)||{player.spell.usable(Gale Burst)&talent(7,3)&player.spell(Strike of the Windlord).cooldown<8&player.spell(Fists of Fury).cooldown<=4&player.spell(Rising Sun Kick).cooldown<7}}'},
+	{'Touch of Death', 'target.inMelee&target.DeathIn>7&{!player.spell.usable(Gale Burst)||{player.spell.usable(Gale Burst)&talent(7,3)&player.spell(Strike of the Windlord).cooldown<8&player.spell(Fists of Fury).cooldown<5&player.spell(Rising Sun Kick).cooldown<7}}'},
 	{'Lifeblood'},
 	{'Berserking'},
 	{'Blood Fury'},
@@ -93,7 +93,7 @@ local Survival = {
 	{'Healing Elixir', 'player.health<=UI(Healing Elixir)', 'player'},
 	{'#Healthstone', 'player.health<=UI(Healthstone)', 'player'},			-- Healthstone
 	{'#Ancient Healing Potion', 'player.health<=UI(Healthstone)', 'player'}, -- Ancient Healing Potion
-	{'Effuse', 'player.energy>=60&!player.moving&player.health<=UI(effuse)', 'player'},
+	{'Effuse', 'player.energy>50&!player.moving&player.health<=UI(effuse)', 'player'},
 	{'Detox', 'player.dispellable(Detox)', 'player'},
 }
 
@@ -108,10 +108,10 @@ local Interrupts = {
 }
 
 local SEF = {
-	{'Tiger Palm', 'player.energydiff=0&player.chi<=1&!lastgcd(Tiger Palm)&@Zylla.hitcombo(Tiger Palm)&target.inMelee'},
-	{'Storm, Earth, and Fire', '{{!toggle(AoE)&@Zylla.sef(nil)}||!player.buff(Storm, Earth, and Fire)}&{player.spell(Touch of Death).cooldown<=8||player.spell(Touch of Death).cooldown>85}'},
-	{'Storm, Earth, and Fire', '{{!toggle(AoE)&@Zylla.sef(nil)}||!player.buff(Storm, Earth, and Fire)}&target.DeathIn<=25'},
-	{'Storm, Earth, and Fire', '{{!toggle(AoE)&@Zylla.sef(nil)}||!player.buff(Storm, Earth, and Fire)}&{player.spell(Fists of Fury).cooldown<=1&player.chi>=3}'},
+	{'Tiger Palm', 'player.energydiff=0&player.chi<2&!lastgcd(Tiger Palm)&@Zylla.hitcombo(Tiger Palm)&target.inMelee'},
+	{'Storm, Earth, and Fire', '{{!toggle(AoE)&@Zylla.sef(nil)}||!player.buff(Storm, Earth, and Fire)}&{player.spell(Touch of Death).cooldown<9||player.spell(Touch of Death).cooldown>85}'},
+	{'Storm, Earth, and Fire', '{{!toggle(AoE)&@Zylla.sef(nil)}||!player.buff(Storm, Earth, and Fire)}&target.DeathIn<35'},
+	{'Storm, Earth, and Fire', '{{!toggle(AoE)&@Zylla.sef(nil)}||!player.buff(Storm, Earth, and Fire)}&{player.spell(Fists of Fury).cooldown<2&player.chi>2}'},
 	{'Fists of Fury', 'target.inMelee&player.buff(Storm, Earth, and Fire)'},
 	{'Rising Sun Kick', 'target.inMelee&player.buff(Storm, Earth, and Fire)&player.chi=2&player.energydiff>0' }
 }
@@ -124,43 +124,43 @@ local Ranged = {
 
 local Serenity = {
 	{'Serenity', 'target.inMelee'},
-	{'Strike of the Windlord', 'player.area(9).enemies>=1', 'target'},
-	{'Spinning Crane Kick', '{!lastgcd(Spinning Crane Kick)&@Zylla.hitcombo(Spinning Crane Kick)}&{player.spell(Spinning Crane Kick).count>=8||{player.spell(Spinning Crane Kick).count>=3&player.area(8).enemies>=2&toggle(AoE)}||{player.area(8).enemies>=3&toggle(AoE)}}'},
+	{'Strike of the Windlord', 'player.area(9).enemies>0', 'target'},
+	{'Spinning Crane Kick', '{!lastgcd(Spinning Crane Kick)&@Zylla.hitcombo(Spinning Crane Kick)}&{player.spell(Spinning Crane Kick).count>7||{player.spell(Spinning Crane Kick).count>2&player.area(8).enemies>1&toggle(AoE)}||{player.area(8).enemies>2&toggle(AoE)}}'},
 	{'Rising Sun Kick', 'UI(auto_dot)&player.area(5).enemies<3&target.inMelee', 'Zylla_sck(Mark of the Crane)'},
 	{'Rising Sun Kick', 'player.area(5).enemies<3&target.inMelee'},
 	{'Fists of Fury', 'target.inMelee'},
-	{'Spinning Crane Kick', 'player.area(8).enemies>=3&toggle(AoE)&!lastgcd(Spinning Crane Kick)&@Zylla.hitcombo(Spinning Crane Kick)'},
-	{'Rising Sun Kick', 'UI(auto_dot)&player.area(5).enemies>=3', 'Zylla_sck(Mark of the Crane)'},
-	{'Rising Sun Kick', 'player.area(5).enemies>=3'},
-	{'Spinning Crane Kick', '{!lastgcd(Spinning Crane Kick)&@Zylla.hitcombo(Spinning Crane Kick)}&{player.spell(Spinning Crane Kick).count>=5||{player.area(8).enemies>=2&toggle(AoE)}}'},
+	{'Spinning Crane Kick', 'player.area(8).enemies>2&toggle(AoE)&!lastgcd(Spinning Crane Kick)&@Zylla.hitcombo(Spinning Crane Kick)'},
+	{'Rising Sun Kick', 'UI(auto_dot)&player.area(5).enemies>2', 'Zylla_sck(Mark of the Crane)'},
+	{'Rising Sun Kick', 'player.area(5).enemies>2'},
+	{'Spinning Crane Kick', '{!lastgcd(Spinning Crane Kick)&@Zylla.hitcombo(Spinning Crane Kick)}&{player.spell(Spinning Crane Kick).count>4||{player.area(8).enemies>1&toggle(AoE)}}'},
 	{'Blackout Kick', 'UI(auto_dot)&!lastgcd(Blackout Kick)&@Zylla.hitcombo(Blackout Kick)', 'Zylla_sck(Mark of the Crane)'},
 	{'Blackout Kick', '!lastgcd(Blackout Kick)&@Zylla.hitcombo(Blackout Kick)&target.inMelee'},
 	{'Rushing Jade Wind', '!lastgcd(Rushing Jade Wind)&@Zylla.hitcombo(Rushing Jade Wind)'},
 }
 
 local Melee = {
-	{'Energizing Elixir', 'player.energydiff>0&player.chi<=1&target.inMelee'},
+	{'Energizing Elixir', 'player.energydiff>0&player.chi<2&target.inMelee'},
 	-- TODO: add support for convergence of fates legendry
-	{'Strike of the Windlord', 'player.area(9).enemies>=1', 'target'},
+	{'Strike of the Windlord', 'player.area(9).enemies>0', 'target'},
 	{'Fists of Fury', 'target.inMelee'},
 	{{
 		{'Tiger Palm', 'UI(auto_dot)', 'Zylla_sck(Mark of the Crane)'},
 		{'Tiger Palm'},
-	}, 'player.energydiff=0&player.chi<=3&player.buff(Storm, Earth, and Fire)&!lastgcd(Tiger Palm)&@Zylla.hitcombo(Tiger Palm)&target.inMelee'},
-	{'Spinning Crane Kick', '{!lastgcd(Spinning Crane Kick)&@Zylla.hitcombo(Spinning Crane Kick)}&{player.spell(Spinning Crane Kick).count>=8||{player.spell(Spinning Crane Kick).count>=3&player.area(8).enemies>=2&toggle(AoE)}||{player.area(8).enemies>=3&toggle(AoE)}}'},
+	}, 'player.energydiff=0&player.chi<4&player.buff(Storm, Earth, and Fire)&!lastgcd(Tiger Palm)&@Zylla.hitcombo(Tiger Palm)&target.inMelee'},
+	{'Spinning Crane Kick', '{!lastgcd(Spinning Crane Kick)&@Zylla.hitcombo(Spinning Crane Kick)}&{player.spell(Spinning Crane Kick).count>7||{player.spell(Spinning Crane Kick).count>2&player.area(8).enemies>1&toggle(AoE)}||{player.area(8).enemies>2&toggle(AoE)}}'},
 	{'Rising Sun Kick', 'target.inMelee&UI(auto_dot)', 'Zylla_sck(Mark of the Crane)'},
 	{'Rising Sun Kick', 'target.inMelee'},
-	{'Spinning Crane Kick', '!lastgcd(Spinning Crane Kick)&@Zylla.hitcombo(Spinning Crane Kick)&player.spell(Spinning Crane Kick).count>=16'},
+	{'Spinning Crane Kick', '!lastgcd(Spinning Crane Kick)&@Zylla.hitcombo(Spinning Crane Kick)&player.spell(Spinning Crane Kick).count>06'},
 	{'Whirling Dragon Punch'},
 	-- TODO: add support for CJL with legenadry Emperors Capcitor
-	{'Spinning Crane Kick', '{!lastgcd(Spinning Crane Kick)&@Zylla.hitcombo(Spinning Crane Kick)}&{player.spell(Spinning Crane Kick).count>=5||{player.area(8).enemies>=2&toggle(AoE)}}'},
+	{'Spinning Crane Kick', '{!lastgcd(Spinning Crane Kick)&@Zylla.hitcombo(Spinning Crane Kick)}&{player.spell(Spinning Crane Kick).count>4||{player.area(8).enemies>1&toggle(AoE)}}'},
 	{'Rushing Jade Wind', 'player.chidiff>1&!lastgcd(Rushing Jade Wind)&@Zylla.hitcombo(Rushing Jade Wind)'},
 	{{
 		{'Blackout Kick', 'UI(auto_dot)&{player.chi>1||player.buff(Blackout Kick!)}', 'Zylla_sck(Mark of the Crane)'},
 		{'Blackout Kick', 'player.buff(Blackout Kick!)||player.chi>1'},
 	}, '!lastgcd(Blackout Kick)&@Zylla.hitcombo(Blackout Kick)&target.inMelee'},
-	{'Chi Wave', 'player.timetomax>=2.25&target.combat'}, -- 40 yard range 0 energy, 0 chi
-	{'Chi Burst', '!player.moving&player.timetomax>=2.25'},
+	{'Chi Wave', 'player.timetomax>1.25&target.combat'}, -- 40 yard range 0 energy, 0 chi
+	{'Chi Burst', '!player.moving&player.timetomax>1.25'},
 	{{
 		{'Tiger Palm', 'UI(auto_dot)', 'Zylla_sck(Mark of the Crane)'},
 		{'Tiger Palm'},
@@ -177,7 +177,7 @@ local Melee = {
 	 getting parried/missed and we're stuck thinking it was lastcast and
 	 don't do anything, so as a fallthrough we'll cast when at 100 energy
 	 no matter what. May replace with CJL when @ 100 energy instead --]]
-	{'Tiger Palm', 'player.energy>=100&target.inMelee'},
+	{'Tiger Palm', 'player.energy>000&target.inMelee'},
 }
 
 local inCombat = {
@@ -189,14 +189,14 @@ local inCombat = {
 	{Cooldowns, 'toggle(cooldowns)&target.inMelee'},
 	{Serenity, 'toggle(cooldowns)&target.inMelee&talent(7,3)&!player.casting(Fists of Fury)&{player.spell(Serenity).cooldown=0||player.buff(Serenity)}'},
 	-- TODO: handle legendary Drinking Horn Cover
-	{SEF, 'target.inMelee&UI(sef_toggle)&!talent(7,3)&!player.casting(Fists of Fury)&{player.spell(Strike of the Windlord).exists&player.spell(Strike of the Windlord).cooldown<=14&player.spell(Fists of Fury).cooldown<=6&player.spell(Rising Sun Kick).cooldown<=6}'},
+	{SEF, 'target.inMelee&UI(sef_toggle)&!talent(7,3)&!player.casting(Fists of Fury)&{player.spell(Strike of the Windlord).exists&player.spell(Strike of the Windlord).cooldown<24&player.spell(Fists of Fury).cooldown<7&player.spell(Rising Sun Kick).cooldown<7}'},
 	{Melee, '!player.casting(Fists of Fury)'},
 	{Ranged, '!target.inMelee&target.inRanged&target.combat'},
 }
 
 local outCombat = {
 	{Keybinds},
-	{'Effuse', 'player.health<=50&player.lastmoved>=1', 'player'},
+	{'Effuse', 'player.health<60&player.lastmoved>0', 'player'},
 	{'%ressdead(Resuscitate)', 'UI(auto_res)'},
 }
 
