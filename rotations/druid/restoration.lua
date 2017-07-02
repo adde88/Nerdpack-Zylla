@@ -16,6 +16,7 @@ local GUI = {
 	{type='checkbox',	text='Pause Enabled',						key='kPause',	default=true},
 	{type = 'spinner', 	text = 'Critical Health %',					key = 'k_CH',	default = 33},
 	{type = 'spinner', 	text = 'DPS while ppl. are above HP %',		key = 'k_DPSHP',default = 90},
+	{type='ruler'},		{type='spacer'},
 	-- TANK
 	{type = 'header', 	text = 'Tank Healing',						align = 'center'},
 	{type = 'spinner', 	text = 'Rejuvenation',						key = 'trejuv',	default = 99},
@@ -77,9 +78,9 @@ local Interrupts = {
 }
 
 local DPS = {
-	{'Moonfire', nil, 'endebuff(Moonfire)'},
-	{'Sunfire', nil, 'endebuff(Sunfire)'},
-	{'Solar Wrath', 'target.debuff(Moonfire)&target.debuff(Sunfire)'},
+	{'Moonfire', '!debuff&range<41&combat', 'enemies'},
+	{'Sunfire', '!debuff&range<41&combat', 'enemies'},
+	{'Solar Wrath', 'debuff(Moonfire)&debuff(Sunfire)&range<41&combat', 'enemies'},
 }
 
 local Innervate = {
