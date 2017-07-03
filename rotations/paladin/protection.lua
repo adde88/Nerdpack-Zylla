@@ -108,7 +108,7 @@ local inCombat = {
 	{Interrupts, 'target.interruptAt(70)&toggle(Interrupts)&target.inFront&target.inMelee'},
 	{Cooldowns, 'toggle(Cooldowns)'},
 	{AoE, 'toggle(AoE)&player.area(8).enemies>2'},
-	{ST, 'target.inFront&yarget.inMelee'}
+	{ST, 'target.inFront&target.inMelee'}
 }
 
 local outCombat = {
