@@ -519,8 +519,8 @@ NeP.Listener:Add('Zylla_Warlock_Pets', 'COMBAT_LOG_EVENT_UNFILTERED', function(t
     if ((combatevent == "SPELL_AURA_APPLIED" or combatevent == "SPELL_AURA_REFRESH") and spellID == 193396 and sourceName == UnitName("player")) then
       --print('Demonic Empowerment')
       if(Zylla.IsMinion(destName)) then
-		print('Zylla.IsMinion is TRUE')
-		print(Zylla.IsMinion(destName))
+		--print('Zylla.IsMinion is TRUE')
+		--print(Zylla.IsMinion(destName))
         Zylla.active_demons[destGUID].empower_time = GetTime()
       end
     end
