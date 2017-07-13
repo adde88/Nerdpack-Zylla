@@ -51,8 +51,7 @@ local PreCombat = {
 	{'/cast Call Pet 1', '!pet.exists&UI(kPet)'},
 	{'Heart of the Phoenix', '!player.debuff(Weakened Heart)&pet.dead&UI(kPet)'},
 	{'Revive Pet', 'pet.dead&UI(kPet)'},
-	{'Volley', 'talent(6,3)&!player.buff(Volley)&UI(kVolley)'},
-	{'Volley', 'talent(6,3)&player.buff(Volley)&!UI(kVolley)'},
+	{'Volley', '{toggle(aoe)&talent(6,3)&!player.buff(Volley)&UI(kVolley)} || {talent(6,3)&player.buff(Volley)&{!UI(kVolley)||!toggle(aoe)}}'},
 }
 
 local Keybinds = {
@@ -90,7 +89,7 @@ local xCombat = {
 	{'Stampede', 'talent(7,1)&{player.buff(Bloodlust)||player.buff(Bestial Wrath)||cooldown(Bestial Wrath).remains<3}||target.time_to_die<24'},
 	{'Dire Beast', 'cooldown(Bestial Wrath).remains>3'},
 	--actions+=/dire_frenzy,if=(pet.cat.buff.dire_frenzy.remains<=gcd.max*1.2)|(charges_fractional>0.8)|target.time_to_die<9
-	{'Dire Frenzy', 'talent(2,2)&{pet.buff(Dire Frenzy).remains<=gcd.max*1.2}||action(Dire Frenzy).fractional>0.8||target.ttd<9'},
+	{'Dire Frenzy', 'talent(2,2)&{pet.buff(Dire Frenzy).remains<=gcd.max*1.2}||spell(Dire Frenzy).charges>0.8||target.ttd<9'},
 	{'Aspect of the Wild', 'player.buff(Bestial Wrath)||target.time_to_die<12'},
 	{'Barrage', 'UI(kBarrage)&talent(6,1)&{target.area(15).enemies>1}'},
 	{'Multi-Shot', 'target.area(10).enemies>4&{pet.buff(Beast Cleave).remains<gcd.max||!pet.buff(Beast Cleave)}'},
@@ -98,7 +97,7 @@ local xCombat = {
 	{'Chimaera Shot', 'talent(2,3)&player.focus<90'},
 	--actions+=/cobra_shot,if=(cooldown.kill_command.remains>focus.time_to_max&cooldown.bestial_wrath.remains>focus.time_to_max)|(buff.bestial_wrath.up&focus.regen*cooldown.kill_command.remains>action.kill_command.cost)|target.time_to_die<cooldown.kill_command.remains|(equipped.parsels_tongue&buff.parsels_tongue.remains<=gcd.max*2)
 	{'Cobra Shot', '{cooldown(Kill Command).remains>focus.time_to_max&cooldown(Bestial Wrath).remains>focus.time_to_max}||{player.buff(Bestial Wrath)&focus.regen*cooldown(Kill Command).remains>action(Kill Command).cost}||target.time_to_die<cooldown(Kill Command).remains||{xequipped(151805)&player.buff(Parsel\'s Tongue).remains<=gcd.max*2}'},
-	{'Volley', 'talent(6,3)&!player.buff(Volley)&UI(kVolley)'},
+	{'Volley', '{toggle(aoe)&talent(6,3)&!player.buff(Volley)&UI(kVolley)} || {talent(6,3)&player.buff(Volley)&{!UI(kVolley)||!toggle(aoe)}}'},
 }
 
 local xPetCombat = {
