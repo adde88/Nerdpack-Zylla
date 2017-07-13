@@ -59,12 +59,19 @@ local exeOnLoad = function()
 		text = 'Do damage in combat when possible.',
 		icon = 'Interface\\Icons\\ability_backstab',
 	})
+	
+	NeP.Interface:AddToggle({
+		key = 'xFORM',
+		name = 'Handle Forms',
+		text = 'Automatically handle player forms',
+		icon = 'Interface\\Icons\\inv-mount_raven_54',
+	})
 
 end
 
 local PreCombat = {
-	{'Travel Form', '!indoors&!player.buff(Travel Form)&!player.buff(Prowl)&{!target.enemy||target.enemy&!target.alive}'},
-	{'Cat Form', '!player.buff(Cat Form)&!player.buff(Travel Form)'},
+	{'Travel Form', 'toggle(xFORM)&!indoors&!player.buff(Travel Form)&!player.buff(Prowl)&!player.combat'},
+	{'Cat Form', 'toggle(xFORM)&!player.buff(Cat Form)&!player.buff(Travel Form)'},
  	{'Prowl', '!player.buff(Prowl)&player.area(40).enemies>0'},
 }
 
@@ -104,8 +111,8 @@ local Cooldowns = {
 
 local Mitigations = {
 	{'Barkskin', 'player.health<40'},
-	{'Ironbark', 'tank.health<30', 'tank'},
-	{'Ironbark', 'lowest.health<30', 'lowest'},
+	{'Ironbark', 'health<30', '{tank, lowest}'},
+	--{'Ironbark', 'lowest.health<30', 'lowest'},
 }
 
 local Moving = {
@@ -179,6 +186,7 @@ local inCombat = {
 }
 
 local outCombat = {
+	{'/cast Regrowth',nil, 'player'},
 	{PreCombat},
 	{Keybinds},
 }
