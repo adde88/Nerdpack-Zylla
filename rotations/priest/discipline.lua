@@ -46,7 +46,7 @@ local Cooldowns = {
 }
 
 local Tank = {
-  {'Clarity of Will', 'talent(6,1)&incdmg(7)=>health.max*0.70||area(5).enemies>2', 'tank'}, --Clarity of Will (if selected) to keep our tank secure and healthy.
+  {'Clarity of Will', 'talent(6,1)&incdmg(7)>health.max*0.70||area(5).enemies>2', 'tank'}, --Clarity of Will (if selected) to keep our tank secure and healthy.
 	{'Power Word: Shield', '!buff(Power Word: Shield)||player.buff(Rapture)', 'tank'}, --Power Word: Shield the Tank
 	{'Pain Suppression', 'health<30', 'tank'}, --Pain Suppression for less damage intake.
 	{'Shadow Mend', 'health<50', 'tank'}, --Shadow Mend for huge direct heal.

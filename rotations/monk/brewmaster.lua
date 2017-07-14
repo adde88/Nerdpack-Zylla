@@ -98,8 +98,8 @@ local Survival = {
 
 local Interrupts = {
 	{'!Spear Hand Strike'},
-	{'!Paralysis', '!target.immune(incapacitate)&target.range<30&player.energy=>20&spell(Spear Hand Strike).cooldown>gcd&!lastcast(Spear Hand Strike)'},
-	{'!Paralysis', '!immune(incapacitate)&range<30&player.energy=>20&player.area(20).enemies>1', 'endebuff(Paralysis)'},
+	{'!Paralysis', '!target.immune(incapacitate)&target.range<30&player.energy>19&spell(Spear Hand Strike).cooldown>gcd&!lastcast(Spear Hand Strike)'},
+	{'!Paralysis', '!immune(incapacitate)&range<30&player.energy>19&player.area(20).enemies>1', 'endebuff(Paralysis)'},
 	{'!Ring of Peace', 'talent(4,1)&!target.debuff(Spear Hand Strike)&spell(Spear Hand Strike).cooldown>gcd&!lastcast(Spear Hand Strike)'},
 	{'!Leg Sweep', '!target.immune(stun)&talent(4,3)&spell(Spear Hand Strike).cooldown>gcd&target.inMelee&!lastcast(Spear Hand Strike)'},
 	{'!Quaking Palm', '!target.immune(incapacitate)&!target.debuff(Spear Hand Strike)&spell(Spear Hand Strike).cooldown>gcd&!lastcast(Spear Hand Strike)'},
