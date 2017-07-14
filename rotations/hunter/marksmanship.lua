@@ -41,10 +41,9 @@ local exeOnLoad = function()
 end
 
 local PreCombat = {
-	{'/cast Call Pet 2', '!pet.exists&!pet.dead&UI(kPet)'},
+	{'/cast Call Pet 1', '!pet.exists&!pet.dead&UI(kPet)'},
 	{'Revive Pet', 'pet.dead&UI(kPet)'},
-	{'Volley', 'talent(6,3)&!player.buff(Volley)&UI(kVolley)'},
-	{'Volley', 'talent(6,3)&player.buff(Volley)&!UI(kVolley)'},
+	{'Volley', '{toggle(aoe)&talent(6,3)&!player.buff(Volley)&UI(kVolley)} || {talent(6,3)&player.buff(Volley)&{!UI(kVolley)||!toggle(aoe)}}'},
 }
 
 local Keybinds = {
