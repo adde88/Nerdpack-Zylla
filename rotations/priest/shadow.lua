@@ -169,8 +169,8 @@ local Insight = {
 }
 
 local Emergency = {
-	{'!Dispersion', 'player.spell(Shadow Word: Death).charges<1&!spell(Void Torrent).cooldown==0&player.insanity<30&!talent(7,1)&!talent(7,2)&UI(dps_D)'},
-	{'!Arcane Torrent', 'UI(dps_at)&player.insanity<45&{!player.spell(shadow word: death).cooldown==0||!target.health<45}&!player.spell(dispersion).cooldown==0'},
+	{'!Dispersion', 'player.spell(Shadow Word: Death).charges<1&!spell(Void Torrent).cooldown>0&player.insanity<30&!talent(7,1)&!talent(7,2)&UI(dps_D)'},
+	{'!Arcane Torrent', 'UI(dps_at)&player.insanity<45&{!spell(Shadow Word: Death).cooldown>0||!target.health<45}&!spell(Dispersion).cooldown>0'},
 	{'!Power Infusion', 'talent(6,1)&player.buff(voidform).count>70&spell(Shadow Word: Death).charges<1&player.insanity<70&UI(dps_PI)'},
 }
 
