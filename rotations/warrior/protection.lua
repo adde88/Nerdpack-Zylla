@@ -71,7 +71,7 @@ local Something = {
 
 local AoE = {
 	{Something},
-	{'Neltharion\'s Fury', 'player.buff(Battle Cry)&xmoving=0&player.area(8).enemies>2'},
+	{'Neltharion\'s Fury', 'player.buff(Battle Cry)&xmoving==0&player.area(8).enemies>2'},
 	{'Shield Slam', '!{spell(Shield Block).cooldown<=gcd*2&!player.buff(Shield Block)&talent(7,2)}'},
 	{'Revenge'},
 	{'Thunder Clap', 'player.area(6).enemies>2'},

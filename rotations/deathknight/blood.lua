@@ -69,7 +69,7 @@ local xCombat = {
 	{'Blood Boil', '!target.debuff(Blood Plague)&target.range<20'},
 	{'Death and Decay', 'target.range<40&{{talent(2,1)&player.buff(Crimson Scourge)}||{player.area(10).enemies>1&player.buff(Crimson Scourge}}', 'target.ground'},
 	{'Death and Decay', 'target.range<40&{{talent(2,1)&player.runes>2}||{player.area(10).enemies>2}}', 'target.ground'},
-	{'Death and Decay', '!talent(2,1)&target.range<40&player.area(10).enemies=1&player.buff(Crimson Scourge)', 'target.ground'},
+	{'Death and Decay', '!talent(2,1)&target.range<40&player.area(10).enemies==1&player.buff(Crimson Scourge)', 'target.ground'},
 	{'Death Strike', 'player.runicpower>65&target.inFront&target.inMelee'},
 	{'Heart Strike', 'player.runes>2&target.inFront&target.inMelee'},
 	{'Consumption', 'target.inFront&target.inMelee'},

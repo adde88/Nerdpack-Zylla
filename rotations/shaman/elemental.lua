@@ -132,7 +132,7 @@ local LRSingle = {
 	{'Stormkeeper'},
 	{'Elemental Blast', 'talent(5,3)'},
 	--***Lava Burst according to Lightning Rod Rotaion from Storm, Earth and Lava***
-	{'Lava Burst', '{!moving||moving}&player.buff(Lava Surge)||target.debuff(Flame Shock).duration>spell(Lava Burst).casttime&spell(Lava Burst).cooldown=0&{!player.buff(Stormkeeper)||player.buff(Stormkeeper).duration>spell(Lava Burst).casttime+{1.5*{spell_haste}*player.buff(Stormkeeper).count+1}}'},
+	{'Lava Burst', '{!moving||moving}&player.buff(Lava Surge)||target.debuff(Flame Shock).duration>spell(Lava Burst).casttime&spell(Lava Burst).cooldown==0&{!player.buff(Stormkeeper)||player.buff(Stormkeeper).duration>spell(Lava Burst).casttime+{1.5*{spell_haste}*player.buff(Stormkeeper).count+1}}'},
 	{'Flame Shock', '{!moving||moving}&player.maelstrom>10&player.buff(Elemental Focus)&target.debuff(Flame Shock).duration<9'},
 	--***Earth Shock according to Lightning Rod Rotaion from Storm, Earth and Lava***
 	{'Earth Shock', '{!moving||moving}&player.maelstrom>76&!player.buff(Lava Surge)'},
@@ -165,7 +165,7 @@ local IFSingle = {
 	{'Icefury', 'player.maelstrom<86&!player.buff(Stormkeeper)'},
 	{'Lightning Bolt', 'player.buff(Power of the Maelstrom)&player.buff(Stormkeeper)'},
 	--***Lava Burst according to Icefury Rotaion from Storm, Earth and Lava***
-	{'Lava Burst', '{!moving||moving}&player.buff(Lava Surge)||target.debuff(Flame Shock).duration>spell(Lava Burst).casttime&{spell(Lava Burst).cooldown=0||player.maelstrom<98&spell(Lava Burst).charges<3}'},
+	{'Lava Burst', '{!moving||moving}&player.buff(Lava Surge)||target.debuff(Flame Shock).duration>spell(Lava Burst).casttime&{spell(Lava Burst).cooldown==0||player.maelstrom<98&spell(Lava Burst).charges<3}'},
 	--***Frost Shock according to Icefury Rotaion from Storm, Earth and Lava***
 	{'Frost Shock', '{!moving||moving}&player.buff(Icefury)&{lastcast(Icefury)||player.maelstrom>10||player.buff(Icefury).duration<{1.5*{spell_haste}*player.buff(Icefury).count+1}}'},
 	{'Flame Shock', '{!moving||moving}&player.maelstrom>10&player.buff(Elemental Focus)&target.debuff(Flame Shock).duration<9'},
@@ -199,7 +199,7 @@ local ASSingle = {
 	--***Lightning Bolt according to Ascendance Rotaion from Storm, Earth and Lava***
 	{'Lightning Bolt', 'player.buff(Power of the Maelstrom)&{player.buff(Stormkeeper)||spell(Lava Burst).charges<3}'},
 	--***Lava Burst according to Ascendance Rotaion from Storm, Earth and Lava***
-	{'Lava Burst', '{!moving||moving}&player.buff(Lava Surge)||target.debuff(Flame Shock).duration>spell(Lava Burst).casttime&{spell(Lava Burst).cooldown=0||player.buff(Ascendance)||!player.buff(Ascendance)&player.buff(Stormkeeper).duration>spell(Lava Burst).casttime+{1.5*{spell_haste}*player.buff(Stormkeeper).count+1}}'},
+	{'Lava Burst', '{!moving||moving}&player.buff(Lava Surge)||target.debuff(Flame Shock).duration>spell(Lava Burst).casttime&{spell(Lava Burst).cooldown==0||player.buff(Ascendance)||!player.buff(Ascendance)&player.buff(Stormkeeper).duration>spell(Lava Burst).casttime+{1.5*{spell_haste}*player.buff(Stormkeeper).count+1}}'},
 	{'Flame Shock', '{!moving||moving}&player.maelstrom>10&player.buff(Elemental Focus)&target.debuff(Flame Shock).duration<9'},
 	--***Earth Shock according to Ascendance Rotaion from Storm, Earth and Lava***
 	{'Earth Shock', '{!moving||moving}&player.maelstrom>76&{!player.buff(Lava Surge)||!player.buff(Ascendance)}'},
@@ -214,7 +214,7 @@ local inCombat = {
 	{Trinkets},
 	{Heirlooms},
 	{Keybinds},
-	{Dispel, 'toggle(yuPS)&spell(Cleanse Spirit).cooldown=0'},
+	{Dispel, 'toggle(yuPS)&spell(Cleanse Spirit).cooldown==0'},
 	{Survival},
 	{Player, '!moving'},
 	{Emergency, '!moving&ingroup'},

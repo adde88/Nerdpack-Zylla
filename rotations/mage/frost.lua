@@ -3,7 +3,8 @@ local _, Zylla = ...
 local Util = _G['Zylla.Util']
 local Trinkets = _G['Zylla.Trinkets']
 local Heirlooms = _G['Zylla.Heirlooms']
-local GUI = {
+
+local GUI = {
 	{type = 'header', 	text = 'Keybinds', align = 'center'},
 	{type = 'text', 	text = 'Left Shift: Pause', align = 'center'},
 	{type = 'text', 	text = 'Left Ctrl: ', align = 'center'},
@@ -44,7 +45,7 @@ local PreCombat = {
 }
 
 local Cooldowns = {
-	{'Time Warp', 'UI(kTW)&{xtime=0&!player.buff(Bloodlust)}||{!player.buff(Bloodlust)&xequipped(132410)}'},
+	{'Time Warp', 'UI(kTW)&{xtime==0&!player.buff(Bloodlust)}||{!player.buff(Bloodlust)&xequipped(132410)}'},
 	{'Rune of Power', '!player.buff(Rune of Power)&{cooldown(Icy Veins).remains<cooldown(Rune of Power).cast_time||cooldown(Rune of Power).charges<1.9&cooldown(Icy Veins).remains>10||player.buff(Icy Veins)||{target.time_to_die+5<cooldown(Rune of Power).charges*10}}'},
 	{'Icy Veins', '!player.buff(Icy Veins)'},
 	{'Mirror Image'},
@@ -71,9 +72,9 @@ local xCombat = {
 	{'Blizzard', 'talent(6,3)', 'target.ground'},
 	{'Ebonbolt', 'player.buff(Fingers of Frost).stack<={0+artifact(Icy Hand).enabled}'},
 	{'Ice Barrier', '!player.buff(Ice Barrier)&!player.buff(Rune of Power)'},
-	{'Ice Floes', 'gcd.remains<0.2&xmoving=1&!prev_gcd(Ice Floes)&!player.buff(Ice Floes)'},
+	{'Ice Floes', 'gcd.remains<0.2&xmoving==1&!prev_gcd(Ice Floes)&!player.buff(Ice Floes)'},
 	{'Summon Water Elemental', '!pet.exists'},
-	{'Frostbolt', 'xmoving=0||player.buff(Ice Floes)'},
+	{'Frostbolt', 'xmoving==0||player.buff(Ice Floes)'},
 }
 
 local Keybinds = {

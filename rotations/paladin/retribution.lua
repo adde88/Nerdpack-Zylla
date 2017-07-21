@@ -3,7 +3,8 @@ local _, Zylla = ...
 local Util = _G['Zylla.Util']
 local Trinkets = _G['Zylla.Trinkets']
 local Heirlooms = _G['Zylla.Heirlooms']
-local GUI = {
+
+local GUI = {
 	{type = 'header', 	text = 'Keybinds', align = 'center'},
 	{type = 'text', 	text = 'Left Shift: Pause', align = 'center'},
 	{type = 'text', 	text = 'Left Ctrl: ', align = 'center'},
@@ -75,7 +76,7 @@ local xCombat = {
 	{'Divine Storm', 'target.debuff(Judgment)&holy_power>2&player.area(6).enemies>1&{cooldown(Wake of Ashes).remains<gcd*2&artifact(Wake of Ashes).enabled||player.buff(Whisper of the Nathrezim)&player.buff(Whisper of the Nathrezim).remains<gcd}&{!talent(7,2)||cooldown(Crusade).remains>gcd*4}'},
 	{'Justicar\'s Vengeance', 'target.debuff(Judgment)&holy_power>2&player.buff(Divine Purpose)&cooldown(Wake of Ashes).remains<gcd*2&artifact(Wake of Ashes).enabled&!equipped(Whisper of the Nathrezim)'},
 	{'Templar\'s Verdict', 'target.debuff(Judgment)&holy_power>2&{cooldown(Wake of Ashes).remains<gcd*2&artifact(Wake of Ashes).enabled||player.buff(Whisper of the Nathrezim).remains<gcd}&{!talent(7,2)||cooldown(Crusade).remains>gcd*4}'},
-	{'Wake of Ashes', 'holy_power=0||holy_power=1&cooldown(Blade of Justice).remains>gcd||holy_power=2&{cooldown(Zeal).charges<=0.65||cooldown(Crusader Strike).charges<=0.65}'},
+	{'Wake of Ashes', 'holy_power==0||holy_power==1&cooldown(Blade of Justice).remains>gcd||holy_power=2&{cooldown(Zeal).charges<=0.65||cooldown(Crusader Strike).charges<=0.65}'},
 	{'Zeal', 'talent(2,2)&{cooldown(Zeal).charges=2&holy_power<5}'},
 	{'Crusader Strike', 'cooldown(Crusader Strike).charges=2&holy_power<5'},
 	{'Blade of Justice', 'holy_power<3||{holy_power<4&{cooldown(Zeal).charges<2.34||cooldown(Crusader Strike).charges<2.34}}'},

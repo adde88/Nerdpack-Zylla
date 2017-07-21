@@ -88,7 +88,7 @@ local Cooldowns = {
 	{'Summon Doomguard', '!talent(6,1)&target.area(10).enemies<3'},
 	{'Summon Infernal', '!talent(6,1)&target.area(10).enemies>2&!advanced', 'cursor.ground'},
 	{'Summon Infernal', '!talent(6,1)&target.area(10).enemies>2&advanced', 'target.ground'},
-	{'Summon Doomguard', 'talent(6,1)&target.area(10).enemies=1&player.buff(Sin\'dorei Spite)'},
+	{'Summon Doomguard', 'talent(6,1)&target.area(10).enemies==1&player.buff(Sin\'dorei Spite)'},
 	{'Summon Infernal', 'talent(6,1)&target.area(10).enemies>1&player.buff(Sin\'dorei Spite)&!advanced', 'cursor.ground'},
 	{'Summon Infernal', 'talent(6,1)&target.area(10).enemies>1&player.buff(Sin\'dorei Spite)&advanced', 'target.ground'},
 	{'Summon Darkglare', 'talent(7,1)&target.area(10).enemies>1&target.debuff(Doom)&player.soulshards>0'},
@@ -100,7 +100,7 @@ local DW_Clip = {
 	{'!Call Dreadstalkers', 'player.buff(Demonic Calling)'},
 	{'!Hand of Gul\'dan', '!player.moving&player.soulshards>3'},
 	{'!Thal\'kiel\'s Consumption', '!player.moving&cooldown(Call Dreadstalkers).remains>3&player.lastgcd(Hand of Gul\'dan)'},
-	{'!Demonic Empowerment', '!player.moving&!player.lastgcd(Demonic Empowerment)&{Zylla.empower=0||player.lastgcd(Summon Felguard)||player.lastgcd(Call Dreadstalkers)||player.lastgcd(Hand of Gul\'dan)||player.lastgcd(Summon Darkglare)||player.lastgcd(Summon Doomguard)||player.lastgcd(Grimoire: Felguard)||player.lastgcd(Thal\'kiel\'s Consumption)}'},
+	{'!Demonic Empowerment', '!player.moving&!player.lastgcd(Demonic Empowerment)&{Zylla.empower==0||player.lastgcd(Summon Felguard)||player.lastgcd(Call Dreadstalkers)||player.lastgcd(Hand of Gul\'dan)||player.lastgcd(Summon Darkglare)||player.lastgcd(Summon Doomguard)||player.lastgcd(Grimoire: Felguard)||player.lastgcd(Thal\'kiel\'s Consumption)}'},
 	{'!Doom', '!talent(4,1)&toggle(Doom)&!target.debuff(Doom)'},
 	{'!Life Tap', 'player.mana<40&player.health>05&{!player.lastgcd(Summon Felguard)||!player.lastgcd(Call Dreadstalkers)||!player.lastgcd(Hand of Gul\'dan)||!player.lastgcd(Summon Darkglare)||!player.lastgcd(Summon Doomguard)||!player.lastgcd(Grimoire: Felguard)}'},
 	{'!Demonbolt', '!player.moving&talent(7,2)&!player.soulshards=4'},
@@ -114,7 +114,7 @@ local ST = {
 	{'Call Dreadstalkers', '!player.moving&player.buff(Demonic Calling)'},
 	{'Hand of Gul\'dan', '!player.moving&player.soulshards>3'},
 	{'Thal\'kiel\'s Consumption', '!player.moving&cooldown(Call Dreadstalkers).remains>3&player.lastgcd(Hand of Gul\'dan)'},
-	{'Demonic Empowerment', '!player.moving&!player.lastgcd(Demonic Empowerment)&{Zylla.empower=0||player.lastgcd(Summon Felguard)||player.lastgcd(Call Dreadstalkers)||player.lastgcd(Hand of Gul\'dan)||player.lastgcd(Summon Darkglare)||player.lastgcd(Summon Doomguard)||player.lastgcd(Grimoire: Felguard)||player.lastgcd(Thal\'kiel\'s Consumption)}'},
+	{'Demonic Empowerment', '!player.moving&!player.lastgcd(Demonic Empowerment)&{Zylla.empower==0||player.lastgcd(Summon Felguard)||player.lastgcd(Call Dreadstalkers)||player.lastgcd(Hand of Gul\'dan)||player.lastgcd(Summon Darkglare)||player.lastgcd(Summon Doomguard)||player.lastgcd(Grimoire: Felguard)||player.lastgcd(Thal\'kiel\'s Consumption)}'},
 	{'Doom', '!talent(4,1)&toggle(Doom)&!target.debuff(Doom)&target.inRanged'},
 	{'Life Tap', 'player.mana<40&player.health>05&{!player.lastgcd(Summon Felguard)||!player.lastgcd(Call Dreadstalkers)||!player.lastgcd(Hand of Gul\'dan)||!player.lastgcd(Summon Darkglare)||!player.lastgcd(Summon Doomguard)||!player.lastgcd(Grimoire: Felguard)}'},
 	{'Demonwrath', 'movingfor>1&player.combat.time>2'},
@@ -138,7 +138,7 @@ local inCombat = {
 local outCombat = {
 	{'Life Tap', 'player.mana<70&player.health>50'},
 	{Interrupts, 'toggle(Interrupts)&target.inFront&target.range<50'},
-	{'Create Healthstone', 'item.count(Healthstone)=0&!lastcast(Create Healthstone)'},
+	{'Create Healthstone', 'item.count(Healthstone)==0&!lastcast(Create Healthstone)'},
 }
 
 NeP.CR:Add(266, {

@@ -6,27 +6,34 @@ local Heirlooms = _G["Zylla.Heirlooms"]
 
 local GUI = {
 	-- Keybinds
-	{type = 'header', 	text = 'Keybinds', align = 'center'},
-	{type = 'text', 	text = 'Left Shift: Pause', align = 'center'},
-	{type = 'text', 	text = 'Left Ctrl: Tar Trap', align = 'center'},
-	{type = 'text', 	text = 'Left Alt: Binding Shot', align = 'center'},
-	{type = 'text', 	text = 'Right Alt: Freezing Trap', align = 'center'},
-	{type = 'ruler'},	{type = 'spacer'},
+	{type = 'header',   	text = 'Keybinds',	  					      align = 'center'},
+	{type = 'text', 	  	text = 'Left Shift: Pause',					  align = 'center'},
+	{type = 'text', 	  	text = 'Left Ctrl: Tar Trap',				  align = 'center'},
+	{type = 'text', 	  	text = 'Left Alt: Binding Shot',			  align = 'center'},
+	{type = 'text', 	  	text = 'Right Alt: Freezing Trap',			  align = 'center'},
+	{type = 'ruler'},	  	{type = 'spacer'},
 	-- Settings
-	{type = 'header', 	text = 'Class Settings', align = 'center'},
-	{type = 'checkbox', text = 'Pause Enabled', key = 'kPause', default = true},
-	{type = 'checkbox', text = 'Summon Pet', key = 'kPet', default = true},
-	{type = 'checkbox', text = 'Barrage Enabled', key = 'kBarrage', default = false},
-   	{type = 'checkbox', text = 'Volley Enabled', key = 'kVolley', default = true},
-	{type = 'checkbox', text = 'Misdirect Focus/Pet', key = 'kMisdirect', default = true},
-	{type = 'ruler'},	{type = 'spacer'},
+	{type = 'header', 		text = 'Class Settings',					  align = 'center'},
+	{type = 'checkbox', 	text = 'Pause Enabled',						  key = 'kPause',		  default = true},
+	{type = 'checkbox', 	text = 'Summon Pet',						  key = 'kPet',			  default = true},
+	{type = 'checkbox',		text = 'Barrage Enabled',					  key = 'kBarrage',		  default = false},
+	{type = 'checkbox',		text = 'Volley Enabled',					  key = 'kVolley',		  default = true},
+	{type = 'checkbox', 	text = 'Misdirect Focus/Pet',				  key = 'kMisdirect',	  default = true},
+	{type = 'ruler'},	 	{type = 'spacer'},
+  	-- Survival
+	{type = 'header', 		text = 'Survival',							  align = 'center'},
+	{type = 'spinner', 		text = 'Exhileration below HP%',			  key = 'E_HP',           default = 67},
+	{type = 'spinner',		text = 'Healthstone or Healing Potions',	  key = 'Health Stone',	  default = 45},
+	{type = 'spinner',		text = 'Aspect of the Turtle',				  key = 'AotT',           default = 21},
+	{type = 'spinner',		text = 'Feign Death (Legendary Healing) %',	  key = 'FD',		      default = 16},
 	-- Trinkets + Heirlooms for leveling
-	{type = 'header', 	text = 'Trinkets/Heirlooms', align = 'center'},
-	{type = 'checkbox', text = 'Use Trinket #1', key = 'kT1', default = true},
-	{type = 'checkbox', text = 'Use Trinket #2', key = 'kT2', default = true},
-	{type = 'checkbox', text = 'Ring of Collapsing Futures', key = 'kRoCF', default = true},
-	{type = 'checkbox', text = 'Use Heirloom Necks When Below X% HP', key = 'k_HEIR', default = true},
-	{type = 'spinner',	text = '', key = 'k_HeirHP', default = 40},
+	{type = 'header', 		text = 'Trinkets/Heirlooms',                  align = 'center'},
+	{type = 'checkbox', 	text = 'Use Trinket #1',					  key = 'kT1',            default = true},
+	{type = 'checkbox', 	text = 'Use Trinket #2',					  key = 'kT2',            default = true},
+	{type = 'checkbox', 	text = 'Ring of Collapsing Futures',          key = 'kRoCF',          default = true},
+	{type = 'checkbox', 	text = 'Use Heirloom Necks When Below X% HP', key = 'k_HEIR',         default = true},
+	{type = 'spinner',		text = '',                                    key = 'k_HeirHP',       default = 40},
+	{type = 'ruler'},	 	{type = 'spacer'},
 }
 
 local exeOnLoad = function()
@@ -50,8 +57,9 @@ end
 local PreCombat = {
 	{'/cast Call Pet 1', '!pet.exists&UI(kPet)'},
 	{'Heart of the Phoenix', '!player.debuff(Weakened Heart)&pet.dead&UI(kPet)'},
-	{'Revive Pet', 'pet.dead&UI(kPet)'},
+	{'Revive Pet', 'player.spell.exists&UI(kPet)'},
 	{'Volley', '{toggle(aoe)&talent(6,3)&!player.buff(Volley)&UI(kVolley)} || {talent(6,3)&player.buff(Volley)&{!UI(kVolley)||!toggle(aoe)}}'},
+	{'%pause', 'player.buff(Feign Death)'},
 }
 
 local Keybinds = {
@@ -62,11 +70,12 @@ local Keybinds = {
 }
 
 local Survival = {
-	{'Exhilaration', 'player.health<66'},
-	{'#Ancient Healing Potion', 'player.health<42'},
-	{'#Healthstone', 'player.health<38'},
-	{'Aspect of the Turtle', 'player.health<22'},
-	{'Feign Death', 'player.health<19&equipped(137064)'},
+	{'Exhilaration', 'player.health<UI(E_HP)'},
+	{'#Ancient Healing Potion', 'player.health<UI(Health Stone)'},
+	{'#Healthstone', 'player.health<UI(Health Stone)'},
+	{'Aspect of the Turtle', 'player.health<UI(AotT)'},
+	{'Feign Death', 'player.health<UI(FD)&equipped(137064)'},
+	{'%pause', 'player.buff(Feign Death)'},
 }
 
 local Cooldowns = {

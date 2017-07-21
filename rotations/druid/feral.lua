@@ -129,14 +129,14 @@ local Finisher = {
 	{Rip_Pool, '{!target.dot(Rip).ticking||{target.dot(Rip).remains<8&target.health>25&!talent(6,1)}||persistent_multiplier(Rip)>dot(Rip).pmultiplier}&{target.time_to_die-target.dot(Rip).remains>dot(Rip).tick_time*4&combo_points=5}&{energy.time_to_max<1||player.buff(Berserk)||player.buff(Incarnation: King of the Jungle)||cooldown(Tiger\'s Fury).remains<3||{talent(7,3)&player.buff(Clearcasting)}||talent(5,1)||!target.dot(Rip).ticking||{target.dot(Rake).remains<1.5&player.area(8).enemies<6}}'},
 	{Savage_Roar_Pool, 'talent(5,3)&{{{player.buff(Savage Roar).duration<20.5&talent(6,2)}||{player.buff(Savage Roar).duration<8.2&!talent(6,2)}}&combo_points=5&{energy.time_to_max<1||player.buff(Berserk)||player.buff(Incarnation: King of the Jungle)||cooldown(Tiger\'s Fury).remains<3||player.buff(Clearcasting)||talent(5,1)||!target.debuff(Rip)||{target.debuff(Rake).duration<1.5&player.area(8).enemies<6}}}'},
 	{'Swipe', 'combo_points=5&{player.area(8).enemies>5||{player.area(8).enemies>2&!talent(7,2)}}&combo_points=5&{energy.time_to_max<1||player.buff(Berserk)||player.buff(Incarnation: King of the Jungle)||cooldown(Tiger\'s Fury).remains<3||{talent(7,3)&player.buff(Clearcasting)}}'},
-	{'Ferocious Bite', 'energy.deficit=0&combo_points=5&{energy.time_to_max<1||player.buff(Berserk)||player.buff(Incarnation: King of the Jungle)||cooldown(Tiger\'s Fury).remains<3||{talent(7,3)&player.buff(Clearcasting)}}'},
+	{'Ferocious Bite', 'energy.deficit==0&combo_points=5&{energy.time_to_max<1||player.buff(Berserk)||player.buff(Incarnation: King of the Jungle)||cooldown(Tiger\'s Fury).remains<3||{talent(7,3)&player.buff(Clearcasting)}}'},
 }
 
 local Generator = {
 	{'Brutal Slash', 'talent(7,1)&combo_points<5'},
 	{'!Ashamane\'s Frenzy', 'combo_points<3&toggle(Cooldowns)&{player.buff(Bloodtalons)||!talent(7,2)}&{player.buff(Savage Roar)||!talent(5,3)}'},
-	{'Elune\'s Guidance', 'talent(6,3)&{combo_points=0&player.energy<action(Ferocious Bite).cost+25-energy.regen*cooldown(Elune\'s Guidance).remains}'},
-	{'Elune\'s Guidance', 'talent(6,3)&{combo_points=0&player.energy>=action(Ferocious Bite).cost+25}'},
+	{'Elune\'s Guidance', 'talent(6,3)&{combo_points==0&player.energy<action(Ferocious Bite).cost+25-energy.regen*cooldown(Elune\'s Guidance).remains}'},
+	{'Elune\'s Guidance', 'talent(6,3)&{combo_points==0&player.energy>=action(Ferocious Bite).cost+25}'},
 	{Thrash_Pool, 'talent(7,1)&player.area(8).enemies>8'},
 	{Swipe_Pool, 'player.area(8).enemies>5'},
 	--{'', ''},

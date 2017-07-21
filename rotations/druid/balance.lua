@@ -3,7 +3,8 @@ local _, Zylla = ...
 local Util = _G['Zylla.Util']
 local Trinkets = _G['Zylla.Trinkets']
 local Heirlooms = _G['Zylla.Heirlooms']
-local GUI = {
+
+local GUI = {
 	{type = 'header', 	text = 'Keybinds', align = 'center'},
 	{type = 'text', 	text = 'Left Shift: Pause', align = 'center'},
 	{type = 'text', 	text = 'Left Ctrl: ', align = 'center'},
@@ -105,7 +106,7 @@ local FoE = {
 	{'Full Moon', 'astral_power<70&player.buff(Fury of Elune)&astral_power>action(Full Moon).cast_time*12'},
 	{'Moonfire', '!player.buff(Fury of Elune)&target.dot(Moonfire).remains<7.6'},
 	{'Sunfire', '!player.buff(Fury of Elune)&target.dot(Sunfire).remains<6.4'},
-	{'Stellar Flare', 'target.dot(Stellar Flare).remains<8.2&player.area(40).enemies=1'},
+	{'Stellar Flare', 'target.dot(Stellar Flare).remains<8.2&player.area(40).enemies==1'},
 	{'Starfall', '{target.area(15).enemies>1&talent(5,3)||target.area(15).enemies>2}&player.buff(Fury of Elune)&cooldown(Fury of Elune).remains>10', 'target.ground'},
 	{'Starsurge', 'target.area(15).enemies<3&!player.buff(Fury of Elune)&cooldown(Fury of Elune).remains>7'},
 	{'Starsurge', '!player.buff(Fury of Elune)&{{astral_power>82&cooldown(Fury of Elune).remains>gcd*3}||{cooldown(Warrior of Elune).remains<6&cooldown(Fury of Elune).remains>25&player.buff(Lunar Empowerment).stack<2}}'},

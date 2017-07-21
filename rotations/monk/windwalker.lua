@@ -74,7 +74,7 @@ local Keybinds = {
 }
 
 local Cooldowns = {
-	{'Tiger Palm', 'player.combat.time<4&player.energydiff=0&player.chi<2&!lastgcd(Tiger Palm)&@Zylla.hitcombo(Tiger Palm)&target.inMelee'},
+	{'Tiger Palm', 'player.combat.time<4&player.energydiff==0&player.chi<2&!lastgcd(Tiger Palm)&@Zylla.hitcombo(Tiger Palm)&target.inMelee'},
 	-- TODO: add logic to handle ToD interaction with legendary item 137057 (Hidden Masters Forbidden Touch)
 	-- No Serenity
 	{'Touch of Death', 'target.inMelee&target.DeathIn>7&{!player.spell.usable(Gale Burst)||{player.spell.usable(Gale Burst)&!talent(7,3)&player.spell(Strike of the Windlord).cooldown<8&player.spell(Fists of Fury).cooldown<5&player.spell(Rising Sun Kick).cooldown<7&player.chi>1}}'},
@@ -108,7 +108,7 @@ local Interrupts = {
 }
 
 local SEF = {
-	{'Tiger Palm', 'player.energydiff=0&player.chi<2&!lastgcd(Tiger Palm)&@Zylla.hitcombo(Tiger Palm)&target.inMelee'},
+	{'Tiger Palm', 'player.energydiff==0&player.chi<2&!lastgcd(Tiger Palm)&@Zylla.hitcombo(Tiger Palm)&target.inMelee'},
 	{'Storm, Earth, and Fire', '{{!toggle(AoE)&@Zylla.sef(nil)}||!player.buff(Storm, Earth, and Fire)}&{player.spell(Touch of Death).cooldown<9||player.spell(Touch of Death).cooldown>85}'},
 	{'Storm, Earth, and Fire', '{{!toggle(AoE)&@Zylla.sef(nil)}||!player.buff(Storm, Earth, and Fire)}&target.DeathIn<35'},
 	{'Storm, Earth, and Fire', '{{!toggle(AoE)&@Zylla.sef(nil)}||!player.buff(Storm, Earth, and Fire)}&{player.spell(Fists of Fury).cooldown<2&player.chi>2}'},
@@ -146,7 +146,7 @@ local Melee = {
 	{{
 		{'Tiger Palm', 'UI(auto_dot)', 'Zylla_sck(Mark of the Crane)'},
 		{'Tiger Palm'},
-	}, 'player.energydiff=0&player.chi<4&player.buff(Storm, Earth, and Fire)&!lastgcd(Tiger Palm)&@Zylla.hitcombo(Tiger Palm)&target.inMelee'},
+	}, 'player.energydiff==0&player.chi<4&player.buff(Storm, Earth, and Fire)&!lastgcd(Tiger Palm)&@Zylla.hitcombo(Tiger Palm)&target.inMelee'},
 	{'Spinning Crane Kick', '{!lastgcd(Spinning Crane Kick)&@Zylla.hitcombo(Spinning Crane Kick)}&{player.spell(Spinning Crane Kick).count>7||{player.spell(Spinning Crane Kick).count>2&player.area(8).enemies>1&toggle(AoE)}||{player.area(8).enemies>2&toggle(AoE)}}'},
 	{'Rising Sun Kick', 'target.inMelee&UI(auto_dot)', 'Zylla_sck(Mark of the Crane)'},
 	{'Rising Sun Kick', 'target.inMelee'},
@@ -167,10 +167,10 @@ local Melee = {
 	}, 'player.energy>50&!lastgcd(Tiger Palm)&@Zylla.hitcombo(Tiger Palm)&target.inMelee'},
 
 	-- CJL when we're using Hit Combo as a last resort filler, at 100 energy, and it's toggled on
-	{'Crackling Jade Lightning', 'UI(auto_cjl_hc)&target.inMelee&!lastgcd(Crackling Jade Lightning)&@Zylla.hitcombo(Crackling Jade Lightning)&player.energydiff=0'},
+	{'Crackling Jade Lightning', 'UI(auto_cjl_hc)&target.inMelee&!lastgcd(Crackling Jade Lightning)&@Zylla.hitcombo(Crackling Jade Lightning)&player.energydiff==0'},
 
 	-- Last resort BoK when we only have 1 chi and no hit combo
-	{'Blackout Kick', 'player.chi=1&!player.buff(Hit Combo)&target.inMelee'},
+	{'Blackout Kick', 'player.chi==1&!player.buff(Hit Combo)&target.inMelee'},
 	-- Last resort TP when we don't have hit combo up
 	{'Tiger Palm', '!player.buff(Hit Combo)&target.inMelee'},
 	--[[ Last resort TP when at 100 energy - doing this because it's sometimes
@@ -187,7 +187,7 @@ local inCombat = {
 	{Survival, 'player.health<100'},
 	{Interrupts, 'target.interruptAt(70)&target.inMelee'},
 	{Cooldowns, 'toggle(cooldowns)&target.inMelee'},
-	{Serenity, 'toggle(cooldowns)&target.inMelee&talent(7,3)&!player.casting(Fists of Fury)&{player.spell(Serenity).cooldown=0||player.buff(Serenity)}'},
+	{Serenity, 'toggle(cooldowns)&target.inMelee&talent(7,3)&!player.casting(Fists of Fury)&{player.spell(Serenity).cooldown==0||player.buff(Serenity)}'},
 	-- TODO: handle legendary Drinking Horn Cover
 	{SEF, 'target.inMelee&UI(sef_toggle)&!talent(7,3)&!player.casting(Fists of Fury)&{player.spell(Strike of the Windlord).exists&player.spell(Strike of the Windlord).cooldown<24&player.spell(Fists of Fury).cooldown<7&player.spell(Rising Sun Kick).cooldown<7}'},
 	{Melee, '!player.casting(Fists of Fury)'},

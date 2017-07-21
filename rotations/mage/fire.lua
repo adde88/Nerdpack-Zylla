@@ -61,7 +61,7 @@ local Interrupts = {
 
 local Cooldowns = {
 	--# Executed every time the actor is available.
-	{'Time Warp', 'toggle(xTimeWarp)&{{xtime=0&!player.buff(Bloodlust)}||{!player.buff(Bloodlust)&equipped(132410)}}'},
+	{'Time Warp', 'toggle(xTimeWarp)&{{xtime==0&!player.buff(Bloodlust)}||{!player.buff(Bloodlust)&equipped(132410)}}'},
 	{'#trinket2', 'target.range<50&target.area(10).enemies>3'},
 }
 
@@ -119,17 +119,17 @@ local MainRotation = {
 	{'Phoenix\'s Flames', '{player.buff(Combustion)||player.buff(Rune of Power)||player.buff(Incanter\'s Flow).stack>3||talent(3,1)}&{4-action(Phoenix\'s Flames).charges}*13<cooldown(Combustion).remains+5||target.time_to_die<10'},
 	{'Phoenix\'s Flames', '{player.buff(Combustion)||player.buff(Rune of Power)}&{4-action(Phoenix\'s Flames).charges}*30<cooldown(Combustion).remains+5'},
 	{'Scorch', 'target.health<35&equipped(132454)'},
-	{'Ice Floes', 'cooldown(61304).remains<0.5&xmoving=1&!player.lastcast(Ice Floes)&!player.buff(Ice Floes)'},
-	{'Fireball', 'xmoving=0||player.buff(Ice Floes)'},
+	{'Ice Floes', 'cooldown(61304).remains<0.5&xmoving==1&!player.lastcast(Ice Floes)&!player.buff(Ice Floes)'},
+	{'Fireball', 'xmoving==0||player.buff(Ice Floes)'},
 	{'Ice Barrier', '!player.buff(Ice Barrier)&!player.buff(Combustion)&!player.buff(Rune of Power)'},
-	{'Scorch', 'xmoving=1&!player.buff(Ice Floes)'},
+	{'Scorch', 'xmoving==1&!player.buff(Ice Floes)'},
 	{'Dragon\'s Breath', 'target.range<22&player.area(10).enemies>1'},
 }
 
 local xCombat = {
-	{'Rune of Power', 'xmoving=0&toggle(cooldowns)&{cooldown(Combustion).remains>40}&{!player.buff(Combustion)&{cooldown(Flame On).remains<5||cooldown(Flame On).remains>30}&!talent(7,1)||target.time_to_die<11||talent(7,1)&{action(Rune of Power).charges>1.8||xtime<40}&{cooldown(Combustion).remains>40)}}'},
-	{Combustion, 'xmoving=0&{cooldown(Combustion).remains<=action(Rune of Power).cast_time+gcd||player.buff(Combustion)}'},
-	{RoP, 'xmoving=0&player.buff(Rune of Power)&!player.buff(Combustion)'},
+	{'Rune of Power', 'xmoving==0&toggle(cooldowns)&{cooldown(Combustion).remains>40}&{!player.buff(Combustion)&{cooldown(Flame On).remains<5||cooldown(Flame On).remains>30}&!talent(7,1)||target.time_to_die<11||talent(7,1)&{action(Rune of Power).charges>1.8||xtime<40}&{cooldown(Combustion).remains>40)}}'},
+	{Combustion, 'xmoving==0&{cooldown(Combustion).remains<=action(Rune of Power).cast_time+gcd||player.buff(Combustion)}'},
+	{RoP, 'xmoving==0&player.buff(Rune of Power)&!player.buff(Combustion)'},
 	{MainRotation, '!player.casting(Rune of Power)'},
 }
 

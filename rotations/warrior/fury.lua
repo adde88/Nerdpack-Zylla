@@ -3,7 +3,8 @@ local _, Zylla = ...
 local Util = _G['Zylla.Util']
 local Trinkets = _G['Zylla.Trinkets']
 local Heirlooms = _G['Zylla.Heirlooms']
-local GUI = {
+
+local GUI = {
 	-- Keybinds
 	{type = 'header', 	text = 'Keybinds', align = 'center'},
 	{type = 'text', 	text = 'Left Shift: Pause', align = 'center'},
@@ -83,7 +84,7 @@ local AoE = {
 local ST = {
 	{'Bloodthirst', 'player.buff(Fujieda\'s Fury)&player.buff(Fujieda\'s Fury).stack<2'},
 	{'Execute', '{artifact(Juggernaut).enabled&{!player.buff(Juggernaut)||player.buff(Juggernaut).remains<2}}||player.buff(Stone Heart)'},
-	{'Rampage', 'player.rage=100&{target.health>20||{target.health<20&!talent(5,1)}||{player.buff(Massacre)&player.buff(Enrage).remains<1}}'},
+	{'Rampage', 'player.rage==100&{target.health>20||{target.health<20&!talent(5,1)}||{player.buff(Massacre)&player.buff(Enrage).remains<1}}'},
 	{'Berserker Rage', 'talent(3,2)&spell(Odyn\'s Fury).cooldown<gcd&!player.buff(Enrage)'},
 	{'Dragon Roar', '!spell(Odyn\'s Fury).cooldown<20||spell(Odyn\'s Fury).cooldown<3'},
 	{'Odyn\'s Fury', 'artifact(Odyn\'s Fury).equipped&player.buff(Battle Cry)&player.buff(Enrage)'},
@@ -105,7 +106,7 @@ local ST = {
 local TwoTargets = {
 	{'Whirlwind', '!player.buff(Meat Cleaver)'},
 	{Bladestorm},
-	{'Rampage', '!player.buff(Enrage)||{player.rage=100&!player.buff(Juggernaut)}||player.buff(Massacre)'},
+	{'Rampage', '!player.buff(Enrage)||{player.rage==100&!player.buff(Juggernaut)}||player.buff(Massacre)'},
 	{'Bloodthirst', '!player.buff(Enrage)'},
 	{'Raging Blow', 'talent(6,3)&player.area(8).enemies=2'},
 	{'Whirlwind', 'player.area(8).enemies>2'},

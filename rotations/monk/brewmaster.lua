@@ -88,7 +88,7 @@ local Mitigations = {
 }
 
 local Survival = {
-	{'Healing Elixir', '{player.spell(Healing Elixir).charges>1||{player.spell(Healing Elixir).charges=1&player.spell(Healing Elixir).cooldown<3&!lastcast(Healing Elixir)}}&player.health<=UI(Healing Elixir)', 'player'},
+	{'Healing Elixir', '{player.spell(Healing Elixir).charges>1||{player.spell(Healing Elixir).charges==1&player.spell(Healing Elixir).cooldown<3&!lastcast(Healing Elixir)}}&player.health<=UI(Healing Elixir)', 'player'},
 	{'#Healthstone', 'player.health<=UI(Health Stone)', 'player'},
 	{'#Ancient Healing Potion', 'player.health<=UI(Health Stone)', 'player'},
 	{'Expel Harm', 'player.health<=UI(Expel Harm)&player.spell(Expel Harm).count>0', 'player'},

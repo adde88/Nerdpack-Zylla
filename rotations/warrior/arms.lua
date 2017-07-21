@@ -143,7 +143,7 @@ local ST = {
 	{'Slam', '!talent(3,1)&{{player.buff(Battle Cry)&talent(6,1)}||player.buff(Focused Rage).stack=3||rage.deficit<40}'},
 	{'Mortal Strike', '!talent(5,3)'},
 	{'Whirlwind', 'player.area(8).enemies>1||talent(3,1)&player.rage>35'},
-	{'Slam', '!talent(3,1)&player.area(8).enemies=1&player.rage>22'},
+	{'Slam', '!talent(3,1)&player.area(8).enemies==1&player.rage>22'},
 	{'Execute', 'xequipped(137060)'},
 	{'Focused Rage', 'xequipped(137060)'},
 	{'Bladestorm'},

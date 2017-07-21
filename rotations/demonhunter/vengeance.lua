@@ -48,7 +48,6 @@ local Interrupts = {
 
 local ST = {
 	{'Sigil of Flame', 'target.range<25&!target.debuff(Sigil of Flame)', 'target.ground'},
-	--{'Infernal Strike', 'talent(3,2)&'},
 	{'Fiery Brand', '!player.buff(Demon Spikes)&!player.buff(Metamorphosis)'},
 	{'Demon Spikes', '{spell(Demon Spikes)charges=2||!player.buff(Demon Spikes)}&!target.debuff(Fiery Brand)&!player.buff(Metamorphosis)'},
 	{'!Empower Wards', 'target.casting.percent>80'},
@@ -67,6 +66,7 @@ local ST = {
 	{'Shear', 'player.buff(Blade Turning)'},
 	{'Shear'},
 	{'Fracture', 'talent(4,2)&player.pain>50'},
+	{'Infernal Strike', 'talent(3,2)&!target.debuff(Sigil of Flame).remaining<gcd&player.spell(Sigil of Flame).cooldown>4&player.spell(Infernal Strike).charges>0', 'target.ground'},
 }
 
 local Ranged = {

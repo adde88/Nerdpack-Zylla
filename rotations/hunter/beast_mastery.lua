@@ -6,28 +6,35 @@ local Heirlooms = _G['Zylla.Heirlooms']
 
 local GUI = {
   -- Keybinds
-  {type = 'header', 	text = 'Keybinds', align = 'center'},
-  {type = 'text', 	text = 'Left Shift: Pause', align = 'center'},
-  {type = 'text', 	text = 'Left Ctrl: Tar Trap', align = 'center'},
-  {type = 'text', 	text = 'Left Alt: Binding Shot', align = 'center'},
-  {type = 'text', 	text = 'Right Alt: Freezing Trap', align = 'center'},
-  {type = 'ruler'},	{type = 'spacer'},
+  {type = 'header',   text = 'Keybinds',	  					              align = 'center'},
+  {type = 'text', 	  text = 'Left Shift: Pause',						        align = 'center'},
+  {type = 'text', 	  text = 'Left Ctrl: Tar Trap',						      align = 'center'},
+  {type = 'text', 	  text = 'Left Alt: Binding Shot',						  align = 'center'},
+  {type = 'text', 	  text = 'Right Alt: Freezing Trap',						align = 'center'},
+  {type = 'ruler'},	  {type = 'spacer'},
   -- Settings
-  {type = 'header', 	text = 'Class Settings', align = 'center'},
-  {type = 'checkbox', text = 'Pause Enabled', key = 'kPause', default = true},
-  {type = 'checkbox', text = 'Summon Pet', key = 'kPet', default = true},
-  {type = 'checkbox', text = 'Barrage Enabled', key = 'kBarrage', default = false},
-  {type = 'checkbox', text = 'Volley Enabled', key = 'kVolley', default = true},
-  {type = 'checkbox', text = 'Misdirect Focus/Pet', key = 'kMisdirect', default = true},
-  {type = 'ruler'},	{type = 'spacer'},
+  {type = 'header', 	text = 'Class Settings',									    align = 'center'},
+  {type = 'checkbox', text = 'Pause Enabled',									      key = 'kPause',         default = true},
+  {type = 'checkbox', text = 'Summon Pet',									        key = 'kPet',           default = true},
+  {type = 'checkbox', text = 'Barrage Enabled',									    key = 'kBarrage',       default = false},
+  {type = 'checkbox', text = 'Volley Enabled',									    key = 'kVolley',        default = true},
+  {type = 'checkbox', text = 'Misdirect Focus/Pet',									key = 'kMisdirect',     default = true},
+  {type = 'ruler'},	  {type = 'spacer'},
+  	-- Survival
+	{type = 'header', 	text = 'Survival',									  	      align = 'center'},
+	{type = 'spinner', 	text = 'Exhileration below HP%',              key = 'E_HP',           default = 67},
+	{type = 'spinner',	text = 'Healthstone or Healing Potions',      key = 'Health Stone',	  default = 45},
+	{type = 'spinner',	text = 'Aspect of the Turtle',								key = 'AotT',           default = 21},
+	{type = 'spinner',	text = 'Feign Death (Legendary Healing) %',	  key = 'FD',		          default = 16},
+  {type = 'ruler'},	  {type = 'spacer'},
   -- Trinkets + Heirlooms for leveling
-  {type = 'header', 	text = 'Trinkets/Heirlooms', align = 'center'},
-  {type = 'checkbox', text = 'Use Trinket #1', key = 'kT1', default = true},
-  {type = 'checkbox', text = 'Use Trinket #2', key = 'kT2', default = true},
-  {type = 'checkbox', text = 'Ring of Collapsing Futures', key = 'kRoCF', default = true},
-  {type = 'checkbox', text = 'Use Heirloom Necks When Below X% HP', key = 'k_HEIR', default = true},
-  {type = 'spinner',	text = '', key = 'k_HeirHP', default = 40},
-  {type = 'ruler'},	{type = 'spacer'},
+  {type = 'header', 	text = 'Trinkets/Heirlooms',                  align = 'center'},
+  {type = 'checkbox', text = 'Use Trinket #1',                      key = 'kT1',            default = true},
+  {type = 'checkbox', text = 'Use Trinket #2',                      key = 'kT2',            default = true},
+  {type = 'checkbox', text = 'Ring of Collapsing Futures',          key = 'kRoCF',          default = true},
+  {type = 'checkbox', text = 'Use Heirloom Necks When Below X% HP', key = 'k_HEIR',         default = true},
+  {type = 'spinner',	text = '',                                    key = 'k_HeirHP',       default = 40},
+  {type = 'ruler'},	  {type = 'spacer'},
 }
 
 local exeOnLoad = function()
@@ -53,21 +60,23 @@ local PreCombat = {
   {'Heart of the Phoenix', '!player.debuff(Weakened Heart)&pet.dead&UI(kPet)'},
   {'Revive Pet', 'pet.dead&UI(kPet)'},
   {'Volley', '{toggle(aoe)&talent(6,3)&!player.buff(Volley)&UI(kVolley)} || {talent(6,3)&player.buff(Volley)&{!UI(kVolley)||!toggle(aoe)}}'},
+  {'%pause', 'player.buff(Feign Death)'},
 }
 
 local Keybinds = {
   {'%pause', 'keybind(lshift)&UI(kPause)'},
-  {'!Binding Shot', 'keybind(lalt)', 'cursor.ground'},
-  {'!Tar Trap', 'keybind(lcontrol)', 'cursor.ground'},
-  {'!Freezing Trap', 'keybind(ralt)', 'cursor.ground'},
+  {'Binding Shot', 'keybind(lalt)', 'cursor.ground'},
+  {'Tar Trap', 'keybind(lcontrol)', 'cursor.ground'},
+  {'Freezing Trap', 'keybind(ralt)', 'cursor.ground'},
 }
 
 local Survival = {
-  {'Exhilaration', 'player.health<76'},
-  {'#Ancient Healing Potion', 'player.health<52'},
-  {'#Healthstone', 'player.health<50'},
-  {'Aspect of the Turtle', 'player.health<32'},
-  {'Feign Death', 'player.health<25&equipped(137064)'},
+  {'Exhilaration', 'player.health<UI(E_HP)'},
+  {'#Ancient Healing Potion', 'player.health<UI(Health Stone)'},
+  {'#Healthstone', 'player.health<UI(Health Stone)'},
+  {'Aspect of the Turtle', 'player.health<UI(AotT)'},
+  {'Feign Death', 'player.health<UI(FD)&equipped(137064)'},
+  {'%pause', 'player.buff(Feign Death)'},
 }
 
 local Cooldowns = {
@@ -89,7 +98,7 @@ local xCombat = {
   {'Dire Beast', 'player.spell(Bestial Wrath).cooldown>3'},
   --actions+=/dire_frenzy,if=(pet.cat.buff.dire_frenzy.remains<=gcd.max*1.2)|(charges_fractional>0.8)|target.time_to_die<9  ** Dire Frenzy tweaked 28.06.2016 - Zylla.
   {'Dire Frenzy', 'talent(2,2)&{pet.buff(Dire Frenzy).remains<=gcd.max*1.2}||spell(Dire Frenzy).charges>0.8||target.ttd<9'},
-  {'Barrage', 'toggle(aoe)&UI(kBarrage)&talent(6,1)&{target.area(15).enemies>1||{target.area(15).enemies=1&player.focus>90}}'},
+  {'Barrage', 'toggle(aoe)&UI(kBarrage)&talent(6,1)&{target.area(15).enemies>1||{target.area(15).enemies==1&player.focus>90}}'},
   {'Multi-Shot', 'toggle(aoe)&target.area(10).enemies>4&{pet.buff(Beast Cleave).remains<gcd.max||!pet.buff(Beast Cleave)}'},
   {'Multi-Shot', 'toggle(aoe)&target.area(10).enemies>1&{pet.buff(Beast Cleave).remains<gcd.max*2||!pet.buff(Beast Cleave)}'},
   {'Chimaera Shot', 'talent(2,3)&player.focus<90'},
@@ -99,12 +108,12 @@ local xCombat = {
 }
 
 local xPetCombat = {
-  {'!Kill Command'},
-  {'Mend Pet', 'pet.exists&pet.alive&pet.health<100&!pet.buff(Mend Pet)'},
-  {'Heart of the Phoenix', '!player.debuff(Weakened Heart)&pet.dead&UI(kPet)'},
-  {'Revive Pet', 'pet.dead&UI(kPet)'},
-  {'/cast Call Pet 1', '!pet.exists&UI(kPet)'},
-  {'/cast [@focus, help] [@pet, nodead, exists] Misdirection', 'player.spell(Misdirection).cooldown<=gcd&toggle(xMisdirect)'},
+  {'!Kill Command', 'target'},
+  {'Mend Pet', 'pet.exists&pet.alive&pet.health<100&!pet.buff(Mend Pet)', 'pet'},
+  {'Heart of the Phoenix', '!player.debuff(Weakened Heart)&pet.dead&UI(kPet)', 'player'},
+  {'Revive Pet', 'pet.dead&UI(kPet)', 'pet'},
+  {'/cast Call Pet 1', '!pet.exists&UI(kPet)', 'player'},
+  {'/cast [@focus, help] [@pet, nodead, exists] Misdirection', 'player.spell(Misdirection).cooldown<=gcd&toggle(xMisdirect)', nil},
 }
 
 local xPvP = {

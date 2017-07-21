@@ -6,27 +6,35 @@ local Heirlooms = _G['Zylla.Heirlooms']
 
 local GUI = {
 	-- Keybinds
-	{type = 'header', 	text = 'Keybinds', align = 'center'},
-	{type = 'text', 	text = 'Left Shift: Pause', align = 'center'},
-	{type = 'text', 	text = 'Left Ctrl: Tar Trap', align = 'center'},
-	{type = 'text', 	text = 'Left Alt: Binding Shot', align = 'center'},
-	{type = 'text', 	text = 'Right Alt: Freezing Trap', align = 'center'},
+	{type = 'header', 	text = 'Keybinds',								align = 'center'},
+	{type = 'text', 	text = 'Left Shift: Pause',						align = 'center'},
+	{type = 'text', 	text = 'Left Ctrl: Tar Trap',					align = 'center'},
+	{type = 'text', 	text = 'Left Alt: Binding Shot',				align = 'center'},
+	{type = 'text', 	text = 'Right Alt: Freezing Trap',				align = 'center'},
 	{type = 'ruler'},	{type = 'spacer'},
 	-- Settings
-	{type = 'header', 	text = 'Class Settings', align = 'center'},
-	{type = 'checkbox', text = 'Pause Enabled', key = 'kPause', default = true},
-	{type = 'checkbox', text = 'Summon Pet', key = 'kPet', default = false},
-	{type = 'checkbox', text = 'Barrage Enabled', key = 'kBarrage', default = false},
-   	{type = 'checkbox', text = 'Volley Enabled', key = 'kVolley', default = true},
-	{type = 'checkbox', text = 'Misdirect Focus/Pet', key = 'kMisdirect', default = true},
+	{type = 'header', 	text = 'Class Settings',						align = 'center'},
+	{type = 'checkbox', text = 'Pause Enabled',							key = 'kPause',			default = true},
+	{type = 'checkbox', text = 'Summon Pet',							key = 'kPet',			default = false},
+	{type = 'checkbox', text = 'Barrage Enabled',						key = 'kBarrage',		default = false},
+   	{type = 'checkbox', text = 'Volley Enabled',						key = 'kVolley',		default = true},
+	{type = 'checkbox', text = 'Misdirect Focus/Pet', 					key = 'kMisdirect',		default = true},
 	{type = 'ruler'},	{type = 'spacer'},
+  	-- Survival
+	{type = 'header', 	text = 'Survival',								align = 'center'},
+	{type = 'spinner', 	text = 'Exhileration below HP%',				key = 'E_HP',			default = 67},
+	{type = 'spinner',	text = 'Healthstone or Healing Potions',		key = 'Health Stone',	default = 45},
+	{type = 'spinner',	text = 'Aspect of the Turtle',					key = 'AotT',           default = 21},
+	{type = 'spinner',	text = 'Feign Death (Legendary Healing) %',		key = 'FD',				default = 16},
+  	{type = 'ruler'},	{type = 'spacer'},
 	-- Trinkets + Heirlooms for leveling
-	{type = 'header', 	text = 'Trinkets/Heirlooms', align = 'center'},
-	{type = 'checkbox', text = 'Use Trinket #1', key = 'kT1', default = false},
-	{type = 'checkbox', text = 'Use Trinket #2', key = 'kT2', default = false},
-	{type = 'checkbox', text = 'Ring of Collapsing Futures', key = 'kRoCF', default = true},
-	{type = 'checkbox', text = 'Use Heirloom Necks When Below X% HP', key = 'k_HEIR', default = true},
-	{type = 'spinner',	text = '', key = 'k_HeirHP', default = 40},
+	{type = 'header', 	text = 'Trinkets/Heirlooms',					align = 'center'},
+	{type = 'checkbox', text = 'Use Trinket #1',						key = 'kT1',			default = false},
+	{type = 'checkbox', text = 'Use Trinket #2',						key = 'kT2',			default = false},
+	{type = 'checkbox', text = 'Ring of Collapsing Futures',			key = 'kRoCF',			default = true},
+	{type = 'checkbox', text = 'Use Heirloom Necks When Below X% HP',	key = 'k_HEIR',			default = true},
+	{type = 'spinner',	text = '',										key = 'k_HeirHP',		default = 40},
+	{type = 'ruler'},	{type = 'spacer'},
 }
 
 local exeOnLoad = function()
@@ -55,11 +63,11 @@ local Keybinds = {
 }
 
 local Survival = {
-	{'Exhilaration', 'player.health<76'},
-	{'#Ancient Healing Potion', 'player.health<50'},
-	{'#Healthstone', 'player.health<45'},
-	{'Aspect of the Turtle', 'player.health<35'},
-	{'Feign Death', 'player.health<30&equipped(137064)'},
+	{'Exhilaration', 'player.health<UI(E_HP)76'},
+	{'#Ancient Healing Potion', 'player.health<UI(Health Stone)'},
+	{'#Healthstone', 'player.health<UI(Health Stone)'},
+	{'Aspect of the Turtle', 'player.health<UI(AotT)'},
+	{'Feign Death', 'player.health<UI(FD)&equipped(137064)'},
 }
 
 local Cooldowns = {
@@ -86,7 +94,7 @@ local TrueshotAoE = {
 	{'Barrage', '!talent(4,3)&UI(kBarrage)'},
 	{'Piercing Shot'},
 	{'Explosive Shot', 'talent(4,1)&target.area(8).enemies>2'},
-	{'Aimed Shot', '!moving&{!talent(4,3)||talent(7,3)}&target.area(8).enemies=1&player.buff(Lock and Load)&action(Aimed Shot).execute_time<target.debuff(Vulnerable).remains'},
+	{'Aimed Shot', '!moving&{!talent(4,3)||talent(7,3)}&target.area(8).enemies==1&player.buff(Lock and Load)&action(Aimed Shot).execute_time<target.debuff(Vulnerable).remains'},
 	{'Multi-Shot'},
 }
 
@@ -150,12 +158,12 @@ local Patient_Sniper = {
  local xCombat = {
 	{'Aimed Shot', 'moving&player.buff(Gyroscopic Stabilization)'},
 	{'Arcane Torrent', 'focus.deficit>20&{!talent(7,1)||cooldown(Sidewinders).charges<2}'},
-	{Opener, 'player.area(50).enemies=1&xtime<25'},
+	{Opener, 'player.area(50).enemies==1&xtime<25'},
 	{'A Murder of Crows', '{target.time_to_die>65||target.health<20&target.boss}&{!target.debuff(Hunter\'s Mark)||{target.debuff(Hunter\'s Mark).remains>action(A Murder of Crows).execute_time&target.debuff(Vulnerable).remains>target.action(A Murder of Crows).execute_time&focus+{focus.regen*target.debuff(Vulnerable).remains}>50&focus+{focus.regen*target.debuff(Hunter\'s Mark).remains}>50}}'},
 	{Cooldowns, 'toggle(Cooldowns)'},
 	{TrueshotAoE, '{target.time_to_die>={180-artifact(Quick Shot).rank*10+15}||target.health<20&target.boss}&{!target.debuff(Hunter\'s Mark)||{target.debuff(Hunter\'s Mark).remains>action(A Murder of Crows).execute_time&target.debuff(Vulnerable).remains>target.action(A Murder of Crows).execute_time&focus+{focus.regen*target.debuff(Vulnerable).remains}>50&focus+{focus.regen*target.debuff(Hunter\'s Mark).remains}>50}}'},
 	{'Black Arrow', '!target.debuff(Hunter\'s Mark)||{target.debuff(Hunter\'s Mark).remains>action(Black Arrow).execute_time&target.debuff(Vulnerable).remains>target.action(Black Arrow).execute_time&focus+{focus.regen*target.debuff(Vulnerable).remains}>60&focus+{focus.regen*target.debuff(Hunter\'s Mark).remains}>60}}'},
-	{'Barrage', 'UI(kBarrage)&talent(6,2)&{target.area(15).enemies>1||{target.area(15).enemies=1&player.focus>90}}'},
+	{'Barrage', 'UI(kBarrage)&talent(6,2)&{target.area(15).enemies>1||{target.area(15).enemies==1&player.focus>90}}'},
 	{TargetDie},
 	{Patient_Sniper},
 	{Non_Patient_Sniper},

@@ -20,6 +20,13 @@ local GUI = {
    	{type = 'checkbox', text = 'Volley Enabled', key = 'kVolley', default = true},
 	{type = 'checkbox', text = 'Misdirect Focus/Pet', key = 'kMisdirect', default = true},
 	{type = 'ruler'},	{type = 'spacer'},
+  	-- Survival
+	{type = 'header', 	text = 'Survival',								align = 'center'},
+	{type = 'spinner', 	text = 'Exhileration below HP%',              key = 'E_HP',           default = 67},
+	{type = 'spinner',	text = 'Healthstone or Healing Potions',      key = 'Health Stone',	  default = 45},
+	{type = 'spinner',	text = 'Aspect of the Turtle',								key = 'AotT',           default = 21},
+	{type = 'spinner',	text = 'Feign Death (Legendary Healing) %',	  key = 'FD',		          default = 16},
+  	{type = 'ruler'},	  {type = 'spacer'},
 	-- Trinkets + Heirlooms for leveling
 	{type = 'header', 	text = 'Trinkets/Heirlooms', align = 'center'},
 	{type = 'checkbox', text = 'Use Trinket #1', key = 'kT1', default = false},
