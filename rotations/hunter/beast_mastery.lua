@@ -21,11 +21,12 @@ local GUI = {
   {type = 'checkbox', text = 'Misdirect Focus/Pet',									key = 'kMisdirect',     default = true},
   {type = 'ruler'},	  {type = 'spacer'},
   	-- Survival
-	{type = 'header', 	text = 'Survival',									  	      align = 'center'},
-	{type = 'spinner', 	text = 'Exhileration below HP%',              key = 'E_HP',           default = 67},
-	{type = 'spinner',	text = 'Healthstone or Healing Potions',      key = 'Health Stone',	  default = 45},
-	{type = 'spinner',	text = 'Aspect of the Turtle',								key = 'AotT',           default = 21},
-	{type = 'spinner',	text = 'Feign Death (Legendary Healing) %',	  key = 'FD',		          default = 16},
+  {type = 'header', 	text = 'Survival',									  	      align = 'center'},
+  {type = 'spinner', 	text = 'Heal Pet when below HP%',              key = 'P_HP',           default = 70},
+  {type = 'spinner', 	text = 'Exhileration below HP%',              key = 'E_HP',           default = 67},
+  {type = 'spinner',	text = 'Healthstone or Healing Potions',      key = 'Health Stone',	  default = 45},
+  {type = 'spinner',	text = 'Aspect of the Turtle',								key = 'AotT',           default = 21},
+  {type = 'spinner',	text = 'Feign Death (Legendary Healing) %',	  key = 'FD',		          default = 16},
   {type = 'ruler'},	  {type = 'spacer'},
   -- Trinkets + Heirlooms for leveling
   {type = 'header', 	text = 'Trinkets/Heirlooms',                  align = 'center'},
@@ -59,7 +60,7 @@ local PreCombat = {
   {'/cast Call Pet 1', '!pet.exists&UI(kPet)'},
   {'Heart of the Phoenix', '!player.debuff(Weakened Heart)&pet.dead&UI(kPet)'},
   {'Revive Pet', 'pet.dead&UI(kPet)'},
-  {'Volley', '{toggle(aoe)&talent(6,3)&!player.buff(Volley)&UI(kVolley)} || {talent(6,3)&player.buff(Volley)&{!UI(kVolley)||!toggle(aoe)}}'},
+  {'Volley', '{toggle(aoe)&!player.buff(Volley)&UI(kVolley)}||{player.buff(Volley)&{!UI(kVolley)||!toggle(aoe)}}'},
   {'%pause', 'player.buff(Feign Death)'},
 }
 
@@ -72,8 +73,8 @@ local Keybinds = {
 
 local Survival = {
   {'Exhilaration', 'player.health<UI(E_HP)'},
-  {'#Ancient Healing Potion', 'player.health<UI(Health Stone)'},
-  {'#Healthstone', 'player.health<UI(Health Stone)'},
+  {'#127834', 'player.health<UI(Health Stone)'},  -- Ancient Healing Potion
+  {'#5512', 'item(5512).count>0&player.health<UI(Health Stone)', 'player'},  --Health Stone
   {'Aspect of the Turtle', 'player.health<UI(AotT)'},
   {'Feign Death', 'player.health<UI(FD)&equipped(137064)'},
   {'%pause', 'player.buff(Feign Death)'},
@@ -81,43 +82,41 @@ local Survival = {
 
 local Cooldowns = {
   {'Bestial Wrath'},
-  {'Titan\'s Thunder', 'talent(2,2)||player.spell(Dire Beast).cooldown>2||{player.buff(Bestial Wrath)&player.buff(Dire Beast)}'},
+  --actions+=/titans_thunder,if=(talent.dire_frenzy.enabled&(buff.bestial_wrath.up|cooldown.bestial_wrath.remains>35))|cooldown.dire_beast.remains>=3|(buff.bestial_wrath.up&pet.dire_beast.active)
+  {'Titan\'s Thunder', '{talent(2,2)&{player.buff(Bestial Wrath)||cooldown(Dire Beast).remains>35}}||cooldown(Dire Beast).remains>2||{player.buff(Bestial Wrath)&player.buff(Dire Beast)}'},
   {'Aspect of the Wild', 'player.buff(Bestial Wrath)||target.time_to_die<12'},
+  {'Blood Fury'},
+  {'Berserking'},
 }
 
 local Interrupts = {
   {'!Counter Shot'},
-  {'!Intimidation', 'talent(6,3)&player.spell(Counter Shot).cooldown>gcd&!prev_gcd(Counter Shot)'},
+  {'!Intimidation', 'cooldown(Counter Shot).remains>gcd&!prev_gcd(Counter Shot)'},
 }
 
 local xCombat = {
-  {'Blood Fury'},
-  {'Berserking'},
-  {'A Murder of Crows', 'talent(6,1)'},
-  {'Stampede', 'talent(7,1)&{player.buff(Bloodlust)||player.buff(Bestial Wrath)||player.spell(Bestial Wrath).cooldown<3}||target.time_to_die<24'},
-  {'Dire Beast', 'player.spell(Bestial Wrath).cooldown>3'},
-  --actions+=/dire_frenzy,if=(pet.cat.buff.dire_frenzy.remains<=gcd.max*1.2)|(charges_fractional>0.8)|target.time_to_die<9  ** Dire Frenzy tweaked 28.06.2016 - Zylla.
-  {'Dire Frenzy', 'talent(2,2)&{pet.buff(Dire Frenzy).remains<=gcd.max*1.2}||spell(Dire Frenzy).charges>0.8||target.ttd<9'},
-  {'Barrage', 'toggle(aoe)&UI(kBarrage)&talent(6,1)&{target.area(15).enemies>1||{target.area(15).enemies==1&player.focus>90}}'},
-  {'Multi-Shot', 'toggle(aoe)&target.area(10).enemies>4&{pet.buff(Beast Cleave).remains<gcd.max||!pet.buff(Beast Cleave)}'},
-  {'Multi-Shot', 'toggle(aoe)&target.area(10).enemies>1&{pet.buff(Beast Cleave).remains<gcd.max*2||!pet.buff(Beast Cleave)}'},
-  {'Chimaera Shot', 'talent(2,3)&player.focus<90'},
-  --actions+=/cobra_shot,if=(cooldown.kill_command.remains>focus.time_to_max&cooldown.bestial_wrath.remains>focus.time_to_max)|(buff.bestial_wrath.up&focus.regen*cooldown.kill_command.remains>action.kill_command.cost)|target.time_to_die<cooldown.kill_command.remains|(equipped.parsels_tongue&buff.parsels_tongue.remains<=gcd.max*2)  ** Cobra Shot tweaked 28.06.2016 - Zylla.
-  {'Cobra Shot', '{player.spell(Kill Command).cooldown>focus.time_to_max&player.spell(Bestial Wrath).cooldown>focus.time_to_max}||{player.buff(Bestial Wrath)&focus.regen*player.spell(Kill Command).cooldown>action(Kill Command).cost}||target.time_to_die<player.spell(Kill Command).cooldown||{equipped(Parsel\'s Tongue)&player.buff(Parsel\'s Tongue).remains<=gcd.max*2}'},
-  {'Volley', '{toggle(aoe)&talent(6,3)&!player.buff(Volley)&UI(kVolley)} || {talent(6,3)&player.buff(Volley)&{!UI(kVolley)||!toggle(aoe)}}'},
+  {'A Murder of Crows'},
+  {'Stampede', '{player.buff(Bloodlust)||player.buff(Bestial Wrath)||cooldown(Bestial Wrath).remains<3}||target.time_to_die<24'},
+  {'Dire Beast', 'cooldown(Bestial Wrath).remains>3'},
+  --actions+=/dire_frenzy,if=(pet.cat.buff.dire_frenzy.remains<=gcd.max*1.2)|(charges_fractional>=1.8)|target.time_to_die<9
+  {'Dire Frenzy', '{pet.buff(Dire Frenzy).remains<=gcd.max*1.2}||player.spell(Dire Frenzy).charges>0.8||target.ttd<9'},
+  {'Barrage', 'toggle(aoe)&UI(kBarrage)&{target.area(15).enemies>1||{target.area(15).enemies==1&player.focus>90}}'},
+  {'Chimaera Shot', 'player.focus<90'},
+  {'Cobra Shot', '{player.focus>75&cooldown(Kill Command).remains>gcd&target.area(10).enemies<2}||{cooldown(Kill Command).remains>focus.time_to_max&cooldown(Bestial Wrath).remains>focus.time_to_max}||{player.buff(Bestial Wrath)&focus.regen*cooldown(Kill Command).remains>action(Kill Command).cost}||target.time_to_die<cooldown(Kill Command).remains||{equipped(Parsel\'s Tongue)&player.buff(Parsel\'s Tongue).remains<=gcd.max*2}'},
+  {'Volley', '{toggle(aoe)&!player.buff(Volley)&UI(kVolley)}||{player.buff(Volley)&{!UI(kVolley)||!toggle(aoe)}}'},
 }
 
 local xPetCombat = {
-  {'!Kill Command', 'target'},
-  {'Mend Pet', 'pet.exists&pet.alive&pet.health<100&!pet.buff(Mend Pet)', 'pet'},
-  {'Heart of the Phoenix', '!player.debuff(Weakened Heart)&pet.dead&UI(kPet)', 'player'},
-  {'Revive Pet', 'pet.dead&UI(kPet)', 'pet'},
-  {'/cast Call Pet 1', '!pet.exists&UI(kPet)', 'player'},
-  {'/cast [@focus, help] [@pet, nodead, exists] Misdirection', 'player.spell(Misdirection).cooldown<=gcd&toggle(xMisdirect)', nil},
+  {'!Kill Command', 'pet.exists&pet.alive'},
+  {'Mend Pet', 'pet.exists&pet.alive&pet.health<UI(P_HP)&!pet.buff(Mend Pet)'},
+  {'Heart of the Phoenix', '!player.debuff(Weakened Heart)&pet.dead&UI(kPet)'},
+  {'Revive Pet', 'pet.dead&UI(kPet)'},
+  {'/cast Call Pet 1', '!pet.exists&UI(kPet)'},
+  {'/cast [@focus, help] [@pet, nodead, exists] Misdirection', 'cooldown(Misdirection).remains<gcd&toggle(xMisdirect)'},
 }
 
 local xPvP = {
-  {'Gladiator\'s Medallion', 'player.state(incapacitate)||player.state(stun)||player.state(fear)||player.state(horror)||player.state(sleep)||player.state(charm)', 'player'},
+  {'Gladiator\'s Medallion', 'player.state(incapacitate)||player.state(stun)||player.state(fear)||player.state(horror)||player.state(sleep)||player.state(charm)'},
   {'Viper Sting', 'target.range<41&target.health<80', 'target'},
   {'Scorpid Sting', 'target.inMelee', 'target'},
   {'Spider Sting', 'target.range<41', 'target'},
@@ -126,24 +125,29 @@ local xPvP = {
   {'Interlope', 'target.range<41'},
 }
 
+local xAoE = {  -- Trying to fix a wierd issue where Multi-Shot is being used, even when the conditions are not met.
+  {'Multi-Shot', 'target.area(10).enemies>4&{pet.buff(Beast Cleave).remains<gcd.max||!pet.buff(Beast Cleave)}'},
+  {'Multi-Shot', 'pet.buff(Beast Cleave).remains<gcd.max*2||!pet.buff(Beast Cleave)'},
+}
+
 local inCombat = {
   {Util},
   {Trinkets},
   {Heirlooms},
   {Keybinds},
-  {Survival, 'player.health<100'},
-  {Interrupts, 'target.interruptAt(70)&toggle(Interrupts)&target.inFront&target.range<40'},
+  {Survival},
+  {Interrupts, 'interruptAt(70)&toggle(Interrupts)&inFront&range<40', 'enemies'},
   {Cooldowns, 'toggle(Cooldowns)'},
-  {xCombat, 'target.range<40&target.inFront'},
+  {xCombat, 'target.range<41&target.inFront'},
+  {xAoE, 'toggle(aoe)&target.area(10).enemies>1&target.range<41&target.inFront'},
   {xPetCombat},
-  {'Cobra Shot', 'player.focus>75&player.spell(Kill Command).cooldown>gcd&target.area(10).enemies<4'},
   {xPvP},
 }
 
 local outCombat = {
   {Keybinds},
   {PreCombat},
-  {Interrupts, 'target.interruptAt(70)&toggle(Interrupts)&target.inFront&target.range<40'},
+  {Interrupts, 'interruptAt(70)&toggle(Interrupts)&inFront&range<40', 'enemies'},
 }
 
 NeP.CR:Add(253, {
