@@ -36,6 +36,13 @@ local exeOnLoad = function()
 		text = 'If Enabled we will Open with Ambush when Stealthed. If not Cheap Shot will be used.',
 		icon='Interface\\Icons\\ability_rogue_ambush',
 	})
+	
+		NeP.Interface:AddToggle({
+		key='xStealth',
+		name='Auto Stealth',
+		text = 'If Enabled we will automatically use Stealth out of combat.',
+		icon='Interface\\Icons\\ability_stealth',
+	})
 
 end
 
@@ -92,11 +99,11 @@ local RollingBones ={
 
 local TricksofTrade = {
 	{'Tricks of the Trade', '!focus.buff&focus.range<99', 'focus'},
-	{'Tricks of the Trade', '!tank.buff&tank.range<99', 'tank'},
+	{'Tricks of the Trade', '!tank.is(player)&!tank.buff&tank.range<99', 'tank'},
 }
 
 local Stealth_Opener = {
-	{'Stealth', '!player.buff&!player.buff(Vanish)&!nfly'},
+	{'Stealth', '&toggle(xStealth)&!player.buff&!player.buff(Vanish)&!nfly'},
 	{'Ambush', 'target.enemy&target.inMelee&target.inFront&player.buff(Stealth)&toggle(opener)'},
 	{'Cheap Shot', 'target.enemy&target.inMelee&target.inFront&player.buff(Stealth)&!toggle(opener)'},
 }
