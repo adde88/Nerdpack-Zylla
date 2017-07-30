@@ -12,7 +12,9 @@ local GUI = {
 	{type = 'text', 	text = 'Left Alt: Sigil of Flame @ Cursor', align = 'center'},
 	{type = 'ruler'},	{type = 'spacer'},
 	-- Settings
-	{type = 'checkbox', text = 'Pause Enabled', key = 'kPause', default = true},
+	{type = 'header', 	text = 'Class Settings',										align = 'center'},
+	{type = 'checkbox', text = 'Pause Enabled', 										key = 'kPause', default = true},
+	{type = 'checkbox', text = 'Auto use Infernal Strike with Flame Crash (Talent)', 	key = 'kIS', 	default = true},
 	{type = 'ruler'},	{type = 'spacer'},
 	-- Trinkets + Heirlooms for leveling
 	{type = 'header', 	text = 'Trinkets/Heirlooms', align = 'center'},
@@ -42,31 +44,31 @@ local Keybinds = {
 
 local Interrupts = {
 	{'Consume Magic', 'target.interruptAt(70)&target.inFront&target.inMelee'},
-	{'Sigil of Silence', 'target.interruptAt(1)&target.range<39&spell(Consume Magic).cooldown>gcd&!prev_gcd(Consume Magic)', 'target.ground'},
+	{'Sigil of Silence', 'target.interruptAt(1)&target.range<31&spell(Consume Magic).cooldown>gcd&!prev_gcd(Consume Magic)', 'target.ground'},
 	{'Arcane Torrent', 'target.interruptAt(70)&target.inFront&target.inMelee&spell(Consume Magic).cooldown>gcd&!prev_gcd(Consume Magic)'},
 }
 
 local ST = {
-	{'Sigil of Flame', 'target.range<25&!target.debuff(Sigil of Flame)', 'target.ground'},
+	{'Sigil of Flame', 'target.range<31&!target.debuff(Sigil of Flame)', 'target.ground'},
 	{'Fiery Brand', '!player.buff(Demon Spikes)&!player.buff(Metamorphosis)'},
-	{'Demon Spikes', '{spell(Demon Spikes)charges=2||!player.buff(Demon Spikes)}&!target.debuff(Fiery Brand)&!player.buff(Metamorphosis)'},
-	{'!Empower Wards', 'target.casting.percent>80'},
+	{'Demon Spikes', 'player.spell(Demon Spikes).charges>0&!player.buff(Demon Spikes)&!target.debuff(Fiery Brand)&!player.buff(Metamorphosis)'},
+	{'!Empower Wards', 'target.casting.percent>79'},
 	{'Spirit Bomb', '!target.debuff(Frailty)&player.buff(Soul Fragments).count>0'},
 	{'Soul Carver', 'target.debuff(Fiery Brand)'},
-	{'Immolation Aura', 'player.pain<90'},
-	{'Felblade', 'talent(3,1)&player.pain<80'},
-	{'Soul Barrier', 'talent(7,3)'},
+	{'Immolation Aura', 'player.pain<91'},
+	{'Felblade', 'player.pain<81'},
+	{'Soul Barrier'},
 	{'Metamorphosis', '!player.buff(Demon Spikes)&!target.dot(Fiery Brand).ticking&!player.buff(Metamorphosis)&player.incdmg(5)>=player.health.max*0.70'},
-	{'Fel Devastation', 'talent(6,1)&player.incdmg(5)>=player.health.max*0.70'},
-	{'Fel Eruption', 'talent(3,3)'},
-	{'Soul Cleave', 'player.buff(Soul Fragments).count=5'},
+	{'Fel Devastation', 'player.incdmg(5)>=player.health.max*0.70'},
+	{'Fel Eruption'},
+	{'Soul Cleave', 'player.buff(Soul Fragments).count>4'},
 	{'Soul Cleave', 'player.incdmg(5)>=player.health.max*0.70'},
-	{'Soul Cleave', 'player.pain>70&player.buff(Soul Fragments).count<4&player.incdmg(4)<=player.health.max*0.20'},
-	{'Soul Cleave', 'player.pain>70'},
+	{'Soul Cleave', 'player.pain>69&player.buff(Soul Fragments).count<4&player.incdmg(4)<=player.health.max*0.20'},
+	{'Soul Cleave', 'player.pain>69'},
 	{'Shear', 'player.buff(Blade Turning)'},
 	{'Shear'},
-	{'Fracture', 'talent(4,2)&player.pain>50'},
-	{'Infernal Strike', 'talent(3,2)&!target.debuff(Sigil of Flame).remaining<gcd&player.spell(Sigil of Flame).cooldown>4&player.spell(Infernal Strike).charges>0', 'target.ground'},
+	{'Fracture', 'player.pain>49'},
+	{'Infernal Strike', 'UI(kIS)&talent(3,2)&!target.debuff(Sigil of Flame).remaining<gcd&player.spell(Sigil of Flame).cooldown>4&player.spell(Infernal Strike).charges>0', 'target.ground'}, -- Uses Infernal Strike automatically when you have the appropriate talent, can be disabled.
 }
 
 local Ranged = {
@@ -79,7 +81,7 @@ local inCombat = {
 	{Heirlooms},
 	{Keybinds},
 	{Interrupts, 'toggle(Interrupts)'},
-	{Ranged, '!target.inMelee&target.range<40'},
+	{Ranged, '!target.inMelee&target.range<31'},
 	{ST, 'target.inFront&target.inMelee'}
 }
 
