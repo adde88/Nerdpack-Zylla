@@ -137,7 +137,7 @@ local inCombat = {
   {Heirlooms},
   {Keybinds},
   {Survival},
-  {Interrupts},
+  {Interrupts, 'interruptAt(70)&toggle(Interrupts)&inFront&range<41', 'target'},
   {Cooldowns, 'toggle(Cooldowns)'},
   {xCombat, 'target.range<41&target.inFront'},
   {xPetCombat},
