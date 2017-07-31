@@ -147,7 +147,7 @@ local inCombat = {
 local outCombat = {
   {Keybinds},
   {PreCombat},
-  {Interrupts},
+  {Interrupts, 'interruptAt(70)&toggle(Interrupts)&inFront&range<41', 'target'},
 }
 
 NeP.CR:Add(253, {
