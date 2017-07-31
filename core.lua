@@ -1,16 +1,14 @@
 local _, Zylla = ...
 
-Zylla.Version = '1.1.0'
+Zylla.Version = '1.6'
 Zylla.Branch = 'RELEASE'
 Zylla.Name = 'NerdPack - Zylla\'s Rotations'
 Zylla.Author = 'Zylla'
 Zylla.addonColor = 'D11E0E'
-Zylla.Logo = 'Interface\\AddOns\\NerdPack-Zylla\\media\\logo.blp'
-Zylla.Splash = 'Interface\\AddOns\\NerdPack-Zylla\\media\\splash.blp'
 
 local frame = CreateFrame('GameTooltip', 'Zylla_ScanningTooltip', UIParent, 'GameTooltipTemplate')
 
-Zylla.class = select(3,UnitClass("player"))
+Zylla.Class = select(3,UnitClass("player"))
 Zylla.spell_timers = {}
 
 Zylla.isAFK = false;
@@ -54,7 +52,14 @@ local classTaunt = {
 }
 
 function Zylla.ExeOnLoad()
-  Zylla.Splash()
+  print('|cffFFFB2FThank you for selecting Zylla\'s Combat Routines for NerdPack!|r')
+  print('|cffFFFB2FSome routines require tweaking the settings to perform optimal.|r')
+  print('|cffFFFB2FIf you encounter errors, bugs, or you simply have a suggestion, i recommend that you visit the GitHub repo.|r')
+  print('|cffFFFB2FYou can also get support from the NerdPack community on Discord.|r')
+end
+
+function Zylla.ExeOnUnload()
+  print('Thank you for using Zylla\'s Combat Routines.')
 end
 
 -- Global Variables used on many if not all routines.
@@ -67,21 +72,21 @@ debuff = {####, ####, ####}
 _G['Zylla.Trinkets'] = {
   {'#trinket1', 'UI(kT1)'},
   {'#trinket2', 'UI(kT2)'},
-  {'#Ring of Collapsing Futures', 'equipped(142173)&!player.debuff(Temptation)&UI(kRoCF)', 'target'},
+  {'#142173', 'equipped(142173)&!player.debuff(Temptation)&UI(kRoCF)', 'target'},  --Ring of Collapsing Futures
 }
 
 _G['Zylla.Heirlooms'] = {
-  {'#Eternal Horizon Choker', 'equipped(122664)&UI(k_HEIR)&player.health<=UI(k_HeirHP)'},
-  {'#Eternal Amulet of the Redeemed', 'equipped(122663)&UI(k_HEIR)&player.health<=UI(k_HeirHP)'},
-  {'#Eternal Woven Ivy Necklace', 'equipped(122666)&UI(k_HEIR)&player.health<=UI(k_HeirHP)'},
-  {'#Eternal Emberfury Talisman', 'equipped(122667)&UI(k_HEIR)&player.health<=UI(k_HeirHP)'},
-  {'#Eternal Will of the Martyr', 'equipped(122668)&UI(k_HEIR)&player.health<=UI(k_HeirHP)'},
-  {'#Touch of the Void', 'equipped(128318)&UI(k_HEIR)&player.area(8).enemies>=3'},
-  {'#Inherited Mark of Tyranny', 'equipped(122530)&UI(k_HEIR)&player.incdmg(2.5)>player.health.max*0.50'},
-  {'#Inherited Insignia of the Alliance', 'equipped(44098)&UI(k_HEIR)&{player.state.incapacitate||player.state.stun||player.state.fear||player.state.horror||player.state.sleep||player.state.charm}'},
-  {'#Inherited Insignia of the Horde', 'equipped(44097)&UI(k_HEIR)&{player.state.incapacitate||player.state.stun||player.state.fear||player.state.horror||player.state.sleep||player.state.charm}'},
-  {'#Returning Champion', 'equipped(126949)&UI(k_HEIR)&{player.incdmg(2.5)>player.health.max*0.50}||{player.health<=20}'},
-  {'#Defending Champion', 'equipped(126948)&UI(k_HEIR)&{player.incdmg(2.5)>player.health.max*0.50}||{player.health<=20}'},
+  {'#122664', 'equipped(122664)&UI(k_HEIR)&player.health<=UI(k_HeirHP)'},
+  {'#122663', 'equipped(122663)&UI(k_HEIR)&player.health<=UI(k_HeirHP)'},
+  {'#122666', 'equipped(122666)&UI(k_HEIR)&player.health<=UI(k_HeirHP)'},
+  {'#122667', 'equipped(122667)&UI(k_HEIR)&player.health<=UI(k_HeirHP)'},
+  {'#122668', 'equipped(122668)&UI(k_HEIR)&player.health<=UI(k_HeirHP)'},
+  {'#128318', 'equipped(128318)&UI(k_HEIR)&player.area(8).enemies>=3'},
+  {'#122530', 'equipped(122530)&UI(k_HEIR)&player.incdmg(2.5)>player.health.max*0.50'},
+  {'#44098', 'equipped(44098)&UI(k_HEIR)&{player.state.incapacitate||player.state.stun||player.state.fear||player.state.horror||player.state.sleep||player.state.charm}'},
+  {'#44097', 'equipped(44097)&UI(k_HEIR)&{player.state.incapacitate||player.state.stun||player.state.fear||player.state.horror||player.state.sleep||player.state.charm}'},
+  {'#126949', 'equipped(126949)&UI(k_HEIR)&{player.incdmg(2.5)>player.health.max*0.50}||{player.health<=20}'},
+  {'#126948', 'equipped(126948)&UI(k_HEIR)&{player.incdmg(2.5)>player.health.max*0.50}||{player.health<=20}'},
 }
 
 _G['Zylla.Util'] = {
