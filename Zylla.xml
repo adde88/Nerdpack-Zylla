@@ -5,7 +5,9 @@
   <Script file="core.lua" />
   <Script file="conditions.lua" />
   <Script file="splash.lua" />
-
+  <Script file="fakeunits.lua" />
+  <Script file="locale.lua" />
+  
   <!-- Rotations -->
   <Script file="rotations\deathknight\frost.lua" />
   <Script file="rotations\deathknight\unholy.lua" />
