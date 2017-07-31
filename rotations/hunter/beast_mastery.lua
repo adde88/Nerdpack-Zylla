@@ -5,6 +5,9 @@ local Trinkets = _G['Zylla.Trinkets']
 local Heirlooms = _G['Zylla.Heirlooms']
 
 local GUI = {
+  --Logo
+  {type = "texture", texture = "Interface\\AddOns\\Nerdpack-Zylla\\media\\logo.blp", width = 128, height = 128, offset = 90, y = 42, center = true},
+  {type = 'ruler'},	  {type = 'spacer'},
   -- Keybinds
   {type = 'header',   text = 'Keybinds',	  					              align = 'center'},
   {type = 'text', 	  text = 'Left Shift: Pause',						        align = 'center'},
@@ -158,6 +161,7 @@ NeP.CR:Add(253, {
   ic = inCombat,
   ooc = outCombat,
   gui = GUI,
+  ids = Zylla.SpellIDs[Zylla.Class],
   load = exeOnLoad
 --blacklist = _G['Zylla.Blacklist']
 })

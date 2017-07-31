@@ -81,6 +81,7 @@ NeP.CR:Add(270, {
   ic = inCombat,
   ooc = outCombat,
   gui = GUI,
+  ids = Zylla.SpellIDs[Zylla.Class],
   load = exeOnLoad
 --blacklist = _G['Zylla.Blacklist']
 })

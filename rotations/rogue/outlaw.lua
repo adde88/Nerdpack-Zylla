@@ -12,6 +12,12 @@ local GUI = {
 	{type = 'text', 	text = 'Right Alt: ', align = 'center'},
 	{type = 'checkbox', text = 'Pause Enabled', key = 'kPause', default = true},
 	{type = 'ruler'},	{type = 'spacer'},
+  	-- Survival
+	{type = 'header', 	text = 'Survival',							align = 'center'},
+	{type = 'spinner',	text = 'Use Crisom Vial when below %',		key = 'h_CV',	default = 75},
+	{type = 'spinner',	text = 'Use Riposte when below %',			key = 'h_RIP',	default = 25},
+	{type = 'spinner',	text = 'Healthstone or Healing Potions',	key = 'Health Stone',	default = 45},
+	{type = 'ruler'},	  {type = 'spacer'},
 	-- Trinkets + Heirlooms for leveling
 	{type = 'header', 	text = 'Trinkets/Heirlooms', align = 'center'},
 	{type = 'checkbox', text = 'Use Trinket #1', key = 'kT1', default = true},
@@ -47,9 +53,11 @@ local exeOnLoad = function()
 end
 
 local Survival ={
-	{'Crimson Vial', 'player.health<75'},
-	{'Riposte', 'player.health<55||player.incdmg(5)>player.health.max*0.20'},
-	{'Cloak of Shadows', 'incdmg(5).magic>player.health.max'},
+	{'Crimson Vial', 'player.health<UI(h_CV)'},
+	{'Riposte', 'player.health<UI(h_RIP)||player.incdmg(5)>player.health.max*0.20'},
+	{'Cloak of Shadows', 'incdmg(5).magic>player.health.max*0.20'},
+	{'#127834', 'item(127834).count>0&player.health<UI(Health Stone)'},        -- Ancient Healing Potion
+	{'#5512', 'item(5512).count>0&player.health<UI(Health Stone)', 'player'},  --Health Stone
 }
 
 local Keybinds = {
@@ -79,8 +87,7 @@ local Finishers = {
 }
 
 local Blade_Flurry = {
-	{'Blade Flurry', 'player.area(7).enemies>2&!player.buff(Blade Flurry)'},
-	{'Blade Flurry', 'player.area(7).enemies<3&player.buff(Blade Flurry)'},
+	{'Blade Flurry', '{player.area(7).enemies>2&!player.buff(Blade Flurry)}||{player.area(7).enemies<3&player.buff(Blade Flurry)}'},
 }
 
 local Cooldowns = {
@@ -138,5 +145,6 @@ NeP.CR:Add(260, {
 	  ic = inCombat,
 	 ooc = outCombat,
 	 gui = GUI,
+	 ids = Zylla.SpellIDs[Zylla.Class],
 	load = exeOnLoad
 })

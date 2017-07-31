@@ -14,7 +14,7 @@ local GUI = {
 	-- Settings
 	{type = 'header', 	text = 'Class Settings',										align = 'center'},
 	{type = 'checkbox', text = 'Pause Enabled', 										key = 'kPause', default = true},
-	{type = 'checkbox', text = 'Auto use Infernal Strike with Flame Crash (Talent)', 	key = 'kIS', 	default = true},
+	{type = 'checkbox', text = 'Auto use Infernal Strike with "Flame Crash" Talent', 	key = 'kIS', 	default = true},
 	{type = 'ruler'},	{type = 'spacer'},
 	-- Trinkets + Heirlooms for leveling
 	{type = 'header', 	text = 'Trinkets/Heirlooms', align = 'center'},
@@ -30,7 +30,7 @@ local exeOnLoad = function()
 	Zylla.AFKCheck()
 
 	print('|cffADFF2F ----------------------------------------------------------------------|r')
-	print('|cffADFF2F --- |rDEMON HUNTER |cffADFF2FVengeance |r')
+	print('|cffADFF2F --- |rDemon Hunter |cffADFF2FVengeance |r')
 	print('|cffADFF2F --- |rRecommended Talents: 1/3 - 2/3 - 3/2 - 4/3 - 5/3 - 6/1 - 7/3')
 	print('|cffADFF2F ----------------------------------------------------------------------|r')
 
@@ -94,5 +94,6 @@ NeP.CR:Add(581, {
 	  ic = inCombat,
 	 ooc = outCombat,
 	 gui = GUI,
+	 ids = Zylla.SpellIDs[Zylla.Class],
 	load = exeOnLoad
 })

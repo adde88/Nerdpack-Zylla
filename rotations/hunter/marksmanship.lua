@@ -49,9 +49,11 @@ local exeOnLoad = function()
 end
 
 local PreCombat = {
-	{'/cast Call Pet 1', '!pet.exists&!pet.dead&UI(kPet)'},
-	{'Revive Pet', 'pet.dead&UI(kPet)'},
+	{'/cast Call Pet 1', '!pet.exists&UI(kPet)&!spell(Revive Pet).exists'},
+	{'Heart of the Phoenix', '!player.debuff(Weakened Heart)&pet.dead&UI(kPet)'},
+	{'Revive Pet', 'spell(Revive Pet).exists&UI(kPet)'},
 	{'Volley', '{toggle(aoe)&talent(6,3)&!player.buff(Volley)&UI(kVolley)} || {talent(6,3)&player.buff(Volley)&{!UI(kVolley)||!toggle(aoe)}}'},
+	{'%pause', 'player.buff(Feign Death)'},
 }
 
 local Keybinds = {
@@ -63,9 +65,9 @@ local Keybinds = {
 }
 
 local Survival = {
-	{'Exhilaration', 'player.health<UI(E_HP)76'},
-	{'#Ancient Healing Potion', 'player.health<UI(Health Stone)'},
-	{'#Healthstone', 'player.health<UI(Health Stone)'},
+	{'Exhilaration', 'player.health<UI(E_HP)'},
+	{'#127834', 'item(127834).count>0&player.health<UI(Health Stone)'},        -- Ancient Healing Potion
+	{'#5512', 'item(5512).count>0&player.health<UI(Health Stone)', 'player'},  --Health Stone
 	{'Aspect of the Turtle', 'player.health<UI(AotT)'},
 	{'Feign Death', 'player.health<UI(FD)&equipped(137064)'},
 }
@@ -77,7 +79,7 @@ local Cooldowns = {
 }
 
 local Interrupts = {
-	{'!Counter Shot'},
+	{'!Counter Shot', 'toggle(Interrupts)&interruptAt(70)&inFront&range<51', 'enemies'},
 }
 
 local TargetDie = {
@@ -172,8 +174,8 @@ local Patient_Sniper = {
 local xPetCombat = {
 	{'Mend Pet', 'pet.exists&pet.alive&pet.health<100&!pet.buff(Mend Pet)'},
 	{'Heart of the Phoenix', '!player.debuff(Weakened Heart)&pet.dead&UI(kPet)'},
-	{'Revive Pet', 'pet.dead&UI(kPet)'},
-	{'/cast Call Pet 2', '!pet.exists&UI(kPet)'},
+	{'Revive Pet', 'spell(Revive Pet).exists&UI(kPet)'},
+	{'/cast Call Pet 1', '!pet.exists&UI(kPet)&!spell(Revive Pet).exists'},
 	{'/cast [@focus, help] [@pet, nodead, exists] Misdirection', 'player.spell(Misdirection).cooldown<=gcd&toggle(xMisdirect)'},
 }
 
@@ -183,7 +185,7 @@ local inCombat = {
 	{Heirlooms},
 	{Keybinds},
 	{Survival, 'player.health<100'},
-	{Interrupts, 'target.interruptAt(70)&toggle(Interrupts)&target.inFront&target.range<60'},
+	{Interrupts},
 	{Cooldowns, 'toggle(Cooldowns)'},
 	{xCombat,'target.range<60&target.inFront'},
 	{xPetCombat, 'UI(kPet)'},
@@ -199,5 +201,6 @@ NeP.CR:Add(254, {
 	  ic = inCombat,
 	 ooc = outCombat,
 	 gui = GUI,
+	 ids = Zylla.SpellIDs[Zylla.Class],
 	load = exeOnLoad
 })

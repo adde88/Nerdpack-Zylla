@@ -116,5 +116,6 @@ NeP.CR:Add(73, {
 	  ic = inCombat,
 	 ooc = outCombat,
 	 gui = GUI,
+	 ids = Zylla.SpellIDs[Zylla.Class],
 	load = exeOnLoad
 })

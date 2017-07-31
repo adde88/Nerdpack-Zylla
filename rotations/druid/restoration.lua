@@ -186,7 +186,6 @@ local inCombat = {
 }
 
 local outCombat = {
-	{'/cast Regrowth',nil, 'player'},
 	{PreCombat},
 	{Keybinds},
 }
@@ -196,5 +195,6 @@ NeP.CR:Add(105, {
   ic=inCombat,
   ooc=outCombat,
   gui=GUI,
+  ids = Zylla.SpellIDs[Zylla.Class],
   load=exeOnLoad
 })

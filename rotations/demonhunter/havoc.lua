@@ -28,7 +28,7 @@ local exeOnLoad = function()
 	Zylla.AFKCheck()
 
 	print("|cffADFF2F ---------------------------------------------------------------------------|r")
-	print("|cffADFF2F --- |rDEMON HUNTER |cffADFF2FHavoc|r")
+	print("|cffADFF2F --- |rDemon Hunter |cffADFF2FHavoc|r")
 	print("|cffADFF2F --- |rRecommended Talents: Not ready yet.")
 	print("|cffADFF2F ---------------------------------------------------------------------------|r")
 end
@@ -77,5 +77,6 @@ NeP.CR:Add(577, {
 	  ic = inCombat,
 	 ooc = outCombat,
 	 gui = GUI,
+	 ids = Zylla.SpellIDs[Zylla.Class],
 	load = exeOnLoad
 })

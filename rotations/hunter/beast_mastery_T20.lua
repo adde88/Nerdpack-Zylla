@@ -71,8 +71,8 @@ local Keybinds = {
 
 local Survival = {
 	{'Exhilaration', 'player.health<UI(E_HP)'},
-	{'#Ancient Healing Potion', 'player.health<UI(Health Stone)'},
-	{'#Healthstone', 'player.health<UI(Health Stone)'},
+	{'#127834', 'player.health<UI(Health Stone)'},  -- Ancient Healing Potion
+	{'#5512', 'item(5512).count>0&player.health<UI(Health Stone)', 'player'},  --Health Stone
 	{'Aspect of the Turtle', 'player.health<UI(AotT)'},
 	{'Feign Death', 'player.health<UI(FD)&equipped(137064)'},
 	{'%pause', 'player.buff(Feign Death)'},
@@ -80,7 +80,7 @@ local Survival = {
 
 local Cooldowns = {
 	{Heirlooms},
-	{'#Tarnished Sentinel Medallion', 'xequipped(147017)'},
+	{'#147017', 'equipped(147017)'},
 	{'Bestial Wrath'},
 	--actions+=/titans_thunder,if=(talent.dire_frenzy.enabled&(buff.bestial_wrath.up|cooldown.bestial_wrath.remains>35))|cooldown.dire_beast.remains>2|(buff.bestial_wrath.up&pet.dire_beast.active)
 	{'Titan\'s Thunder', '{talent(2,2)&{player.buff(Bestial Wrath)||cooldown(Bestial Wrath).remains>35}}||cooldown(Dire Beast).remains>2||player.buff(Bestial Wrath)&player.buff(Dire Beast)'},
@@ -146,5 +146,6 @@ NeP.CR:Add(253, {
 	  ic = inCombat,
 	 ooc = outCombat,
 	 gui = GUI,
+	 ids = Zylla.SpellIDs[Zylla.Class],
 	load = exeOnLoad
 })
