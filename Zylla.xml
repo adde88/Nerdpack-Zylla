@@ -19,7 +19,6 @@
   <Script file="rotations\druid\guardian.lua" />
   <Script file="rotations\druid\restoration.lua" />
   <Script file="rotations\hunter\beast_mastery.lua" />
-  <Script file="rotations\hunter\beast_mastery_T20.lua" />
   <Script file="rotations\hunter\marksmanship.lua" />
   <Script file="rotations\hunter\survival.lua" />
   <Script file="rotations\mage\arcane.lua" />
