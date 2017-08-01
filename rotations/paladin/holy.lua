@@ -1,4 +1,5 @@
 local _, Zylla = ...
+local NeP = NeP
 
 -- Thanks to Silver for a "working" Holy routine!
 
@@ -87,6 +88,11 @@ local exeOnLoad = function()
 
 end
 
+local Top_Up = {
+	{'!Holy Shock', nil, 'mouseover'},
+	{'!Flash of Light', nil, 'mouseover'},
+}
+
 local Keybinds = {
 	{'%pause', 'keybind(lalt)'},
 	{Top_Up, 'keybind(lcontrol)'},
@@ -102,11 +108,6 @@ local Survival = {
 	{'#127834', 'UI(P_HP_check)&player.health<=UI(P_HP_spin)'},		-- Health Pot
 	{'#127835', 'UI(P_MP_check)&player.mana<=UI(P_MP_spin)'},		-- Mana Pot
 	{'Divine Protection', 'player.buff(Blessing of Sacrifice)'},
-}
-
-local Top_Up = {
-	{'!Holy Shock', nil, 'mouseover'},
-	{'!Flash of Light', nil, 'mouseover'},
 }
 
 local DPS = {
@@ -269,5 +270,5 @@ NeP.CR:Add(65, {
 	ooc=outCombat,
 	gui=GUI,
 	ids = Zylla.SpellIDs[Zylla.Class],
-	load=exeOnLoad
+	load=exeOnLoad,
 })
