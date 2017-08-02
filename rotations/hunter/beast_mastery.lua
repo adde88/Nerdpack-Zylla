@@ -60,13 +60,17 @@ local exeOnLoad = function()
 
 end
 
-local PreCombat = {
-  {'Mend Pet', 'pet.exists&pet.alive&pet.health<UI(P_HP)&!pet.buff(Mend Pet)'},
-  {'Call Pet 1', '!pet.exists&UI(kPet)'},                                         -- Summon Pet
+local Pet = {
+  {'Mend Pet', 'pet.alive&pet.health<UI(P_HP)&!pet.buff(Mend Pet)'},
   {{ 																			                                        -- Pet Dead
-		{'Heart of the Phoenix', '!player.debuff(Weakened Heart)&!player.combat'}, 		-- Heart of the Phoenix
-		{'Revive Pet'} 																                                -- Revive Pet
-	}, {'pet.dead', 'UI(kPet)'}},
+    {'Heart of the Phoenix', '!player.debuff(Weakened Heart)&player.combat'},     -- Heart of the Phoenix
+    {'Revive Pet'} 																                                -- Revive Pet
+  }, {'pet.dead', 'UI(kPet)'}},
+}
+
+local PreCombat = {
+  {'Call Pet 1', '!pet.exists&UI(kPet)'},
+  {Pet, 'pet.exists'},
   {'Volley', '{toggle(aoe)&!player.buff(Volley)}||{player.buff(Volley)&!toggle(aoe)}'},
   {'%pause', 'player.buff(Feign Death)'},
 }
@@ -116,13 +120,9 @@ local xCombat = {
 
 local xPetCombat = {
   {'!Kill Command', '{pet.exists&pet.alive&{talent(4,3)&petrange(target)<31}||{petrange(target)<10}}', 'target'},
-  {'Mend Pet', 'pet.exists&pet.alive&pet.health<UI(P_HP)&!pet.buff(Mend Pet)'},
-  {'Call Pet 1', '!pet.exists&UI(kPet'},                            -- Summon Pet
-  {{ 																			                          -- Pet Dead
-		{'Heart of the Phoenix', '!player.debuff(Weakened Heart)'}, 		-- Heart of the Phoenix
-		{'Revive Pet'} 																                  -- Revive Pet
-	}, {'pet.dead', 'UI(kPet)'}},
-  {'/cast [@focus, help] [@pet, nodead, exists] Misdirection', 'player.spell(Misdirection).cooldown<=gcd&toggle(xMisdirect)'},
+  {'Call Pet 1', '!pet.exists&UI(kPet)'},
+  {Pet, 'pet.exists'},
+  {'Misdirection', 'player.spell(Misdirection).cooldown<=gcd&toggle(xMisdirect)', 'focus'},
 }
 
 local xPvP = {
