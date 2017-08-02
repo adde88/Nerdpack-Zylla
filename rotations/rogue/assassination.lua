@@ -143,9 +143,11 @@ local outCombat= {
 
 NeP.CR:Add(259, {
 	name='[|cff'..Zylla.addonColor..'Zylla\'s|r] Rogue - Assassination',
-	  ic=inCombat,
-	 ooc=outCombat,
-	 gui=GUI,
-	 ids = Zylla.SpellIDs[Zylla.Class],
-	load=exeOnLoad
+	ic = inCombat,
+	ooc = outCombat,
+	gui = GUI,
+	ids = Zylla.SpellIDs[Zylla.Class],
+	wow_ver = Zylla.wow_ver,
+	nep_ver = Zylla.nep_ver,
+	load = exeOnLoad
 })

@@ -101,10 +101,12 @@ local outCombat = {
 }
 
 NeP.CR:Add(267, {
-	name='[|cff'..Zylla.addonColor..'Zylla\'s|r] Warlock - Destruction',
-	  ic=inCombat,
-	 ooc=outCombat,
-	 gui=GUI,
-	 ids = Zylla.SpellIDs[Zylla.Class],
-	load=exeOnLoad
+	name = '[|cff'..Zylla.addonColor..'Zylla\'s|r] Warlock - Destruction',
+	ic = inCombat,
+	ooc = outCombat,
+	gui = GUI,
+	ids = Zylla.SpellIDs[Zylla.Class],
+	wow_ver = Zylla.wow_ver,
+	nep_ver = Zylla.nep_ver,
+	load = exeOnLoad
 })

@@ -97,9 +97,11 @@ local outCombat = {
 
 NeP.CR:Add(104, {
 	name = '[|cff'..Zylla.addonColor..'Zylla\'s|r] Druid - Guardian',
-	  ic = inCombat,
-	 ooc = outCombat,
-	 gui = GUI,
-	 ids = Zylla.SpellIDs[Zylla.Class],
+	ic = inCombat,
+	ooc = outCombat,
+	gui = GUI,
+	ids = Zylla.SpellIDs[Zylla.Class],
+	wow_ver = Zylla.wow_ver,
+	nep_ver = Zylla.nep_ver,
 	load = exeOnLoad
 })

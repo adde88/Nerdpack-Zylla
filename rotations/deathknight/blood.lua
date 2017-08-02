@@ -98,5 +98,7 @@ NeP.CR:Add(250, {
 	ooc = outCombat,
 	gui = GUI,
 	ids = Zylla.SpellIDs[Zylla.Class],
+	wow_ver = Zylla.wow_ver,
+	nep_ver = Zylla.nep_ver,
 	load = exeOnLoad
 })

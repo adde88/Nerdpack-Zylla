@@ -78,10 +78,12 @@ local outcombat = {
 
 NeP.CR:Add(270, {
   name = '[|cff'..Zylla.addonColor..'Zylla\'s|r] Monk - Mistweaver',
-  ic = inCombat,
-  ooc = outCombat,
-  gui = GUI,
-  ids = Zylla.SpellIDs[Zylla.Class],
-  load = exeOnLoad
---blacklist = _G['Zylla.Blacklist']
+	ic = inCombat,
+	ooc = outCombat,
+	gui = GUI,
+	ids = Zylla.SpellIDs[Zylla.Class],
+	wow_ver = Zylla.wow_ver,
+	nep_ver = Zylla.nep_ver,
+	load = exeOnLoad
+--	blacklist = Zylla.Blacklist
 })

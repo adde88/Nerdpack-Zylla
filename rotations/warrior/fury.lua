@@ -136,9 +136,11 @@ local outCombat = {
 
 NeP.CR:Add(72, {
 	name = '[|cff'..Zylla.addonColor..'Zylla\'s|r] Warrior - Fury',
-	  ic = inCombat,
-	 ooc = outCombat,
-	 gui = GUI,
-	 ids = Zylla.SpellIDs[Zylla.Class],
+	ic = inCombat,
+	ooc = outCombat,
+	gui = GUI,
+	ids = Zylla.SpellIDs[Zylla.Class],
+	wow_ver = Zylla.wow_ver,
+	nep_ver = Zylla.nep_ver,
 	load = exeOnLoad
 })

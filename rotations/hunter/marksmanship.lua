@@ -52,10 +52,10 @@ local exeOnLoad = function()
 end
 
 local PreCombat = {
-	{'/cast Call Pet 1', '!pet.exists&UI(kPet)&!spell(Revive Pet).exists'},
+	{'/cast Call Pet 1', '!pet.exists&UI(kPet)'},
 	{'Heart of the Phoenix', '!player.debuff(Weakened Heart)&pet.dead&UI(kPet)'},
-	{'Revive Pet', 'spell(Revive Pet).exists&UI(kPet)'},
-	{'Volley', '{toggle(aoe)&!player.buff(Volley)&UI(kVolley)}||{player.buff(Volley)&{!UI(kVolley)||!toggle(aoe)}}'},
+	{'Revive Pet', 'pet.dead&UI(kPet)'},
+	{'Volley', '{toggle(aoe)&!player.buff(Volley)}||{player.buff(Volley)&!toggle(aoe)}'},
 	{'%pause', 'player.buff(Feign Death)'},
 }
 
@@ -77,12 +77,12 @@ local Survival = {
 
 local Cooldowns = {
 	{'Trueshot', 'xtime<5||player.buff(Bloodlust)||target.time_to_die>={180-artifact(Quick Shot).rank*10+15}||player.buff(Bullseye).stack>25||target.time_to_die<16'},
-	{'Blood Fury'},
-	{'Berserking'},                                                                                                                                                                                                                                                                                                                                                                                                                                  
+	{'Blood Fury', 'player.buff(Trueshot)'},
+	{'Berserking', 'player.buff(Trueshot)'},
 }
 
 local Interrupts = {
-	{'!Counter Shot', 'toggle(Interrupts)&interruptAt(70)&inFront&range<50', 'target'},
+	{'!Counter Shot', 'toggle(Interrupts)&target.interruptAt(70)&target.inFront&target.range<maxRange(Aimed Shot)'},
 }
 
 local TargetDie = {
@@ -90,7 +90,7 @@ local TargetDie = {
 	{'Windburst', '!moving'},
 	{'Aimed Shot', '!moving&target.debuff(Vulnerable).remains>action(Aimed Shot).execute_time&target.time_to_die>action(Aimed Shot).execute_time'},
 	{'Sidewinders', 'toggle(aoe)'},
-	{'Aimed Shot', '!moving'},
+	{'Aimed Shot', '!moving||'},
 	{'Arcane Shot'},
 }
 
@@ -121,7 +121,7 @@ local Non_Patient_Sniper = {
 
 local Opener = {
 	{'A Murder of Crows'},
-	{'True Shot'},
+	{'True Shot', 'xtime>5'},
 	{'Piercing Shot', 'target.debuff(Vulnerable).duration<3||target.area(8).enemies>2'},
 	{'Explosive Shot', 'toggle(aoe)&target.area(8).enemies>2&target.range<10'},
 	{'Arcane Shot', 'line_cd(Arcane Shot)>16&!talent(4,3)'},
@@ -161,9 +161,9 @@ local Patient_Sniper = {
 }
 
  local xCombat = {
-	{'Volley', '{toggle(aoe)&!player.buff(Volley)&UI(kVolley)}||{player.buff(Volley)&{!UI(kVolley)||!toggle(aoe)}}'},
+	{'Volley', '{toggle(aoe)&!player.buff(Volley)}||{player.buff(Volley)&!toggle(aoe)}'},
 	{'Aimed Shot', 'moving&player.buff(Gyroscopic Stabilization)'},
-	{'Arcane Torrent', 'focus.deficit>20&{!talent(7,1)||player.spell(Sidewinders).charges<2}'},
+	{'Arcane Torrent', 'focus.deficit>30&{!talent(7,1)||player.spell(Sidewinders).charges<2}'},
 	{Opener, 'player.area(50).enemies==1&xtime<25'},
 	{'A Murder of Crows', '{target.time_to_die>65||target.health<20&target.boss}&{!target.debuff(Hunter\'s Mark)||{target.debuff(Hunter\'s Mark).remains>action(A Murder of Crows).execute_time&target.debuff(Vulnerable).remains>target.action(A Murder of Crows).execute_time&focus+{focus.regen*target.debuff(Vulnerable).remains}>50&focus+{focus.regen*target.debuff(Hunter\'s Mark).remains}>50}}'},
 	{Cooldowns, 'toggle(Cooldowns)'},
@@ -171,15 +171,15 @@ local Patient_Sniper = {
 	{'Black Arrow', '!target.debuff(Hunter\'s Mark)||{target.debuff(Hunter\'s Mark).remains>action(Black Arrow).execute_time&target.debuff(Vulnerable).remains>target.action(Black Arrow).execute_time&focus+{focus.regen*target.debuff(Vulnerable).remains}>60&focus+{focus.regen*target.debuff(Hunter\'s Mark).remains}>60}}'},
 	{'Barrage', 'toggle(aoe)&UI(kBarrage)&{target.area(15).enemies>1||{target.area(15).enemies==1&player.focus>90}}'},
 	{TargetDie},
-	{Patient_Sniper},
-	{Non_Patient_Sniper},
+	{Patient_Sniper, 'talent(4,3)'},
+	{Non_Patient_Sniper, '!talent(4,3)'},
 }
 
 local xPetCombat = {
-	{'Mend Pet', 'pet.exists&pet.alive&pet.health<100&!pet.buff(Mend Pet)'},
+	{'Mend Pet', 'pet.exists&pet.alive&pet.health<75&!pet.buff(Mend Pet)'},
 	{'Heart of the Phoenix', '!player.debuff(Weakened Heart)&pet.dead&UI(kPet)'},
-	{'Revive Pet', 'spell(Revive Pet).exists&UI(kPet)'},
-	{'/cast Call Pet 1', '!pet.exists&UI(kPet)&!spell(Revive Pet).exists'},
+	{'Revive Pet', 'pet.dead&UI(kPet)'},
+	{'/cast Call Pet 1', '!pet.exists&UI(kPet)'},
 	{'/cast [@focus, help] [@pet, nodead, exists] Misdirection', 'player.spell(Misdirection).cooldown<=gcd&toggle(xMisdirect)'},
 }
 
@@ -188,11 +188,11 @@ local inCombat = {
 	{Trinkets},
 	{Heirlooms},
 	{Keybinds},
-	{Survival, 'player.health<100'},
+	{Survival},
 	{Interrupts},
 	{Cooldowns, 'toggle(Cooldowns)'},
-	{xCombat,'target.range<50&target.inFront'},
-	{xPetCombat, 'UI(kPet)'},
+	{xCombat,'target.range<maxRange(Aimed Shot)&target.inFront'},
+	{xPetCombat, 'UI(kPet)&!talent(1,1)'},
 }
 
 local outCombat = {
@@ -203,9 +203,11 @@ local outCombat = {
 
 NeP.CR:Add(254, {
 	name = '[|cff'..Zylla.addonColor..'Zylla\'s|r] Hunter - Marksmanship',
-	  ic = inCombat,
-	 ooc = outCombat,
-	 gui = GUI,
-	 ids = Zylla.SpellIDs[Zylla.Class],
+	ic = inCombat,
+	ooc = outCombat,
+	gui = GUI,
+	ids = Zylla.SpellIDs[Zylla.Class],
+	wow_ver = Zylla.wow_ver,
+	nep_ver = Zylla.nep_ver,
 	load = exeOnLoad
 })

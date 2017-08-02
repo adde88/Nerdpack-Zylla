@@ -311,9 +311,11 @@ local outCombat = {
 
 NeP.CR:Add(258, {
 	name='[|cff'..Zylla.addonColor..'Zylla\'s|r] Priest - Shadow',
-	  ic=inCombat,
-	 ooc=outCombat,
-	 gui=GUI,
-	 ids = Zylla.SpellIDs[Zylla.Class],
-	load=exeOnLoad
+	ic = inCombat,
+	ooc = outCombat,
+	gui = GUI,
+	ids = Zylla.SpellIDs[Zylla.Class],
+	wow_ver = Zylla.wow_ver,
+	nep_ver = Zylla.nep_ver,
+	load = exeOnLoad
 })

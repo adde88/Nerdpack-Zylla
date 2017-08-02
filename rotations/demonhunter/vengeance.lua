@@ -91,9 +91,11 @@ local outCombat = {
 
 NeP.CR:Add(581, {
 	name = '[|cff'..Zylla.addonColor..'Zylla\'s|r] Demon Hunter - Vengeance',
-	  ic = inCombat,
-	 ooc = outCombat,
-	 gui = GUI,
-	 ids = Zylla.SpellIDs[Zylla.Class],
+	ic = inCombat,
+	ooc = outCombat,
+	gui = GUI,
+	ids = Zylla.SpellIDs[Zylla.Class],
+	wow_ver = Zylla.wow_ver,
+	nep_ver = Zylla.nep_ver,
 	load = exeOnLoad
 })

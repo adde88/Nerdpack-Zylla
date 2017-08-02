@@ -202,9 +202,11 @@ local outCombat = {
 
 NeP.CR:Add(269, {
 	name='[|cff'..Zylla.addonColor..'Zylla\'s|r] Monk - Windwalker',
-	ic=inCombat,
-	ooc=outCombat,
-	gui=GUI,
+	ic = inCombat,
+	ooc = outCombat,
+	gui = GUI,
 	ids = Zylla.SpellIDs[Zylla.Class],
-	load=exeOnLoad
+	wow_ver = Zylla.wow_ver,
+	nep_ver = Zylla.nep_ver,
+	load = exeOnLoad
 })
