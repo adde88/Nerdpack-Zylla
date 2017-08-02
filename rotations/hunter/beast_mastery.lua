@@ -62,10 +62,12 @@ end
 
 local PreCombat = {
   {'Mend Pet', 'pet.exists&pet.alive&pet.health<UI(P_HP)&!pet.buff(Mend Pet)'},
-  {'Revive Pet', 'pet.dead&player.debuff(Weakened Heart)&UI(kPet)'},
-  {'/cast Call Pet 1', '!pet.exists&UI(kPet)'},
-  {'/cast [@focus, help] [@pet, nodead, exists] Misdirection', 'dbm(pull in)<3&player.spell(Misdirection).cooldown<=gcd&toggle(xMisdirect)'},
-  {'Volley', '{toggle(aoe)&!player.buff(Volley)&UI(kVolley)}||{player.buff(Volley)&{!UI(kVolley)||!toggle(aoe)}}'},
+  {'Call Pet 1', '!pet.exists&UI(kPet)'},                                         -- Summon Pet
+  {{ 																			                                        -- Pet Dead
+		{'Heart of the Phoenix', '!player.debuff(Weakened Heart)&!player.combat'}, 		-- Heart of the Phoenix
+		{'Revive Pet'} 																                                -- Revive Pet
+	}, {'pet.dead', 'UI(kPet)'}},
+  {'Volley', '{toggle(aoe)&!player.buff(Volley)}||{player.buff(Volley)&!toggle(aoe)}'},
   {'%pause', 'player.buff(Feign Death)'},
 }
 
@@ -109,15 +111,17 @@ local xCombat = {
   {'Multi-Shot', 'toggle(aoe)&target.area(10).enemies>1&{pet.buff(Beast Cleave).duration<gcd.max*2||!pet.buff(Beast Cleave)}'},
   {'Chimaera Shot', 'player.focus<90'},
   {'Cobra Shot', '{player.spell(Kill Command).cooldown>focus.time_to_max&player.spell(Bestial Wrath).cooldown>focus.time_to_max}||{player.buff(Bestial Wrath)&focus.regen*player.spell(Kill Command).cooldown>action(Kill Command).cost}||target.time_to_die<player.spell(Kill Command).cooldown||{equipped(Parsel\'s Tongue)&player.buff(Parsel\'s Tongue).duration<=gcd.max*2}'},
-  {'Volley', '{toggle(aoe)&!player.buff(Volley)&UI(kVolley)}||{player.buff(Volley)&{!UI(kVolley)||!toggle(aoe)}}'},
+  {'Volley', '{toggle(aoe)&!player.buff(Volley)}||{player.buff(Volley)&!toggle(aoe)}'},
 }
 
 local xPetCombat = {
   {'!Kill Command', '{pet.exists&pet.alive&{talent(4,3)&petrange(target)<31}||{petrange(target)<10}}', 'target'},
   {'Mend Pet', 'pet.exists&pet.alive&pet.health<UI(P_HP)&!pet.buff(Mend Pet)'},
-  {'Heart of the Phoenix', 'pet.dead&!player.debuff(Weakened Heart)&UI(kPet)'},
-  {'Revive Pet', 'pet.dead&player.debuff(Weakened Heart)&UI(kPet)'},
-  {'/cast Call Pet 1', '!pet.exists&UI(kPet)'},
+  {'Call Pet 1', '!pet.exists&UI(kPet'},                            -- Summon Pet
+  {{ 																			                          -- Pet Dead
+		{'Heart of the Phoenix', '!player.debuff(Weakened Heart)'}, 		-- Heart of the Phoenix
+		{'Revive Pet'} 																                  -- Revive Pet
+	}, {'pet.dead', 'UI(kPet)'}},
   {'/cast [@focus, help] [@pet, nodead, exists] Misdirection', 'player.spell(Misdirection).cooldown<=gcd&toggle(xMisdirect)'},
 }
 
