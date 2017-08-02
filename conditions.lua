@@ -940,6 +940,13 @@ end)
 --------------------------------- HUNTER CONDITIONS-----------------------------
 --------------------------------------------------------------------------------
 
+--/dump NeP.DSL:Get('maxRange')(spellID)  -- This is used to get a spells maxRange
+NeP.DSL:Register('maxRange', function(spell)
+    local name, rank, icon, castTime, minRange, maxRange = GetSpellInfo(spell)
+    if maxRange == nil then return false end
+    return maxRange
+end)
+
 --/dump NeP.DSL:Get('variable.safe_to_build')()
 --actions+=/variable,name=safe_to_build,value=debuff.hunters_mark.down|(buff.trueshot.down&buff.marking_targets.down)
 NeP.DSL:Register('variable.safe_to_build', function()
