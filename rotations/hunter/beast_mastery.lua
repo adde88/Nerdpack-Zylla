@@ -119,9 +119,9 @@ local xCombat = {
 }
 
 local xPetCombat = {
-  {'!Kill Command', '{pet.exists&pet.alive&{talent(4,3)&petrange(target)<31}||{petrange(target)<10}}', 'target'},
   {'Call Pet 1', '!pet.exists&UI(kPet)'},
   {Pet, 'pet.exists'},
+  {'!Kill Command', '{pet.exists&pet.alive&{talent(4,3)&petrange<31}||{petrange<10}}', 'target'},
   {'Misdirection', 'player.spell(Misdirection).cooldown<=gcd&toggle(xMisdirect)', 'focus'},
 }
 
