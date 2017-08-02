@@ -137,7 +137,7 @@ local inCombat = {
   {Heirlooms},
   {Keybinds},
   {Survival},
-  {Interrupts, 'interruptAt(70)&toggle(Interrupts)&inFront&range<41', 'target'},
+  {Interrupts, 'target.interruptAt(70)&toggle(Interrupts)&target.inFront&target.range<41'},
   {Cooldowns, 'toggle(Cooldowns)'},
   {xCombat, 'target.range<41&target.inFront'},
   {xPetCombat},
@@ -147,7 +147,7 @@ local inCombat = {
 local outCombat = {
   {Keybinds},
   {PreCombat},
-  {Interrupts, 'interruptAt(70)&toggle(Interrupts)&inFront&range<41', 'target'},
+  {Interrupts, 'target.interruptAt(70)&toggle(Interrupts)&target.inFront&target.range<41'},
 }
 
 NeP.CR:Add(253, {
