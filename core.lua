@@ -6,6 +6,9 @@ Zylla.Name = 'NerdPack - Zylla\'s Rotations'
 Zylla.Author = 'Zylla'
 Zylla.addonColor = 'D11E0E'
 
+Zylla.wow_ver = '7.2.5'
+Zylla.nep_ver = '1.8'
+
 local frame = CreateFrame('GameTooltip', 'Zylla_ScanningTooltip', UIParent, 'GameTooltipTemplate')
 
 Zylla.Class = select(3,UnitClass("player"))
