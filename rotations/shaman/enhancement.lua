@@ -5,13 +5,29 @@ local Trinkets = _G['Zylla.Trinkets']
 local Heirlooms = _G['Zylla.Heirlooms']
 
 local GUI = {
+	--Logo
+	{type = "texture", texture = "Interface\\AddOns\\Nerdpack-Zylla\\media\\logo.blp", width = 128, height = 128, offset = 90, y = 42, center = true},
+	{type = 'ruler'},	  {type = 'spacer'},
+	-- Keyinds
 	{type = 'header', 	text = 'Keybinds', align = 'center'},
 	{type = 'text', 	text = 'Left Shift: Pause', align = 'center'},
 	{type = 'text', 	text = 'Left Ctrl: ', align = 'center'},
 	{type = 'text', 	text = 'Left Alt: ', align = 'center'},
 	{type = 'text', 	text = 'Right Alt: ', align = 'center'},
-	{type = 'checkbox', text = 'Pause Enabled', key = 'kPause', default = true},
 	{type = 'ruler'},	{type = 'spacer'},
+	-- Settings
+	{type = 'header', 	text = 'Class Settings',	align = 'center'},
+	{type = 'checkbox', text = 'Pause Enabled',	key = 'kPause',	default = true},	
+	{type = 'checkbox', text = 'Use Voodoo/Earthgrab Totems (AoE)',	key = 'E_Tots',	default = true},
+	{type = 'ruler'},	{type = 'spacer'},
+  	-- Survival
+	{type = 'header', 	text = 'Survival',	align = 'center'},
+	{type = 'checkbox', text = 'Use Rainfall on lowest party member',	key = 'E_RF',	default = true},
+	{type = 'spinner', 	text = '',	key = 'RF_HP',	default = 75},
+	{type = 'checkbox', text = 'Use Healing Surge (SOLO)',	key = 'e_HS',	default = true},
+	{type = 'spinner', 	text = '',	key = 'HS_HP',	default = 75},
+	{type = 'spinner',	text = 'Healthstone when below HP%',	key = 'HST_HP',	default = 45},
+	{type = 'spinner',	text = 'Healing Potion when below HP%',	key = 'AHP_HP',	default = 45},		
 	-- Trinkets + Heirlooms for leveling
 	{type = 'header', 	text = 'Trinkets/Heirlooms', align = 'center'},
 	{type = 'checkbox', text = 'Use Trinket #1', key = 'kT1', default = true},
@@ -26,65 +42,82 @@ local exeOnLoad = function()
 	Zylla.AFKCheck()
 
 	print('|cffADFF2F ----------------------------------------------------------------------|r')
-	print('|cffADFF2F --- |rSHAMAN |cffADFF2FEnhancement |r')
+	print('|cffADFF2F --- |rShaman |cffADFF2FEnhancement |r')
 	print('|cffADFF2F --- |rRecommended Talents: 1/3 - 2/X - 3/X - 4/3 - 5/1 - 6/1 - 7/2')
 	print('|cffADFF2F ----------------------------------------------------------------------|r')
+	print('|cffFFFB2F Configuration: |rRight-click MasterToggle and go to Combat Routines Settings!|r')
 
+	NeP.Interface:AddToggle({
+		key = 'xIntRandom',
+		name = 'Interrupt Anyone',
+		text = 'Interrupt all nearby enemies, without targeting them.',
+		icon = 'Interface\\Icons\\inv_ammo_arrow_04',
+	})
+
+	NeP.Interface:AddToggle({
+		key = 'Heroism',
+		name = 'Use Heroism',
+		text = 'Automatically use Heroism.',
+		icon = 'Interface\\Icons\\ability_shaman_heroism',
+	})
 end
 
 local Keybinds = {
 	-- Pause
 	{'%pause', 'keybind(lshift)&UI(kPause)'},
-	{'!Lightning Surge Totem', 'keybind(lcontrol)' , 'cursor.ground'}
+	{'!Lightning Surge Totem', 'keybind(lcontrol)' , 'cursor.ground'},
+	{'!Wind Rush Totem', 'keybind(lalt)', 'cursor.ground'},
 }
 
 local PreCombat = {
-	{'Healing Surge', '!moving&player.health<80', 'player'},
+	{'Healing Surge', 'UI(E_HS)&!moving&player.health<UI(HS_HP)', 'player'},
 	{'Ghost Wolf', 'movingfor>1&!player.buff(Ghost Wolf)'},
 }
 
 local Survival = {
-	{'!Healing Surge', 'player.health<80&player.maelstrom>10', 'player'},
+	{'!Healing Surge', 'UI(E_HS)&player.health<UI(HS_HP)&player.maelstrom>10', 'player'},
+	{'#127834', 'item(127834).count>0&player.health<UI(HST_HP)'},        -- Ancient Healing Potion
+	{'#5512', 'item(5512).count>0&player.health<UI(AHP_HP)', 'player'},  --Health Stone
 }
 
 local Cooldowns = {
-
+	{'Heroism', 'toggle(Heroism)'},
+	{'Ascendance', 'player.maelstrom>129||player.hashero'},
+	{'Feral Spirit', '{player.hashero||player.buff(Ascendance)}||player.level<100'},
+	{'Berserking', 'toggle(Heroism)&{player.buff(Ascendance)||!talent(7,1)||player.level<100}'},
+	{'Blood Fury', 'player.buff(Ascendance)||player.level<100'},
+	{'Doom Winds'},
 }
 
-local Interrupts = {
-	{'!Wind Shear'},
+local Interrupts_Normal = {
+	{'!Wind Shear', 'target.interruptAt(70)'},
+	{'!Wind Rush Totem', 'target.interruptAt(5)&player.spell(Wind Shear).cooldown>gcd&!lastgcd(Wind Shear)&!target.immune(Stun)', 'target.ground'}
+}
+
+local Interrupts_Random = {
+	{'!Counter Shot', 'interruptAt(70)&toggle(xIntRandom)&toggle(Interrupts)&inFront&range<41', 'enemies'},
+	{'!Intimidation', 'interruptAt(70)&toggle(xIntRandom)&toggle(Interrupts)&player.spell(Counter Shot).cooldown>gcd&!prev_gcd(Counter Shot)&!immune(Stun)&inFront&range<41', 'enemies'},
+}
+
+local Talents = {
+	{'Windsong', 'target.range<11&target.inFront'},
+	{'Rainfall', 'UI(E_RF)&health<UI(RF_HP)&range<41', 'lowest.ground'},
+	{'Lightning Shield', '!player.buff(Lightning Shield)'},
+	{'Feral Lunge', 'target.range>7&target.range<26'},
+	{'Earthgrab Totem', 'target.range<36&UI(E_Tots)&target.area(10).enemies>2', 'target.ground'},
+	{'Voodoo Totem', 'target.range<36&UI(E_Tots)&target.area(10).enemies>2', 'target.ground'},
+	{'Fury of Air', 'toggle(AoE)&!player.buff(Fury of Air)'},
+	{'Sundering', 'target.inMelee&toggle(AoE)&player.area(8).enemies.inFront>2'},
+	{'Earthen Spike', 'target.range<11&target.inFront'},
 }
 
 local xCombat = {
-	{'Feral Spirit', 'toggle(Cooldowns)'},
-	{'Crash Lightning', 'artifact(Alpha Wolf).enabled&prev_gcd(Feral Spirit)'},
-	{'Berserking', 'player.buff(Ascendance)||!talent(7,1)||player.level<100'},
-	{'Blood Fury'},
-	{'Crash Lightning', 'talent(6,1)&player.buff(Crash Lightning).remains<gcd&player.area(8).enemies>2'},
-	{'Boulderfist', 'player.buff(Boulderfist).remains<gcd&player.maelstrom<60&player.area(8).enemies>2'},
-	{'Boulderfist', 'player.buff(Boulderfist).remains<gcd||{spell(Boulderfist).charges>1.75&player.maelstrom<200&player.area(8).enemies<3}'},
-	{'Crash Lightning', 'player.buff(Crash Lightning).remains<gcd&player.area(8).enemies>1'},
-	{'Stormstrike', '!talent(4,3)&player.area(8).enemies>2'},
-	{'Stormstrike', 'player.buff(Stormbringer)'},
-	{'Frostbrand', 'talent(4,3)&player.buff(Frostbrand).remains<gcd'},
-	{'Flametongue', 'player.buff(Flametongue).remains<gcd'},
-	{'Windsong'},
-	{'Ascendance'},
-	{'Fury of Air', 'talent(6,2)&!player.buff(Fury of Air)'},
-	{'Doom Winds'},
-	{'Crash Lightning', 'player.area(8).enemies>2'},
-	{'Stormstrike'},
-	{'Lightning Bolt', 'talent(5,2)&player.maelstrom>50'},
-	{'Lava Lash', 'player.buff(Hot Hand)'},
-	{'Earthen Spike'},
-	{'Crash Lightning', 'player.area(8).enemies>1||talent(6,1)||spell(Feral Spirit).cooldown>110'},
-	{'Frostbrand', 'talent(4,3)&player.buff(Frostbrand).remains<4.5'},
-	{'Flametongue', 'player.buff(Flametongue).remains<4.8'},
-	{'Sundering'},
-	{'Lava Lash', 'player.maelstrom>80'},
-	{'Rockbiter'},
-	{'Flametongue'},
-	{'Boulderfist'}
+	{'Crash Lightning', 'toggle(AoE)&player.area(8).enemies>2'},  
+	{'Frostbrand', 'talent(4,3)&player.buff(Frostbrand).duration<gcd*2'},
+	{'Flametongue', 'target.inMelee&!player.buff(Flametongue)'},
+	{'Lightning Bolt', 'talent(5,2)&player.maelstrom>39'},
+	{'Lava Lash', 'player.buff(Hot Hand)||player.maelstrom>79'},
+	{'Rockbiter', '{talent(1,3)&talent(7,2)}||{talent(1,3)&!talent(7,2)&!player.buff(Landslide)}||{!talent(1,3)&player.maelstrom<131}'},
 }
 
 local Ranged = {
@@ -96,17 +129,21 @@ local inCombat = {
 	{Trinkets},
 	{Heirlooms},
 	{Keybinds},
-	{Interrupts, 'target.interruptAt(70)&toggle(Interrupts)&target.inFront&target.range<40'},
-	{Survival, 'player.health<100'},
+	{Survival},
 	{Cooldowns, 'toggle(Cooldowns)'},
-	{AoE, 'toggle(AoE)&player.area(8).enemies>2'},
+	{Interrupts_Normal, 'toggle(Interrupts)&target.inFront&target.range<41'},
+	{Interrupts_Random},
+	{Talents},
 	{xCombat, 'target.inMelee&target.inFront'},
-	{Ranged, '!target.inMelee&target.range<50&target.inFront'}
+	{Ranged, '!target.inMelee&target.range<41target.inFront'},
+	{'Stormstrike', '{player.buff(Ascendance)&player.maelstrom>7&target.range<31&target.inFront}||{!player.buff(Stormbringer)&player.maelstrom>39&target.inMelee&target.inFront}||{player.buff(Stormbringer)&player.maelstrom>19&target.inMelee&target.inFront}'},
 }
 
 local outCombat = {
 	{Keybinds},
-	{PreCombat}
+	{PreCombat},
+	{Interrupts_Normal, 'toggle(Interrupts)&target.inFront&target.range<41'},
+	{Interrupts_Random},
 }
 
 NeP.CR:Add(263, {
@@ -118,4 +155,5 @@ NeP.CR:Add(263, {
 	wow_ver = Zylla.wow_ver,
 	nep_ver = Zylla.nep_ver,
 	load = exeOnLoad
+--blacklist = Zylla.Blacklist
 })
