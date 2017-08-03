@@ -5,7 +5,7 @@ local Trinkets = _G['Zylla.Trinkets']
 local Heirlooms = _G['Zylla.Heirlooms']
 
 local GUI = {
-  --Logo
+	--Logo
 	{type = "texture", texture = "Interface\\AddOns\\Nerdpack-Zylla\\media\\logo.blp", width = 128, height = 128, offset = 90, y = 42, center = true},
 	{type = 'ruler'},	  {type = 'spacer'},
 	-- Keybinds
@@ -48,7 +48,15 @@ local exeOnLoad = function()
 	print('|cffADFF2F --- |rHunter |cffADFF2FMarksmanship |r')
 	print('|cffADFF2F --- |rRecommended Talents: 1/1 - 2/1 - 3/X - 4/3 - 5/X - 6/2 - 7/1')
 	print('|cffADFF2F ----------------------------------------------------------------------|r')
+	print('|cffFFFB2F Configuration: |rRight-click MasterToggle and go to Combat Routines Settings!|r')
 
+   NeP.Interface:AddToggle({
+    key = 'xIntRandom',
+    name = 'Interrupt Anyone',
+    text = 'Interrupt all nearby enemies, without targeting them.',
+    icon = 'Interface\\Icons\\inv_ammo_arrow_04',
+  })
+	
 end
 
 local PreCombat = {
@@ -81,8 +89,12 @@ local Cooldowns = {
 	{'Berserking', 'player.buff(Trueshot)'},
 }
 
-local Interrupts = {
-	{'!Counter Shot', 'toggle(Interrupts)&target.interruptAt(70)&target.inFront&target.range<maxRange(Aimed Shot)'},
+local Interrupts_Normal = {
+	{'!Counter Shot'},
+}
+
+local Interrupts_Random = {
+	{'!Counter Shot', 'interruptAt(70)&toggle(xIntRandom)&toggle(Interrupts)&inFront&range<51', 'enemies'},
 }
 
 local TargetDie = {
@@ -189,16 +201,18 @@ local inCombat = {
 	{Heirlooms},
 	{Keybinds},
 	{Survival},
-	{Interrupts},
+	{Interrupts_Random},
+	{Interrupts_Normal, 'target.interruptAt(70)&toggle(Interrupts)&target.inFront&target.range<51'},
 	{Cooldowns, 'toggle(Cooldowns)'},
-	{xCombat,'target.range<maxRange(Aimed Shot)&target.inFront'},
+	{xCombat,'target.range<51&target.inFront'},
 	{xPetCombat, 'UI(kPet)&!talent(1,1)'},
 }
 
 local outCombat = {
 	{Keybinds},
 	{PreCombat},
-	{Interrupts},
+	{Interrupts_Random},
+	{Interrupts_Normal, 'target.interruptAt(70)&toggle(Interrupts)&target.inFront&target.range<51'},
 }
 
 NeP.CR:Add(254, {
