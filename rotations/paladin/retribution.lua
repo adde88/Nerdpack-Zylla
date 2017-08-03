@@ -69,6 +69,7 @@ local exeOnLoad = function()
 		text = 'Enable/Disable: Automatic removal of Poison and Diseases',
 		icon = 'Interface\\ICONS\\spell_holy_renew',
 	})
+	
 	NeP.Interface:AddToggle({
 		-- Group Healing
 		key = 'groupAssist',
