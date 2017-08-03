@@ -59,7 +59,6 @@ local exeOnLoad = function()
 	print('|cfff58cba ----------------------------------------------------------------------|r')
 	print('|cfff58cba --- |rPaladin: |cfff58cbaRETRIBUTION|r')
 	print('|cfff58cba --- |rTalents: 1/2 - 2/2 - 3/1 - 4/2 - 5/2 - 6/1 - 7/2|r')
-	print('|cfff58cba --- |rNo Multitarget (AoE) enabled settings|r')
 	print('|cfff58cba ----------------------------------------------------------------------|r')
 	print('|cffff0000 Configuration: |rRight-click the MasterToggle and go to Combat Routines Settings|r')
 
