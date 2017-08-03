@@ -47,9 +47,10 @@ local exeOnLoad = function()
   Zylla.AFKCheck()
 
   print('|cffADFF2F ----------------------------------------------------------------------|r')
-  print('|cffADFF2F --- |rHunter |cffADFF2FBeast Mastery [T-19] |r')
+  print('|cffADFF2F --- |rHunter |cffADFF2FBeast Mastery [T-20] |r')
   print('|cffADFF2F --- |rRecommended Talents: 1/2 - 2/1 - 3/X - 4/2 - 5/X - 6/1 - 7/2')
   print('|cffADFF2F ----------------------------------------------------------------------|r')
+  print('|cffFFFB2F Configuration: |rRight-click MasterToggle and go to Combat Routines Settings!|r')
 
   NeP.Interface:AddToggle({
     key = 'xMisdirect',
