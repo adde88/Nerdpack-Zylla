@@ -98,6 +98,8 @@ local Cooldowns = {
   {'Aspect of the Wild', 'player.buff(Bestial Wrath)||target.time_to_die<12'},
   {'Blood Fury'},
   {'Berserking'},
+  {'#Trinket1', 'UI(kT1)'},
+  {'#Trinket2', 'UI(kT2)'},
 }
 
 local Interrupts = {
