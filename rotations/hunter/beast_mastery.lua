@@ -25,12 +25,12 @@ local GUI = {
   {type = 'checkbox', text = 'Tarnished Sentinel Medallion',				key = 'e_TSM',          default = true},
   {type = 'ruler'},	  {type = 'spacer'},
   	-- Survival
-	{type = 'header', 	text = 'Survival',									  	      align = 'center'},
-	{type = 'spinner', 	text = 'Heal Pet below HP%',                  key = 'P_HP',           default = 75},
-	{type = 'spinner', 	text = 'Exhileration below HP%',              key = 'E_HP',           default = 67},
-	{type = 'spinner',	text = 'Healthstone or Healing Potions',      key = 'Health Stone',	  default = 45},
-	{type = 'spinner',	text = 'Aspect of the Turtle',                key = 'AotT',           default = 21},
-	{type = 'spinner',	text = 'Feign Death (Legendary Healing) %',	  key = 'FD',		          default = 16},
+  {type = 'header', 	text = 'Survival',									  	      align = 'center'},
+  {type = 'spinner', 	text = 'Heal Pet below HP%',                  key = 'P_HP',           default = 75},
+  {type = 'spinner', 	text = 'Exhileration below HP%',              key = 'E_HP',           default = 67},
+  {type = 'spinner',	text = 'Healthstone or Healing Potions',      key = 'Health Stone',	  default = 45},
+  {type = 'spinner',	text = 'Aspect of the Turtle',                key = 'AotT',           default = 21},
+  {type = 'spinner',	text = 'Feign Death (Legendary Healing) %',	  key = 'FD',		          default = 16},
   {type = 'ruler'},	  {type = 'spacer'},
   -- Trinkets + Heirlooms for leveling
   {type = 'header', 	text = 'Trinkets/Heirlooms',                  align = 'center'},
@@ -56,6 +56,13 @@ local exeOnLoad = function()
     name = 'Misdirection',
     text = 'Automatically use Misdirection on current Focus-target or Pet.',
     icon = 'Interface\\Icons\\ability_hunter_misdirection',
+  })
+
+   NeP.Interface:AddToggle({
+    key = 'xIntRandom',
+    name = 'Interrupt Anyone',
+    text = 'Interrupt all nearby enemies, without targeting them.',
+    icon = 'Interface\\Icons\\inv_ammo_arrow_04',
   })
 
 end
@@ -102,9 +109,14 @@ local Cooldowns = {
   {'#Trinket2', 'UI(kT2)'},
 }
 
-local Interrupts = {
+local Interrupts_Normal = {
 	{'!Counter Shot'},
 	{'!Intimidation', 'player.spell(Counter Shot).cooldown>gcd&!prev_gcd(Counter Shot)&!target.immune(Stun)'},
+}
+
+local Interrupts_Random = {
+	{'!Counter Shot', 'interruptAt(70)&toggle(xIntRandom)&toggle(Interrupts)&inFront&range<41', 'enemies'},
+	{'!Intimidation', 'interruptAt(70)&toggle(xIntRandom)&toggle(Interrupts)&player.spell(Counter Shot).cooldown>gcd&!prev_gcd(Counter Shot)&!immune(Stun)&inFront&range<41', 'enemies'},
 }
 
 local xCombat = {
@@ -143,6 +155,7 @@ local inCombat = {
   {Heirlooms},
   {Keybinds},
   {Survival},
+  {Interrupts_Random},
   {Interrupts, 'target.interruptAt(70)&toggle(Interrupts)&target.inFront&target.range<41'},
   {Cooldowns, 'toggle(Cooldowns)'},
   {xCombat, 'target.range<41&target.inFront'},
@@ -153,6 +166,7 @@ local inCombat = {
 local outCombat = {
   {Keybinds},
   {PreCombat},
+  {'!Counter Shot', 'interruptAt(70)&toggle(Interrupts)&inFront&range<41', 'enemies'},
   {Interrupts, 'target.interruptAt(70)&toggle(Interrupts)&target.inFront&target.range<41'},
 }
 
