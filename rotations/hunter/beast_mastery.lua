@@ -157,7 +157,7 @@ local inCombat = {
   {Keybinds},
   {Survival},
   {Interrupts_Random},
-  {Interrupts, 'target.interruptAt(70)&toggle(Interrupts)&target.inFront&target.range<41'},
+  {Interrupts_Normal, 'target.interruptAt(70)&toggle(Interrupts)&target.inFront&target.range<41'},
   {Cooldowns, 'toggle(Cooldowns)'},
   {xCombat, 'target.range<41&target.inFront'},
   {xPetCombat},
@@ -172,7 +172,7 @@ local outCombat = {
 }
 
 NeP.CR:Add(253, {
-  name = '[|cff'..Zylla.addonColor..'Zylla\'s|r] Hunter - Beast Mastery',
+	name = '[|cff'..Zylla.addonColor..'Zylla\'s|r] Hunter - Beast Mastery',
 	ic = inCombat,
 	ooc = outCombat,
 	gui = GUI,
