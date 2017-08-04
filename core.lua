@@ -5,34 +5,74 @@ Zylla.Branch = 'RELEASE'
 Zylla.Name = 'NerdPack - Zylla\'s Rotations'
 Zylla.Author = 'Zylla'
 Zylla.addonColor = 'D11E0E'
-
 Zylla.wow_ver = '7.2.5'
 Zylla.nep_ver = '1.8'
-
-local frame = CreateFrame('GameTooltip', 'Zylla_ScanningTooltip', UIParent, 'GameTooltipTemplate')
-
-Zylla.Class = select(3,UnitClass("player"))
 Zylla.spell_timers = {}
-
 Zylla.isAFK = false;
 
+local Parse = NeP.DSL.Parse
+local Fetch = NeP.Interface.fetchKey
+
+local gsub = gsub
+local UnitClass = UnitClass
+local CreateFrame = CreateFrame
+local UIParent = UIParent
+local UnitIsAFK = UnitIsAFK
+local C_PetBattles = C_PetBattles
+local DEFAULT_CHAT_FRAME = DEFAULT_CHAT_FRAME
+local UnitThreatSituation = UnitThreatSituation
+local UnitExists = UnitExists
+local GetSpellInfo = GetSpellInfo
+local GetNetStats = GetNetStats
+local C_Timer = C_Timer
+local RunMacroText = RunMacroText
+local UnitBuff = UnitBuff
+local UnitPower = UnitPower
+local GetSpellPowerCost = GetSpellPowerCost
+local UnitAttackPower = UnitAttackPower
+local GetCombatRatingBonus = GetCombatRatingBonus
+local GetVersatilityBonus = GetVersatilityBonus
+local UnitHealth = UnitHealth
+local UnitHealthMax = UnitHealthMax
+local GetTalentInfo = GetTalentInfo
+local IsEquippedItem = IsEquippedItem
+local GetTime = GetTime
+local UnitName = UnitName
+local UnitGUID = UnitGUID
+local UnitIsDeadOrGhost = UnitIsDeadOrGhost
+local UnitAffectingCombat = UnitAffectingCombat
+local InCombatLockdown = InCombatLockdown
+local TravelSpeed = TravelSpeed
+local UnitGetIncomingHeals = UnitGetIncomingHeals
+local UnitGetTotalHealAbsorbs = UnitGetTotalHealAbsorbs
+local UnitPlayerOrPetInParty = UnitPlayerOrPetInParty
+local UnitIsUnit = UnitIsUnit
+local UnitDebuff = UnitDebuff
+local UnitStagger = UnitStagger
+
+
+
+
+local Zframe = CreateFrame('GameTooltip', 'Zylla_ScanningTooltip', UIParent, 'GameTooltipTemplate')
+
+Zylla.Class = select(3,UnitClass("player"))
 -- Toggles off the CR if the player becomes AFK.
 -- And toggle back on when player is un-AFKed.
 function Zylla.onFlagChange(self, event, ...)
-  if (UnitIsAFK("player") and not isAFK) then
+  if (UnitIsAFK("player") and not Zylla.isAFK) then
     -- Player has become AFK
     if (C_PetBattles.IsInBattle()==false) then
       -- This should contain the stuff to execute when player is flagged AFK
       NeP.Interface:toggleToggle('mastertoggle')
     end
     DEFAULT_CHAT_FRAME:AddMessage("Player is AFK. Stopping Zylla's Rotation.");
-    isAFK = true;
-  elseif (not UnitIsAFK("player") and isAFK) then
+    Zylla.isAFK = true;
+  elseif (not UnitIsAFK("player") and Zylla.isAFK) then
     -- Player has been flagged un-AFK
     -- This should contain the stuff to execute when player is flagged as not AFK
     NeP.Interface:toggleToggle('mastertoggle')
     DEFAULT_CHAT_FRAME:AddMessage("Player is unAFK. Restarting Zylla's Rotation.")
-    isAFK = false;
+    Zylla.isAFK = false;
   -- else
   -- Player's flag change concerned DND, not becoming AFK or un-AFK
   end
@@ -44,7 +84,8 @@ function Zylla.AFKCheck()
   frame:SetScript("OnEvent", Zylla.onFlagChange);
 end
 
--- Different Classes Taunt Abilities
+--[[
+ --Different Classes Taunt Abilities
 local classTaunt = {
   [1] = 'Taunt',
   [2] = 'Hand of Reckoning',
@@ -53,12 +94,16 @@ local classTaunt = {
   [11] = 'Growl',
   [12] = 'Torment'
 }
+]]--
 
 function Zylla.ExeOnLoad()
-  print('|cffFFFB2FThank you for selecting Zylla\'s Combat Routines for NerdPack!|r')
-  print('|cffFFFB2FSome routines require tweaking the settings to perform optimal.|r')
-  print('|cffFFFB2FIf you encounter errors, bugs, or you simply have a suggestion, i recommend that you visit the GitHub repo.|r')
-  print('|cffFFFB2FYou can also get support from the NerdPack community on Discord.|r')
+  print('|cffFFFB2F ----------------------------------------------------------------------|r')
+  print('|cffFFFB2F Thank you for selecting Zylla\'s Combat Routines for NerdPack!|r')
+  print('|cffFFFB2F Some routines require tweaking the settings to perform optimal.|r')
+  print('|cffFFFB2F If you encounter errors, bugs, or you simply have a suggestion,|r')
+  print('|cffFFFB2F i recommend that you visit the GitHub repo.|r')
+  print('|cffFFFB2F You can also get support from the NerdPack community on Discord.|r')
+  print('|cffFFFB2F ----------------------------------------------------------------------|r')
 end
 
 function Zylla.ExeOnUnload()
@@ -218,9 +263,9 @@ end
 --/dump Zylla.Scan_SpellCost('Rake')
 function Zylla.Scan_SpellCost(spell)
   local spellID = NeP.Core:GetSpellID(spell)
-  frame:SetOwner(UIParent, 'ANCHOR_NONE')
-  frame:SetSpellByID(spellID)
-  for i = 2, frame:NumLines() do
+  Zframe:SetOwner(UIParent, 'ANCHOR_NONE')
+  Zframe:SetSpellByID(spellID)
+  for i = 2, Zframe:NumLines() do
     local tooltipText = _G['Zylla_ScanningTooltipTextLeft' .. i]:GetText()
     return tooltipText
   end
@@ -232,8 +277,8 @@ function Zylla.Scan_IgnorePain()
   for i = 1, 40 do
     local qqq = select(11,UnitBuff('player', i))
     if qqq == 190456 then
-      frame:SetOwner(UIParent, 'ANCHOR_NONE')
-      frame:SetUnitBuff('player', i)
+      Zframe:SetOwner(UIParent, 'ANCHOR_NONE')
+      Zframe:SetUnitBuff('player', i)
       local tooltipText = _G['Zylla_ScanningTooltipTextLeft2']:GetText()
       local match = tooltipText:lower():match('of the next.-$')
       return gsub(match, '%D', '') + 0
@@ -299,8 +344,6 @@ end
 function Zylla.getIgnorePain()
   --output
   local matchTooltip = false
-  local showPercentage = false
-  local simpleOutput = false
   --Rage
   local curRage = UnitPower('player')
   local costs = GetSpellPowerCost(190456)
@@ -429,6 +472,7 @@ end
 
 function Zylla.Empower()
   --print('Zylla.Empower')
+  local emp1, emp2 = ''
   if Zylla.demon_count == 0 and UnitExists("pet") then
     Zylla.empower = NeP.DSL:Get('buff.remains')('pet','Demonic Empowerment')
     return Zylla.empower
@@ -554,41 +598,41 @@ Zylla.S2M_Summary = true
 --Zylla.SA_TOTAL = 0
 
 function Zylla.SA_Cleanup(guid)
-  if Zylla_SA_STATS[guid] then
-    Zylla.SA_TOTAL = Zylla.SA_TOTAL - Zylla_SA_STATS[guid].Count
+  if Zylla.SA_STATS[guid] then
+    Zylla.SA_TOTAL = Zylla.SA_TOTAL - Zylla.SA_STATS[guid].Count
     if Zylla.SA_TOTAL < 0 then
       Zylla.SA_TOTAL = 0
     end
-    Zylla_SA_STATS[guid].Count = nil
-    Zylla_SA_STATS[guid].LastUpdate = nil
-    Zylla_SA_STATS[guid] = nil
-    Zylla_SA_NUM_UNITS = Zylla_SA_NUM_UNITS - 1
-    if Zylla_SA_NUM_UNITS < 0 then
-      Zylla_SA_NUM_UNITS = 0
+    Zylla.SA_STATS[guid].Count = nil
+    Zylla.SA_STATS[guid].LastUpdate = nil
+    Zylla.SA_STATS[guid] = nil
+    Zylla.SA_NUM_UNITS = Zylla.SA_NUM_UNITS - 1
+    if Zylla.SA_NUM_UNITS < 0 then
+      Zylla.SA_NUM_UNITS = 0
     end
   end
 end
 
-NeP.Listener:Add('Zylla_SA', 'COMBAT_LOG_EVENT_UNFILTERED', function(timestamp,combatevent,_,sourceGUID,sourcename,_,_,destGUID,destname,_,_,spellid,spellname,_,_,_,_,_,_,_,spellcritical,_,_,_,spellmultistrike)
+NeP.Listener:Add('Zylla.SA', 'COMBAT_LOG_EVENT_UNFILTERED', function(timestamp,combatevent,_,sourceGUID,sourcename,_,_,destGUID,destname,_,_,spellid,spellname,_,_,_,_,_,_,_,spellcritical,_,_,_,spellmultistrike)
   if Zylla.class == 5 then
     local CurrentTime = GetTime()
-    Zylla_SA_NUM_UNITS = Zylla_SA_NUM_UNITS or 0
+    Zylla.SA_NUM_UNITS = Zylla.SA_NUM_UNITS or 0
     Zylla.SA_TOTAL     = Zylla.SA_TOTAL or 0
     -- Stats buffer
-    Zylla_SA_STATS     = Zylla_SA_STATS or {}
-    Zylla_SA_DEAD      = Zylla_SA_DEAD or {}
-    Zylla_LAST_CONTINUITY_CHECK = Zylla_LAST_CONTINUITY_CHECK or GetTime()
+    Zylla.SA_STATS     = Zylla.SA_STATS or {}
+    Zylla.SA_DEAD      = Zylla.SA_DEAD or {}
+    Zylla.LAST_CONTINUITY_CHECK = Zylla.LAST_CONTINUITY_CHECK or GetTime()
     if sourceGUID == UnitGUID("player") then
       if spellid == 147193 and combatevent == "SPELL_CAST_SUCCESS" then -- Shadowy Apparition Spawned
-        if not Zylla_SA_STATS[destGUID] or Zylla_SA_STATS[destGUID] == nil then
-          Zylla_SA_STATS[destGUID]       = {}
-          Zylla_SA_STATS[destGUID].Count = 0
-          Zylla_SA_NUM_UNITS             = Zylla_SA_NUM_UNITS + 1
+        if not Zylla.SA_STATS[destGUID] or Zylla.SA_STATS[destGUID] == nil then
+          Zylla.SA_STATS[destGUID]       = {}
+          Zylla.SA_STATS[destGUID].Count = 0
+          Zylla.SA_NUM_UNITS             = Zylla.SA_NUM_UNITS + 1
       end
       Zylla.SA_TOTAL = Zylla.SA_TOTAL + 1
       --print('SA spawn :'..Zylla.SA_TOTAL..' remaining SA')
-      Zylla_SA_STATS[destGUID].Count      = Zylla_SA_STATS[destGUID].Count + 1
-      Zylla_SA_STATS[destGUID].LastUpdate = CurrentTime
+      Zylla.SA_STATS[destGUID].Count      = Zylla.SA_STATS[destGUID].Count + 1
+      Zylla.SA_STATS[destGUID].LastUpdate = CurrentTime
       elseif spellid == 148859 and combatevent == "SPELL_DAMAGE" then --Auspicious Spirit Hit
         if Zylla.SA_TOTAL < 0 then
           Zylla.SA_TOTAL = 0
@@ -596,10 +640,10 @@ NeP.Listener:Add('Zylla_SA', 'COMBAT_LOG_EVENT_UNFILTERED', function(timestamp,c
         Zylla.SA_TOTAL = Zylla.SA_TOTAL - 1
       end
       --print('SA hit :'..Zylla.SA_TOTAL..' remaining SA')
-      if Zylla_SA_STATS[destGUID] and Zylla_SA_STATS[destGUID].Count > 0 then
-        Zylla_SA_STATS[destGUID].Count      = Zylla_SA_STATS[destGUID].Count - 1
-        Zylla_SA_STATS[destGUID].LastUpdate = CurrentTime
-        if Zylla_SA_STATS[destGUID].Count <= 0 then
+      if Zylla.SA_STATS[destGUID] and Zylla.SA_STATS[destGUID].Count > 0 then
+        Zylla.SA_STATS[destGUID].Count      = Zylla.SA_STATS[destGUID].Count - 1
+        Zylla.SA_STATS[destGUID].LastUpdate = CurrentTime
+        if Zylla.SA_STATS[destGUID].Count <= 0 then
           Zylla.SA_Cleanup(destGUID)
         end
       end
@@ -608,8 +652,8 @@ NeP.Listener:Add('Zylla_SA', 'COMBAT_LOG_EVENT_UNFILTERED', function(timestamp,c
     if Zylla.SA_TOTAL < 0 then
       Zylla.SA_TOTAL = 0
     end
-    for guid,count in pairs(Zylla_SA_STATS) do
-      if (CurrentTime - Zylla_SA_STATS[guid].LastUpdate) > 10 then
+    for guid,count in pairs(Zylla.SA_STATS) do
+      if (CurrentTime - Zylla.SA_STATS[guid].LastUpdate) > 10 then
         --If we haven't had a new SA spawn in 10sec, that means all SAs that are out have hit the target (usually), or, the target disappeared.
         Zylla.SA_Cleanup(guid)
       end
@@ -619,28 +663,28 @@ NeP.Listener:Add('Zylla_SA', 'COMBAT_LOG_EVENT_UNFILTERED', function(timestamp,c
     end
 
     if UnitIsDeadOrGhost("player") or not UnitAffectingCombat("player") or not InCombatLockdown() then -- We died, or, exited combat, go ahead and purge the list
-      for guid,count in pairs(Zylla_SA_STATS) do
+      for guid,count in pairs(Zylla.SA_STATS) do
         Zylla.SA_Cleanup(guid)
     end
-    Zylla_SA_STATS     = {}
-    Zylla_SA_NUM_UNITS = 0
+    Zylla.SA_STATS     = {}
+    Zylla.SA_NUM_UNITS = 0
     Zylla.SA_TOTAL     = 0
     end
-    if CurrentTime - Zylla_LAST_CONTINUITY_CHECK > 10 then --Force check of unit count every 10sec
+    if CurrentTime - Zylla.LAST_CONTINUITY_CHECK > 10 then --Force check of unit count every 10sec
       local newUnits = 0
-      for guid,count in pairs(Zylla_SA_STATS) do
+      for guid,count in pairs(Zylla.SA_STATS) do
         newUnits = newUnits + 1
       end
-      Zylla_SA_NUM_UNITS          = newUnits
-      Zylla_LAST_CONTINUITY_CHECK = CurrentTime
+      Zylla.SA_NUM_UNITS          = newUnits
+      Zylla.LAST_CONTINUITY_CHECK = CurrentTime
     end
-    if Zylla_SA_NUM_UNITS > 0 then
+    if Zylla.SA_NUM_UNITS > 0 then
       local totalSAs = 0
-      for guid,count in pairs(Zylla_SA_STATS) do
-        if Zylla_SA_STATS[guid].Count <= 0 or (UnitIsDeadOrGhost(guid)) then
-          Zylla_SA_DEAD[guid] = true
+      for guid,count in pairs(Zylla.SA_STATS) do
+        if Zylla.SA_STATS[guid].Count <= 0 or (UnitIsDeadOrGhost(guid)) then
+          Zylla.SA_DEAD[guid] = true
         else
-          totalSAs = totalSAs + Zylla_SA_STATS[guid].Count
+          totalSAs = totalSAs + Zylla.SA_STATS[guid].Count
         end
       end
       if totalSAs > 0 and Zylla.SA_TOTAL > 0 then
@@ -1217,6 +1261,7 @@ end)
 
 NeP.Library:Add('Zylla', {
   hitcombo = function(spell)
+    local HitComboLastCast = ''
     if not spell then return true end
     local _, _, _, _, _, _, spellID = GetSpellInfo(spell)
     if NeP.DSL:Get('buff')('player', 'Hit Combo') then
@@ -1231,6 +1276,7 @@ NeP.Library:Add('Zylla', {
   end,
 
   sef = function()
+    local SEF_Fixate_Casted = false
     if NeP.DSL:Get('buff')('player', 'Storm, Earth, and Fire') then
       if SEF_Fixate_Casted then
         return false
