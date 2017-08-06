@@ -23,7 +23,6 @@ local GUI = {
 	{type = 'spinner', 	text = 'Mana Restore', key = 'P_MR', default = 20},
 	{type = 'checkbox',	text = 'Offensive Holy Shock', key = 'O_HS', default = true},
 	{type = 'ruler'},	{type = 'spacer'},
-AC
 	--------------------------------
 	-- Toggles
 	--------------------------------
