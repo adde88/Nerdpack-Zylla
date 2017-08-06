@@ -1,114 +1,38 @@
 local _, Zylla = ...
 
---------------------------------------------------------------------------------
----------------------------------CUSTOM ARTIFACT CONDITIONS---------------------
---------------------------------------------------------------------------------
-
-local LAD = LibStub('LibArtifactData-1.0')
-
---/dump NeP.DSL:Get('race')('player')
-NeP.DSL:Register('race', function (unit)
-  return UnitRace(unit)
-end)
---/dump NeP.DSL:Get('artifact.force_update')()
-NeP.DSL:Register('artifact.force_update', function ()
-    return LAD.ForceUpdate()
-end)
-
---/dump NeP.DSL:Get('artifact.acquired_power')('artifactID')
-NeP.DSL:Register('artifact.acquired_power', function (artifactID)
-    local amount_power_acquired = LAD.GetAcquiredArtifactPower(artifactID)
-    return LAD.GetAcquiredArtifactPower(artifactID)
-end)
-
---/dump NeP.DSL:Get('artifact.activeid')()
-NeP.DSL:Register('artifact.active_id', function ()
-    local artifactID = LAD.GetActiveArtifactID(artifactID)
-    return LAD.GetActiveArtifactID()
-end)
-
---/dump NeP.DSL:Get('artifact.get_all_info')()
-NeP.DSL:Register('artifact.get_all_info', function ()
-    return LAD.GetAllArtifactsInfo()
-end)
-
---/dump NeP.DSL:Get('artifact.info')('artifactID')
-NeP.DSL:Register('artifact.info', function (artifactID)
-    local artifactID, data = LAD.GetArtifactInfo(artifactID)
-    return LAD.GetArtifactInfo(artifactID)
-end)
-
---/dump NeP.DSL:Get('artifact.knowledge')()
-NeP.DSL:Register('artifact.knowledge', function ()
-    local knowledge_level, knowledge_multiplier = LAD.GetArtifactKnowledge()
-    return LAD.GetArtifactKnowledge()
-end)
-
---/dump NeP.DSL:Get('artifact.power')('artifactID')
-NeP.DSL:Register('artifact.power', function (artifactID)
-    local artifact_id, unspent_power, power, max_power, power_for_next_rank, num_ranks_purchased, num_ranks_purchaseable = LAD.GetArtifactPower(artifactID)
-    return LAD.GetArtifactPower(artifactID)
-end)
-
---/dump NeP.DSL:Get('artifact.relics')('artifactID')
-NeP.DSL:Register('artifact.relics', function (artifactID)
-    local artifactID, data = LAD.GetArtifactRelics(artifactID)
-    return LAD.GetArtifactRelics(artifactID)
-end)
-
---/dump NeP.DSL:Get('artifact.traits')(NeP.DSL:Get('artifact.activeid'))
-NeP.DSL:Register('artifact.traits', function (artifactID)
-    local artifactID, data = LAD.GetArtifactTraits(artifactID)
-    return LAD.GetArtifactTraits(artifactID)
-end)
-
---/dump NeP.DSL:Get('artifact.num_obtained')()
-NeP.DSL:Register('artifact.num_obtained', function ()
-  local numObtained = LAD.GetArtifactKnowledge()
-  return LAD.GetNumObtainedArtifacts()
-end)
-
---/dump NeP.DSL:Get('artifact.trait_info')('player', 'Warbreaker')
---/dump NeP.DSL:Get('artifact.trait_info')('player', 'Thoradin\'s Might')
-NeP.DSL:Register('artifact.trait_info', function(_, spell)
-    local currentRank = 0
-    artifactID = NeP.DSL:Get('artifact.active_id')()
-    if not artifactID then
-        NeP.DSL:Get('artifact.force_update')()
-    end
-    local _, traits = NeP.DSL:Get('artifact.traits')(artifactID)
-    if traits then
-        for _,v in ipairs(traits) do
-            if v.name == spell then
-                return v.isGold, v.bonusRanks, v.maxRank, v.traitID, v.isStart, v.icon, v.isFinal, v.name, v.currentRank, v.spellID
-            end
-        end
-    end
-end)
-
---/dump NeP.DSL:Get('artifact.enabled')('player', 'Shredder Fangs')
---/dump NeP.DSL:Get('artifact.enabled')('player', 'Thoradin\'s Might')
-NeP.DSL:Register('artifact.enabled', function(_, spell)
-    if select(10,NeP.DSL:Get('artifact.trait_info')(_, spell)) then
-        return 1
-    else
-        return 0
-    end
-end)
-
---/dump NeP.DSL:Get('artifact.rank')('player', 'Shredder Fangs')
-NeP.DSL:Register('artifact.rank', function(_, spell)
-    local rank = select(9,NeP.DSL:Get('artifact.trait_info')(_, spell))
-    if rank then
-        return rank
-    else
-        return 0
-    end
-end)
-
-NeP.DSL:Register('artifact.equipped', function(_, spell)
-    return NeP.DSL:Get('spell.exists')(_, spell)
-end)
+local strmatch = strmatch
+local gsub = gsub
+local IsFlying = IsFlying
+local GetCurrentMapAreaID = GetCurrentMapAreaID
+local IsIndoors = IsIndoors
+local GetUnitSpeed = GetUnitSpeed
+local UnitDebuff = UnitDebuff
+local GetTime = GetTime
+local GetSpellCharges = GetSpellCharges
+local UnitPowerMax = UnitPowerMax
+local UnitPower = UnitPower
+local GetComboPoints = GetComboPoints
+local GetPowerRegen = GetPowerRegen
+local GetSpellInfo = GetSpellInfo
+local IsEquippedItem = IsEquippedItem
+local UnitClass = UnitClass
+local HasTalent = HasTalent
+local UnitBuff = UnitBuff
+local GetSpellCooldown = GetSpellCooldown
+local GetMasteryEffect = GetMasteryEffect
+local GetCritChance = GetCritChance
+local UnitStat = UnitStat
+local GetCombatRatingBonus = GetCombatRatingBonus
+local UnitExists = UnitExists
+local UnitIsEnemy = UnitIsEnemy
+local UnitIsDeadOrGhost = UnitIsDeadOrGhost
+local IsInRaid = IsInRaid
+local IsInGroup = IsInGroup
+local GetTotemInfo = GetTotemInfo
+local IsUsableItem = IsUsableItem
+local GetInventoryItemID = GetInventoryItemID
+local GetInventorySlotInfo = GetInventorySlotInfo
+local GetItemCooldown = GetItemCooldown
 
 --------------------------------------------------------------------------------
 -----------------------------------MISC CONDITIONS------------------------------
@@ -117,10 +41,6 @@ end)
 --/dump NeP.DSL:Get('nfly')()  Thanks to [EU]Noel on Discord for this function.
 NeP.DSL:Register('nfly', function()
   return IsFlying()
-end)
-
-NeP.DSL:Register('equipped', function(target, item)
- if IsEquippedItem(item) then return true else return false end
 end)
 
 --/dump NeP.DSL:Get('map_area_id')()
@@ -209,7 +129,7 @@ end)
 
 --/dump NeP.DSL:Get('dot.duration')('target','Doom')
 NeP.DSL:Register('dot.duration', function(target, spell)
-    local debuff,_,duration,expires,caster = Zylla.UnitDot(target, spell, _)
+    local debuff,_,duration,_,caster = Zylla.UnitDot(target, spell, _)
     if debuff and (caster == 'player' or caster == 'pet') then
         return duration
     end
@@ -230,21 +150,6 @@ end)
 NeP.DSL:Register('dot.remains', function(target, spell)
     return NeP.DSL:Get('debuff.duration')(target, spell)
 end)
-
-NeP.DSL:Register('dot.ticks_remain', function(target, spell)
-    end)
-
-NeP.DSL:Register('dot.current_ticks', function(target, spell)
-    end)
-
-NeP.DSL:Register('dot.ticks', function(target, spell)
-    end)
-
-NeP.DSL:Register('dot.tick_time_remains', function(target, spell)
-    end)
-
-NeP.DSL:Register('dot.active_dot', function(target, spell)
-    end)
 
 --/dump NeP.DSL:Get('buff.up')('player','Incanter\'s Flow')
 --/dump NeP.DSL:Get('buff')('player','Rejuvenation')
@@ -358,8 +263,8 @@ end)
 NeP.DSL:Register('action.cooldown_to_max', function(_, spell)
     local charges, maxCharges, start, duration = GetSpellCharges(spell)
     if duration and charges ~= maxCharges then
-        charges_to_max = maxCharges - ( charges + ((GetTime() - start) / duration))
-        cooldown = duration * charges_to_max
+        local charges_to_max = maxCharges - ( charges + ((GetTime() - start) / duration))
+        local cooldown = duration * charges_to_max
         return cooldown
     else
         return 0
@@ -477,7 +382,7 @@ NeP.DSL:Register('astral_power.deficit', function()
 end)
 
 --/dump NeP.DSL:Get('combo_points.deficit')()
-NeP.DSL:Register('combo_points.deficit', function(target)
+NeP.DSL:Register('combo_points.deficit', function()
     return (UnitPowerMax('player', SPELL_POWER_COMBO_POINTS)) - (UnitPower('player', SPELL_POWER_COMBO_POINTS))
 end)
 
@@ -612,7 +517,7 @@ end)
 --/dump NeP.DSL:Get['ignorepain_max')()
 NeP.DSL:Register('ignorepain_max', function()
     local ss = NeP.DSL:Get('health.max')('player')
-    if hasTalent(5,2) then
+    if HasTalent(5,2) then
         return NeP.Core.Round((((77.86412474516502 * 1.70) * ss) / 100))
     else
         return NeP.Core.Round(((77.86412474516502 * ss) / 100))
@@ -622,53 +527,6 @@ end)
 --------------------------------------------------------------------------------
 ---------------------------------FERAL DRUID CONDITIONS-------------------------
 --------------------------------------------------------------------------------
-
-local DotTicks = {
-    [1] = {
-        [1822] = 3,
-        [1079] = 2,
-        [106832] = 3,
-    },
-    [2] = {
-        [8921] = 2,
-        [155625] = 2,
-    },
-    [3] = {
-        [195452] = 2,
-    },
-}
-
---/dump NeP.DSL:Get('dot.tick_time')(_, 'Moonfire')
-NeP.DSL:Register('dot.tick_time', function(_, spell)
-    local spell = NeP.Core:GetSpellID(spell)
-    if not spell then return end
-    local class = select(3,UnitClass('player'))
-    if class == 11 and GetSpecialization() == 2 then
-        if NeP.DSL:Get('talent')(nil, '6,2') and DotTicks[1][spell] then
-            return DotTicks[1][spell] * 0.67
-        else
-            if DotTicks[1][spell] then
-                return DotTicks[1][spell]
-            else
-                local tick = DotTicks[2][spell]
-                return math.floor((tick / ((GetHaste() / 100) + 1)) * 10^3 ) / 10^3
-            end
-        end
-    else
-        return DotTicks[3][spell]
-    end
-end)
-
---/dump NeP.DSL:Get('dot.pmultiplier')(nil, 'Rip')
-NeP.DSL:Register('dot.pmultiplier', function(_, spell)
-    local GUID = UnitGUID('target')
-    local name = string.lower(spell)
-    if Zylla.f_Snapshots[name][GUID] then
-      return Zylla.f_Snapshots[name][GUID]
-    else
-      return 0
-    end
-end)
 
 --/dump NeP.DSL:Get('persistent_multiplier')(nil, 'Rip')
 NeP.DSL:Register('persistent_multiplier', function(_, spell)
@@ -740,8 +598,6 @@ end)
 --actions+=/variable,op=set,name=actors_fight_time_mod,value=0
 --actions+=/variable,op=set,name=actors_fight_time_mod,value=-((-(450)+(time+target.time_to_die))%10),if=time+target.time_to_die>450&time+target.time_to_die<600
 --actions+=/variable,op=set,name=actors_fight_time_mod,value=((450-(time+target.time_to_die))%5),if=time+target.time_to_die<=450
---actions+=/variable,op=set,name=s2mcheck,value=0.8*(45+((raw_haste_pct*100)*(2+(1*talent.reaper_of_souls.enabled)+(2*artifact.mass_hysteria.rank)-(1*talent.sanlayn.enabled))))-(variable.actors_fight_time_mod*nonexecute_actors_pct)
---actions+=/variable,op=min,name=s2mcheck,value=180
 
 --/dump NeP.DSL:Get('variable.actors_fight_time_mod')()
 NeP.DSL:Register('variable.actors_fight_time_mod', function()
@@ -757,44 +613,6 @@ NeP.DSL:Register('variable.actors_fight_time_mod', function()
         return ((450 - (time + target_time_to_die)) / 5)
     else
         return 0
-    end
-end)
-
-NeP.DSL:Register('variable.s2mcheck_min', function()
-    return 180
-end)
-
-NeP.DSL:Register('variable.s2mcheck_value', function()
-    local sanlayn = 0
-    local reaper_of_souls = 0
-    local actors_fight_time_mod = NeP.DSL:Get('variable.actors_fight_time_mod')()
-    local raw_haste_pct = UnitSpellHaste('player')
-    local mass_hysteria = NeP.DSL:Get('artifact.rank')('player', 'Mass Hysteria')
-
-    if NeP.DSL:Get('talent')(nil, '5,1') then
-        sanlayn = 1
-    else
-        sanlayn = 0
-    end
-
-    if NeP.DSL:Get('talent')(nil, '4,2') then
-        reaper_of_souls = 1
-    else
-        reaper_of_souls = 0
-    end
-
-    --local value = 0.8*(105+((raw_haste_pct*50)*(2+(1*talent.reaper_of_souls.enabled)+(2*artifact.mass_hysteria.rank)-(1*talent.sanlayn.enabled))))-(variable.actors_fight_time_mod*nonexecute_actors_pct)
-    local value = 0.8 * (105 + ((raw_haste_pct * 50) * (2 + (1 * reaper_of_souls) + (2 * mass_hysteria) - (1 * sanlayn)))) - (actors_fight_time_mod * 0)
-    --local value = 0.8 * { 105 + raw_haste_pct * 50 * { 2 + 1 * reaper_of_souls + 2 * mass_hysteria - 1 * sanlayn } } - actors_fight_time_mod * 0
-    return value
-end)
-
---/dump NeP.DSL:Get('variable.s2mcheck')()
-NeP.DSL:Register('variable.s2mcheck', function()
-    if NeP.DSL:Get('variable.s2mcheck_value')()>180 then
-        return NeP.DSL:Get('variable.s2mcheck_value')()
-    else
-        return 180
     end
 end)
 
@@ -946,7 +764,7 @@ end)
 
 --/dump NeP.DSL:Get('maxRange')(spellID)  -- This is used to get a spells maxRange
 NeP.DSL:Register('maxRange', function(spell)
-    local name, rank, icon, castTime, minRange, maxRange = GetSpellInfo(spell)
+    local _, _, _, _, _, maxRange = GetSpellInfo(spell)
     if maxRange == nil then return false end
     return maxRange
 end)
@@ -1415,7 +1233,7 @@ NeP.DSL:Register('partycheck', function()
 end)
 
 NeP.DSL:Register('totemcheck', function()
-        local haveTotem, name = GetTotemInfo(1)
+        local haveTotem, _ = GetTotemInfo(1)
             if haveTotem then
             return 2
         else
@@ -1425,7 +1243,7 @@ end)
 
 NeP.DSL:Register('trinket1', function()
         if IsUsableItem(GetInventoryItemID("player", GetInventorySlotInfo("Trinket0Slot"))) then
-            local start, duration, enable = GetItemCooldown(GetInventoryItemID("player", GetInventorySlotInfo("Trinket0Slot")))
+            local _, duration, _ = GetItemCooldown(GetInventoryItemID("player", GetInventorySlotInfo("Trinket0Slot")))
 					if (duration==0) then
             return 1
 
@@ -1437,7 +1255,7 @@ end)
 
 NeP.DSL:Register('trinket2', function()
         if IsUsableItem(GetInventoryItemID("player", GetInventorySlotInfo("Trinket1Slot"))) then
-            local start, duration, enable = GetItemCooldown(GetInventoryItemID("player", GetInventorySlotInfo("Trinket1Slot")))
+            local _, duration, _ = GetItemCooldown(GetInventoryItemID("player", GetInventorySlotInfo("Trinket1Slot")))
 					if (duration==0) then
             return 1
 
@@ -1455,30 +1273,4 @@ NeP.DSL:Register('deadcheck', function()
                     return true
                 end
             end
-end)
-
-
-NeP.DSL:Register('checkdebuff', function(debuff)
-	-- If dont have a target, target is friendly or dead
-
-		local setPrio = {}
-		for _, Obj in pairs(NeP.OM:Get('Enemy')) do
-				if not NeP.DSL:Get('debuff')(Obj.key, debuff) then
-					setPrio[#setPrio+1] = {
-						key = Obj.key,
-						name = Obj.name,
-                        guid = GUID
-					}
-                end
-		end
-		table.sort(setPrio, function(a,b) return a.guid > b.guid end)
-		if setPrio[1] then
-			return setPrio[1]
-        elseif setPrio[2] then
-            return setPrio[2]
-        else
-            return setPrio
-		end
-
-
 end)
