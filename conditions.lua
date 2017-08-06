@@ -6,6 +6,10 @@ local _, Zylla = ...
 
 local LAD = LibStub('LibArtifactData-1.0')
 
+--/dump NeP.DSL:Get('race')('player')
+NeP.DSL:Register('race', function (unit)
+  return UnitRace(unit)
+end)
 --/dump NeP.DSL:Get('artifact.force_update')()
 NeP.DSL:Register('artifact.force_update', function ()
     return LAD.ForceUpdate()
@@ -1424,7 +1428,7 @@ NeP.DSL:Register('trinket1', function()
             local start, duration, enable = GetItemCooldown(GetInventoryItemID("player", GetInventorySlotInfo("Trinket0Slot")))
 					if (duration==0) then
             return 1
-                
+
         else
             return 0
         end
@@ -1436,7 +1440,7 @@ NeP.DSL:Register('trinket2', function()
             local start, duration, enable = GetItemCooldown(GetInventoryItemID("player", GetInventorySlotInfo("Trinket1Slot")))
 					if (duration==0) then
             return 1
-                
+
         else
             return 0
         end
@@ -1456,7 +1460,7 @@ end)
 
 NeP.DSL:Register('checkdebuff', function(debuff)
 	-- If dont have a target, target is friendly or dead
-  
+
 		local setPrio = {}
 		for _, Obj in pairs(NeP.OM:Get('Enemy')) do
 				if not NeP.DSL:Get('debuff')(Obj.key, debuff) then
@@ -1475,6 +1479,6 @@ NeP.DSL:Register('checkdebuff', function(debuff)
         else
             return setPrio
 		end
-        
-	
+
+
 end)
