@@ -10,22 +10,22 @@ local GUI = {
 	{type = 'ruler'},	  {type = 'spacer'},
 	-- GUI Survival
 	{type = 'header', text = 'Survival', align = 'center'},
-	{type = 'checkbox', text = 'Enable Lay on Hands', key = 'E_LoH', default = true},
+	{type = 'checkbox', text = 'Use Lay on Hands', key = 'E_LoH', default = true},
 	{type = 'spinner', text = '', key = 'HP_LoH', default = 10},
-	{type = 'checkbox', text = 'Enable Flash of Light', key = 'E_FoL', default = true},
+	{type = 'checkbox', text = 'Use Flash of Light', key = 'E_FoL', default = true},
 	{type = 'spinner', text = '', key = 'HP_FoL', default = 40},
-	{type = 'checkbox', text = 'Enable Shield of Vengeance', key = 'E_SoV', default = true},
+	{type = 'checkbox', text = 'Use Shield of Vengeance', key = 'E_SoV', default = true},
 	{type = 'spinner', text = '', key = 'HP_SoV', default = 75},
-	{type = 'checkbox', text = 'Enable Eye for an Eye', key = 'E_EfaE', default = true},
+	{type = 'checkbox', text = 'Use Eye for an Eye', key = 'E_EfaE', default = true},
 	{type = 'spinner', text = '', key = 'HP_EfaE', default = 90},
-	{type = 'checkbox', text = 'Dispel Party Members, when dispelling', key = 'E_disAll', default = true},
-	{type = 'checkbox', text = 'Enable Every Man for Himself (Stun)', key = 'E_EMfH', default = true},
-	{type = 'checkbox', text = 'Enable Blessing of Freedom (Root/Snare)', key = 'E_BoF', default = true},
-	{type = 'checkbox', text = 'Enable Gift of the Naaru', key = 'E_GotN', default = true},
+	{type = 'checkbox', text = 'Dispel Party Members', key = 'E_disAll', default = true},
+	{type = 'checkbox', text = 'Use Every Man for Himself', key = 'E_EMfH', default = true},
+	{type = 'checkbox', text = 'Use Blessing of Freedom', key = 'E_BoF', default = true},
+	{type = 'checkbox', text = 'Use Gift of the Naaru', key = 'E_GotN', default = true},
 	{type = 'spinner', text = '', key = 'HP_GotN', default = 40},
-	{type = 'checkbox', text = 'Enable Healthstone', key = 'E_HS', default = true},
+	{type = 'checkbox', text = 'Use Healthstone', key = 'E_HS', default = true},
 	{type = 'spinner', text = '', key = 'HP_HS', default = 20},
-	{type = 'checkbox', text = 'Enable Ancient Healing Potion', key = 'E_AHP', default = true},
+	{type = 'checkbox', text = 'Use Ancient Healing Potion', key = 'E_AHP', default = true},
 	{type = 'spinner', text = '', key = 'HP_AHP', default = 20},
 	{type = 'ruler'},{type = 'spacer'},
 	-- GUI Emergency Group Assistance
@@ -69,7 +69,7 @@ local exeOnLoad = function()
 		text = 'Enable/Disable: Automatic removal of Poison and Diseases',
 		icon = 'Interface\\ICONS\\spell_holy_renew',
 	})
-	
+
 	NeP.Interface:AddToggle({
 		-- Group Healing
 		key = 'groupAssist',
@@ -77,35 +77,48 @@ local exeOnLoad = function()
 		text = 'Enable/Disable: Automatic LoH/BoP/FoL on Party Members',
 		icon = 'Interface\\ICONS\\spell_shadow_darksummoning',
 	})
+
+	NeP.Interface:AddToggle({
+	 key = 'xIntRandom',
+	 name = 'Interrupt Anyone',
+	 text = 'Interrupt all nearby enemies, without targeting them.',
+	 icon = 'Interface\\Icons\\inv_ammo_arrow_04',
+ })
+
 end
 
 local Survival = {
-	{'&Lay on Hands', 'UI(E_LoH)&player.health<=UI(HP_LoH)'},
-	{'&Shield of Vengeance', 'UI(E_SoV)&player.health<=UI(HP_SoV)'},
+	{'!Flash of Light', '!player.moving&UI(E_FoL)&player.health<=UI(HP_FoL)', 'player'},
+	{'!Lay on Hands', 'UI(E_LoH)&player.health<=UI(HP_LoH)', 'player'},
+	{'!Shield of Vengeance', 'UI(E_SoV)&player.health<=UI(HP_SoV)', 'player'},
 	{'Eye for an Eye', 'UI(E_EfaE)&player.health<=UI(HP_EfaE)'},
 	{'&Every Man for Himself', 'UI(E_EMfH)&player.state(stun)'},
-	{'!Blessing of Freedom', 'UI(E_BoF)&{player.state(root)||player.state(snare)}'},
-	{'&Gift of the Naaru', 'UI(E_GotN)&player.health<=UI(HP_GotN)'},
+	{'!Blessing of Freedom', 'UI(E_BoF)&{player.state(root)||player.state(snare)}' ,'player'},
+	{'&Gift of the Naaru', 'UI(E_GotN)&player.health<=UI(HP_GotN)' ,'player'},
 	{'#127834', 'UI(E_HS)&item(127834).count>0&player.health<UI(HP_HS)'},        	-- Ancient Healing Potion
 	{'#5512', 'UI(E_AHP)&item(5512).count>0&player.health<UI(HP_AHP)', 'player'},	--Health Stone
 }
 
-local Player = {
-	{'!Flash of Light', 'UI(E_FoL)&player.health<=UI(HP_FoL)', 'player'},
-}
-
-local Emergency = {
+local Group = {
 	{'!Flash of Light', 'UI(E_Group)&lowest.health<=UI(G_FoL)', 'lowest'},
 	{'!Lay on Hands', 'UI(E_Group)&lowest.health<=UI(G_LoH)', 'lowest'},
 	{'!Blessing of Protection', 'UI(E_Group)&lowest.health<=UI(G_BoP)', 'lowest'},
 }
 
 local Interrupts = {
-	{'&Rebuke', 'target.inMelee'},
-	{'Hammer of Justice', '!equipped(Justice Gaze)&target.range<20&spell(Rebuke).cooldown>gcd&!lastgcd(Rebuke)'},
-	{'Hammer of Justice', 'equipped(Justice Gaze)&target.health>74&target.range<20&spell(Rebuke).cooldown>gcd&!lastgcd(Rebuke)'},
-	{'Blinding Light', 'target.range<20&spell(Rebuke).cooldown>gcd&!lastgcd(Rebuke)'},
-	{'&Arcane Torrent', 'target.range<=8&spell(Rebuke).cooldown>gcd&!lastgcd(Rebuke)'},
+	{'!Rebuke', 'target.inMelee'},
+	{'!Hammer of Justice', '!equipped(137065)&target.range<20&player.spell(Rebuke).cooldown>gcd&!player.lastgcd(Rebuke)', 'target'},
+	{'!Hammer of Justice', 'equipped(137065)&target.health>74&target.range<20&player.spell(Rebuke).cooldown>gcd&!player.lastgcd(Rebuke)', 'target'},
+	{'!Blinding Light', 'target.range<20&spell(Rebuke).cooldown>gcd&!player.lastgcd(Rebuke)'},
+	{'!Arcane Torrent', 'target.inMelee&spell(Rebuke).cooldown>gcd&!player.lastgcd(Rebuke)'},
+}
+
+local Interrupts_Random = {
+	{'!Rebuke', 'interruptAt(70)&toggle(xIntRandom)&toggle(Interrupts)&inFront&inMelee', 'enemies'},
+	{'!Hammer of Justice', '!equipped(137065)&range<20&player.spell(Rebuke).cooldown>gcd&!player.lastgcd(Rebuke)', 'enemies'},
+	{'!Hammer of Justice', 'equipped(137065)&health>74&range<20&player.spell(Rebuke).cooldown>gcd&!player.lastgcd(Rebuke)', 'enemies'},
+	{'!Blinding Light', 'interruptAt(70)&toggle(xIntRandom)&toggle(Interrupts)&player.spell(Rebuke).cooldown>gcd&!prev_gcd(Rebuke)&!immune(Stun)&inFront&range<20', 'enemies'},
+	{'!Arcane Torrent', 'interruptAt(70)&toggle(xIntRandom)&toggle(Interrupts)&player.spell(Rebuke).cooldown>gcd&!prev_gcd(Rebuke)&!immune(Stun)&inFront&inMelee', 'enemies'},
 }
 
 local Dispel = {
@@ -119,72 +132,83 @@ local Blessings = {
 }
 
 local Cooldowns = {
-	{'&Arcane Torrent', 'holypower<5&{player.buff(Crusade)||player.buff(Avenging Wrath)||combat(player).time<2}'},
-	{'Holy Wrath'},
-	{'&Avenging Wrath', '!talent(7,2)'},
-	{'&Crusade', '{holypower>4&!equipped(Liadrin\'s Fury Unleashed)}||{equipped(Liadrin\'s Fury Unleashed)&holypower>1}'},
-	{'#Trinket1', 'UI(kT1)'},
-	{'#Trinket2', 'UI(kT2)'},
+	{'&Arcane Torrent', 'player.holypower<=4&{player.buff(Crusade)||player.buff(Avenging Wrath)||xtime<2}', 'target'},
+	{'Holy Wrath', 'toggle(aoe)&player.area(8).enemies>=2&player.health<51', 'target'},
+	{'&Avenging Wrath'},
+	{'&Crusade', 'player.holypower>=5&!equipped(137048)||{{equipped(137048)||player.race(Blood Elf)}&player.holypower>=2}'},
 }
 
-local xAoE = {
-	{'Divine Storm', 'holypower>4&player.buff(Divine Purpose)'},
-	{'Divine Storm', 'holypower>4&{!talent(7,2)||talent(7,2)&!toggle(cooldowns)||player.spell(Crusade).cooldown>gcd*3}'},
-	{'Divine Storm', 'holypower>3&{!talent(7,2)||talent(7,2)&!toggle(cooldowns)||player.spell(Crusade).cooldown>gcd*4}'},
-	{'Divine Storm', 'holypower>2&{player.spell(Wake of Ashes).cooldown<gcd*2||player.buff(Whisper of the Nathrezim).duration<gcd}&{!talent(7,2)||talent(7,2)&!toggle(cooldowns)||spell(Crusade).cooldown>gcd*4}'},
-	{'Divine Storm', 'holypower>2&{player.buff(Crusade)&{player.buff(Crusade).count<15||hashero}||player.buff(Liadrin\'s Fury Unleashed)}'},
-	{'Divine Storm', 'holypower>2&{!talent(7,2)||talent(7,2)&!toggle(cooldowns)||spell(Crusade).cooldown>gcd*5}'},
-	{'Divine Storm', 'player.buff(The Fires of Justice)&{!talent(7,2)||talent(7,2)&!toggle(cooldowns)||spell(Crusade).cooldown>gcd*3}'},
-	}
-
-local xST = {
-	{"Templar's Verdict", 'holypower>4&player.buff(Divine Purpose)'},
-	{"Templar's Verdict", 'holypower>4&{!talent(7,2)||talent(7,2)&!toggle(cooldowns)||player.spell(Crusade).cooldown>gcd*3}&{!talent(1,2)||spell(Execution Sentence).cooldown>gcd}'},
-	{"Templar's Verdict", 'holypower>3&{!talent(7,2)||talent(7,2)&!toggle(cooldowns)||player.spell(Crusade).cooldown>gcd*4}&{!talent(1,2)||spell(Execution Sentence).cooldown>gcd*2}'},
-	{"Templar's Verdict", 'holypower>2&{player.spell(Wake of Ashes).cooldown<gcd*2||player.buff(Whisper of the Nathrezim).duration<gcd}&{!talent(7,2)||talent(7,2)&!toggle(cooldowns)||spell(Crusade).cooldown>gcd*4}'},
-	{"Templar's Verdict", 'holypower>2&{player.buff(Crusade)&{player.buff(Crusade).count<15||hashero}||player.buff(Liadrin\'s Fury Unleashed)}'},
-	{"Templar's Verdict", 'holypower>2&{!talent(7,2)||talent(7,2)&!toggle(cooldowns)||spell(Crusade).cooldown>gcd*5}'},
-	{"Templar's Verdict", 'player.buff(The Fires of Justice)&{!talent(7,2)||talent(7,2)&!toggle(cooldowns)||spell(Crusade).cooldown>gcd*3}'},
+local DS_Castable = {
+	{'Divine Storm', 'toggle(aoe)&target.debuff(Judgment)&player.buff(Divine Purpose).duration<gcd*2', 'target'},
+	{'Divine Storm', 'toggle(aoe)&target.debuff(Judgment)&player.holypower>=5&player.buff(Divine Purpose)', 'target'},
+	{'Divine Storm', 'toggle(aoe)&target.debuff(Judgment)&player.holypower>=5&{!talent(7,2)||player.buff(Crusade).duration>gcd*3}', 'target'},
+	{'Divine Storm', 'toggle(aoe)&player.spell(Wake of Ashes).cooldown<gcd*2', 'target'},
+	{'Divine Storm', 'toggle(aoe)&player.buff(Whisper of the Nathrezim).duration<gcd*1.5&{!talent(7,2)||player.buff(Crusade).duration>gcd*3}', 'target'},
+	{'Divine Storm', 'toggle(aoe)&player.buff(Divine Purpose)', 'target'},	-- Might Get removed...
+	{'Divine Storm', 'toggle(aoe)&player.buff(The Fires of Justice)&{!talent(7,2)||player.buff(Crusade).duration>gcd*3}', 'target'},
+	{'Divine Storm', 'toggle(aoe)&player.holypower>=3&{player.spell(Judgment).cooldown&!target.debuff(Judgment)}', 'target'}, -- Attempt to fix target-issue with Judgment
 }
+
+local Templar = {
+	{"Templar's Verdict", 'target.debuff(Judgment)&player.buff(Divine Purpose).duration<gcd*2', 'target'},
+	{"Templar's Verdict", 'target.debuff(Judgment)&player.holypower>=5&player.buff(Divine Purpose)', 'target'},
+	{"Templar's Verdict", 'target.debuff(Judgment)&player.holypower>=3&{player.buff(Crusade).stack<15|||player.buff(137048)}', 'target'},
+	{"Templar's Verdict", 'target.debuff(Judgment)&player.holypower>=5&{!equipped(137048)||{equipped(137048)&||player.race(Blood Elf)}}', 'target'},
+	{"Templar's Verdict", '{equipped(137020)||target.debuff(Judgment)}&player.spell(Wake of Ashes).cooldown<gcd*2&{!talent(7,2)||player.buff(Crusade).duration>gcd*3}', 'target'},
+	{"Templar's Verdict", 'target.debuff(Judgment)&player.buff(Whisper of the Nathrezim).duration<gcd*1.5&{{!talent(7,2)||player.buff(Crusade).duration>gcd*3}}', 'target'},
+	{"Templar's Verdict", 'player.holypower>=3&{player.spell(Judgment).cooldown&!target.debuff(Judgment)}', 'target'}, -- Attempt to fix target-issue with Judgment
+}
+
 
 local Combat = {
-	{xAoE, 'target.debuff(Judgment)&player.area(8).enemies>1'},
-	{xST, 'target.debuff(Judgment)'},
-	{'Blade of Justice', 'combat(player).time<2&equipped(137048)'},
-	{'Divine Hammer', 'combat(player).time<2&equipped(137048)'},
-	{'Wake of Ashes', 'combat(player).time<2&holypower<2'},
-	{'Blade of Justice', '{holypower<3&set_bonus(T20)>1}||{holypower<4&set_bonus(T20)==0}'},
-	{'Divine Hammer', '{holypower<3&set_bonus(T20)>1}||{holypower<4&set_bonus(T20)==0}'},
-	{'Execution Sentence','player.area(8).enemies<4&{spell(Judgment).cooldown<gcd*4.5||target.debuff(Judgment).duration>gcd*4.5}&{!talent(7,2)||talent(7,2)&!toggle(cooldowns)||spell(Crusade).cooldown>gcd*2}'},
-	{'Wake of Ashes', 'holypower==0||{holypower==1&{spell(Blade of Justice).cooldown>gcd||spell(Divine Hammer).cooldown>gcd}}||{holypower==2&{spell(Zeal).charges<=0.65||spell(Crusader Strike).charges<=0.65}}'},
-	{'Zeal', 'spell(Zeal).charges==2&{set_bonus(T20)==0&holypower<3||{holypower<5&{spell(Divine Hammer).cooldown>gcd*2||spell(Blade of Justice).cooldown>gcd*2}&spell(Judgment).cooldown>gcd*2}}||{set_bonus(T20)>1&holypower<2||{holypower<5&{spell(Divine Hammer).cooldown>gcd*2||spell(Blade of Justice).cooldown>gcd*2}&spell(Judgment).cooldown>gcd*2}}'},
-	{'Crusader Strike', '!talent(2,2)&spell(Crusader Strike).charges==2&{set_bonus(T20)==0&holypower<3||{holypower<5&{spell(Divine Hammer).cooldown>gcd*2||spell(Blade of Justice).cooldown>gcd*2}&spell(Judgment).cooldown>gcd*2}}||{set_bonus(T20)>1&holypower<2||{holypower<5&{spell(Divine Hammer).cooldown>gcd*2||spell(Blade of Justice).cooldown>gcd*2}&spell(Judgment).cooldown>gcd*2}}'},
-	{'Consecration'},
-	{'Judgment', 'target.debuff(Execution Sentence).duration<gcd*2&target.debuff(Judgment).duration<gcd*2'},
-	{'Judgment'},
-	{'Zeal'},
-	{'Crusader Strike', 'holypower<5&!talent(2,2)'},
-	{'Hammer of Justice', 'holypower<5&equipped(Justice Gaze)&target.health>74'},
-	{"Justicar's Vengeance", '{player.health<87&holypower>4&target.state(stun)}'},
+	{DS_Castable, 'player.area(6).enemies>=2||{player.buff(Scarlet Inquisitor\'s Expurgation).stack>=29}&{player.buff(Avenging Wrath)||{player.buff(Crusade).stack>=15}||{player.spell(Crusade).cooldown>15&!player.buff(Crusade)}||player.spell(Avenging Wrath).cooldown>15}'},
+	{Templar},
+	{'Execution Sentence','player.area(6).enemies<=3&{player.spell(Judgment).cooldown<gcd*4.5||target.debuff(Judgment).duration>gcd*4.5}', 'target'},
+	{'Divine Storm', 'toggle(aoe)&target.debuff(Judgment)&player.area(6).enemies>=2&player.holypower>=3&{player.buff(Crusade).stack<15||player.buff(137048)}', 'target'},
+	{"Justicar's Vengeance", 'target.debuff(Judgment)&player.buff(Divine Purpose)&!equipped(137020)', 'target'},
+	{"Justicar's Vengeance", 'target.debuff(Judgment)&player.holypower>=5&player.buff(Divine Purpose)&!equipped(137020)', 'target'},
+	{'Judgment', 'target.debuff(Execution Sentence).duration<gcd*2&target.debuff(Judgment).duration<gcd*2', 'target'},
+	{'Consecration', 'toggle(aoe)&{player.spell(Blade of Justice).cooldown>gcd*2||player.spell(Divine Hammer).cooldown>gcd*2}'},
+	{'Wake of Ashes', 'toggle(aoe)&{player.holypower==0||player.holypower==1&{player.spell(Blade of Justice).cooldown>gcd||player.spell(Divine Hammer).cooldown>gcd}||player.holypower==2&{{player.spell(Zeal).charges<=0.65||player.spell(Crusader Strike).charges<=0.65}}}', 'target'},
+	{'Blade of Justice', 'player.holypower<=3-set_bonus(T20)', 'target'},
+	{'Divine Hammer', 'toggle(aoe)&player.holypower<=3-set_bonus(T20)', 'target'},
+	{'Hammer of Justice', 'equipped(137065)&target.health>=75&player.holypower<=4', 'target'},
+	{'Hammer of Justice', 'player.holypower<=5&equipped(137065)&target.health>74', 'target'},
+	{'Zeal', 'player.spell(Zeal).charges>=1.65&player.holypower<=4&{player.spell(Blade of Justice).cooldown>gcd*2||player.spell(Divine Hammer).cooldown>gcd*2}&target.debuff(Judgment).duration>gcd', 'target'},
+	{'Zeal', 'player.holypower<=4||{player.spell(Judgment).cooldown&!target.debuff(Judgment)}', 'target'},
+	{'Crusader Strike', 'player.spell(Crusader Strike).charges>=1.65-talent(2,1).enabled*0.25&player.holypower<=4&{player.spell(Blade of Justice).cooldown>gcd*2||player.spell(Divine Hammer).cooldown>gcd*2}&target.debuff(Judgment).duration>gcd', 'target'},
+	{'Crusader Strike', 'player.holypower<=4||{player.spell(Judgment).cooldown&!target.debuff(Judgment)}', 'target'},
+}
+
+local Opener = {
+	{'Judgment', 'target.enemy&target.range<=30&target.inFront', 'target'},
+	{'Blade of Justice', 'target.enemy&target.range<=12&target.inFront&{equipped(137048)||player.race(Blood Elf)||player.spell(Wake of Ashes).cooldown}' ,'target'},
+	{'Divine Hammer', 'toggle(aoe)&target.inMelee&target.inFront&target.enemy&{equipped(137048)||player.race(Blood Elf)||player.spell(Wake of Ashes).cooldown}', 'target'},
+	{'Wake of Ashes', 'toggle(aoe)&target.inMelee&target.inFront', 'target'},
 }
 
 local inCombat = {
-	{Dispel, 'toggle(dispels)&!spell(Cleanse Toxins).cooldown'},
+	{Util},
+	{Trinkets},
+	{Heirlooms},
+	{Dispel, 'toggle(dispels)&!player.spell(Cleanse Toxins).cooldown'},
 	{Survival},
 	{Blessings},
-	{Player, '!moving'},
-	{Emergency, '!moving&inGroup&toggle(groupAssist)'},
+	{Opener, 'target.inMelee&target.inFront&xtime<2&{player.spell(Judgment).cooldown||player.spell(Blade of Justice).cooldown||player.spell(Wake of Ashes).cooldown}'},
+	{Combat, 'target.enemy&target.inMelee&target.inFront'},
+	{Group, '!player.moving&inGroup&toggle(groupAssist)'},
+	{Interrupts_Random},
 	{Interrupts, 'toggle(interrupts)&target.interruptAt(70)&target.inFront'},
-	{Cooldowns, 'toggle(cooldowns)'},
-	{Combat, 'target.inFront&target.inMelee'},
+	{Cooldowns, 'toggle(cooldowns)&target.inMelee'},
 }
 
 local outCombat = {
 	{Dispel, 'toggle(dispels)&!spell(Cleanse Toxins).cooldown'},
+	{Interrupts_Random},
 	{Interrupts, 'toggle(interrupts)&target.interruptAt(70)&target.inFront'},
 	{Blessings},
-	{Emergency, '!moving&inGroup&toggle(groupAssist)'},
-	{'Flash of Light', '!moving&player.health<98', 'player'},
+	{Group, '!player.moving&inGroup&toggle(groupAssist)'},
+	{'Flash of Light', '!player.moving&player.health<98', 'player'},
 }
 
 NeP.CR:Add(70, {
