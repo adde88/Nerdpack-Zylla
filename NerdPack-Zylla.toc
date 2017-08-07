@@ -2,6 +2,8 @@
 ## Notes: Custom Combat Routines for NerdPack
 ## Interface: 70200
 ## Author: Zylla
-## Dependencies: NerdPack
+## Version: 1.6-7.2.5-release
+## Dependencies: NerdPack, NerdPack-Protected
+## OptionalDeps: NerdPack-CombatHelper, NerdPack-Overlays, NerdPack-CustomKeybinds
 
 Zylla.xml
