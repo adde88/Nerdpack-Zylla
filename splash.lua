@@ -1,5 +1,13 @@
 local _, Zylla = ...
 
+local CreateFrame = CreateFrame
+local C_Timer = C_Timer
+local GetTime = GetTime
+local GetSpecialization = GetSpecialization
+local PlaySound = PlaySound
+local UnitClass = UnitClass
+local GetSpecializationInfo = GetSpecializationInfo
+
 -- Splash stuff
 local Splash_Frame = CreateFrame("Frame", "Zylla_SPLASH", UIParent)
 
@@ -42,7 +50,7 @@ function Zylla.Splash()
 	PlaySound('LEVELUP', 'SFX')
 	local color = NeP.Core:ClassColor('player', 'hex')
 	local currentSpec = GetSpecialization()
-	local _, SpecName, _, icon, background = GetSpecializationInfo(currentSpec)
+	local _, SpecName, _, icon, _ = GetSpecializationInfo(currentSpec)
 	local class = UnitClass('player')
 	texture:SetTexture(icon)
 	text:SetText(AddonInfo..'\n|cff'..color..class..' - '..SpecName..' \n|cffC2012F--- Version: '..Zylla.Version..' ---')
