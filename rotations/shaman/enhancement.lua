@@ -116,7 +116,7 @@ local xCombat = {
 	{'Frostbrand', 'talent(4,3)&player.buff(Frostbrand).duration<gcd*2'},
 	{'Flametongue', 'target.inMelee&!player.buff(Flametongue)'},
 	{'Lightning Bolt', 'talent(5,2)&player.maelstrom>39'},
-	{'Lava Lash', 'player.buff(Hot Hand)||player.maelstrom>79'},
+	{'Lava Lash', 'player.buff(Hot Hand)||player.maelstrom>39'},
 	{'Rockbiter', '{talent(1,3)&talent(7,2)}||{talent(1,3)&!talent(7,2)&!player.buff(Landslide)}||{!talent(1,3)&player.maelstrom<131}'},
 }
 
