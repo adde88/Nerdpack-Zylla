@@ -5,7 +5,21 @@ local Trinkets = _G['Zylla.Trinkets']
 local Heirlooms = _G['Zylla.Heirlooms']
 
 local GUI = {
-	-- GUI Survival
+	--Logo
+	{type = "texture", texture = "Interface\\AddOns\\Nerdpack-Zylla\\media\\logo.blp", width = 128, height = 128, offset = 90, y = 42, center = true},
+	{type = 'ruler'},	  {type = 'spacer'},
+	-- Keybinds
+	{type = 'header', 	text = 'Keybinds', 							align = 'center'},
+	{type = 'checkbox', text = 'L-Control: Shadowfury @ Cursor',	key = 'K_SF',		default = true},
+	{type = 'checkbox', text = 'L-Alt: Demonic Circle', 			key = 'K_DC',		default = true},
+	{type = 'checkbox', text = 'L-Shift: Pause', 					key = 'kPause', 	default = true},
+	{type = 'ruler'},	{type = 'spacer'},
+	-- Settings
+	{type = 'header', 	text = 'Class Settings',	align = 'center'},
+	{type = 'checkbox', text = 'Pause Enabled',		key = 'kPause',	default = true},
+	{type = 'checkbox', text = 'Summon Pet',		key = 'kPet',	default = true},
+	{type = 'ruler'},	  {type = 'spacer'},
+	-- Survival
 	{type = 'header',	text = 'Survival', 							align = 'center'},
 	{type = 'checkbox',	text = 'Enable Unending Resolve', 			key = 'S_UEE', 		default = true},
 	{type = 'spinner',	text = '',									key = 'S_UE', 		default = 40},
@@ -21,12 +35,6 @@ local GUI = {
 	{type = 'spinner',	text = '',									key = 'S_HS', 		default = 20},
 	{type = 'checkbox',	text = 'Enable Ancient Healing Potion', 	key = 'S_AHPE', 	default = true},
 	{type = 'spinner',	text = '',									key = 'S_AHP', 		default = 20},
-	{type = 'ruler'},	{type = 'spacer'},
-	-- GUI Keybinds
-	{type = 'header', 	text = 'Keybinds', 							align = 'center'},
-	{type = 'checkbox', text = 'L-Control: Shadowfury @ Cursor',	key = 'K_SF',		default = true},
-	{type = 'checkbox', text = 'L-Alt: Demonic Circle', 			key = 'K_DC',		default = true},
-	{type = 'checkbox', text = 'L-Shift: Pause', 					key = 'kPause', 	default = true},
 	{type = 'ruler'},	{type = 'spacer'},
 	-- Trinkets + Heirlooms for leveling
 	{type = 'checkbox', text = 'Use Trinket #1',							key = 'kT1', 		default = true},
@@ -44,6 +52,7 @@ local exeOnLoad = function()
 	print('|cffADFF2F --- |rWarlock |cffADFF2FDemonology |r')
 	print('|cffADFF2F --- |rRecommended Talents: COMING SOON...')
 	print('|cffADFF2F ----------------------------------------------------------------------|r')
+  print('|cffFFFB2F Configuration: |rRight-click MasterToggle and go to Combat Routines Settings!|r')
 
 	NeP.Interface:AddToggle({
 		-- Doom
@@ -52,21 +61,36 @@ local exeOnLoad = function()
 		text = 'Enable/Disable: Casting of Doom on targets',
 		icon = 'Interface\\ICONS\\spell_shadow_auraofdarkness',
 	})
+
+	NeP.Interface:AddToggle({
+	 key = 'xIntRandom',
+	 name = 'Interrupt Anyone',
+	 text = 'Interrupt all nearby enemies, without targeting them.',
+	 icon = 'Interface\\Icons\\inv_ammo_arrow_04',
+ })
+
 end
 
 local Survival = {
 	{'&Unending Resolve', 'UI(S_UEE)&player.health<=UI(S_UE)'},
 	{'&Dark Pact', 'UI(S_DPE)&talent(5,3)&pet.exists&player.health<=UI(S_DP)'},
 	{'&Gift of the Naaru', 'UI(S_GOTNE)&player.health<=UI(S_GOTN)'},
-	{'#5512', 'UI(S_HSE)&player.health<=UI(S_HS)'},
-	{'#127834', 'UI(S_AHPE)&player.health<=UI(S_AHP)&xitems(127834)>0'},
-	{'Mortal Coil', 'target.range<30&talent(3,2)&player.health<90'},
+	{'#127834', 'item(127834).count>0&player.health<UI(S_HS)'},        -- Ancient Healing Potion
+  {'#5512', 'item(5512).count>0&player.health<UI(S_AHP)', 'player'},  --Health Stone
 }
 
 local Interrupts = {
-	{'!Shadowfury', 'target.range<40&!player.moving&UI(K_SF)&talent(3,3)&target.interruptAt(55)', 'target.ground'},
-	{'!Shadowfury', 'target.range<40&!player.moving&UI(K_SF)&talent(3,3)&target.area(10).enemies>2', 'target.ground'},
-	{'!Mortal Coil', 'target.range<30&talent(3,2)&target.interruptAt(55)'},
+	{'!Shadowfury', 'target.range<41&target.inFront&!player.moving&UI(K_SF)&target.interruptAt(70)', 'target.ground'},
+	{'!Shadowfury', 'target.range<41&target.inFront&!player.moving&UI(K_SF)&target.area(10).enemies>2', 'target.ground'},
+	{'!Mortal Coil', 'target.range<30&target.inFront&target.interruptAt(70)', 'target'},
+	{'!89766', 'spell(89766).cooldown<gcd&petrange<9&pet.exists&target.interruptAt(70)', 'target'},
+}
+
+local Interrupts_Random = {
+	{'!Shadowfury', 'inFront&range<40&!player.moving&interruptAt(70)&toggle(xIntRandom)&toggle(Interrupts)', 'enemies'},
+	{'!Shadowfury', 'inFront&range<40&!player.moving&toggle(xIntRandom)&toggle(Interrupts)&area(10).enemies>2', 'enemies'},
+	{'!Mortal Coil', 'inFront&range<31&toggle(xIntRandom)&toggle(Interrupts)&interruptAt(70)', 'enemies'},
+	{'!89766', 'spell(89766).cooldown<gcd&petrange<9&pet.exists&interruptAt(70)', 'enemies'},
 }
 
 local Player = {
@@ -86,10 +110,10 @@ local Cooldowns = {
 	{'&Blood Fury'},
 	{'Grimoire: Felguard', 'talent(6,2)'},
 	{'Summon Doomguard', '!talent(6,1)&target.area(10).enemies<3'},
-	{'Summon Infernal', '!talent(6,1)&target.area(10).enemies>2&!advanced', 'cursor.ground'},
+	{'Summon Infernal', '!talent(6,1)&player.area(10).enemies>2&!advanced', 'player.ground'},
 	{'Summon Infernal', '!talent(6,1)&target.area(10).enemies>2&advanced', 'target.ground'},
 	{'Summon Doomguard', 'talent(6,1)&target.area(10).enemies==1&player.buff(Sin\'dorei Spite)'},
-	{'Summon Infernal', 'talent(6,1)&target.area(10).enemies>1&player.buff(Sin\'dorei Spite)&!advanced', 'cursor.ground'},
+	{'Summon Infernal', 'talent(6,1)&player.area(10).enemies>1&player.buff(Sin\'dorei Spite)&!advanced', 'player.ground'},
 	{'Summon Infernal', 'talent(6,1)&target.area(10).enemies>1&player.buff(Sin\'dorei Spite)&advanced', 'target.ground'},
 	{'Summon Darkglare', 'talent(7,1)&target.area(10).enemies>1&target.debuff(Doom)&player.soulshards>0'},
 	{'Soul Harvest', 'talent(4,3)&xtime>0'},
@@ -99,13 +123,13 @@ local DW_Clip = {
 	{'!Summon Felguard', '!player.moving&!pet.exists&!talent(6,1)'},
 	{'!Call Dreadstalkers', 'player.buff(Demonic Calling)'},
 	{'!Hand of Gul\'dan', '!player.moving&player.soulshards>3'},
-	{'!Thal\'kiel\'s Consumption', '!player.moving&cooldown(Call Dreadstalkers).remains>3&player.lastgcd(Hand of Gul\'dan)'},
-	{'!Demonic Empowerment', '!player.moving&!player.lastgcd(Demonic Empowerment)&{Zylla.empower==0||player.lastgcd(Summon Felguard)||player.lastgcd(Call Dreadstalkers)||player.lastgcd(Hand of Gul\'dan)||player.lastgcd(Summon Darkglare)||player.lastgcd(Summon Doomguard)||player.lastgcd(Grimoire: Felguard)||player.lastgcd(Thal\'kiel\'s Consumption)}'},
+	{"!Thal'kiel's Consumption", '!player.moving&player.spell(Call Dreadstalkers).cooldown>3&player.lastgcd(Hand of Gul\'dan)', 'target'},
+	{'!Demonic Empowerment', '!player.moving&!player.lastgcd(Demonic Empowerment)&{warlock.empower==0||player.lastgcd(Summon Felguard)||player.lastgcd(Call Dreadstalkers)||player.lastgcd(Hand of Gul\'dan)||player.lastgcd(Summon Darkglare)||player.lastgcd(Summon Doomguard)||player.lastgcd(Grimoire: Felguard)||player.lastgcd(Thal\'kiel\'s Consumption)}'},
 	{'!Doom', '!talent(4,1)&toggle(Doom)&!target.debuff(Doom)'},
 	{'!Life Tap', 'player.mana<40&player.health>05&{!player.lastgcd(Summon Felguard)||!player.lastgcd(Call Dreadstalkers)||!player.lastgcd(Hand of Gul\'dan)||!player.lastgcd(Summon Darkglare)||!player.lastgcd(Summon Doomguard)||!player.lastgcd(Grimoire: Felguard)}'},
-	{'!Demonbolt', '!player.moving&talent(7,2)&!player.soulshards=4'},
-	{'!Shadow Bolt', '!player.moving&!talent(7,2)&!player.soulshards=4'},
-	{'!89751', 'spell.cooldown(89751)<gcd&pet_range<9&player.area(8).enemies>2'},
+	{'!Demonbolt', '!player.moving&talent(7,2)&!player.petrangesoulshards==4'},
+	{'!Shadow Bolt', '!player.moving&!talent(7,2)&!player.petrangesoulshards==4'},
+	{'!89751', 'spell(89751).cooldown<gcd&petrange<9&player.area(8).enemies>2'},
 }
 
 local ST = {
@@ -113,14 +137,14 @@ local ST = {
 	{'!Summon Felguard', '!player.moving&!pet.exists&!talent(6,1)'},
 	{'Call Dreadstalkers', '!player.moving&player.buff(Demonic Calling)'},
 	{'Hand of Gul\'dan', '!player.moving&player.soulshards>3'},
-	{'Thal\'kiel\'s Consumption', '!player.moving&cooldown(Call Dreadstalkers).remains>3&player.lastgcd(Hand of Gul\'dan)'},
-	{'Demonic Empowerment', '!player.moving&!player.lastgcd(Demonic Empowerment)&{Zylla.empower==0||player.lastgcd(Summon Felguard)||player.lastgcd(Call Dreadstalkers)||player.lastgcd(Hand of Gul\'dan)||player.lastgcd(Summon Darkglare)||player.lastgcd(Summon Doomguard)||player.lastgcd(Grimoire: Felguard)||player.lastgcd(Thal\'kiel\'s Consumption)}'},
+	{"Thal'kiel's Consumption", '!player.moving&player.spell(Call Dreadstalkers).cooldown>3&player.lastgcd(Hand of Gul\'dan)', 'target'},
+	{'Demonic Empowerment', '!player.moving&!player.lastgcd(Demonic Empowerment)&{warlock.empower==0||player.lastgcd(Summon Felguard)||player.lastgcd(Call Dreadstalkers)||player.lastgcd(Hand of Gul\'dan)||player.lastgcd(Summon Darkglare)||player.lastgcd(Summon Doomguard)||player.lastgcd(Grimoire: Felguard)||player.lastgcd(Thal\'kiel\'s Consumption)}'},
 	{'Doom', '!talent(4,1)&toggle(Doom)&!target.debuff(Doom)&target.inRanged'},
 	{'Life Tap', 'player.mana<40&player.health>05&{!player.lastgcd(Summon Felguard)||!player.lastgcd(Call Dreadstalkers)||!player.lastgcd(Hand of Gul\'dan)||!player.lastgcd(Summon Darkglare)||!player.lastgcd(Summon Doomguard)||!player.lastgcd(Grimoire: Felguard)}'},
 	{'Demonwrath', 'movingfor>1&player.combat.time>2'},
-	{'Demonbolt', '!player.moving&talent(7,2)&!player.soulshards=4'},
-	{'Shadow Bolt', '!player.moving&!talent(7,2)&!player.soulshards=4'},
-	{'!89751', 'spell.cooldown(89751)<gcd&pet_range<9&player.area(8).enemies>2'},
+	{'Demonbolt', '!player.moving&talent(7,2)&!player.petrangesoulshards==4'},
+	{'Shadow Bolt', '!player.moving&!talent(7,2)&!player.petrangesoulshards==4'},
+	{'!89751', 'spell(89751).cooldown<gcd&petrange<9&player.area(8).enemies>2&pet.exists'},
 }
 
 local inCombat = {
@@ -128,17 +152,19 @@ local inCombat = {
 	{Trinkets},
 	{Heirlooms},
 	{Keybinds},
-	{Interrupts, 'toggle(Interrupts)&target.inFront&target.range<50'},
+	{Interrupts_Random},
+	{Interrupts, 'toggle(Interrupts)&target.inFront&target.range<31'},
 	{Survival},
 	{Player, '!player.moving'},
 	{Cooldowns, 'toggle(cooldowns)'},
-	{ST, 'target.inFront&target.range<50'},
+	{ST, 'target.inFront&target.range<31'},
 }
 
 local outCombat = {
 	{'Life Tap', 'player.mana<70&player.health>50'},
-	{Interrupts, 'toggle(Interrupts)&target.inFront&target.range<50'},
-	{'Create Healthstone', 'item.count(Healthstone)==0&!lastcast(Create Healthstone)'},
+	{Interrupts_Random},
+	{Interrupts, 'toggle(Interrupts)'},
+	{'Create Healthstone', 'item(5512).count<1&!lastcast(Create Healthstone)'},
 }
 
 NeP.CR:Add(266, {
