@@ -24,7 +24,7 @@ local GUI = {
   {type = 'checkbox', text = 'Misdirect Focus/Pet',									key = 'kMisdirect',     default = true},
   {type = 'checkbox', text = 'Tarnished Sentinel Medallion',				key = 'e_TSM',          default = true},
   {type = 'ruler'},	  {type = 'spacer'},
-  	-- Survival
+  -- Survival
   {type = 'header', 	text = 'Survival',									  	      align = 'center'},
   {type = 'spinner', 	text = 'Heal Pet below HP%',                  key = 'P_HP',           default = 75},
   {type = 'spinner', 	text = 'Exhileration below HP%',              key = 'E_HP',           default = 67},
@@ -167,8 +167,8 @@ local inCombat = {
 local outCombat = {
   {Keybinds},
   {PreCombat},
-  {'!Counter Shot', 'interruptAt(70)&toggle(Interrupts)&inFront&range<41', 'enemies'},
-  {Interrupts, 'target.interruptAt(70)&toggle(Interrupts)&target.inFront&target.range<41'},
+  {Interrupts_Random},
+  {Interrupts_Normal, 'target.interruptAt(70)&toggle(Interrupts)&target.inFront&target.range<41'},
 }
 
 NeP.CR:Add(253, {
