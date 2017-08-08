@@ -22,6 +22,7 @@ local GUI = {
   {type = 'checkbox', text = 'Barrage Enabled',									    key = 'kBarrage',       default = false},
   {type = 'checkbox', text = 'Volley Enabled',									    key = 'kVolley',        default = true},
   {type = 'checkbox', text = 'Misdirect Focus/Pet',									key = 'kMisdirect',     default = true},
+  {type = 'checkbox', text = 'Freezing Trap (Interrupt)'  ,					key = 'FT_Int',         default = false},
   {type = 'checkbox', text = 'Tarnished Sentinel Medallion',				key = 'e_TSM',          default = true},
   {type = 'ruler'},	  {type = 'spacer'},
   -- Survival
@@ -68,14 +69,6 @@ local exeOnLoad = function()
 
 end
 
-local Pet = {
-  {'Mend Pet', 'pet.alive&pet.health<UI(P_HP)&!pet.buff(Mend Pet)'},
-  {{ 																			                                        -- Pet Dead
-    {'Heart of the Phoenix', '!player.debuff(Weakened Heart)&player.combat'},     -- Heart of the Phoenix
-    {'Revive Pet'} 																                                -- Revive Pet
-  }, {'pet.dead', 'UI(kPet)'}},
-}
-
 local PreCombat = {
   {'Call Pet 1', '!pet.exists&UI(kPet)'},
   {Pet, 'pet.exists'},
@@ -113,11 +106,13 @@ local Cooldowns = {
 local Interrupts_Normal = {
 	{'!Counter Shot'},
 	{'!Intimidation', 'player.spell(Counter Shot).cooldown>gcd&!prev_gcd(Counter Shot)&!target.immune(Stun)'},
+  {'!Freezing Trap', 'UI(FT_Int)&player.spell(Counter Shot).cooldown>gcd&!prev_gcd(Counter Shot)', 'target.ground'},
 }
 
 local Interrupts_Random = {
 	{'!Counter Shot', 'interruptAt(70)&toggle(xIntRandom)&toggle(Interrupts)&inFront&range<41', 'enemies'},
-	{'!Intimidation', 'interruptAt(70)&toggle(xIntRandom)&toggle(Interrupts)&player.spell(Counter Shot).cooldown>gcd&!prev_gcd(Counter Shot)&!immune(Stun)&inFront&range<41', 'enemies'},
+  {'!Intimidation', 'interruptAt(70)&toggle(xIntRandom)&toggle(Interrupts)&player.spell(Counter Shot).cooldown>gcd&!prev_gcd(Counter Shot)&inFront&range<41', 'enemies'},
+  {'!Freezing Trap', 'UI(FT_Int)&interruptAt(1)&toggle(xIntRandom)&toggle(Interrupts)&player.spell(Counter Shot).cooldown>gcd&!prev_gcd(Counter Shot)&range<41', 'enemies.ground'},
 }
 
 local xCombat = {
@@ -133,9 +128,13 @@ local xCombat = {
   {'Volley', '{toggle(aoe)&!player.buff(Volley)}||{player.buff(Volley)&!toggle(aoe)}'},
 }
 
-local xPetCombat = {
+local xPet = {
   {'Call Pet 1', '!pet.exists&UI(kPet)'},
-  {Pet, 'pet.exists'},
+  {'Mend Pet', 'pet.alive&pet.health<UI(P_HP)&!pet.buff(Mend Pet)'},
+  {{ 																			                                        -- Pet Dead
+    {'Heart of the Phoenix', '!player.debuff(Weakened Heart)&player.combat'},     -- Heart of the Phoenix
+    {'Revive Pet'} 																                                -- Revive Pet
+  }, {'pet.dead', 'UI(kPet)'}},
   {'!Kill Command', '{pet.exists&pet.alive&{talent(4,3)&petrange<31}||{petrange<10}}', 'target'},
   {'Misdirection', 'player.spell(Misdirection).cooldown<=gcd&toggle(xMisdirect)', 'focus'},
 }
@@ -160,11 +159,12 @@ local inCombat = {
   {Interrupts_Normal, 'target.interruptAt(70)&toggle(Interrupts)&target.inFront&target.range<41'},
   {Cooldowns, 'toggle(Cooldowns)'},
   {xCombat, 'target.range<41&target.inFront'},
-  {xPetCombat},
+  {xPet},
   {xPvP},
 }
 
 local outCombat = {
+  {xPet},
   {Keybinds},
   {PreCombat},
   {Interrupts_Random},
