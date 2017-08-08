@@ -48,7 +48,7 @@ local Survival = {
 }
 
 local Cooldowns = {
-
+	{'Astral Shift', 'player.health<40'},
 }
 
 local Interrupts = {
@@ -58,13 +58,12 @@ local Interrupts = {
 local xCombat = {
 	{'Windstrike', 'player.buff(Ascendance)||lastcast(Ascendance)'},
 	{'Feral Spirit', 'toggle(Cooldowns)'},
-	{'Crash Lightning', 'artifact(Alpha Wolf).enabled&prev_gcd(Feral Spirit)'},
-	{'Berserking', 'player.buff(Ascendance)||!talent(7,1)||player.level<100'},
-	{'Blood Fury'},
-	{'Crash Lightning', 'talent(6,1)&player.buff(Crash Lightning).remains<gcd&player.area(8).enemies>2'},
+	{'Berserking', 'toggle(Cooldowns)&player.buff(Ascendance)||!talent(7,1)||player.level<100'},
+	{'Blood Fury', 'toggle(Cooldowns)'},
+	{'Crash Lightning', '{toggle(AoE)&{player.area(8).enemies>=2||player.buff(Lightning Crash).duration<gcd}}||{!toggle(AoE)&player.buff(Lightning Crash).duration<gcd}'},
+	{'Crash Lightning', 'lastgcd(Feral Spirit)'},
 	{'Boulderfist', 'player.buff(Boulderfist).remains<gcd&player.maelstrom<60&player.area(8).enemies>2'},
 	{'Boulderfist', 'player.buff(Boulderfist).remains<gcd||{spell(Boulderfist).charges>1.75&player.maelstrom<200&player.area(8).enemies<3}'},
-	{'Crash Lightning', 'player.buff(Crash Lightning).remains<gcd&player.area(8).enemies>1'},
 	{'Stormstrike', '!talent(4,3)&player.area(8).enemies>2'},
 	{'Stormstrike', 'player.buff(Stormbringer)'},
 	{'Frostbrand', 'talent(4,3)&player.buff(Frostbrand).remains<gcd'},
@@ -72,17 +71,15 @@ local xCombat = {
 	{'Windsong'},
 	{'Ascendance'},
 	{'Fury of Air', 'talent(6,2)&!player.buff(Fury of Air)'},
-	{'Doom Winds'},
-	{'Crash Lightning', 'player.area(8).enemies>2'},
+	{'Doom Winds', 'toggle(Cooldowns)'},
 	{'Stormstrike'},
 	{'Lightning Bolt', 'talent(5,2)&player.maelstrom>50'},
 	{'Lava Lash', 'player.buff(Hot Hand)'},
 	{'Earthen Spike'},
-	{'Crash Lightning', 'player.area(8).enemies>1||talent(6,1)||spell(Feral Spirit).cooldown>110'},
 	{'Frostbrand', 'talent(4,3)&player.buff(Frostbrand).remains<4.5'},
 	{'Flametongue', 'player.buff(Flametongue).remains<4.8'},
 	{'Sundering'},
-	{'Lava Lash', 'player.maelstrom>80'},
+	{'Lava Lash', 'player.maelstrom>39'},
 	{'Rockbiter'},
 	{'Flametongue'},
 	{'Boulderfist'}
