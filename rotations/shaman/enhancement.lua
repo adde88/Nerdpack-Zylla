@@ -22,6 +22,7 @@ local GUI = {
 	{type = 'ruler'},	{type = 'spacer'},
   -- Survival
 	{type = 'header', 	text = 'Survival',	align = 'center'},
+	{type = 'spinner', 	text = 'Astral Shift below HP%',	key = 'AS_HP',	default = 40},
 	{type = 'checkbox', text = 'Use Rainfall on lowest party member',	key = 'E_RF',	default = true},
 	{type = 'spinner', 	text = '',	key = 'RF_HP',	default = 75},
 	{type = 'checkbox', text = 'Use Healing Surge (SOLO)',	key = 'e_HS',	default = true},
@@ -75,6 +76,7 @@ local PreCombat = {
 }
 
 local Survival = {
+	{'Astral Shift', 'player.health<=UI(AS_HP)'},
 	{'!Healing Surge', 'UI(E_HS)&player.health<UI(HS_HP)&player.maelstrom>10', 'player'},
 	{'#127834', 'item(127834).count>0&player.health<UI(HST_HP)'},        -- Ancient Healing Potion
 	{'#5512', 'item(5512).count>0&player.health<UI(AHP_HP)', 'player'},  --Health Stone
@@ -112,10 +114,11 @@ local Talents = {
 }
 
 local xCombat = {
-	{'Crash Lightning', '{toggle(AoE)}||{!toggle(AoE)&player.buff(Crashing Lightning).duration<gcd}'},
-	{'Frostbrand', 'talent(4,3)&player.buff(Frostbrand).duration<gcd*2'},
-	{'Flametongue', 'target.inMelee&!player.buff(Flametongue)'},
-	{'Lightning Bolt', 'talent(5,2)&player.maelstrom>39'},
+	{'Windstrike', 'player.buff(Ascendance)||lastgcd(Ascendance)', 'target'},
+	{'Crash Lightning', '{toggle(AoE)&{player.area(8).enemies>=2||player.buff(Lightning Crash).duration<gcd}}||{!toggle(AoE)&player.buff(Lightning Crash).duration<gcd}'},
+	{'Frostbrand', 'talent(4,3)&player.buff(Frostbrand).duration<4.5'},
+	{'Flametongue', 'target.inMelee&player.buff(Flametongue).duration<4.5'},
+	{'Lightning Bolt', 'talent(5,2)&player.maelstrom>=50'},
 	{'Lava Lash', 'player.buff(Hot Hand)||player.maelstrom>39'},
 	{'Rockbiter', '{talent(1,3)&talent(7,2)}||{talent(1,3)&!talent(7,2)&!player.buff(Landslide)}||{!talent(1,3)&player.maelstrom<131}'},
 }
@@ -129,14 +132,15 @@ local inCombat = {
 	{Trinkets},
 	{Heirlooms},
 	{Keybinds},
-	{Survival},
-	{Cooldowns, 'toggle(Cooldowns)'},
-	{Interrupts_Normal, 'toggle(Interrupts)'},
-	{Interrupts_Random},
-	{Talents},
-	{xCombat, 'target.inMelee&target.inFront'},
-	{Ranged, '!target.inMelee&target.range<41target.inFront'},
-	{'Stormstrike', '{player.buff(Ascendance)&player.maelstrom>7&target.range<31&target.inFront}||{!player.buff(Stormbringer)&player.maelstrom>39&target.inMelee&target.inFront}||{player.buff(Stormbringer)&player.maelstrom>19&target.inMelee&target.inFront}'},
+	{Survival, '!lastcast(Feral Spirit)'},
+	{Cooldowns, 'toggle(Cooldowns)&!lastcast(Feral Spirit)'},
+	{Interrupts_Normal, 'toggle(Interrupts)&!lastcast(Feral Spirit)'},
+	{Interrupts_Random, '!lastcast(Feral Spirit)'},
+	{Talents, '!lastcast(Feral Spirit)'},
+	{xCombat, 'target.inMelee&target.inFront&!lastcast(Feral Spirit)'},
+	{Ranged, '!target.inMelee&target.range<41target.inFront&!lastcast(Feral Spirit)'},
+	{'Stormstrike', '!lastcast(Feral Spirit)&{{player.buff(Ascendance)&player.maelstrom>7&target.range<31&target.inFront}||{!player.buff(Stormbringer)&player.maelstrom>39&target.inMelee&target.inFront}||{player.buff(Stormbringer)&player.maelstrom>19&target.inMelee&target.inFront}}'},
+	{'Crash Lightning', 'inMelee&inFront&lastcast(Feral Spirit)', 'target'},
 }
 
 local outCombat = {
