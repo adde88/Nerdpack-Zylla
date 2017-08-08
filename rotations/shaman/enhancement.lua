@@ -112,7 +112,7 @@ local Talents = {
 }
 
 local xCombat = {
-	{'Crash Lightning', 'toggle(AoE)'},
+	{'Crash Lightning', '{toggle(AoE)}||{!toggle(AoE)&player.buff(Crashing Lightning).duration<gcd}'},
 	{'Frostbrand', 'talent(4,3)&player.buff(Frostbrand).duration<gcd*2'},
 	{'Flametongue', 'target.inMelee&!player.buff(Flametongue)'},
 	{'Lightning Bolt', 'talent(5,2)&player.maelstrom>39'},
