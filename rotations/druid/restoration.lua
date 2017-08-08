@@ -59,7 +59,7 @@ local exeOnLoad = function()
 		text = 'Do damage in combat when possible.',
 		icon = 'Interface\\Icons\\ability_backstab',
 	})
-	
+
 	NeP.Interface:AddToggle({
 		key = 'xFORM',
 		name = 'Handle Forms',
@@ -180,7 +180,7 @@ local inCombat = {
 	{Interrupts, 'target.interruptAt(70)&toggle(Interrupts)&target.inFront&target.inMelee'},
 	{Mitigations},
 	{Cooldowns, 'toggle(Cooldowns)'},
-	{xHealing, '!player.moving'},
+	{xHealing, '!player.moving & !player.channeling(Tranquility)'},
 	{Moving, 'player.moving'},
 	{DPS, 'toggle(xDPS)&lowest.health>=UI(k_DPSHP)'},
 }
