@@ -5,6 +5,9 @@ local Trinkets = _G['Zylla.Trinkets']
 local Heirlooms = _G['Zylla.Heirlooms']
 
 local GUI = {
+	--Logo
+  {type = "texture", texture = "Interface\\AddOns\\Nerdpack-Zylla\\media\\logo.blp", width = 128, height = 128, offset = 90, y = 42, center = true},
+  {type = 'ruler'},	  {type = 'spacer'},
 	-- Keybinds
 	{type = 'header', 	text = 'Keybinds', align = 'center'},
 	{type = 'text', 	text = 'Left Shift: Pause', align = 'center'},
@@ -16,6 +19,10 @@ local GUI = {
 	{type = 'checkbox', text = 'Pause Enabled', 										key = 'kPause', default = true},
 	{type = 'checkbox', text = 'Auto use Infernal Strike with "Flame Crash" Talent', 	key = 'kIS', 	default = true},
 	{type = 'ruler'},	{type = 'spacer'},
+	-- Survival
+	{type = 'header', 	text = 'Survival',									  	      align = 'center'},
+	{type = 'spinner', 	text = 'Soul Cleave below HP%',               key = 'SC_HP',           default = 85},
+	{type = 'ruler'},	  {type = 'spacer'},
 	-- Trinkets + Heirlooms for leveling
 	{type = 'header', 	text = 'Trinkets/Heirlooms', align = 'center'},
 	{type = 'checkbox', text = 'Use Trinket #1', key = 'kT1', default = true},
@@ -34,6 +41,13 @@ local exeOnLoad = function()
 	print('|cffADFF2F --- |rRecommended Talents: 1/3 - 2/3 - 3/2 - 4/3 - 5/3 - 6/1 - 7/3')
 	print('|cffADFF2F ----------------------------------------------------------------------|r')
 
+	NeP.Interface:AddToggle({
+	 key = 'xIntRandom',
+	 name = 'Interrupt Anyone',
+	 text = 'Interrupt all nearby enemies, without targeting them.',
+	 icon = 'Interface\\Icons\\inv_ammo_arrow_04',
+ })
+
 end
 
 local Keybinds = {
@@ -43,36 +57,46 @@ local Keybinds = {
 }
 
 local Interrupts = {
-	{'Consume Magic', 'target.interruptAt(70)&target.inFront&target.inMelee'},
-	{'Sigil of Silence', 'target.interruptAt(1)&target.range<31&spell(Consume Magic).cooldown>gcd&!prev_gcd(Consume Magic)', 'target.ground'},
-	{'Arcane Torrent', 'target.interruptAt(70)&target.inFront&target.inMelee&spell(Consume Magic).cooldown>gcd&!prev_gcd(Consume Magic)'},
+	{'!Consume Magic', 'target.interruptAt(70)&target.inFront&target.inMelee'},
+	{'!Sigil of Misery', 'advanced&target.interruptAt(1)&target.range<31&spell(Consume Magic).cooldown>gcd&!prev_gcd(Consume Magic)', 'target.ground'},
+	{'!Sigil of Silence', 'advanced&target.interruptAt(1)&target.range<31&spell(Sigil of Misery).cooldown>gcd&spell(Consume Magic).cooldown>gcd&!prev_gcd(Consume Magic)', 'target.ground'},
+	{'!Arcane Torrent', 'target.interruptAt(70)&target.inFront&target.inMelee&spell(Consume Magic).cooldown>gcd&!prev_gcd(Consume Magic)'},
 }
 
-local ST = {
-	{'Sigil of Flame', 'target.range<31&!target.debuff(Sigil of Flame)', 'target.ground'},
-	{'Fiery Brand', '!player.buff(Demon Spikes)&!player.buff(Metamorphosis)'},
+local Interrupts_Random = {
+	{'!Consume Magic', 'interruptAt(70)&toggle(xIntRandom)&toggle(Interrupts)&inFront&inMelee', 'enemies'},
+	{'!Sigil of Misery', 'advanced&interruptAt(1)&toggle(xIntRandom)&toggle(Interrupts)&player.spell(Consume Magic).cooldown>gcd&!prev_gcd(Consume Magic)&range<31', 'enemies.ground'},
+	{'!Sigil of Silence', 'advanced&interruptAt(1)&toggle(xIntRandom)&toggle(Interrupts)&player.spell(Sigil of Misery).cooldown>gcd&player.spell(Consume Magic).cooldown>gcd&!prev_gcd(Consume Magic)&range<31', 'enemies.ground'},
+	{'!Arcane Torrent', 'interruptAt(70)&toggle(xIntRandom)&toggle(Interrupts)&player.spell(Consume Magic).cooldown>gcd&!prev_gcd(Consume Magic)&inMelee'},
+}
+
+local Mitigations = {
+	{'Metamorphosis', 'toggle(cooldowns)&!player.buff(Demon Spikes)&!target.debuff(Fiery Brand)&!player.buff(Metamorphosis)&player.incdmg(1)>=player.health.max*0.50'},
+	{'Fiery Brand', '!player.buff(Demon Spikes)&!player.buff(Metamorphosis)', 'target'},
 	{'Demon Spikes', 'player.spell(Demon Spikes).charges>0&!player.buff(Demon Spikes)&!target.debuff(Fiery Brand)&!player.buff(Metamorphosis)'},
-	{'!Empower Wards', 'target.casting.percent>79'},
-	{'Spirit Bomb', '!target.debuff(Frailty)&player.buff(Soul Fragments).count>0'},
-	{'Soul Carver', 'target.debuff(Fiery Brand)'},
-	{'Immolation Aura', 'player.pain<91'},
-	{'Felblade', 'player.pain<81'},
-	{'Soul Barrier'},
-	{'Metamorphosis', '!player.buff(Demon Spikes)&!target.dot(Fiery Brand).ticking&!player.buff(Metamorphosis)&player.incdmg(5)>=player.health.max*0.70'},
-	{'Fel Devastation', 'player.incdmg(5)>=player.health.max*0.70'},
-	{'Fel Eruption'},
-	{'Soul Cleave', 'player.buff(Soul Fragments).count>4'},
-	{'Soul Cleave', 'player.incdmg(5)>=player.health.max*0.70'},
-	{'Soul Cleave', 'player.pain>69&player.buff(Soul Fragments).count<4&player.incdmg(4)<=player.health.max*0.20'},
-	{'Soul Cleave', 'player.pain>69'},
-	{'Shear', 'player.buff(Blade Turning)'},
-	{'Shear'},
-	{'Fracture', 'player.pain>49'},
-	{'Infernal Strike', 'UI(kIS)&talent(3,2)&!target.debuff(Sigil of Flame).remaining<gcd&player.spell(Sigil of Flame).cooldown>4&player.spell(Infernal Strike).charges>0', 'target.ground'}, -- Uses Infernal Strike automatically when you have the appropriate talent, can be disabled.
+	{'!Empower Wards', 'target.casting.percent>80'},
+	{'Soul Barrier', 'player.buff(Soul Fragments).count>4'},
+}
+
+local xCombat = {
+	{'Spirit Bomb', 'count(Frailty).enemies.debuffs==0&player.buff(Soul Fragments).count>0', 'target'},
+	{'Immolation Aura'},
+	{'Felblade', 'player.pain<81', 'target'},
+	{'Fel Devastation', 'player.incdmg(1)>=player.health.max*0.25'},
+	{'Soul Cleave', 'player.pain>69||player.incdmg(1)>=player.health.max*0.25', 'target'},
+	{'Soul Carver', nil, 'target'},
+	{'Fel Eruption', nil, 'target'},
+	{'Shear', nil, 'target'},
+	{'Fracture', 'player.pain>49||player.buff(Soul Fragments).count<5', 'target'},
+	{'Infernal Strike', 'advanced&UI(kIS)&talent(3,2)&target.debuff(Sigil of Flame).duration<gcd&player.spell(Sigil of Flame).cooldown>gcd*3&player.spell(Infernal Strike).charges>0', 'target.ground'}, -- Uses Infernal Strike automatically when you have the appropriate talent, can be disabled.
+	{'Infernal Strike', '!advanced&UI(kIS)&talent(3,2)&target.debuff(Sigil of Flame).duration<gcd&player.spell(Sigil of Flame).cooldown>gcd*3&player.spell(Infernal Strike).charges>0', 'player.ground'}, -- Uses Infernal Strike automatically when you have the appropriate talent, can be disabled.
 }
 
 local Ranged = {
-	{'Throw Glaive'},
+	{'Throw Glaive', 'toggle(aoe)&range>8&range<31&inFront', 'target'},
+	{'Sigil of Chains', 'advanced&range<31&area(8).enemies>2&combat', 'enemies.ground'},
+	{'Sigil of Flame', 'toggle(aoe)&advanced&range<31&!target.debuff(Sigil of Flame)', 'target.ground'},
+	{'Sigil of Flame', '!advanced&range<31&!target.debuff(Sigil of Flame)', 'player.ground'},
 }
 
 local inCombat = {
@@ -80,13 +104,17 @@ local inCombat = {
 	{Trinkets},
 	{Heirlooms},
 	{Keybinds},
+	{Interrupts_Random},
 	{Interrupts, 'toggle(Interrupts)'},
-	{Ranged, '!target.inMelee&target.range<31'},
-	{ST, 'target.inFront&target.inMelee'}
+	{Ranged},
+	{Mitigations, ''},
+	{xCombat, 'target.inFront&target.inMelee'}
 }
 
 local outCombat = {
 	{Keybinds},
+	{Interrupts_Random},
+	{Interrupts, 'toggle(Interrupts)'},
 }
 
 NeP.CR:Add(581, {
