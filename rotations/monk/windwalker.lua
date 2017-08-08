@@ -128,9 +128,9 @@ local SEF = {
 }
 
 local Ranged = {
-	{'Tiger\'s Lust', 'player.movingfor>0.5&target.alive'},
-	{'Chi Wave', 'toggle(aoe)&UI(auto_cw)&player.area(40).enemies>=2&target.combat', 'target'},
-	{'Chi Wave', 'toggle(aoe)&player.area(40).enemies>=2&player.timetomax>1.25&target.combat', 'target'}, -- 40 yard range 0 energy, 0 chi
+	{'Tiger\'s Lust', 'player.movingfor>0.5&target.combat&target.alive'},
+	{'Chi Wave', 'toggle(aoe)&UI(auto_cw)&player.area(40).enemies>=2', 'target'},
+	{'Chi Wave', 'toggle(aoe)&player.area(40).enemies>=2&player.timetomax>1.25', 'target'}, -- 40 yard range 0 energy, 0 chi
 	{'Chi Burst', 'toggle(aoe)&player.area(40).enemies.infront>=2&target.range<=40&!player.moving&player.timetomax>1.25', 'target'},
 	{'Crackling Jade Lightning', '!player.moving&UI(auto_cjl)&player.combat.time>4&!player.lastgcd(Crackling Jade Lightning)&@Zylla.hitcombo(Crackling Jade Lightning)', 'target'},
 	{'Crackling Jade Lightning', '!player.moving&equipped(144239)&player.buff(The Emperor\'s Capacitor).count>10&!player.lastgcd(Crackling Jade Lightning)&@Zylla.hitcombo(Crackling Jade Lightning)&player.energydiff==0', 'target'}, -- Legendary Chest support
@@ -138,18 +138,16 @@ local Ranged = {
 }
 
 local Serenity = {
-	{'Serenity', 'target.inMelee'},
-	{'Strike of the Windlord', 'toggle(AoE)&player.area(9).enemies.infront>0', 'target'},
+	{'Serenity'},
+	{'Strike of the Windlord', 'toggle(AoE)&player.area(8).enemies.infront>0', 'target'},
 	{'Spinning Crane Kick', 'toggle(AoE){{!player.lastgcd(Spinning Crane Kick)&@Zylla.hitcombo(Spinning Crane Kick)}&{player.spell(Spinning Crane Kick).count>7||{player.spell(Spinning Crane Kick).count>2&player.area(8).enemies>1&toggle(AoE)}||{player.area(8).enemies>2}}}'},
-	{'Rising Sun Kick', 'UI(auto_dot)&player.area(5).enemies<3&target.inMelee', 'Zylla_sck(Mark of the Crane)'},
-	{'Rising Sun Kick', 'player.area(5).enemies<3&target.inMelee', 'target'},
-	{'Fists of Fury', 'target.inMelee&target.inFront', 'target'},
-	{'Spinning Crane Kick', 'player.area(8).enemies>2&toggle(AoE)&!player.lastgcd(Spinning Crane Kick)&@Zylla.hitcombo(Spinning Crane Kick)'},
-	{'Rising Sun Kick', 'UI(auto_dot)&player.area(5).enemies>2', 'Zylla_sck(Mark of the Crane)'},
-	{'Rising Sun Kick', 'player.area(5).enemies>2', 'target'},
-	{'Spinning Crane Kick', '{!player.lastgcd(Spinning Crane Kick)&@Zylla.hitcombo(Spinning Crane Kick)}&{player.spell(Spinning Crane Kick).count>4||{player.area(8).enemies>1&toggle(AoE)}}'},
+  {'Spinning Crane Kick', 'player.area(8).enemies>2&toggle(AoE)&!player.lastgcd(Spinning Crane Kick)&@Zylla.hitcombo(Spinning Crane Kick)'},
+  {'Spinning Crane Kick', '{!player.lastgcd(Spinning Crane Kick)&@Zylla.hitcombo(Spinning Crane Kick)}&{player.spell(Spinning Crane Kick).count>4||{player.area(8).enemies>1&toggle(AoE)}}'},
+	{'Rising Sun Kick', 'UI(auto_dot)&player.area(5).enemies<3&inFront', 'Zylla_sck(Mark of the Crane)'},
+  {'Rising Sun Kick', 'UI(auto_dot)&player.area(5).enemies>2&inFront', 'Zylla_sck(Mark of the Crane)'},
+	{'Fists of Fury', 'inFront', 'target'},
 	{'Blackout Kick', 'UI(auto_dot)&!player.lastgcd(Blackout Kick)&@Zylla.hitcombo(Blackout Kick)', 'Zylla_sck(Mark of the Crane)'},
-	{'Blackout Kick', '!player.lastgcd(Blackout Kick)&@Zylla.hitcombo(Blackout Kick)&target.inMelee'},
+	{'Blackout Kick', '!player.lastgcd(Blackout Kick)&@Zylla.hitcombo(Blackout Kick)&target.inMelee', 'target'},
 	{'Rushing Jade Wind', '!player.lastgcd(Rushing Jade Wind)&@Zylla.hitcombo(Rushing Jade Wind)'},
 }
 
@@ -182,17 +180,16 @@ local Melee = {
 
 local inCombat = {
 	{Util},
-	{Trinkets},
-	{Heirlooms},
+	 {Heirlooms},
 	{Dispel, 'toggle(dispels)&!player.spell(Detox).cooldown'},
 	{Survival, 'player.health<100'},
 	{Interrupts_Random},
 	{Interrupts, 'target.interruptAt(70)'},
 	{Cooldowns, 'toggle(cooldowns)&target.inMelee'},
-	{Serenity, 'toggle(cooldowns)&target.combat&target.inMelee&talent(7,3)&!player.casting(Fists of Fury)&{player.spell(Serenity).cooldown==0||player.buff(Serenity)}'},
-	{SEF, 'target.combat&target.inMelee&UI(sef_toggle)&!talent(7,3)&!player.casting(Fists of Fury)&{player.spell(Strike of the Windlord).exists&player.spell(Strike of the Windlord).cooldown<24&player.spell(Fists of Fury).cooldown<7&player.spell(Rising Sun Kick).cooldown<7}'},
-	{Melee, 'target.combat&target.inMelee&target.inFront&!player.casting(Fists of Fury)'},
-	{Ranged, '!target.inMelee&target.range<=40&target.combat&!player.casting(Fists of Fury)'},
+	{Serenity, 'toggle(cooldowns)&target.inMelee&talent(7,3)&!player.casting(Fists of Fury)&{!player.spell(Serenity).cooldown||player.buff(Serenity)}'},
+	{SEF, 'target.inMelee&UI(sef_toggle)&!talent(7,3)&!player.casting(Fists of Fury)&player.spell(Strike of the Windlord).cooldown<24&player.spell(Fists of Fury).cooldown<7&player.spell(Rising Sun Kick).cooldown<7'},
+	{Melee, 'target.inMelee&target.inFront&!player.casting(Fists of Fury)'},
+	{Ranged, 'target.range>8&target.range<41&!player.casting(Fists of Fury)'},
 }
 
 local outCombat = {
