@@ -5,6 +5,10 @@ local Trinkets = _G['Zylla.Trinkets']
 local Heirlooms = _G['Zylla.Heirlooms']
 
 local GUI = {
+	--Logo
+	{type = "texture", texture = "Interface\\AddOns\\Nerdpack-Zylla\\media\\logo.blp", width = 128, height = 128, offset = 90, y = 42, center = true},
+	{type = 'ruler'},	  {type = 'spacer'},
+	-- Keybinds
 	{type='header', 	text='Keybinds', 							align='center'},
 	{type='text', 		text='Left Shift: Pause', 					align='center'},
 	{type='text', 		text='Left Ctrl: Efflorescence', 			align='center'},
@@ -47,11 +51,12 @@ local exeOnLoad = function()
 	Zylla.AFKCheck()
 
 	print('|cffADFF2F ----------------------------------------------------------------------|r')
-	print('|cffADFF2F --- |rDRUID |cffADFF2FGuardian |r')
+	print('|cffADFF2F --- |rDruid |cffADFF2FRestoration |r')
 	print('|cffADFF2F --- |')
 	print('|cffADFF2F --- |rCheck Setting to go over important healing stuff! |r')
 	print('|cffADFF2F --- |rRecommended Talents: COMING SOON.')
 	print('|cffADFF2F ----------------------------------------------------------------------|r')
+  print('|cffFFFB2F Configuration: |rRight-click MasterToggle and go to Combat Routines Settings!|r')
 
 	NeP.Interface:AddToggle({
 		key = 'xDPS',
@@ -180,7 +185,7 @@ local inCombat = {
 	{Interrupts, 'target.interruptAt(70)&toggle(Interrupts)&target.inFront&target.inMelee'},
 	{Mitigations},
 	{Cooldowns, 'toggle(Cooldowns)'},
-	{xHealing, '!player.moving & !player.channeling(Tranquility)'},
+	{xHealing, '!player.moving'},
 	{Moving, 'player.moving'},
 	{DPS, 'toggle(xDPS)&lowest.health>=UI(k_DPSHP)'},
 }
@@ -192,7 +197,7 @@ local outCombat = {
 
 NeP.CR:Add(105, {
 	name='[|cff'..Zylla.addonColor..'Zylla\'s|r] Druid - Restoration',
-	ic = inCombat,
+	ic =  {inCombat, '!player.channeling (Tranquility)'},
 	ooc = outCombat,
 	gui = GUI,
 	ids = Zylla.SpellIDs[Zylla.Class],
