@@ -17,17 +17,17 @@ local GUI = {
 	{type = 'ruler'},	{type = 'spacer'},
 	-- Settings
 	{type = 'header', 	text = 'Class Settings',	align = 'center'},
-	{type = 'checkbox', text = 'Pause Enabled',	key = 'kPause',	default = true},	
+	{type = 'checkbox', text = 'Pause Enabled',	key = 'kPause',	default = true},
 	{type = 'checkbox', text = 'Use Voodoo/Earthgrab Totems (AoE)',	key = 'E_Tots',	default = true},
 	{type = 'ruler'},	{type = 'spacer'},
-  	-- Survival
+  -- Survival
 	{type = 'header', 	text = 'Survival',	align = 'center'},
 	{type = 'checkbox', text = 'Use Rainfall on lowest party member',	key = 'E_RF',	default = true},
 	{type = 'spinner', 	text = '',	key = 'RF_HP',	default = 75},
 	{type = 'checkbox', text = 'Use Healing Surge (SOLO)',	key = 'e_HS',	default = true},
 	{type = 'spinner', 	text = '',	key = 'HS_HP',	default = 75},
 	{type = 'spinner',	text = 'Healthstone when below HP%',	key = 'HST_HP',	default = 45},
-	{type = 'spinner',	text = 'Healing Potion when below HP%',	key = 'AHP_HP',	default = 45},		
+	{type = 'spinner',	text = 'Healing Potion when below HP%',	key = 'AHP_HP',	default = 45},
 	-- Trinkets + Heirlooms for leveling
 	{type = 'header', 	text = 'Trinkets/Heirlooms', align = 'center'},
 	{type = 'checkbox', text = 'Use Trinket #1', key = 'kT1', default = true},
@@ -83,36 +83,36 @@ local Survival = {
 local Cooldowns = {
 	{'Heroism', 'toggle(Heroism)'},
 	{'Ascendance', 'player.maelstrom>129||player.hashero'},
-	{'Feral Spirit', '{player.hashero||player.buff(Ascendance)}||player.level<100'},
-	{'Berserking', 'toggle(Heroism)&{player.buff(Ascendance)||!talent(7,1)||player.level<100}'},
+	{'Feral Spirit', '{player.hashero||player.buff(Ascendance)}||!talent(7,1)||player.level<100'},
+	{'Berserking', 'toggle(Heroism)&{player.buff(Ascendance)||player.level<100}'},
 	{'Blood Fury', 'player.buff(Ascendance)||player.level<100'},
 	{'Doom Winds'},
 }
 
 local Interrupts_Normal = {
-	{'!Wind Shear', 'target.interruptAt(70)'},
-	{'!Wind Rush Totem', 'target.interruptAt(5)&player.spell(Wind Shear).cooldown>gcd&!lastgcd(Wind Shear)&!target.immune(Stun)', 'target.ground'}
+	{'!Wind Shear', 'target.interruptAt(70)&target.range<31&target.inFront', 'target'},
+	{'!Lightning Surge Totem', 'advanced&target.range<36&target.interruptAt(1)&player.spell(Wind Shear).cooldown>gcd&!lastgcd(Wind Shear)', 'target.ground'}
 }
 
 local Interrupts_Random = {
-	{'!Counter Shot', 'interruptAt(70)&toggle(xIntRandom)&toggle(Interrupts)&inFront&range<41', 'enemies'},
-	{'!Intimidation', 'interruptAt(70)&toggle(xIntRandom)&toggle(Interrupts)&player.spell(Counter Shot).cooldown>gcd&!prev_gcd(Counter Shot)&!immune(Stun)&inFront&range<41', 'enemies'},
+	{'!Wind Shear', 'interruptAt(70)&toggle(xIntRandom)&toggle(Interrupts)&inFront&range<31', 'enemies'},
+	{'!Lightning Surge Totem', 'advanced&interruptAt(70)&toggle(xIntRandom)&toggle(Interrupts)&player.spell(Wind Shear).cooldown>gcd&!prev_gcd(Wind Shear)&inFront&range<36', 'enemies.ground'},
 }
 
 local Talents = {
 	{'Windsong', 'target.range<11&target.inFront'},
-	{'Rainfall', 'UI(E_RF)&health<UI(RF_HP)&range<41', 'lowest.ground'},
+	{'Rainfall', 'advanced&UI(E_RF)&health<UI(RF_HP)&range<41', 'lowest.ground'},
 	{'Lightning Shield', '!player.buff(Lightning Shield)'},
 	{'Feral Lunge', 'target.range>7&target.range<26'},
-	{'Earthgrab Totem', 'target.range<36&UI(E_Tots)&target.area(10).enemies>2', 'target.ground'},
-	{'Voodoo Totem', 'target.range<36&UI(E_Tots)&target.area(10).enemies>2', 'target.ground'},
+	{'Earthgrab Totem', 'advanced&target.range<36&UI(E_Tots)&target.area(10).enemies>2', 'target.ground'},
+	{'Voodoo Totem', 'advanced&target.range<36&UI(E_Tots)&target.area(10).enemies>2', 'target.ground'},
 	{'Fury of Air', 'toggle(AoE)&!player.buff(Fury of Air)'},
 	{'Sundering', 'target.inMelee&toggle(AoE)&player.area(8).enemies.inFront>2'},
 	{'Earthen Spike', 'target.range<11&target.inFront'},
 }
 
 local xCombat = {
-	{'Crash Lightning', 'toggle(AoE)&player.area(8).enemies>2'},  
+	{'Crash Lightning', 'toggle(AoE)&player.area(8).enemies>=2'},
 	{'Frostbrand', 'talent(4,3)&player.buff(Frostbrand).duration<gcd*2'},
 	{'Flametongue', 'target.inMelee&!player.buff(Flametongue)'},
 	{'Lightning Bolt', 'talent(5,2)&player.maelstrom>39'},
@@ -131,7 +131,7 @@ local inCombat = {
 	{Keybinds},
 	{Survival},
 	{Cooldowns, 'toggle(Cooldowns)'},
-	{Interrupts_Normal, 'toggle(Interrupts)&target.inFront&target.range<41'},
+	{Interrupts_Normal, 'toggle(Interrupts)'},
 	{Interrupts_Random},
 	{Talents},
 	{xCombat, 'target.inMelee&target.inFront'},
@@ -142,7 +142,7 @@ local inCombat = {
 local outCombat = {
 	{Keybinds},
 	{PreCombat},
-	{Interrupts_Normal, 'toggle(Interrupts)&target.inFront&target.range<41'},
+	{Interrupts_Normal, 'toggle(Interrupts)'},
 	{Interrupts_Random},
 }
 
