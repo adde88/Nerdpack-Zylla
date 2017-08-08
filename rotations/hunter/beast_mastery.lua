@@ -71,7 +71,6 @@ end
 
 local PreCombat = {
   {'Call Pet 1', '!pet.exists&UI(kPet)'},
-  {Pet, 'pet.exists'},
   {'Volley', '{toggle(aoe)&!player.buff(Volley)}||{player.buff(Volley)&!toggle(aoe)}'},
   {'%pause', 'player.buff(Feign Death)'},
 }
