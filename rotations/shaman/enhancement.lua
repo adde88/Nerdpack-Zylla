@@ -82,10 +82,10 @@ local Survival = {
 
 local Cooldowns = {
 	{'Heroism', 'toggle(Heroism)'},
-	{'Ascendance', 'player.maelstrom>129||player.hashero'},
-	{'Feral Spirit', '{player.hashero||player.buff(Ascendance)}||!talent(7,1)||player.level<100'},
-	{'Berserking', 'toggle(Heroism)&{player.buff(Ascendance)||player.level<100}'},
-	{'Blood Fury', 'player.buff(Ascendance)||player.level<100'},
+	{'Ascendance', 'player.maelstrom>129'},
+	{'Feral Spirit'},
+	{'Berserking', 'toggle(Heroism)'},
+	{'Blood Fury'},
 	{'Doom Winds'},
 }
 
