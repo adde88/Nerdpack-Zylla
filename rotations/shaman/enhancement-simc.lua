@@ -67,6 +67,7 @@ local xCombat = {
 	{'Crash Lightning', 'player.buff(Crash Lightning).duration>gcd&player.area(10).enemies>=2', 'target'},
 	{'Crash Lightning', 'player.area(10).enemies>=3', 'target'},
 	{'Crash Lightning', '{{player.area(10).enemies>1||talent(6,1)||talent(7,2)}&!set_bonus(T19)==4}||player.buff(Feral Spirit).duration>5', 'target'},
+  {'Crash Lightning', 'set_bonus(T20)==2&player.buff(Lightning Crash).duration<gcd', 'target'},
 	-- Windstrike
 	{'Windstrike', 'player.buff(Stormbringer).react&{{talent(6,2)&player.maelstrom>=26}||{!talent(6,2)}}', 'target'},
 	{'Windstrike', 'talent(5,2)&player.spell(Lightning Bolt)<gcd&player.maelstrom>80', 'target'},
@@ -93,15 +94,15 @@ local xCombat = {
 	{'Flametongue', 'player.buff(Flametongue).duration<4.8', 'target'},
 	-- Here comes the rest
 	{'Windsong'},
-	{'Fury of Air', '!player.buff(Fury of Air)&player.maelstrom>22'},
+	{'Fury of Air', 'toggle(AoE)&!player.buff(Fury of Air)&player.maelstrom>22'},
 	{'Lightning Bolt', '{talent(5,2)&player.maelstrom>=40&!talent(6,2)}||{talent(5,2)&talent(6,2)player.maelstom>46}', 'target'},
 	{'Earthen Spike', nil, 'target'},
-	{'Sundering', 'player.area(8).enemies.infront>=3', 'target'},
+	{'Sundering', 'toggle(AoE)&player.area(8).enemies.infront>=3', 'target'},
 	{'Rockbiter', 'talent(1,3)&player.buff(Landslide).duration<gcd', 'target'},
 }
 
 local Ranged = {
-	{'Lightning Bolt', 'target'}
+	{'Lightning Bolt', nil, 'target'}
 }
 
 local inCombat = {
@@ -112,7 +113,6 @@ local inCombat = {
 	{Interrupts, 'target.interruptAt(70)&toggle(Interrupts)&target.inFront&target.range<40'},
 	{Survival, 'player.health<100'},
 	{Cooldowns, 'toggle(Cooldowns)'},
-	{AoE, 'toggle(AoE)&player.area(8).enemies>2'},
 	{xCombat, 'target.inMelee&target.inFront'},
 	{Ranged, '!target.inMelee&target.range<41&target.inFront'}
 }
