@@ -69,6 +69,17 @@ end)
 --------------------------------------------------------------------------------
 --------------------------------SimulationCraft CONDITIONS----------------------
 --------------------------------------------------------------------------------
+--/dump NeP.DSL:Get('buff.react')('player','Incanter\'s Flow')
+NeP.DSL:Register('buff.react', function(target, spell)
+  local x = NeP.DSL:Get('buff.count')(target, spell)
+  if x == 1 then
+    return true
+  elseif x == 0 then
+    return false
+  else
+    return x
+  end
+end)
 
 NeP.DSL:Register('xmoving', function()
     local speed = GetUnitSpeed('player')
@@ -735,7 +746,7 @@ NeP.DSL:Register('RtB', function()
     if int == 6 then
         return true --"LEEEROY JENKINS!"
 
-            -- If two or Shark/Bearing and AR/Curse active:
+    -- If two or Shark/Bearing and AR/Curse active:
     elseif int == 2 or int == 3 or ((bearing or shark) and ((UnitBuff("player", GetSpellInfo(13750)) or UnitDebuff("player", GetSpellInfo(202665))))) then
         return true --"Keep."
 
