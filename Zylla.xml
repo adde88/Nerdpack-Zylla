@@ -7,7 +7,7 @@
   <Script file="splash.lua" />
   <Script file="fakeunits.lua" />
   <Script file="locale.lua" />
-  
+
   <!-- Rotations -->
   <Script file="rotations\deathknight\frost.lua" />
   <Script file="rotations\deathknight\unholy.lua" />
@@ -38,6 +38,7 @@
   <Script file="rotations\rogue\subtlety.lua" />
   <Script file="rotations\shaman\elemental.lua" />
   <Script file="rotations\shaman\enhancement.lua" />
+  <Script file="rotations\shaman\enhancement-simc.lua" />
   <Script file="rotations\shaman\restoration.lua" />
   <Script file="rotations\warlock\affliction.lua" />
   <Script file="rotations\warlock\demonology.lua" />
