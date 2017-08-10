@@ -5,8 +5,11 @@ local Trinkets = _G['Zylla.Trinkets']
 local Heirlooms = _G['Zylla.Heirlooms']
 
 local GUI = {
+	--Logo
+  {type = "texture", texture = "Interface\\AddOns\\Nerdpack-Zylla\\media\\logo.blp", width = 128, height = 128, offset = 90, y = 42, center = true},
+  {type = 'ruler'},	  {type = 'spacer'},
 	-- Keybinds
-	{type = 'header', 	text = 'Keybinds', align = 'center'},
+	{type = 'header', 	text = 'General', align = 'center'},
 	{type = 'text', 	text = 'Left Shift: Pause', align = 'center'},
 	{type = 'text', 	text = 'Left Ctrl: ', align = 'center'},
 	{type = 'text', 	text = 'Left Alt: ', align = 'center'},
@@ -16,6 +19,10 @@ local GUI = {
 	{type = 'header', 	text = 'Class Settings', align = 'center'},
 	{type = 'checkbox', text = 'Pause Enabled', key = 'kPause', default = true},
 	{type='spinner', 	text = 'Crimson Vial Below (HP%)', key='E_HP', default = 60},
+	{type = 'ruler'},	{type = 'spacer'},
+	-- Survival
+	{type = 'header', 	text = 'Survival', align = 'center'},
+	{type = 'spinner',	text = 'Healthstone / Healing Potions',      key = 'Health Stone',	  default = 45},
 	{type = 'ruler'},	{type = 'spacer'},
 	-- Trinkets + Heirlooms for leveling
 	{type = 'header', 	text = 'Trinkets/Heirlooms', align = 'center'},
@@ -33,7 +40,8 @@ local exeOnLoad = function()
 	 print('|cffADFF2F ----------------------------------------------------------------------|r')
 	 print('|cffADFF2F --- |rRogue |cffADFF2FSubtlety |r')
 	 print('|cffADFF2F --- |rRecommended Talents: 1/2 - 2/2 - 3/1 - 4/X - 5/X - 6/1 - 7/1')
-	 print('|cffADFF2F ----------------------------------------------------------------------|r')
+   print('|cffADFF2F ----------------------------------------------------------------------|r')
+   print('|cffFFFB2F Configuration: |rRight-click MasterToggle and go to Combat Routines Settings!|r')
 
 	 NeP.Interface:AddToggle({
 		 key='opener',
@@ -41,6 +49,20 @@ local exeOnLoad = function()
 		 text = 'If Enabled we will Open with Ambush when Stealthed. If not Cheap Shot will be used.',
 		 icon='Interface\\Icons\\ability_rogue_ambush',
 	 })
+
+	NeP.Interface:AddToggle({
+		key='xStealth',
+		name='Auto Stealth',
+		text = 'If Enabled we will automatically use Stealth out of combat.',
+		icon='Interface\\Icons\\ability_stealth',
+	})
+
+	NeP.Interface:AddToggle({
+		key='xPickPock',
+		name='Pick Pocket',
+		text = 'If Enabled we will automatically Pick Pocket enemies out of combat.',
+		icon='Interface\\Icons\\inv_misc_bag_11',
+	})
 
 end
 
@@ -63,6 +85,8 @@ local Interrupts = {
 
 local Survival ={
 	{'Crimson Vial', 'player.health<=UI(k_CVHP)'},
+	{'#127834', 'item(127834).count>0&player.health<UI(Health Stone)'},        -- Ancient Healing Potion
+	{'#5512', 'item(5512).count>0&player.health<UI(Health Stone)', 'player'},  --Health Stone
 }
 
 local Builders = {
@@ -124,6 +148,8 @@ local inCombat = {
 local outCombat = {
 	{Keybinds},
 	{PreCombat},
+	{'Stealth', 'toggle(xStealth)&!player.buff&!player.buff(Vanish)&!nfly'},
+	{'Pick Pocket', 'toggle(xPickPock)&enemy&alive&range<=10&player.buff(Stealth)' ,'enemies'},
 }
 
 NeP.CR:Add(261, {
