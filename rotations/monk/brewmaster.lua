@@ -5,33 +5,41 @@ local Trinkets = _G['Zylla.Trinkets']
 local Heirlooms = _G['Zylla.Heirlooms']
 
 local GUI = {
+	--Logo
+	{type = "texture", texture = "Interface\\AddOns\\Nerdpack-Zylla\\media\\logo.blp", width = 128, height = 128, offset = 90, y = 42, center = true},
+	{type = 'ruler'},	  {type = 'spacer'},
 	-- Keybinds
-	{type = 'header', 	text = 'Keybinds', 										align = 'center'},
-	{type = 'text', 	text = 'Left Shift: Pause', 							align = 'center'},
+	{type = 'header', text = 'Keybinds', 																align = 'center'},
+	{type = 'text', 	text = 'Left Shift: Pause', 											align = 'center'},
 	{type = 'text', 	text = 'Left Ctrl: Transcendence/Transfer', 			align = 'center'},
-	{type = 'text', 	text = 'Left Alt: Summon Black Ox Statue @CURSOR',		align = 'center'},
+	{type = 'text', 	text = 'Left Alt: Black Ox Statue @cursor',				align = 'center'},
 	{type = 'ruler'},	{type = 'spacer'},
-	-- General
+	-- Class Settings
 	{type = 'spacer'},	{type = 'rule'},
-	{type = 'header', 	text = 'General', 										align = 'center'},
-	{type = 'checkbox', text = 'Automatic Res', 								key = 'auto_res', 		default = true},
-	{type = 'checkbox', text = 'Pause Enabled', 								key = 'kPause', 		default = true},
+	{type = 'header', 	text = 'General', 											align = 'center'},
+	{type = 'checkbox', text = 'Automatic Ressurect', 					key = 'auto_res', 		default = true},
+	{type = 'checkbox', text = 'Pause Enbled', 									key = 'kPause', 			default = true},
+	{type = 'checkbox',	text = 'Use: Crackling Jade Lightning',	key = 'e_cjl',				default = false},
+	{type = 'ruler'},	{type = 'spacer'},
 	-- Survival
-	{type = 'spacer'},	{type = 'rule'},
-	{type = 'header', 	text = 'Survival',										align = 'center'},
-	{type = 'checkbox',	text = 'Enable Self-Heal (Effuse)', 					key = 'kEffuse',		default = false},
-	{type = 'spinner', 	text = 'Effuse (HP%)', 									key = 'E_HP',			default = 60},
-	{type = 'spinner',	text = 'Healthstone or Healing Potion',					key = 'Health Stone',	default = 45},
-	{type = 'spinner',	text = 'Healing Elixir', 								key = 'Healing Elixir',	default = 70},
-	{type = 'spinner',	text = 'Expel Harm', 									key = 'Expel Harm',		default = 100},
-	{type = 'spinner',	text = 'Fortifying Brew',								key = 'Fortifying Brew',default = 20},
-	{type = 'spinner',	text = 'Ironskin Brew',									key = 'Ironskin Brew',	default = 80},
+	{type = 'header', 	text = 'Survival',												align = 'center'},
+	{type = 'checkbox',	text = 'Enable Self-Heal (Effuse)', 			key = 'kEffuse',					default = false},
+	{type = 'spinner', 	text = 'Effuse (HP%)', 										key = 'E_HP',							default = 60},
+	{type = 'spinner',	text = 'Healthstone below HP%',						key = 'hs_hp',						default = 45},
+	{type = 'spinner',	text = 'Ancient Healing Potion HP%',			key = 'ahp_hp',						default = 40},
+	{type = 'spinner',	text = 'Healing Elixir', 									key = 'Healing Elixir',		default = 70},
+	{type = 'spinner',	text = 'Expel Harm', 											key = 'Expel Harm',				default = 100},
+	{type = 'spinner',	text = 'Fortifying Brew',									key = 'Fortifying Brew',	default = 20},
+	{type = 'spinner',	text = 'Ironskin Brew',										key = 'Ironskin Brew',		default = 80},
+	{type = 'ruler'},	{type = 'spacer'},
 	-- Trinkets + Heirlooms for leveling
-	{type = 'checkbox', text = 'Use Trinket #1',								key = 'kT1',			default = false},
-	{type = 'checkbox', text = 'Use Trinket #2',								key = 'kT2',			default = false},
-	{type = 'checkbox', text = 'Ring of Collapsing Futures',					key = 'kRoCF',			default = true},
-	{type = 'checkbox', text = 'Use Heirloom Necks When Below X% HP',			key = 'k_HEIR',			default = true},
-	{type = 'spinner',	text = '',												key = 'k_HeirHP',		default = 40},
+  {type = 'header', 	text = 'Trinkets/Heirlooms',                  align = 'center'},
+  {type = 'checkbox', text = 'Use Trinket #1',                      key = 'kT1',            default = true},
+  {type = 'checkbox', text = 'Use Trinket #2',                      key = 'kT2',            default = true},
+  {type = 'checkbox', text = 'Ring of Collapsing Futures',          key = 'kRoCF',          default = true},
+  {type = 'checkbox', text = 'Use Heirloom Necks When Below X% HP', key = 'k_HEIR',         default = true},
+  {type = 'spinner',	text = '',                                    key = 'k_HeirHP',       default = 40},
+  {type = 'ruler'},	  {type = 'spacer'},
 }
 
 local exeOnLoad=function()
@@ -41,7 +49,16 @@ local exeOnLoad=function()
 	print('|cffADFF2F ---------------------------------------------------------------------------|r')
 	print('|cffADFF2F --- |rMonk |cffADFF2FBrewmaster  |r')
 	print('|cffADFF2F --- |rRecommended Talents:  COMING SOON...')
-	print('|cffADFF2F ---------------------------------------------------------------------------|r')
+	print('|cffADFF2F ----------------------------------------------------------------------|r')
+  print('|cffFFFB2F Configuration: |rRight-click MasterToggle and go to Combat Routines Settings!|r')
+
+	NeP.Interface:AddToggle({
+		-- Dispels
+		key = 'dispels',
+		name = 'Detox',
+		text = 'Enable/Disable: Automatic Removal of Poison and Diseases',
+		icon = 'Interface\\ICONS\\spell_holy_renew',
+	})
 
 	NeP.Interface:AddToggle({
 		key = 'xTaunt',
@@ -51,11 +68,11 @@ local exeOnLoad=function()
 	})
 
 	NeP.Interface:AddToggle({
-		key = 'xCrackle',
-		name = 'Crackling Jade Lightning',
-		text = 'Use Crackling Jade Lightning.',
-		icon = 'Interface\\Icons\\ability_monk_cracklingjadelightning',
-	})
+	 key = 'xIntRandom',
+	 name = 'Interrupt Anyone',
+	 text = 'Interrupt all nearby enemies, without targeting them.',
+	 icon = 'Interface\\Icons\\inv_ammo_arrow_04',
+ })
 
 end
 
@@ -69,6 +86,11 @@ local Keybinds = {
 	{'!Summon Black Ox Statue', 'talent(4,2)&keybind(lalt)', 'cursor.ground'},
     {'!Transcendence', 'keybind(lcontrol)&!player.buff(Transcendence)'},
     {TransferBack, 'keybind(lcontrol)&player.buff(Transcendence)'},
+}
+
+local Dispel = {
+	{'%dispelSelf'},
+	{'%dispelAll', 'UI(E_disAll)'},
 }
 
 local Snares = {
@@ -89,31 +111,34 @@ local Mitigations = {
 
 local Survival = {
 	{'Healing Elixir', '{player.spell(Healing Elixir).charges>1||{player.spell(Healing Elixir).charges==1&player.spell(Healing Elixir).cooldown<3&!lastcast(Healing Elixir)}}&player.health<=UI(Healing Elixir)', 'player'},
-	{'#Healthstone', 'player.health<=UI(Health Stone)', 'player'},
-	{'#Ancient Healing Potion', 'player.health<=UI(Health Stone)', 'player'},
+	{'#127834', 'item(127834).count>0&player.health<UI(hs_hp)'},        -- Ancient Healing Potion
+  {'#5512', 'item(5512).count>0&player.health<UI(ahp_hp)', 'player'},  --Health Stone
 	{'Expel Harm', 'player.health<=UI(Expel Harm)&player.spell(Expel Harm).count>0', 'player'},
 	{'Effuse', 'player.health<=UI(E_HP)&player.lastmoved>0&UI(kEffuse)', 'player'},
 }
 
 local Interrupts = {
-	{'!Spear Hand Strike'},
-	{'!Paralysis', '!target.immune(incapacitate)&target.range<30&player.energy>19&spell(Spear Hand Strike).cooldown>gcd&!lastcast(Spear Hand Strike)'},
-	{'!Paralysis', '!immune(incapacitate)&range<30&player.energy>19&player.area(20).enemies>1', 'endebuff(Paralysis)'},
-	{'!Ring of Peace', 'talent(4,1)&!target.debuff(Spear Hand Strike)&spell(Spear Hand Strike).cooldown>gcd&!lastcast(Spear Hand Strike)'},
-	{'!Leg Sweep', '!target.immune(stun)&talent(4,3)&spell(Spear Hand Strike).cooldown>gcd&target.inMelee&!lastcast(Spear Hand Strike)'},
-	{'!Quaking Palm', '!target.immune(incapacitate)&!target.debuff(Spear Hand Strike)&spell(Spear Hand Strike).cooldown>gcd&!lastcast(Spear Hand Strike)'},
+	{'!Spear Hand Strike', 'interruptAt(70)&inMelee&inFront', 'target'},
+	{'!Paralysis', 'interruptAt(70)&!immune(incapacitate)&range<21&player.energy>19&player.spell(Spear Hand Strike).cooldown>gcd&!player.lastcast(Spear Hand Strike)', 'target'},
+	{'!Ring of Peace', 'interruptAt(5)&advanced&range<40&player.spell(Spear Hand Strike).cooldown>gcd&!player.lastgcd(Spear Hand Strike)', 'target.ground'},
+	{'!Leg Sweep', 'interruptAt(70)&!immune(stun)&inMelee&player.spell(Spear Hand Strike).cooldown>gcd&!player.lastcast(Spear Hand Strike)', 'target'},
+	{'!Quaking Palm', 'interruptAt(70)&!immune(incapacitate)&inMelee&inFront&player.spell(Spear Hand Strike).cooldown>gcd&!player.lastcast(Spear Hand Strike)', 'target'},
+}
+
+local Interrupts_Random = {
+	{'!Spear Hand Strike', 'interruptAt(70)&inFront&inMelee', 'enemies'},
+	{'!Paralysis', 'interruptAt(70)&!immune(incapacitate)&range<21&player.energy>19&player.area(20).enemies>1&player.spell(Spear Hand Strike).cooldown>gcd&!player.lastgcd(Spear Hand Strike)', 'enemies'},
+	{'!Ring of Peace', 'interruptAt(5)&advanced&range<40&player.spell(Spear Hand Strike).cooldown>gcd&!player.lastcast(Spear Hand Strike)', 'enemies.ground'},
+	{'!Leg Sweep', 'interruptAt(70)&!immune(stun)&inMelee&player.spell(Spear Hand Strike).cooldown>gcd&!player.lastgcd(Spear Hand Strike)', 'enemies'},
+	{'!Quaking Palm', 'interruptAt(70)&!immune(incapacitate)&inMelee&inFront&player.spell(Spear Hand Strike).cooldown>gcd&!player.lastcast(Spear Hand Strike)', 'enemies'},
 }
 
 local Artifact = {
-	{'Exploding Keg', 'target.range<50&{{target.area(8).enemies>2}||{player.incdmg(5)>=health.max*0.70}}', 'target.ground'},
+	{'Exploding Keg', 'advanced&target.range<50&{{target.area(8).enemies>2}||{player.incdmg(5)>=health.max*0.70}}', 'target.ground'},
 }
 
 local Crackle = {
-	{'Crackling Jade Lightning', '!player.moving&toggle(xCrackle)'},
-}
-
-local Taunts = {
-	{'Provoke', 'target.range<45&target.combat&target.threat<109&toggle(xTaunt)'},
+	{'Crackling Jade Lightning', '!player.moving&UI(e_cjl)&!target.inMelee'},
 }
 
 local xCombat = {
@@ -141,18 +166,21 @@ local inCombat = {
 	{Artifact},
 	{Keybinds},
 	{Snares},
-	{Survival, 'player.health<100'},
-	{Interrupts, 'target.interruptAt(70)&target.inMelee'},
-	{Mitigations, 'target.inMelee&{!talent(7,2)||!player.buff(Blackout Combo)||player.spell(Keg Smash).cooldown>1.5}'},
+	{Dispel, 'toggle(dispels)&!player.spell(Detox).cooldown'},
+	{Survival},
+	{Interrupts, 'toggle(Interrupts)'},
+	{Interrupts_Random, 'toggle(xIntRandom)&toggle(Interrupts)'},
+	{Mitigations, 'target.inMelee&{!talent(7,2)||!player.buff(Blackout Combo)||player.spell(Keg Smash).cooldown>gcd}'},
 	{Cooldowns, 'toggle(Cooldowns)'},
 	{xCombat},
-	{Crackle, '!target.inMelee&target.inRanged'},
+	{Crackle, 'target.range>8&target.range<41&target.inFront'},
+	{'Provoke', 'target.range<45&target.combat&target.threat<100&toggle(xTaunt)'},
 }
 
 local outCombat={
 	{Keybinds},
 	{'%ressdead(Resuscitate)', 'UI(auto_res)'},
-	{'Effuse', 'player.health<60&player.lastmoved>0', 'player'},
+	{'Effuse', 'UI(kEffuse)&player.health<90&player.lastmoved>0', 'player'},
 }
 
 NeP.CR:Add(268, {

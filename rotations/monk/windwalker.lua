@@ -1,7 +1,7 @@
 local _, Zylla = ...
 
 local Util = _G['Zylla.Util']
-local Trinkets = _G['Zylla.Trinkets']
+--local Trinkets = _G['Zylla.Trinkets']
 local Heirlooms = _G['Zylla.Heirlooms']
 
 local GUI = {
@@ -13,31 +13,33 @@ local GUI = {
 	{type = 'checkbox',	text = 'Automatic Res',												key = 'auto_res',		default = true},
 	{type = 'checkbox',	text = '5 min DPS test', 											key = 'dpstest',		default = false},
 	{type = 'checkbox',	text = 'Pause Enabled', 											key = 'kPause',			default = true},
-
 	-- Survival
 	{type = 'spacer'},	{type = 'rule'},
 	{type = 'header',	text = 'Survival:', 														align = 'center'},
-	{type = 'spinner',	text = 'Healthstone & Healing Tonic',					key = 'Healthstone',		default = 35},
-	{type = 'spinner',	text = 'Effuse',															key = 'effuse',					default = 30},
+	{type = 'spinner',	text = 'Healthstone',					                key = 'Healthstone',		default = 35},
+  {type = 'spinner',	text = 'Healthstone below HP%',						    key = 'hs_hp',					default = 45},
+	{type = 'spinner',	text = 'Ancient Healing Potion HP%',			    key = 'ahp_hp',					default = 40},
+  {type = 'checkbox',	text = 'Enable Effuse',												key = 'ef_toggle', 	    default = true},
+	{type = 'spinner',	text = 'Effuse below HP%',										key = 'ef_hp',					default = 60},
 	{type = 'spinner',	text = 'Healing Elixir',											key = 'Healing Elixir',	default = 50},
 	{type = 'checkbox', text = 'Dispel Party Members', 								key = 'E_disAll', 			default = true},
-
 	-- Offensive
 	{type = 'spacer'},{type = 'rule'},
 	{type = 'header',	text = 'Offensive:',																				align = 'center'},
-	{type = 'checkbox',	text = 'Storm Earth Fire Usage',													key = 'sef_toggle', 	default = true},
-	{type = 'checkbox',	text = 'Crackling Jade Lightning at Range',								key = 'auto_cjl',			default = true},
-	{type = 'checkbox',	text = 'Chi Wave at Pull',																key = 'auto_cw',			default = true},
+	{type = 'checkbox',	text = 'Use: Storm Earth, and Fire',											key = 'sef_toggle', 	default = true},
+	{type = 'checkbox',	text = 'Use: Crackling Jade Lightning',								    key = 'auto_cjl',			default = true},
+	{type = 'checkbox',	text = 'Use: Chi Wave at Pull',														key = 'auto_cw',			default = true},
 	{type = 'checkbox',	text = 'Mark of the Crane Dotting',												key = 'auto_dot',			default = true},
 	{type = 'checkbox',	text = 'Crackling Jade Lightning to Maintain Hit Combo',	key = 'auto_cjl_hc',	default = true},
 	{type = 'ruler'},	{type = 'spacer'},
-	-- Trinkets + Heirlooms for leveling
-	{type = 'header', 	text = 'Trinkets/Heirlooms:',									align = 'center'},
-	{type = 'checkbox', text = 'Use Trinket #1',											key = 'kT1',			default = true},
-	{type = 'checkbox', text = 'Use Trinket #2',											key = 'kT2',			default = true},
-	{type = 'checkbox', text = 'Ring of Collapsing Futures',					key = 'kRoCF',		default = true},
-	{type = 'checkbox', text = 'Use Heirloom Necks When Below HP%',		key = 'k_HEIR',		default = true},
-	{type = 'ruler'},	{type = 'spacer'},
+  -- Trinkets + Heirlooms for leveling
+  {type = 'header', 	text = 'Trinkets/Heirlooms',                  align = 'center'},
+  {type = 'checkbox', text = 'Use Trinket #1',                      key = 'kT1',            default = true},
+  {type = 'checkbox', text = 'Use Trinket #2',                      key = 'kT2',            default = true},
+  {type = 'checkbox', text = 'Ring of Collapsing Futures',          key = 'kRoCF',          default = true},
+  {type = 'checkbox', text = 'Use Heirloom Necks When Below X% HP', key = 'k_HEIR',         default = true},
+  {type = 'spinner',	text = '',                                    key = 'k_HeirHP',       default = 40},
+  {type = 'ruler'},	  {type = 'spacer'},
 }
 
 local exeOnLoad = function()
@@ -88,8 +90,8 @@ local Cooldowns = {
 	{'Lifeblood'},
 	{'Berserking'},
 	{'Blood Fury'},
-	{'#trinket1', 'player.buff(Serenity)||player.buff(Storm, Earth, and Fire)'},
-	{'#trinket2', 'player.buff(Serenity)||player.buff(Storm, Earth, and Fire)'},
+	{'#trinket1', 'UI(kT1)&{player.buff(Serenity)||player.buff(Storm, Earth, and Fire)}'},
+	{'#trinket2', 'UI(kT2)&{player.buff(Serenity)||player.buff(Storm, Earth, and Fire)}'},
 	-- Use Xuen only while hero or potion (WOD: 156423, Legion: 188027) is active
 	{'Invoke Xuen, the White Tiger', 'player.hashero||{player.buff(Serenity)||player.buff(Storm, Earth, and Fire)}'},
 }
@@ -101,21 +103,23 @@ local Dispel = {
 
 local Survival = {
 	{'Healing Elixir', 'player.health<=UI(Healing Elixir)', 'player'},
-	{'#127834', 'item(127834).count>0&player.health<UI(Healthstone)'},        -- Ancient Healing Potion
-	{'#5512', 'item(5512).count>0&player.health<UI(Healthstone)', 'player'},  --Health Stone
-	{'!Effuse', 'player.energy>50&!player.moving&player.health<=UI(effuse)', 'player'},
+  {'#127834', 'item(127834).count>0&player.health<UI(hs_hp)'},        -- Ancient Healing Potion
+  {'#5512', 'item(5512).count>0&player.health<UI(ahp_hp)', 'player'},  --Health Stone
+	{'!Effuse', 'player.energy>50&!player.moving&UI(ef_toggle)&player.health<=UI(ef_hp)', 'player'}, -- Self healing. Toggle and HP% in Settings
 }
 
 local Interrupts = {
-	{'!Spear Hand Strike', 'target.inMelee&target.inFront'},
-	{'!Ring of Peace', 'target.range<40&!target.debuff(Spear Hand Strike)&player.spell(Spear Hand Strike).cooldown>gcd&!lastcast(Spear Hand Strike)'},
-	{'!Leg Sweep', 'target.inMelee&target.inFront&player.spell(Spear Hand Strike).cooldown>gcd&!lastcast(Spear Hand Strike)'},
+	{'!Spear Hand Strike', 'interruptAt(70)&inMelee&inFront', 'target'},
+	{'!Ring of Peace', 'interruptAt(5)&advanced&range<40&player.spell(Spear Hand Strike).cooldown>gcd&!player.lastgcd(Spear Hand Strike)', 'target.ground'},
+	{'!Leg Sweep', 'interruptAt(70)&!immune(stun)&inMelee&player.spell(Spear Hand Strike).cooldown>gcd&!player.lastcast(Spear Hand Strike)', 'target'},
+	{'!Quaking Palm', 'interruptAt(70)&!immune(incapacitate)&inMelee&inFront&player.spell(Spear Hand Strike).cooldown>gcd&!player.lastcast(Spear Hand Strike)', 'target'},
 }
 
 local Interrupts_Random = {
 	{'!Rebuke', 'interruptAt(70)&toggle(xIntRandom)&toggle(Interrupts)&inFront&inMelee', 'enemies'},
-	{'!Ring of Peace', 'range<40&inFront&!debuff(Spear Hand Strike)&player.spell(Spear Hand Strike).cooldown>gcd&!player.lastgcd(Spear Hand Strike)', 'enemies'},
-	{'!Leg Sweep', 'inMelee&inFront&!debuff(Spear Hand Strike)&player.spell(Spear Hand Strike).cooldown>gcd&!player.lastgcd(Spear Hand Strike)', 'enemies'},
+  {'!Ring of Peace', 'interruptAt(5)&advanced&range<40&player.spell(Spear Hand Strike).cooldown>gcd&!player.lastcast(Spear Hand Strike)', 'enemies.ground'},
+	{'!Leg Sweep', 'interruptAt(70)&!immune(stun)&inMelee&player.spell(Spear Hand Strike).cooldown>gcd&!player.lastgcd(Spear Hand Strike)', 'enemies'},
+	{'!Quaking Palm', 'interruptAt(70)&!immune(incapacitate)&inMelee&inFront&player.spell(Spear Hand Strike).cooldown>gcd&!player.lastcast(Spear Hand Strike)', 'enemies'},
 }
 
 local SEF = {
@@ -180,11 +184,11 @@ local Melee = {
 
 local inCombat = {
 	{Util},
-	 {Heirlooms},
+	{Heirlooms},
 	{Dispel, 'toggle(dispels)&!player.spell(Detox).cooldown'},
 	{Survival, 'player.health<100'},
-	{Interrupts_Random},
-	{Interrupts, 'target.interruptAt(70)'},
+  {Interrupts, 'toggle(Interrupts)'},
+	{Interrupts_Random, 'toggle(xIntRandom)&toggle(Interrupts)'},
 	{Cooldowns, 'toggle(cooldowns)&target.inMelee'},
 	{Serenity, 'toggle(cooldowns)&target.inMelee&talent(7,3)&!player.casting(Fists of Fury)&{!player.spell(Serenity).cooldown||player.buff(Serenity)}'},
 	{SEF, 'target.inMelee&UI(sef_toggle)&!talent(7,3)&!player.casting(Fists of Fury)&player.spell(Strike of the Windlord).cooldown<24&player.spell(Fists of Fury).cooldown<7&player.spell(Rising Sun Kick).cooldown<7'},
@@ -194,9 +198,10 @@ local inCombat = {
 
 local outCombat = {
 	{Keybinds},
-	{Interrupts_Random},
-	{Interrupts, 'target.interruptAt(70)'},
-	{'Effuse', 'player.health<85&player.lastmoved>0', 'player'},
+  {Interrupts, 'toggle(Interrupts)'},
+	{Interrupts_Random, 'toggle(xIntRandom)&toggle(Interrupts)'},
+  {Dispel, 'toggle(dispels)&!player.spell(Detox).cooldown'},
+	{'Effuse', 'UI(ef_toggle)&player.health<90&player.lastmoved>0', 'player'}, -- Self healing. Toggle in Settings
 	{'%ressdead(Resuscitate)', 'UI(auto_res)'},
 }
 
