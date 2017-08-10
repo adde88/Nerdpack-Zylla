@@ -83,14 +83,14 @@ local Interrupts = {
 	{'!Shadowfury', 'target.range<41&target.inFront&!player.moving&UI(K_SF)&target.interruptAt(70)', 'target.ground'},
 	{'!Shadowfury', 'target.range<41&target.inFront&!player.moving&UI(K_SF)&target.area(10).enemies>2', 'target.ground'},
 	{'!Mortal Coil', 'target.range<30&target.inFront&target.interruptAt(70)', 'target'},
-	{'!89766', 'spell(89766).cooldown<gcd&petrange<9&pet.exists&target.interruptAt(70)', 'target'},
+	{'&89766', 'target.petrange<9&pet.exists&target.interruptAt(70)', 'target'},
 }
 
 local Interrupts_Random = {
 	{'!Shadowfury', 'inFront&range<40&!player.moving&interruptAt(70)&toggle(xIntRandom)&toggle(Interrupts)', 'enemies'},
 	{'!Shadowfury', 'inFront&range<40&!player.moving&toggle(xIntRandom)&toggle(Interrupts)&area(10).enemies>2', 'enemies'},
 	{'!Mortal Coil', 'inFront&range<31&toggle(xIntRandom)&toggle(Interrupts)&interruptAt(70)', 'enemies'},
-	{'!89766', 'spell(89766).cooldown<gcd&petrange<9&pet.exists&interruptAt(70)', 'enemies'},
+	{'&89766', 'petrange<9&pet.exists&interruptAt(70)', 'enemies'},
 }
 
 local Player = {
@@ -127,9 +127,9 @@ local DW_Clip = {
 	{'!Demonic Empowerment', '!player.moving&!player.lastgcd(Demonic Empowerment)&{warlock.empower==0||player.lastgcd(Summon Felguard)||player.lastgcd(Call Dreadstalkers)||player.lastgcd(Hand of Gul\'dan)||player.lastgcd(Summon Darkglare)||player.lastgcd(Summon Doomguard)||player.lastgcd(Grimoire: Felguard)||player.lastgcd(Thal\'kiel\'s Consumption)}'},
 	{'!Doom', '!talent(4,1)&toggle(Doom)&!target.debuff(Doom)'},
 	{'!Life Tap', 'player.mana<40&player.health>05&{!player.lastgcd(Summon Felguard)||!player.lastgcd(Call Dreadstalkers)||!player.lastgcd(Hand of Gul\'dan)||!player.lastgcd(Summon Darkglare)||!player.lastgcd(Summon Doomguard)||!player.lastgcd(Grimoire: Felguard)}'},
-	{'!Demonbolt', '!player.moving&talent(7,2)&!player.petrangesoulshards==4'},
-	{'!Shadow Bolt', '!player.moving&!talent(7,2)&!player.petrangesoulshards==4'},
-	{'!89751', 'spell(89751).cooldown<gcd&petrange<9&player.area(8).enemies>2'},
+	{'!Demonbolt', '!player.moving&talent(7,2)&!player.soulshards==4'},
+	{'!Shadow Bolt', '!player.moving&!talent(7,2)&!player.soulshards==4'},
+	{'&89751', 'target.petrange<9&player.area(8).enemies>2'},
 }
 
 local ST = {
@@ -142,9 +142,9 @@ local ST = {
 	{'Doom', '!talent(4,1)&toggle(Doom)&!target.debuff(Doom)&target.inRanged'},
 	{'Life Tap', 'player.mana<40&player.health>05&{!player.lastgcd(Summon Felguard)||!player.lastgcd(Call Dreadstalkers)||!player.lastgcd(Hand of Gul\'dan)||!player.lastgcd(Summon Darkglare)||!player.lastgcd(Summon Doomguard)||!player.lastgcd(Grimoire: Felguard)}'},
 	{'Demonwrath', 'movingfor>1&player.combat.time>2'},
-	{'Demonbolt', '!player.moving&talent(7,2)&!player.petrangesoulshards==4'},
-	{'Shadow Bolt', '!player.moving&!talent(7,2)&!player.petrangesoulshards==4'},
-	{'!89751', 'spell(89751).cooldown<gcd&petrange<9&player.area(8).enemies>2&pet.exists'},
+	{'Demonbolt', '!player.moving&talent(7,2)&!player.soulshards==4'},
+	{'Shadow Bolt', '!player.moving&!talent(7,2)&!player.soulshards==4'},
+	{'&89751', 'target.petrange<9&player.area(8).enemies>2&pet.exists'},
 }
 
 local inCombat = {
@@ -161,6 +161,7 @@ local inCombat = {
 }
 
 local outCombat = {
+	{'Summon Felguard', '{!pet.exists||!pet.alive}&!talent(6,1)}'},
 	{'Life Tap', 'player.mana<70&player.health>50'},
 	{Interrupts_Random},
 	{Interrupts, 'toggle(Interrupts)'},
