@@ -57,11 +57,6 @@ NeP.DSL:Register('casting.left', function(target, spell)
     return 0
 end)
 
---/dump NeP.DSL:Get('pet_range')()
-NeP.DSL:Register('pet_range', function()
-    return NeP.DSL:Get('petrange')('target')
-end)
-
 --/dump NeP.DSL:Get('indoors')()
 NeP.DSL:Register('indoors', function()
     return IsIndoors()
@@ -1220,14 +1215,6 @@ NeP.DSL:Register('lohraidtank.heals', function()
     return (NeP.DSL:Get('health.actual')('player')*1)
 end)
 
-NeP.DSL:Register('targetcheck', function()
-        if UnitExists('target') and (UnitIsEnemy("player","target")) and not UnitIsDeadOrGhost('target') then
-            return 1
-            else
-            return 0
-        end
-end)
-
 NeP.DSL:Register('partycheck', function()
         if IsInRaid() then
             return 3
@@ -1236,47 +1223,4 @@ NeP.DSL:Register('partycheck', function()
         else
             return 1
         end
-end)
-
-NeP.DSL:Register('totemcheck', function()
-        local haveTotem, _ = GetTotemInfo(1)
-            if haveTotem then
-            return 2
-        else
-            return 1
-        end
-end)
-
-NeP.DSL:Register('trinket1', function()
-        if IsUsableItem(GetInventoryItemID("player", GetInventorySlotInfo("Trinket0Slot"))) then
-            local _, duration, _ = GetItemCooldown(GetInventoryItemID("player", GetInventorySlotInfo("Trinket0Slot")))
-					if (duration==0) then
-            return 1
-
-        else
-            return 0
-        end
-        end
-end)
-
-NeP.DSL:Register('trinket2', function()
-        if IsUsableItem(GetInventoryItemID("player", GetInventorySlotInfo("Trinket1Slot"))) then
-            local _, duration, _ = GetItemCooldown(GetInventoryItemID("player", GetInventorySlotInfo("Trinket1Slot")))
-					if (duration==0) then
-            return 1
-
-        else
-            return 0
-        end
-        end
-end)
-
-NeP.DSL:Register('deadcheck', function(_, target)
-            if UnitExists(target) then
-                if UnitIsDeadOrGhost(target) then
-                    return false
-                else
-                    return true
-                end
-            end
 end)
