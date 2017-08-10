@@ -5,13 +5,24 @@ local Trinkets = _G['Zylla.Trinkets']
 local Heirlooms = _G['Zylla.Heirlooms']
 
 local GUI = {
+	--Logo
+	{type = "texture", texture = "Interface\\AddOns\\Nerdpack-Zylla\\media\\logo.blp", width = 128, height = 128, offset = 90, y = 42, center = true},
+	{type = 'ruler'},	  {type = 'spacer'},
+	-- Keybinds
 	{type = 'header', 	text = 'Keybinds', align = 'center'},
 	{type = 'text', 	text = 'Left Shift: Pause', align = 'center'},
 	{type = 'text', 	text = 'Left Ctrl: ', align = 'center'},
 	{type = 'text', 	text = 'Left Alt: ', align = 'center'},
 	{type = 'text', 	text = 'Right Alt: ', align = 'center'},
-	{type = 'checkbox', text = 'Pause Enabled', key = 'kPause', default = true},
 	{type = 'ruler'},	{type = 'spacer'},
+	-- Settings
+	{type = 'header', 	text = 'Class Settings',	align = 'center'},
+	{type = 'checkbox', text = 'Pause Enabled',		key = 'kPause',	default = true},
+	{type = 'checkbox', text = 'Summon Pet',		key = 'kPet',	default = true},
+	{type = 'ruler'},	  {type = 'spacer'},
+	-- Survival
+	{type = 'header', 	text = 'Survival',	align = 'center'},
+	{type = 'ruler'},	  {type = 'spacer'},
 	-- Trinkets + Heirlooms for leveling
 	{type = 'header', 	text = 'Trinkets/Heirlooms', align = 'center'},
 	{type = 'checkbox', text = 'Use Trinket #1', key = 'kT1', default = true},
@@ -29,7 +40,7 @@ local exeOnLoad = function()
 	print("|cffADFF2F --- |rWARLOCK |cffADFF2FAffliction |r")
 	print("|cffADFF2F --- |rRecommended Talents: 1/2 - 2/2 - 3/1 - 4/1 - 5/3 - 6/3 - 7/2")
 	print('|cffADFF2F ----------------------------------------------------------------------|r')
-
+  print('|cffFFFB2F Configuration: |rRight-click MasterToggle and go to Combat Routines Settings!|r')
 end
 
 local PreCombat = {}
