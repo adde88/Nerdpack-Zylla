@@ -564,11 +564,6 @@ NeP.DSL:Register('warlock.remaining_duration', function(demon)
     return Zylla.remaining_duration(demon)
 end)
 
---/dump NeP.DSL:Get('warlock.empower')()
-NeP.DSL:Register('warlock.empower', function()
-    return Zylla.Empower()
-end)
-
 --/dump NeP.DSL:Get('warlock.count')('Wild Imp')
 NeP.DSL:Register('warlock.count', function(demon)
     return Zylla.count_active_demon_type(demon)
@@ -1276,9 +1271,9 @@ NeP.DSL:Register('trinket2', function()
         end
 end)
 
-NeP.DSL:Register('deadcheck', function()
-            if UnitExists("target") then
-                if UnitIsDeadOrGhost("target") then
+NeP.DSL:Register('deadcheck', function(_, target)
+            if UnitExists(target) then
+                if UnitIsDeadOrGhost(target) then
                     return false
                 else
                     return true
