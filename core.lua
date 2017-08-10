@@ -50,9 +50,6 @@ local UnitIsUnit = UnitIsUnit
 local UnitDebuff = UnitDebuff
 local UnitStagger = UnitStagger
 
-
-
-
 local Zframe = CreateFrame('GameTooltip', 'Zylla_ScanningTooltip', UIParent, 'GameTooltipTemplate')
 
 Zylla.Class = select(3,UnitClass("player"))
@@ -107,7 +104,7 @@ function Zylla.ExeOnLoad()
 end
 
 function Zylla.ExeOnUnload()
-  print('Thank you for using Zylla\'s Combat Routines.')
+  print('|cffFFFB2F Thank you for using Zylla\'s Combat Routines.|r')
 end
 
 -- Global Variables used on many if not all routines.
@@ -1092,23 +1089,23 @@ end)
 -------------------------------- TRAVEL SPEED-----------------------------------
 --------------------------------------------------------------------------------
 
--- List of know spells travel speed. Non charted spells will be considered traveling 40 yards/s
+-- List of known spells travel-speed. Non charted spells will be considered traveling 40 yards/s
 -- To recover travel speed, open up /eventtrace, calculate difference between SPELL_CAST_SUCCESS and SPELL_DAMAGE events
 
 local Travel_Chart = {
-  [116]    = 23.174, -- Frostbolt
-  [228597] = 23.174, -- Frostbolt
-  [133]    = 45.805, -- Fireball
-  [11366]  = 52, -- Pyroblast
-  [29722]  = 18, -- Incinerate
-  [30455]  = 25.588, -- Ice Lance
-  [105174] = 33, -- Hand of Gul'dan
-  [120644] = 10, -- Halo
-  [122121] = 25, -- Divine Star
-  [127632] = 19, -- Cascade
-  [210714] = 38, -- Icefury
-  [51505]  = 38.090, -- Lava Burst
-  [205181] = 32.737, -- Shadowflame
+  [116]    = 23.174,  -- Frostbolt
+  [228597] = 23.174,  -- Frostbolt
+  [133]    = 45.805,  -- Fireball
+  [11366]  = 52,      -- Pyroblast
+  [29722]  = 18,      -- Incinerate
+  [30455]  = 25.588,  -- Ice Lance
+  [105174] = 33,      -- Hand of Gul'dan
+  [120644] = 10,      -- Halo
+  [122121] = 25,      -- Divine Star
+  [127632] = 19,      -- Cascade
+  [210714] = 38,      -- Icefury
+  [51505]  = 38.090,  -- Lava Burst
+  [205181] = 32.737,  -- Shadowflame
 }
 
 -- Return the time a spell will need to travel to the current target
@@ -1141,31 +1138,32 @@ end)
 
 --[[
 NeP.Listener:Add('Zylla_Listener_TravelSpeed', 'COMBAT_LOG_EVENT_UNFILTERED', function(timestamp, combatevent, hideCaster, sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags, spellID, spellName, spellSchool, amount, ...)
-if Zylla.TTTL_enable == true then
-if (combatevent == "SPELL_CAST_SUCCESS" and sourceName == UnitName("player")) then
-if spellID ~= 228597 then
-print('SPELL_CAST_SUCCESS: '..spellName..', '..spellID)
-Zylla.start_timer = GetTime()
-mirror_name = spellName
-end
-end
-if (combatevent == "SPELL_DAMAGE" and spellName == mirror_name and sourceName == UnitName("player")) then
-print('SPELL_DAMAGE: '..spellName..', '..spellID)
-if uniqID == nil then uniqID = 0 end
-uniqID = uniqID + 1
-Zylla.TTTL_table[uniqID] = {}
-Zylla.TTTL_table[uniqID].name = spellName
-Zylla.TTTL_table[uniqID].spellID = spellID
-Zylla.TTTL_table[uniqID].start = Zylla.start_timer
-Zylla.TTTL_table[uniqID].distance = NeP.DSL:Get('range')('target')
-Zylla.TTTL_table[uniqID].finish = GetTime()
-Zylla.TTTL_table[uniqID].travel_time = 0
-Zylla.TTTL_table[uniqID].travel_speed = 0
-Zylla.TTTL_calc_tt()
-end
-end
+  if Zylla.TTTL_enable == true then
+    if (combatevent == "SPELL_CAST_SUCCESS" and sourceName == UnitName("player")) then
+      if spellID ~= 228597 then
+        print('SPELL_CAST_SUCCESS: '..spellName..', '..spellID)
+        Zylla.start_timer = GetTime()
+        mirror_name = spellName
+      end
+    end
+    if (combatevent == "SPELL_DAMAGE" and spellName == mirror_name and sourceName == UnitName("player")) then
+      print('SPELL_DAMAGE: '..spellName..', '..spellID)
+      if uniqID == nil then uniqID = 0 end
+        uniqID = uniqID + 1
+        Zylla.TTTL_table[uniqID] = {}
+        Zylla.TTTL_table[uniqID].name = spellName
+        Zylla.TTTL_table[uniqID].spellID = spellID
+        Zylla.TTTL_table[uniqID].start = Zylla.start_timer
+        Zylla.TTTL_table[uniqID].distance = NeP.DSL:Get('range')('target')
+        Zylla.TTTL_table[uniqID].finish = GetTime()
+        Zylla.  TTTL_table[uniqID].travel_time = 0
+        Zylla.TTTL_table[uniqID].travel_speed = 0
+        Zylla.TTTL_calc_tt()
+      end
+    end
+  end
 end)
---]]
+]]--
 
 -------------------------
 -- Gabbz fake units + misc
