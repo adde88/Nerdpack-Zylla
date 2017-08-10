@@ -5,6 +5,10 @@ local Trinkets = _G['Zylla.Trinkets']
 local Heirlooms = _G['Zylla.Heirlooms']
 
 local GUI = {
+	-- Logo
+  {type = "texture", texture = "Interface\\AddOns\\Nerdpack-Zylla\\media\\logo.blp", width = 128, height = 128, offset = 90, y = 42, center = true},
+  {type = 'ruler'},	  {type = 'spacer'},
+	-- Keybinds
 	{type = 'header', 	text = 'Keybinds', align = 'center'},
 	{type = 'text', 	text = 'Left Shift: Pause', align = 'center'},
 	{type = 'text', 	text = 'Left Ctrl: ', align = 'center'},
@@ -12,6 +16,19 @@ local GUI = {
 	{type = 'text', 	text = 'Right Alt: ', align = 'center'},
 	{type = 'checkbox', text = 'Pause Enabled', key = 'kPause', default = true},
 	{type = 'ruler'},	{type = 'spacer'},
+	-- Survival
+  {type = 'header', 	text = 'Survival',									  	      align = 'center'},
+	{type = 'checkbox', text = 'Enable Healing Surge',								key = 'E_HS',           default = false},
+  {type = 'spinner', 	text = 'Healing Surge below HP%',             key = 'HS_HP',          default = 50},
+	{type = 'spinner', 	text = 'Astral Shift below HP%',             key = 'AS_HP',          default = 40},
+  {type = 'ruler'},	  {type = 'spacer'},
+	-- Group/Party stuff...
+  {type = 'header', 	text = 'Party/Group',									  	    align = 'center'},
+	{type = 'checkbox', text = 'Heal Lowest Party Member',						key = 'E_HEAL',        default = false},
+  {type = 'spinner', 	text = 'below HP%',             							key = 'L_HS_HP',       default = 33},
+	{type = 'checkbox', text = 'Use Rainfall to Heal Party',					key = 'E_HEAL_RF',     default = false},
+	{type = 'spinner', 	text = 'below HP%',             							key = 'L_RF_HP',       default = 33},
+  {type = 'ruler'},	  {type = 'spacer'},
 	-- Trinkets + Heirlooms for leveling
 	{type = 'header', 	text = 'Trinkets/Heirlooms', align = 'center'},
 	{type = 'checkbox', text = 'Use Trinket #1', key = 'kT1', default = true},
@@ -26,9 +43,17 @@ local exeOnLoad = function()
 	Zylla.AFKCheck()
 
 	print('|cffADFF2F ----------------------------------------------------------------------|r')
-	print('|cffADFF2F --- |rSHAMAN |cffADFF2FEnhancement (SimCraft) |r')
+	print('|cffADFF2F --- |rShaman |cffADFF2FEnhancement (SimCraft) |r')
 	print('|cffADFF2F --- |rRecommended Talents: 1/3 - 2/X - 3/X - 4/3 - 5/1 - 6/1 - 7/2')
 	print('|cffADFF2F ----------------------------------------------------------------------|r')
+  print('|cffFFFB2F Configuration: |rRight-click MasterToggle and go to Combat Routines Settings!|r')
+
+	NeP.Interface:AddToggle({
+	 key = 'xIntRandom',
+	 name = 'Interrupt Anyone',
+	 text = 'Interrupt all nearby enemies, without targeting them.',
+	 icon = 'Interface\\Icons\\inv_ammo_arrow_04',
+ })
 
 end
 
@@ -44,11 +69,16 @@ local PreCombat = {
 }
 
 local Survival = {
-	{'!Healing Surge', 'player.health<80&player.maelstrom>10', 'player'},
+	{'!Healing Surge', 'UI(E_HS)&player.health<=UI(HS_HP)&player.maelstrom>10', 'player'},
+}
+
+local Party = {
+	{'!Healing Surge', 'UI(E_HEAL)&health<UI(L_HS_HP)&player.maelstrom>10&range<41', 'lowest'},
+	{'!Rainfall', 'advanced&UI(E_HEAL_RF)&health<UI(L_RF_HP)&player.maelstrom>10&range<41', 'lowest.ground'}
 }
 
 local Cooldowns = {
-	{'Astral Shift', 'player.health<=40'},
+	{'Astral Shift', 'player.health<=(AS_HP)'},
 	{'Feral Spirit', 'player.maelstrom>=20&player.spell(Crash Lightning).cooldown<=gcd'},
 	{'Berserking', 'player.buff(Ascendance)||player.buff(Feral Spirit).duration>5||player.level<100'},
 	{'Blood Fury', 'player.buff(Ascendance)||player.buff(Feral Spirit).duration>5||player.level<100'},
@@ -58,6 +88,11 @@ local Cooldowns = {
 
 local Interrupts = {
 	{'!Wind Shear'},
+}
+
+local Interrupts_Random = {
+	{'!Wind Shear', 'interruptAt(70)&toggle(xIntRandom)&toggle(Interrupts)&range<41', 'enemies'},
+  {'!Lightning Surge Totem', 'interruptAt(1)&toggle(xIntRandom)&toggle(Interrupts)&player.spell(Wind Shear).cooldown>gcd&!prev_gcd(Wind Shear)&inFront&range<41', 'enemies.ground'},
 }
 
 local xCombat = {
@@ -102,7 +137,8 @@ local xCombat = {
 }
 
 local Ranged = {
-	{'Lightning Bolt', nil, 'target'}
+	{'Lightning Bolt', 'range>8&range<41&InFront', 'target'},
+	{'Feral Lunge', 'range>10&range<25&InFront', 'target'}
 }
 
 local inCombat = {
@@ -110,16 +146,21 @@ local inCombat = {
 	{Trinkets},
 	{Heirlooms},
 	{Keybinds},
+	{Interrupts_Random},
 	{Interrupts, 'target.interruptAt(70)&toggle(Interrupts)&target.inFront&target.range<40'},
-	{Survival, 'player.health<100'},
+	{Survival},
+	{Party},
 	{Cooldowns, 'toggle(Cooldowns)'},
-	{xCombat, 'target.inMelee&target.inFront'},
-	{Ranged, '!target.inMelee&target.range<41&target.inFront'}
+	{xCombat, 'target.range<=8&target.inFront'},
+	{Ranged}
 }
 
 local outCombat = {
 	{Keybinds},
-	{PreCombat}
+	{PreCombat},
+	{Interrupts_Random},
+	{Interrupts, 'target.interruptAt(70)&toggle(Interrupts)&target.inFront&target.range<40'},
+	{'!Healing Surge', 'UI(E_HS)&player.health<90', 'player'},
 }
 
 NeP.CR:Add(263, {
