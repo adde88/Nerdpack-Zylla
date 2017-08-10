@@ -5,6 +5,9 @@ local Trinkets = _G['Zylla.Trinkets']
 local Heirlooms = _G['Zylla.Heirlooms']
 
 local GUI= {
+	--Logo
+  {type = "texture", texture = "Interface\\AddOns\\Nerdpack-Zylla\\media\\logo.blp", width = 128, height = 128, offset = 90, y = 42, center = true},
+  {type = 'ruler'},	  {type = 'spacer'},
 	-- General
 	{type = 'header', 		text = 'General', 								align = 'center'},
 	{type='checkbox',		text = 'Multi-Dot (Target/Focus/MousOver)',		key='multi', 	default=true},
@@ -15,8 +18,7 @@ local GUI= {
 	{type = 'header', 		text = 'Survival', align = 'center'},
 	{type='spinner', 		text = 'Crimson Vial', 							key='cv', 		default_spin=65},
 	{type='spinner', 		text = 'Evasion (HP%)', 							key='E_HP', 	default_spin=40},
-	{type='checkspin', 		text = 'Health Potion', 							key='hp', 		default_check=true, default_spin=25},
-	{type='checkspin',		text = 'Healthstone', 							key='hs', 		default_check=true, default_spin=25},
+	{type = 'spinner',	text = 'Healthstone / Healing Potions',      key = 'Health Stone',	  default = 45},
 	{type='ruler'},			{type='spacer'},
 	--Cooldowns
 	{type = 'header', 		text = 'Cooldowns When Toggled ON', 				align = 'center'},
@@ -40,9 +42,28 @@ local exeOnLoad=function()
 	print("|cffADFF2F --- |Rogue |cffADFF2FAssassination|r")
 	print("|cffADFF2F ---")
 	print("|cffADFF2F --- |rRecommended Talents: 1,1 / 2,1 / 3,3 / any / any / 6,1 or 6,2 / 7,1")
-	print("|cffADFF2F ---------------------------------------------------------------------------|r")
+  print('|cffADFF2F ----------------------------------------------------------------------|r')
+  print('|cffFFFB2F Configuration: |rRight-click MasterToggle and go to Combat Routines Settings!|r')
+
+	NeP.Interface:AddToggle({
+		key='xStealth',
+		name='Auto Stealth',
+		text = 'If Enabled we will automatically use Stealth out of combat.',
+		icon='Interface\\Icons\\ability_stealth',
+	})
+
+	NeP.Interface:AddToggle({
+		key='xPickPock',
+		name='Pick Pocket',
+		text = 'If Enabled we will automatically Pick Pocket enemies out of combat.',
+		icon='Interface\\Icons\\inv_misc_bag_11',
+	})
 
 end
+
+local Keybinds = {
+	{'%pause', 'keybind(lshift)&UI(kPause)'},
+}
 
 local Interrupts = {
 	{'!Kick', 'target.inMelee&target.inFront'},
@@ -60,8 +81,8 @@ local Survival = {
 	--{'Feint', ''},
 	{'Crimson Vial', 'player.health<=UI(cv)&player.energy>25'},
 	{'Evasion', 'player.health<=UI(E_HP)'},
-	{'#Ancient Healing Potion', 'UI(hp_check)&player.health<=UI(hp_spin)'},
-	{'#Healthstone', 'UI(hs_check)&player.health<=UI(hs_spin)'},
+	{'#127834', 'item(127834).count>0&player.health<UI(Health Stone)'},        -- Ancient Healing Potion
+	{'#5512', 'item(5512).count>0&player.health<UI(Health Stone)', 'player'},  --Health Stone
 	{'Cloak of Shadows', 'incdmg(5).magic>player.health.max'},
 }
 
@@ -136,9 +157,10 @@ local outCombat= {
 	{Poisons},
 	{'Rupture', 'target.inMelee&target.enemy&player.buff(Vanish)'},
 	{'Garrote', 'target.inMelee&target.enemy&player.buff(Stealth)&player.combopoints<5&target.debuff.duration<6.4'},
-	{'Stealth', '!player.buff&!player.buff(Vanish)&!nfly'},
+	{'Stealth', 'toggle(xStealth)&!player.buff&!player.buff(Vanish)&!nfly'},
 	{Keybinds},
 	{preCombat},
+	{'Pick Pocket', 'toggle(xPickPock)&enemy&alive&range<=10&player.buff(Stealth)' ,'enemies'},
 }
 
 NeP.CR:Add(259, {

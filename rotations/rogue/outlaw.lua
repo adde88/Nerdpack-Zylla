@@ -5,14 +5,18 @@ local Trinkets = _G['Zylla.Trinkets']
 local Heirlooms = _G['Zylla.Heirlooms']
 
 local GUI = {
-	{type = 'header', 	text = 'Keybinds', align = 'center'},
+	--Logo
+  {type = "texture", texture = "Interface\\AddOns\\Nerdpack-Zylla\\media\\logo.blp", width = 128, height = 128, offset = 90, y = 42, center = true},
+  {type = 'ruler'},	  {type = 'spacer'},
+	-- General
+	{type = 'header', 	text = 'General', align = 'center'},
 	{type = 'text', 	text = 'Left Shift: Pause', align = 'center'},
 	{type = 'text', 	text = 'Left Ctrl: Cannonball Barrage (Cursor}', align = 'center'},
 	{type = 'text', 	text = 'Left Alt: Grappling Hook (Cursor)', align = 'center'},
 	{type = 'text', 	text = 'Right Alt: ', align = 'center'},
 	{type = 'checkbox', text = 'Pause Enabled', key = 'kPause', default = true},
 	{type = 'ruler'},	{type = 'spacer'},
-  	-- Survival
+  -- Survival
 	{type = 'header', 	text = 'Survival',							align = 'center'},
 	{type = 'spinner',	text = 'Use Crisom Vial when below %',		key = 'h_CV',	default = 75},
 	{type = 'spinner',	text = 'Use Riposte when below %',			key = 'h_RIP',	default = 25},
@@ -34,21 +38,36 @@ local exeOnLoad = function()
 	print("|cffFFFF00 ----------------------------------------------------------------------|r")
 	print("|cffFFFF00 --- |rRogue |cffFFF569Outlaw |r")
 	print("|cffFFFF00 --- |rRecommended Talents: 1/1 - 2/3 - 3/1 - 4/X - 5/1 - 6/2 - 7/2")
-	print("|cffFFFF00 ----------------------------------------------------------------------|r")
+  print('|cffADFF2F ----------------------------------------------------------------------|r')
+  print('|cffFFFB2F Configuration: |rRight-click MasterToggle and go to Combat Routines Settings!|r')
 
-		NeP.Interface:AddToggle({
+	NeP.Interface:AddToggle({
 		key='opener',
 		name='Opener',
 		text = 'If Enabled we will Open with Ambush when Stealthed. If not Cheap Shot will be used.',
 		icon='Interface\\Icons\\ability_rogue_ambush',
 	})
-	
-		NeP.Interface:AddToggle({
+
+	NeP.Interface:AddToggle({
 		key='xStealth',
 		name='Auto Stealth',
 		text = 'If Enabled we will automatically use Stealth out of combat.',
 		icon='Interface\\Icons\\ability_stealth',
 	})
+
+	NeP.Interface:AddToggle({
+		key='xPickPock',
+		name='Pick Pocket',
+		text = 'If Enabled we will automatically Pick Pocket enemies out of combat.',
+		icon='Interface\\Icons\\inv_misc_bag_11',
+	})
+
+  NeP.Interface:AddToggle({
+   key = 'xIntRandom',
+   name = 'Interrupt Anyone',
+   text = 'Interrupt all nearby enemies, without targeting them.',
+   icon = 'Interface\\Icons\\inv_ammo_arrow_04',
+ })
 
 end
 
@@ -67,10 +86,14 @@ local Keybinds = {
 }
 
 local Interrupts = {
-	{'!Kick', 'target.inMelee'},
-	{'!Between the Eyes', 'target.range<30&cooldown(Kick).remains>gcd&combo_points>0'},
-	{'!Blind', 'target.range<25&cooldown(Kick).remains>gcd&cooldown(Between the Eyes)>gcd'},
-	{'!Cloak of Shadows', 'cooldown(Kick).remains>gcd&cooldown(Between the Eyes)>gcd&cooldown(Blind)>gcd'},
+	{'!Kick', 'target.inMelee&target.inFront'},
+	{'!Between the Eyes', 'target.range<21&target.inFront&player.spell(Kick).cooldown>gcd&combo_points>0&!player.lastgcd(Kick)'},
+	{'!Cloak of Shadows', 'player.spell(Kick).cooldown>gcd&player.spell(Between the Eyes).cooldown>gcd'},
+}
+
+local Interrupts_Random = {
+	{'!Kick', 'interruptAt(70)&inFront&inMelee', 'enemies'},
+  {'!Between the Eyes', 'interruptAt(70)&player.spell(Kick).cooldown>gcd&!player.lastgcd(Kick)&inFront&range<21', 'enemies'},
 }
 
 local Build = {
@@ -99,9 +122,9 @@ local Cooldowns = {
 }
 
 local RollingBones ={
-	{'Roll the Bones', 'player.combopoints>4&!player.talent(7,1)&!player.buff(Broadsides)&!player.buff(Jolly Roger)&!player.buff(Grand Melee)&!player.buff(Shark Infested Waters)&!player.buff(True Bearing)&!player.buff(Buried Treasure)'},
-	{'Roll the Bones', 'player.combopoints>4&!player.talent(7,1)&player.spell(Adrenaline Rush).cooldown>15&player.spell(Curse of the Dreadblades).cooldown>15&!player.talent(7,1)&player.buff(Broadsides)&!player.buff(Jolly Roger)&!player.buff(Grand Melee)&!player.buff(Shark Infested Waters)&!player.buff(True Bearing)&!player.buff(Buried Treasure)||player.combopoints>4&!player.talent(7,1)&player.spell(Adrenaline Rush).cooldown>15&player.spell(Curse of the Dreadblades).cooldown>15&!player.buff(Broadsides)&player.buff(Jolly Roger)&!player.buff(Grand Melee)&!player.buff(Shark Infested Waters)&!player.buff(True Bearing)&!player.buff(Buried Treasure)||player.combopoints>4&!player.talent(7,1)&player.spell(Adrenaline Rush).cooldown>15&player.spell(Curse of the Dreadblades).cooldown>15&!player.buff(Broadsides)&!player.buff(Jolly Roger)&player.buff(Grand Melee)&!player.buff(Shark Infested Waters)&!player.buff(True Bearing)&!player.buff(Buried Treasure)||player.combopoints>4&!player.talent(7,1)&player.spell(Adrenaline Rush).cooldown>15&player.spell(Curse of the Dreadblades).cooldown>15&!player.buff(Broadsides)&!player.buff(Jolly Roger)&!player.buff(Grand Melee)&player.buff(Shark Infested Waters)&!player.buff(True Bearing)&!player.buff(Buried Treasure)||player.combopoints>4&!player.talent(7,1)&player.spell(Adrenaline Rush).cooldown>15&player.spell(Curse of the Dreadblades).cooldown>15&!player.buff(Broadsides)&!player.buff(Jolly Roger)&!player.buff(Grand Melee)&!player.buff(Shark Infested Waters)&!player.buff(True Bearing)&player.buff(Buried Treasure)'},
-	{'Roll the Bones', '!RtB'},
+	--{'Roll the Bones', 'player.combopoints>4&!player.talent(7,1)&!player.buff(Broadsides)&!player.buff(Jolly Roger)&!player.buff(Grand Melee)&!player.buff(Shark Infested Waters)&!player.buff(True Bearing)&!player.buff(Buried Treasure)'},
+	--{'Roll the Bones', 'player.combopoints>4&!player.talent(7,1)&player.spell(Adrenaline Rush).cooldown>15&player.spell(Curse of the Dreadblades).cooldown>15&!player.talent(7,1)&player.buff(Broadsides)&!player.buff(Jolly Roger)&!player.buff(Grand Melee)&!player.buff(Shark Infested Waters)&!player.buff(True Bearing)&!player.buff(Buried Treasure)||player.combopoints>4&!player.talent(7,1)&player.spell(Adrenaline Rush).cooldown>15&player.spell(Curse of the Dreadblades).cooldown>15&!player.buff(Broadsides)&player.buff(Jolly Roger)&!player.buff(Grand Melee)&!player.buff(Shark Infested Waters)&!player.buff(True Bearing)&!player.buff(Buried Treasure)||player.combopoints>4&!player.talent(7,1)&player.spell(Adrenaline Rush).cooldown>15&player.spell(Curse of the Dreadblades).cooldown>15&!player.buff(Broadsides)&!player.buff(Jolly Roger)&player.buff(Grand Melee)&!player.buff(Shark Infested Waters)&!player.buff(True Bearing)&!player.buff(Buried Treasure)||player.combopoints>4&!player.talent(7,1)&player.spell(Adrenaline Rush).cooldown>15&player.spell(Curse of the Dreadblades).cooldown>15&!player.buff(Broadsides)&!player.buff(Jolly Roger)&!player.buff(Grand Melee)&player.buff(Shark Infested Waters)&!player.buff(True Bearing)&!player.buff(Buried Treasure)||player.combopoints>4&!player.talent(7,1)&player.spell(Adrenaline Rush).cooldown>15&player.spell(Curse of the Dreadblades).cooldown>15&!player.buff(Broadsides)&!player.buff(Jolly Roger)&!player.buff(Grand Melee)&!player.buff(Shark Infested Waters)&!player.buff(True Bearing)&player.buff(Buried Treasure)'},
+	{'Roll the Bones', 'player.combopoints>4&!player.talent(7,1)&!RtB'},
 }
 
 local TricksofTrade = {
@@ -110,7 +133,7 @@ local TricksofTrade = {
 }
 
 local Stealth_Opener = {
-	{'Stealth', '&toggle(xStealth)&!player.buff&!player.buff(Vanish)&!nfly'},
+	{'Stealth', 'toggle(xStealth)&!player.buff&!player.buff(Vanish)&!nfly'},
 	{'Ambush', 'target.enemy&target.inMelee&target.inFront&player.buff(Stealth)&toggle(opener)'},
 	{'Cheap Shot', 'target.enemy&target.inMelee&target.inFront&player.buff(Stealth)&!toggle(opener)'},
 }
@@ -128,7 +151,8 @@ local inCombat = {
 	{Trinkets},
 	{Heirlooms},
 	{Keybinds},
-	{Interrupts, 'target.interruptAt(70)&toggle(Interrupts)&target.inFront&target.inMelee'},
+  {Interrupts_Random, 'toggle(xIntRandom)&toggle(Interrupts)'},
+	{Interrupts, 'target.interruptAt(70)&toggle(Interrupts)'},
 	{Survival, 'player.health<100'},
 	{xCombat, 'target.inFront&target.inMelee'},
 	{TricksofTrade},
@@ -136,8 +160,12 @@ local inCombat = {
 
 local outCombat = {
 	{Stealth_Opener},
+  {Blade_Flurry},
 	{Keybinds},
 	{TricksofTrade},
+  {Interrupts_Random, 'toggle(xIntRandom)&toggle(Interrupts)'},
+	{Interrupts, 'target.interruptAt(70)&toggle(Interrupts)'},
+	{'Pick Pocket', 'toggle(xPickPock)&enemy&alive&range<=10&player.buff(Stealth)', 'enemies'},
 }
 
 NeP.CR:Add(260, {
