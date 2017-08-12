@@ -119,6 +119,7 @@ local xCombat = {
 	{'Stormstrike'},
 	{'Lightning Bolt', 'talent(5,2)&player.maelstrom>50'},
 	{'Lava Lash', 'player.buff(Hot Hand)'},
+	{'Lava Lash', 'player.maelstrom>40'},
 	{'Earthen Spike'},
 	{'Frostbrand', 'talent(4,3)&player.buff(Frostbrand).remains<4.5'},
 	{'Flametongue', 'player.buff(Flametongue).remains<4.5'},
