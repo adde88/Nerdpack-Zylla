@@ -79,7 +79,7 @@ local Survival = {
 	{'!Healing Surge', '!moving&UI(E_HS)&player.health<UI(HS_HP)&player.maelstrom>10', 'player'},
 	{'!Rainfall', 'UI(E_RF_PL)&player.health<UI(P_RF_HP)&player.maelstrom>10&range<41', 'player.ground'},
 	{'#127834', 'item(127834).count>0&player.health<UI(AHP)'},        -- Ancient Healing Potion
-  {'#5512', 'item(5512).count>0&player.health<UI(HS)', 'player'}	  --Health Stone
+	{'#5512', 'item(5512).count>0&player.health<UI(HS)', 'player'}	  --Health Stone
 }
 
 local Party = {
@@ -89,7 +89,7 @@ local Party = {
 
 local Cooldowns = {
 	{'Astral Shift', 'player.health<=(AS_HP)', 'player'},
-	{'Feral Spirit', 'player.buff(Ascendance)||player.hashero', 'player'},
+	{'Feral Spirit', nil, 'player'},
 	{'Berserking', 'player.buff(Ascendance)||player.buff(Feral Spirit).duration>5||player.level<110', 'player'},
 	{'Blood Fury', 'player.buff(Ascendance)||player.buff(Feral Spirit).duration>5||player.level<110', 'player'},
 	{'Doom Winds', '{player.spell(Flametongue).cooldown<gcd}||{talent(4,3)&player.spell(Frostbrand).cooldown<gcd}', 'player'},
