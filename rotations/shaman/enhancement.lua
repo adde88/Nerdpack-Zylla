@@ -89,7 +89,7 @@ local Party = {
 
 local Cooldowns = {
 	{'Astral Shift', 'player.health<=(AS_HP)', 'player'},
-	{'Feral Spirit', nil, 'player'},
+	{'Feral Spirit', 'player.buff(Ascendance)||player.spell(Ascendance).cooldown>gcd', 'player'},
 	{'Berserking', 'player.buff(Ascendance)||player.buff(Feral Spirit).duration>5||player.level<110', 'player'},
 	{'Blood Fury', 'player.buff(Ascendance)||player.buff(Feral Spirit).duration>5||player.level<110', 'player'},
 	{'Doom Winds', '{player.spell(Flametongue).cooldown<gcd}||{talent(4,3)&player.spell(Frostbrand).cooldown<gcd}', 'player'},
