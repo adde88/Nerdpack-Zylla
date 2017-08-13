@@ -109,7 +109,6 @@ local Interrupts_Random = {
 local xCombat = {
 	{'Windstrike', 'player.buff(Ascendance)||lastcast(Ascendance)'},
 	{'Crash Lightning', '{toggle(AoE)&{player.area(8).enemies>=2||player.buff(Lightning Crash).duration<gcd}}||{!toggle(AoE)&player.buff(Lightning Crash).duration<gcd}'},
-	{'Crash Lightning', 'lastgcd(Feral Spirit)'},
 	{'Stormstrike', '!talent(4,3)&player.area(8).enemies>2'},
 	{'Stormstrike', 'player.buff(Stormbringer)'},
 	{'Frostbrand', 'talent(4,3)&player.buff(Frostbrand).remains<gcd'},
@@ -138,13 +137,14 @@ local inCombat = {
 	{Trinkets},
 	{Heirlooms},
 	{Keybinds},
-	{Interrupts_Random},
-	{Interrupts, 'target.interruptAt(70)&toggle(Interrupts)&target.range<41'},
-	{Survival},
-	{Party},
-	{Cooldowns, 'toggle(Cooldowns)'},
-	{xCombat, 'target.inMelee&target.inFront'},
-	{Ranged}
+	{Interrupts_Random, '!player.lastgcd(Feral Spirit)'},
+	{Interrupts, '!player.lastgcd(Feral Spirit)&target.interruptAt(70)&toggle(Interrupts)&target.range<41'},
+	{Survival, '!player.lastgcd(Feral Spirit)'},
+	{Party, '!player.lastgcd(Feral Spirit)'},
+	{Cooldowns, 'toggle(Cooldowns)&!player.lastgcd(Feral Spirit)'},
+	{'Crash Lightning', 'target.inMelee&target.inFront&player.lastgcd(Feral Spirit)'},
+	{xCombat, 'target.inMelee&target.inFront&!player.lastgcd(Feral Spirit)'},
+	{Ranged, '!player.lastgcd(Feral Spirit)'}
 }
 
 local outCombat = {
