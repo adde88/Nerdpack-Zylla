@@ -197,7 +197,7 @@ local outCombat = {
 
 NeP.CR:Add(105, {
 	name='[|cff'..Zylla.addonColor..'Zylla\'s|r] Druid - Restoration',
-	ic =  {inCombat, '!player.channeling (Tranquility)'},
+	ic =  {{inCombat, '!player.channeling(Tranquility)'}},
 	ooc = outCombat,
 	gui = GUI,
 	ids = Zylla.SpellIDs[Zylla.Class],
