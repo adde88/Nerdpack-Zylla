@@ -48,7 +48,7 @@ local exeOnLoad = function()
   Zylla.AFKCheck()
 
   print('|cffADFF2F ----------------------------------------------------------------------|r')
-  print('|cffADFF2F --- |rHunter |cffADFF2FBeast Mastery [T-20] |r')
+  print('|cffADFF2F --- |rHunter |cffADFF2FBeast Mastery|r')
   print('|cffADFF2F --- |rRecommended Talents: 1/2 - 2/1 - 3/X - 4/2 - 5/X - 6/1 - 7/2')
   print('|cffADFF2F ----------------------------------------------------------------------|r')
   print('|cffFFFB2F Configuration: |rRight-click MasterToggle and go to Combat Routines Settings!|r')
@@ -103,13 +103,13 @@ local Cooldowns = {
 }
 
 local Interrupts_Normal = {
-	{'!Counter Shot'},
-	{'!Intimidation', 'player.spell(Counter Shot).cooldown>gcd&!prev_gcd(Counter Shot)&!target.immune(Stun)'},
+  {'!Counter Shot'},
+  {'!Intimidation', 'player.spell(Counter Shot).cooldown>gcd&!prev_gcd(Counter Shot)&!target.immune(Stun)'},
   {'!Freezing Trap', 'UI(FT_Int)&player.spell(Counter Shot).cooldown>gcd&!prev_gcd(Counter Shot)', 'target.ground'},
 }
 
 local Interrupts_Random = {
-	{'!Counter Shot', 'interruptAt(70)&toggle(xIntRandom)&toggle(Interrupts)&inFront&range<41', 'enemies'},
+  {'!Counter Shot', 'interruptAt(70)&toggle(xIntRandom)&toggle(Interrupts)&inFront&range<41', 'enemies'},
   {'!Intimidation', 'interruptAt(70)&toggle(xIntRandom)&toggle(Interrupts)&player.spell(Counter Shot).cooldown>gcd&!prev_gcd(Counter Shot)&inFront&range<41', 'enemies'},
   {'!Freezing Trap', 'UI(FT_Int)&interruptAt(1)&toggle(xIntRandom)&toggle(Interrupts)&player.spell(Counter Shot).cooldown>gcd&!prev_gcd(Counter Shot)&range<41', 'enemies.ground'},
 }
@@ -134,8 +134,8 @@ local xPet = {
     {'Heart of the Phoenix', '!player.debuff(Weakened Heart)&player.combat'},     -- Heart of the Phoenix
     {'Revive Pet'} 																                                -- Revive Pet
   }, {'pet.dead', 'UI(kPet)'}},
-  {'!Kill Command', '{pet.exists&pet.alive&{talent(4,3)&petrange<31}||{petrange<10}}', 'target'},
-  {'Misdirection', 'player.spell(Misdirection).cooldown<=gcd&toggle(xMisdirect)', 'focus'},
+  {'!Kill Command', 'alive&combat&pet.exists&pet.alive&{{talent(4,3)&petrange<31}||petrange<10}', 'target'},
+  {'/cast [@focus, help] [@pet, nodead, exists] Misdirection', 'player.spell(Misdirection).cooldown<gcd&toggle(xMisdirect)}&{player.combat}||{!player.combat&dbm(pull in)<3}'},
 }
 
 local xPvP = {
