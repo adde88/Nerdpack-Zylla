@@ -6,7 +6,7 @@ local Heirlooms = _G['Zylla.Heirlooms']
 
 local GUI = {
 	--Logo
-	{type = "texture", texture = "Interface\\AddOns\\Nerdpack-Zylla\\media\\logo.blp", width = 128, height = 128, offset = 90, y = 42, center = true},
+	{type = 'texture', texture = 'Interface\\AddOns\\Nerdpack-Zylla\\media\\logo.blp', width = 128, height = 128, offset = 90, y = 42, center = true},
 	{type = 'ruler'},	  {type = 'spacer'},
 	-- GUI Survival
 	{type = 'header', text = 'Survival', align = 'center'},
@@ -150,13 +150,13 @@ local DS_Castable = {
 }
 
 local Templar = {
-	{"Templar's Verdict", 'target.debuff(Judgment)&player.buff(Divine Purpose).duration<gcd*2', 'target'},
-	{"Templar's Verdict", 'target.debuff(Judgment)&player.holypower>=5&player.buff(Divine Purpose)', 'target'},
-	{"Templar's Verdict", 'target.debuff(Judgment)&player.holypower>=3&{player.buff(Crusade).stack<15|||player.buff(137048)}', 'target'},
-	{"Templar's Verdict", 'target.debuff(Judgment)&player.holypower>=5&{!equipped(137048)||{equipped(137048)&||player.race(Blood Elf)}}', 'target'},
-	{"Templar's Verdict", '{equipped(137020)||target.debuff(Judgment)}&player.spell(Wake of Ashes).cooldown<gcd*2&{!talent(7,2)||player.buff(Crusade).duration>gcd*3}', 'target'},
-	{"Templar's Verdict", 'target.debuff(Judgment)&player.buff(Whisper of the Nathrezim).duration<gcd*1.5&{{!talent(7,2)||player.buff(Crusade).duration>gcd*3}}', 'target'},
-	{"Templar's Verdict", 'player.holypower>=3&{player.spell(Judgment).cooldown&!target.debuff(Judgment)}', 'target'}, -- Attempt to fix target-issue with Judgment
+	{'Templar\'s Verdict', 'target.debuff(Judgment)&player.buff(Divine Purpose).duration<gcd*2', 'target'},
+	{'Templar\'s Verdict', 'target.debuff(Judgment)&player.holypower>=5&player.buff(Divine Purpose)', 'target'},
+	{'Templar\'s Verdict', 'target.debuff(Judgment)&player.holypower>=3&{player.buff(Crusade).stack<15|||player.buff(137048)}', 'target'},
+	{'Templar\'s Verdict', 'target.debuff(Judgment)&player.holypower>=5&{!equipped(137048)||{equipped(137048)&||player.race(Blood Elf)}}', 'target'},
+	{'Templar\'s Verdict', '{equipped(137020)||target.debuff(Judgment)}&player.spell(Wake of Ashes).cooldown<gcd*2&{!talent(7,2)||player.buff(Crusade).duration>gcd*3}', 'target'},
+	{'Templar\'s Verdict', 'target.debuff(Judgment)&player.buff(Whisper of the Nathrezim).duration<gcd*1.5&{{!talent(7,2)||player.buff(Crusade).duration>gcd*3}}', 'target'},
+	{'Templar\'s Verdict', 'player.holypower>=3&{player.spell(Judgment).cooldown&!target.debuff(Judgment)}', 'target'}, -- Attempt to fix target-issue with Judgment
 }
 
 
@@ -165,8 +165,8 @@ local Combat = {
 	{Templar},
 	{'Execution Sentence','player.area(6).enemies<=3&{player.spell(Judgment).cooldown<gcd*4.5||target.debuff(Judgment).duration>gcd*4.5}', 'target'},
 	{'Divine Storm', 'toggle(aoe)&target.debuff(Judgment)&player.area(6).enemies>=2&player.holypower>=3&{player.buff(Crusade).stack<15||player.buff(137048)}', 'target'},
-	{"Justicar's Vengeance", 'target.debuff(Judgment)&player.buff(Divine Purpose)&!equipped(137020)', 'target'},
-	{"Justicar's Vengeance", 'target.debuff(Judgment)&player.holypower>=5&player.buff(Divine Purpose)&!equipped(137020)', 'target'},
+	{'Justicar\'s Vengeance', 'target.debuff(Judgment)&player.buff(Divine Purpose)&!equipped(137020)', 'target'},
+	{'Justicar\'s Vengeance', 'target.debuff(Judgment)&player.holypower>=5&player.buff(Divine Purpose)&!equipped(137020)', 'target'},
 	{'Judgment', 'target.debuff(Execution Sentence).duration<gcd*2&target.debuff(Judgment).duration<gcd*2', 'target'},
 	{'Consecration', 'toggle(aoe)&{player.spell(Blade of Justice).cooldown>gcd*2||player.spell(Divine Hammer).cooldown>gcd*2}'},
 	{'Wake of Ashes', 'toggle(aoe)&{player.holypower==0||player.holypower==1&{player.spell(Blade of Justice).cooldown>gcd||player.spell(Divine Hammer).cooldown>gcd}||player.holypower==2&{{player.spell(Zeal).charges<=0.65||player.spell(Crusader Strike).charges<=0.65}}}', 'target'},
