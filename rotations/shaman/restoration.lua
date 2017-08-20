@@ -105,14 +105,36 @@ local exeOnLoad = function()
 	print('|cffADFF2F --- |rShaman |cffADFF2FRestoration |r')
 	print('|cffADFF2F --- |rRecommended Talents: 1/3 - 2/2 - 3/1 - 4/2 - 5/3 - 6/2 - 7/X')
 	print('|cffADFF2F ----------------------------------------------------------------------|r')
+  print('|cffFFFB2F Configuration: |rRight-click MasterToggle and go to Combat Routines Settings!|r')
+
+NeP.Interface:AddToggle({
+	key = 'zyDPS',
+	name = 'Enable DPS',
+	text = 'Use damaging abilites when possible, between healing!',
+	icon = 'Interface\\Icons\\spell_fire_lavaspawn',
+})
+
+NeP.Interface:AddToggle({
+	key = 'xIntRandom',
+	name = 'Interrupt Anyone',
+	text = 'Interrupt all nearby enemies, without targeting them. Might require advanced unlocker on some routines!',
+	icon = 'Interface\\Icons\\inv_ammo_arrow_04',
+})
+
+NeP.Interface:AddToggle({
+	key = 'zyDISP',
+	name = 'Interrupt Anyone',
+	text = 'Interrupt all nearby enemies, without targeting them. Might require advanced unlocker on some routines!',
+	icon = 'Interface\\Icons\\ability_shaman_cleansespirit',
+})
 
 end
 
 local Survival = {
-	{'&Astral Shift', 'UI(S_ASE)&player.health<=UI(S_AS)'},
-	{'&Gift of the Naaru', 'UI(S_GOTNE)&{!player.debuff(Ignite Soul)}&player.health<=UI(S_GOTN)'},
-	{'#5512', 'UI(S_HSE)&{!player.debuff(Ignite Soul)}&player.health<=UI(S_HS)'},
-	{'#127834', 'UI(S_AHPE)&{!player.debuff(Ignite Soul)}&player.health<=UI(S_AHP)'},
+	{'&Astral Shift', 'UI(S_ASE)&health<=UI(S_AS)', 'player'},
+	{'&Gift of the Naaru', 'UI(S_GOTNE)&health<=UI(S_GOTN)', 'player'},
+	{'#127834', 'item(127834).count>0&health<UI(S_AHP)', 'player'},       -- Ancient Healing Potion
+  {'#5512', 'item(5512).count>0&health<UI(S_HS)', 'player'},  					--Health Stone
 }
 
 local Keybinds = {
@@ -122,17 +144,23 @@ local Keybinds = {
 }
 
 local Totems = {
-	{'Healing Stream Totem', 'UI(To_HSTE)'},
-	{'Earthen Shield Totem', 'advanced&UI(To_ESTE)', 'tank.ground'},
+	{'Healing Stream Totem', 'UI(To_HSTE)&player.area(40,80).heal>1'},
+	{'Earthen Shield Totem', 'advanced&UI(To_ESTE)&range<41', 'tank.ground'},
 }
 
 local Emergency = {
-	{'!Riptide', '{!moving||moving}&{!lowest.debuff(Ignite Soul)}&UI(E_EH)&lowest.health<=UI(E_RT)', 'lowest'},
-	{'!Healing Surge', '!moving&UI(E_EH)&{!lowest.debuff(Ignite Soul)}&lowest.health<=UI(E_HSG)', 'lowest'},
+	{'!Riptide', 'UI(E_EH)&health<=UI(E_RT)', 'lowest'},
+	{'!Healing Surge', '!moving&UI(E_EH)&health<=UI(E_HSG)', 'lowest'},
 }
 
 local Interrupts = {
-	{'&Wind Shear'},
+	{'!Wind Shear', 'range<31&interruptAt(70)'},
+	{'!Lightning Surge Totem', 'advanced&interruptAt(1)&range<31&player.spell(Wind Shear).cooldown>gcd&!player.lastgcd(Wind Shear)', 'target.ground'},
+}
+
+local Interrupts_Random = {
+	{'!Wind Shear', 'interruptAt(70)&toggle(xIntRandom)&toggle(Interrupts)&range<31', 'enemies'},
+	{'!Lightning Surge Totem', 'advanced&interruptAt(1)&toggle(xIntRandom)&toggle(Interrupts)&player.spell(Wind Shear).cooldown>gcd&!player.lastgcd(Wind Shear)&inFront&range<31', 'enemies.ground'},
 }
 
 local Dispel = {
@@ -140,38 +168,38 @@ local Dispel = {
 }
 
 local DPS = {
-	{'Flame Shock', '{!moving||moving}&!target.debuff(Flame Shock)'},
-	{'Lava Burst', 'target.debuff(Flame Shock).duration>spell(Lava Burst).casttime'},
-	{'Chain Lightning', 'player.area(40).enemies>1', 'target'},
+	{'Flame Shock', '!debuff(Flame Shock)', 'target'},
+	{'Lava Burst', 'debuff(Flame Shock).duration>player.spell(Lava Burst).casttime', 'target'},
+	{'Chain Lightning', 'area(10).enemies>1', 'target'},
 	{'Lightning Bolt', nil, 'target'},
 }
 
 local Tank = {
-	{'Riptide', '{!moving||moving}&tank.buff(Riptide).duration<6||tank.health<=UI(T_FRT)', 'tank'},
+	{'Riptide', 'buff(Riptide).duration<6||health<=UI(T_FRT)', 'tank'},
 	{{ -- Spiritwalker's Grace
-		{'Healing Surge', 'tank.health<=UI(T_HS)', 'tank'},
-		{'Healing Rain', 'advanced&UI(T_HRE)&toggle(AoE)&tank.area(10,90).heal>0', 'tank.ground'},
-		{'Chain Heal', 'UI(T_CHE)&toggle(AoE)&tank.area(40,80).heal>1', 'tank'},
-	}, {'!moving||player.buff(Spiritwalker\'s Grace)&moving'}},
+		{'Healing Surge', 'health<=UI(T_HS)', 'tank'},
+		{'Healing Rain', 'advanced&UI(T_HRE)&toggle(AoE)&area(10,90).heal>0', 'tank.ground'},
+		{'Chain Heal', 'UI(T_CHE)&toggle(AoE)&area(40,80).heal>1', 'tank'},
+	}, {'!moving||{player.buff(Spiritwalker\'s Grace)&moving}'}},
 }
 
 local Player = {
-	{'Riptide', '{!moving||moving}&player.buff(Riptide).duration<6||player.health<=UI(P_FRT)', 'player'},
+	{'Riptide', 'buff(Riptide).duration<6||health<=UI(P_FRT)', 'player'},
 	{{ -- Spiritwalker's Grace
-		{'Healing Surge', 'player.health<=UI(P_HS)', 'player'},
-		{'Healing Rain', 'advanced&UI(P_HRE)&toggle(AoE)&player.area(10,90).heal>1', 'player.ground'},
-		{'Chain Heal', 'UI(P_CHE)&toggle(AoE)&player.area(40,80).heal>1', 'player'},
-	}, {'!moving||player.buff(Spiritwalker\'s Grace)&moving'}},
+		{'Healing Surge', 'health<=UI(P_HS)', 'player'},
+		{'Healing Rain', 'advanced&UI(P_HRE)&toggle(AoE)&area(10,90).heal>1', 'player.ground'},
+		{'Chain Heal', 'UI(P_CHE)&toggle(AoE)&area(40,80).heal>1', 'player'},
+	}, {'!moving||{player.buff(Spiritwalker\'s Grace)&moving}'}},
 }
 
 local Lowest = {
 	{'Riptide', 'buff(Riptide).duration<6||health<=UI(L_FRT)', 'lnbuff(Riptide)'},
 	{{ -- Spiritwalker's Grace
-		{'Healing Wave', 'lowest.health<=UI(L_HW)', 'lowest'},
-		{'Healing Rain', 'advanced&UI(L_HRE)&toggle(AoE)&lowest.area(10,90).heal>1', 'lowest.ground'},
-		{'Chain Heal', 'UI(L_CHE)&toggle(AoE)&lowest.area(40,80).heal>1', 'lowest'},
-		{'Healing Surge', 'lowest.health<=UI(L_HS)', 'lowest'},
-	}, {'!moving||player.buff(Spiritwalker\'s Grace)&moving'}},
+		{'Healing Wave', 'health<=UI(L_HW)', 'lowest'},
+		{'Healing Rain', 'advanced&UI(L_HRE)&toggle(AoE)&area(10,90).heal>1', 'lowest.ground'},
+		{'Chain Heal', 'UI(L_CHE)&toggle(AoE)&area(40,80).heal>1', 'lowest'},
+		{'Healing Surge', 'health<=UI(L_HS)', 'lowest'},
+	}, {'!moving||{player.buff(Spiritwalker\'s Grace)&moving}'}},
 }
 
 local inCombat = {
@@ -179,23 +207,25 @@ local inCombat = {
 	{Trinkets},
 	{Heirlooms},
 	{Keybinds},
-	{Dispel, '&toggle(yuPS)&spell(Purify Spirit).cooldown<gcd'},
+	{Dispel, '&toggle(zyDISP)&spell(Purify Spirit).cooldown<gcd'},
 	{Survival},
-	{Emergency},
+	{Emergency, 'range<41'},
 	{Totems},
-	{Tank, 'tank.exists&tank.health<100'},
-	{Lowest, 'lowest.health<100'},
-	{Player, 'player.health<100'},
-	{Interrupts, 'toggle(interrupts)&target.interruptAt(70)&target.inFront&target.range<40'},
-	{DPS, 'toggle(yuDPS)&target.range<40&target.inFront'},
+	{Tank, 'range<41&tank.exists&tank.health<100'},
+	{Lowest, 'range<41&&lowest.health<100'},
+	{Player, 'range<41&player.health<100'},
+	{Interrupts_Random},
+	{Interrupts, 'target.interruptAt(70)&toggle(Interrupts)&target.range<41'},
+	{DPS, 'toggle(zyDPS)&range<41&inFront'},
 }
 
 local outCombat = {
-	{Dispel, 'toggle(yuPS)&spell(Purify Spirit).cooldown<gcd'},
-	{Interrupts, 'toggle(interrupts)&target.interruptAt(70)&target.inFront&target.range<40'},
+	{Dispel, 'toggle(zyDISP)&player.spell(Purify Spirit).cooldown<gcd'},
+	{Interrupts_Random},
+	{Interrupts, 'target.interruptAt(70)&toggle(Interrupts)&target.range<41'},
 	{'Riptide', 'health<100', 'lnbuff(Riptide)'},
 	{Lowest, 'lowest.health<100'},
-	{'Ghost Wolf', 'movingfor>1&!player.buff(Ghost Wolf)'},
+	{'Ghost Wolf', 'movingfor>0.75&!player.buff(Ghost Wolf)'},
 }
 
 NeP.CR:Add(264, {
