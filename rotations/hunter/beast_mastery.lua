@@ -92,7 +92,7 @@ local Survival = {
 }
 
 local Cooldowns = {
-	{'#147017', 'UI(e_TSM)&equipped(147017)'}, -- Tarnished Sentinel Medallion
+	{'#147017', 'UI(e_TSM)&equipped(147017)'},	-- Tarnished Sentinel Medallion
 	{'Bestial Wrath'},
 	{'Titan\'s Thunder', '{player.buff(Bestial Wrath)||player.spell(Dire Beast).cooldown>35}||{player.spell(Dire Beast).cooldown>2||{player.buff(Bestial Wrath)&player.buff(Dire Beast)}}'},
 	{'Aspect of the Wild', 'player.buff(Bestial Wrath)||target.time_to_die<12'},
@@ -150,7 +150,7 @@ local xPvP = {
 
 local inCombat = {
 	{Util},
-	{Trinkets},
+	--{Trinkets},
 	{Heirlooms},
 	{Keybinds},
 	{Survival},
