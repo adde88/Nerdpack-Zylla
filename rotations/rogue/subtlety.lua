@@ -67,7 +67,6 @@ local exeOnLoad = function()
 end
 
 local PreCombat = {
-	{'Stealth', '!player.buff(Stealth)||!player.buff(Shadowmeld)'},
 	{'Shadowstrike', 'stealthed&target.range<25&target.inFront'},
 }
 
@@ -147,7 +146,7 @@ local inCombat = {
 
 local outCombat = {
 	{Keybinds},
-	{PreCombat},
+	{PreCombat, '!toggle(xPickPock)'},
 	{'Stealth', 'toggle(xStealth)&!player.buff&!player.buff(Vanish)&!nfly'},
 	{'Pick Pocket', 'toggle(xPickPock)&enemy&alive&range<=10&player.buff(Stealth)' ,'enemies'},
 }

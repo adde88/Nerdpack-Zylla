@@ -110,7 +110,8 @@ local Finishers = {
 }
 
 local Blade_Flurry = {
-	{'Blade Flurry', '{player.area(7).enemies>2&!player.buff(Blade Flurry)}||{player.area(7).enemies<3&player.buff(Blade Flurry)}'},
+	{'Blade Flurry', 'player.area(8).enemies>=3&!player.buff(Blade Flurry)'},
+	{'Blade Flurry', 'player.area(8).enemies<=2&player.buff(Blade Flurry)'},
 }
 
 local Cooldowns = {
@@ -122,8 +123,6 @@ local Cooldowns = {
 }
 
 local RollingBones ={
-	--{'Roll the Bones', 'player.combopoints>4&!player.talent(7,1)&!player.buff(Broadsides)&!player.buff(Jolly Roger)&!player.buff(Grand Melee)&!player.buff(Shark Infested Waters)&!player.buff(True Bearing)&!player.buff(Buried Treasure)'},
-	--{'Roll the Bones', 'player.combopoints>4&!player.talent(7,1)&player.spell(Adrenaline Rush).cooldown>15&player.spell(Curse of the Dreadblades).cooldown>15&!player.talent(7,1)&player.buff(Broadsides)&!player.buff(Jolly Roger)&!player.buff(Grand Melee)&!player.buff(Shark Infested Waters)&!player.buff(True Bearing)&!player.buff(Buried Treasure)||player.combopoints>4&!player.talent(7,1)&player.spell(Adrenaline Rush).cooldown>15&player.spell(Curse of the Dreadblades).cooldown>15&!player.buff(Broadsides)&player.buff(Jolly Roger)&!player.buff(Grand Melee)&!player.buff(Shark Infested Waters)&!player.buff(True Bearing)&!player.buff(Buried Treasure)||player.combopoints>4&!player.talent(7,1)&player.spell(Adrenaline Rush).cooldown>15&player.spell(Curse of the Dreadblades).cooldown>15&!player.buff(Broadsides)&!player.buff(Jolly Roger)&player.buff(Grand Melee)&!player.buff(Shark Infested Waters)&!player.buff(True Bearing)&!player.buff(Buried Treasure)||player.combopoints>4&!player.talent(7,1)&player.spell(Adrenaline Rush).cooldown>15&player.spell(Curse of the Dreadblades).cooldown>15&!player.buff(Broadsides)&!player.buff(Jolly Roger)&!player.buff(Grand Melee)&player.buff(Shark Infested Waters)&!player.buff(True Bearing)&!player.buff(Buried Treasure)||player.combopoints>4&!player.talent(7,1)&player.spell(Adrenaline Rush).cooldown>15&player.spell(Curse of the Dreadblades).cooldown>15&!player.buff(Broadsides)&!player.buff(Jolly Roger)&!player.buff(Grand Melee)&!player.buff(Shark Infested Waters)&!player.buff(True Bearing)&player.buff(Buried Treasure)'},
 	{'Roll the Bones', 'player.combopoints>4&!player.talent(7,1)&!RtB'},
 }
 
@@ -133,7 +132,6 @@ local TricksofTrade = {
 }
 
 local Stealth_Opener = {
-	{'Stealth', 'toggle(xStealth)&!player.buff&!player.buff(Vanish)&!nfly'},
 	{'Ambush', 'target.enemy&target.inMelee&target.inFront&player.buff(Stealth)&toggle(opener)'},
 	{'Cheap Shot', 'target.enemy&target.inMelee&target.inFront&player.buff(Stealth)&!toggle(opener)'},
 }
@@ -159,7 +157,8 @@ local inCombat = {
 }
 
 local outCombat = {
-	{Stealth_Opener},
+	{'Stealth', 'toggle(xStealth)&!player.buff&!player.buff(Vanish)&!nfly'},
+	{Stealth_Opener, '!toggle(xPickPock)'},
   {Blade_Flurry},
 	{Keybinds},
 	{TricksofTrade},
