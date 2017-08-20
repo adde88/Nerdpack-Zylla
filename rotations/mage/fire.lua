@@ -95,7 +95,7 @@ local Survival = {
 local Talents = {
 	{'Flame On', 'action(Fire Blast).charges<0.2&{player.spell(Combustion).cooldown>65||target.ttd<player.spell(Combustion).cooldown}'},
 	{'Blast Wave', '!player.buff(Combustion)||{player.buff(Combustion)&action(Fire Blast).charges<1&action(Phoenix\'s Flames).charges<1}'},
-	{'Meteor', 'player.spell(Combustion).cooldown>30||{{player.spell(Combustion).cooldown>target.ttd}||player.buff(Rune of Power)}'},
+	{'Meteor', 'player.spell(Combustion).cooldown>30||{{player.spell(Combustion).cooldown>target.ttd}||player.buff(Rune of Power)}', 'target.ground'},
 	{'Cinderstorm', 'player.spell(Combustion).cooldown<action(Cinderstorm).cast_time&{{player.buff(Rune of Power)||!talent(3,2)}||player.spell(Combustion).cooldown>10*spell_haste&!player.buff(Combustion)}'},
 	{'Dragon\'s Breath', 'equipped(132863)'},
 	{'Living Bomb', '!target.debuff(Living Bomb)&target.area(10).enemies>1&!player.buff(Combustion)'}
@@ -126,7 +126,7 @@ local MainRotation = {
 	{'Pyroblast', 'player.buff(Hot Streak!)&player.buff(Hot Streak!).duration<action(Fireball).execute_time'},
 	{'Phoenix\'s Flames', 'action(Phoenix\'s Flames).charges>2.7&target.area(8).enemies>2'},
 	{'&Flamestrike', 'advanced&target.range<41&talent(6,3)&target.area(10).enemies>2&player.buff(Hot Streak!)', 'target.ground'},
-	{'&Flamestrike', '!advanced&target.range<41&talent(6,3)&player.area(10).enemies>2&player.buff(Hot Streak!)', 'player.ground'},
+	--{'&Flamestrike', '!advanced&target.range<41&talent(6,3)&player.area(10).enemies>2&player.buff(Hot Streak!)', 'player.ground'},
 	{'&Pyroblast', 'player.buff(Hot Streak!)&!player.lastgcd(Pyroblast)&{player.casting(Fireball).percent>90||player.lastcast(Fireball)}'},
 	{'&Pyroblast', 'player.buff(Hot Streak!)&target.health<35&equipped(132454)'},
 	{'Pyroblast', 'player.buff(Kael\'thas\'s Ultimate Ability)'},
