@@ -1,6 +1,6 @@
 local _, Zylla = ...
 
-Zylla.Version = '1.6'
+Zylla.Version = '1.8'
 Zylla.Branch = 'RELEASE'
 Zylla.Name = 'NerdPack - Zylla\'s Rotations'
 Zylla.Author = 'Zylla'
@@ -49,6 +49,10 @@ local UnitPlayerOrPetInParty = UnitPlayerOrPetInParty
 local UnitIsUnit = UnitIsUnit
 local UnitDebuff = UnitDebuff
 local UnitStagger = UnitStagger
+local rad = rad
+local atan2 = atan2
+local ObjectPosition = ObjectPosition
+local FaceDirection = FaceDirection
 
 local Zframe = CreateFrame('GameTooltip', 'Zylla_ScanningTooltip', UIParent, 'GameTooltipTemplate')
 
@@ -137,6 +141,18 @@ _G['Zylla.Heirlooms'] = {
 _G['Zylla.Util'] = {
   {'%pause' , 'player.debuff(200904)||player.debuff(Sapped Soul)'}, -- Vault of the Wardens, Sapped Soul
 }
+
+function Zylla.Face(target)
+	local ax, ay = ObjectPosition('player')
+	local bx, by = ObjectPosition(target)
+	if not ax or not bx then return end
+	local angle = rad(atan2(by - ay, bx - ax))
+	if angle < 0 then
+		FaceDirection(rad(atan2(by - ay, bx - ax) + 360))
+	else
+		FaceDirection(angle)
+	end
+end
 
 function Zylla.Taunt(eval, args)
   local spell = NeP.Engine:Spell(args)
@@ -330,7 +346,7 @@ function Zylla.UnitDot(target, spell, owner)
     name,_,_,count,_,duration,expires,caster = _G['UnitDebuff'](target, spell)
   end
   -- This adds some random factor
-  return name, count, duration, expires, caster, power
+  return name, count, _, expires, caster, power
 end
 
 --------------------------------------------------------------------------------
@@ -450,7 +466,7 @@ Zylla.minions = {"Wild Imp", "Dreadstalker", "Imp", "Felhunter", "Succubus", "Fe
 
 function Zylla.update_demons()
   --print('Zylla.update_demons')
-  for key,value in pairs(Zylla.active_demons) do
+  for key,_ in pairs(Zylla.active_demons) do
     if (Zylla.is_demon_dead(Zylla.active_demons[key].name, Zylla.active_demons[key].time)) then
       Zylla.active_demons[key] = nil
       Zylla.demon_count = Zylla.demon_count - 1
@@ -465,31 +481,6 @@ function Zylla.is_demon_empowered(guid)
     return true
   end
   return false
-end
-
-function Zylla.Empower()
-  --print('Zylla.Empower')
-  local emp1, emp2 = ''
-  if Zylla.demon_count == 0 and UnitExists("pet") then
-    Zylla.empower = NeP.DSL:Get('buff.remains')('pet','Demonic Empowerment')
-    return Zylla.empower
-  end
-  if Zylla.demon_count > 0 then
-    for _,v in pairs(Zylla.active_demons) do
-      if Zylla.is_demon_empowered(v.guid) then
-        emp1 = Zylla.get_remaining_time('Empower', v.empower_time)
-        emp2 = NeP.DSL:Get('buff.remains')('pet','Demonic Empowerment')
-        if emp1 < emp2 then
-          Zylla.empower = emp1
-        else
-          Zylla.empower = emp2
-        end
-      else
-        Zylla.empower = 0
-      end
-    end
-  end
-  return Zylla.empower
 end
 
 function Zylla.count_active_demon_type(demon)
@@ -514,7 +505,7 @@ end
 
 function Zylla.implosion_cast()
   --print('Zylla.implosion_cast')
-  for key,v in pairs(Zylla.active_demons) do
+  for key,_ in pairs(Zylla.active_demons) do
     if (Zylla.active_demons[key].name == "Wild Imp") then
       Zylla.active_demons[key] = nil
       Zylla.demon_count = Zylla.demon_count - 1
@@ -550,39 +541,6 @@ function Zylla.IsMinion(name)
   return false
 end
 
-NeP.Listener:Add('Zylla_Warlock_Pets', 'COMBAT_LOG_EVENT_UNFILTERED', function(timestamp, combatevent, hideCaster, sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags, spellID, spellName, spellSchool, amount, ...)
-  if Zylla.class == 9 then
-    if (combatevent == "SPELL_SUMMON" and sourceName == UnitName("player")) then
-      if (Zylla.IsMinion(destName)) then
-        Zylla.active_demons[destGUID]              = {}
-        Zylla.active_demons[destGUID].guid         = destGUID
-        Zylla.active_demons[destGUID].name         = destName
-        Zylla.active_demons[destGUID].time         = GetTime()
-        Zylla.active_demons[destGUID].empower_time = 0
-        Zylla.active_demons[destGUID].duration     = Zylla.durations[destName]
-        Zylla.demon_count                          = Zylla.demon_count + 1
-        --Zylla.sort_demons()
-      end
-    end
-
-    if ((combatevent == "SPELL_AURA_APPLIED" or combatevent == "SPELL_AURA_REFRESH") and spellID == 193396 and sourceName == UnitName("player")) then
-      --print('Demonic Empowerment')
-      if(Zylla.IsMinion(destName)) then
-        --print('Zylla.IsMinion is TRUE')
-        --print(Zylla.IsMinion(destName))
-        Zylla.active_demons[destGUID].empower_time = GetTime()
-      end
-    end
-
-    if (combatevent == "SPELL_CAST_SUCCESS" and spellID == 196277 and sourceName == UnitName("player")) then
-      --print('Implosion')
-      Zylla.implosion_cast()
-    end
-    Zylla.update_demons()
-    return true
-  end
-end)
-
 --------------------------------------------------------------------------------
 --------------------------------- PRIEST ---------------------------------------
 --------------------------------------------------------------------------------
@@ -610,7 +568,7 @@ function Zylla.SA_Cleanup(guid)
   end
 end
 
-NeP.Listener:Add('Zylla.SA', 'COMBAT_LOG_EVENT_UNFILTERED', function(timestamp,combatevent,_,sourceGUID,sourcename,_,_,destGUID,destname,_,_,spellid,spellname,_,_,_,_,_,_,_,spellcritical,_,_,_,spellmultistrike)
+NeP.Listener:Add('Zylla.SA', 'COMBAT_LOG_EVENT_UNFILTERED', function(_,combatevent,_,sourceGUID,_,_,_,destGUID,_,_,_,spellid,_,_,_,_,_,_,_,_,_,_,_,_,_)
   if Zylla.class == 5 then
     local CurrentTime = GetTime()
     Zylla.SA_NUM_UNITS = Zylla.SA_NUM_UNITS or 0
@@ -649,7 +607,7 @@ NeP.Listener:Add('Zylla.SA', 'COMBAT_LOG_EVENT_UNFILTERED', function(timestamp,c
     if Zylla.SA_TOTAL < 0 then
       Zylla.SA_TOTAL = 0
     end
-    for guid,count in pairs(Zylla.SA_STATS) do
+    for guid,_ in pairs(Zylla.SA_STATS) do
       if (CurrentTime - Zylla.SA_STATS[guid].LastUpdate) > 10 then
         --If we haven't had a new SA spawn in 10sec, that means all SAs that are out have hit the target (usually), or, the target disappeared.
         Zylla.SA_Cleanup(guid)
@@ -660,7 +618,7 @@ NeP.Listener:Add('Zylla.SA', 'COMBAT_LOG_EVENT_UNFILTERED', function(timestamp,c
     end
 
     if UnitIsDeadOrGhost("player") or not UnitAffectingCombat("player") or not InCombatLockdown() then -- We died, or, exited combat, go ahead and purge the list
-      for guid,count in pairs(Zylla.SA_STATS) do
+      for guid,_ in pairs(Zylla.SA_STATS) do
         Zylla.SA_Cleanup(guid)
     end
     Zylla.SA_STATS     = {}
@@ -669,7 +627,7 @@ NeP.Listener:Add('Zylla.SA', 'COMBAT_LOG_EVENT_UNFILTERED', function(timestamp,c
     end
     if CurrentTime - Zylla.LAST_CONTINUITY_CHECK > 10 then --Force check of unit count every 10sec
       local newUnits = 0
-      for guid,count in pairs(Zylla.SA_STATS) do
+      for _,_ in pairs(Zylla.SA_STATS) do
         newUnits = newUnits + 1
       end
       Zylla.SA_NUM_UNITS          = newUnits
@@ -677,7 +635,7 @@ NeP.Listener:Add('Zylla.SA', 'COMBAT_LOG_EVENT_UNFILTERED', function(timestamp,c
     end
     if Zylla.SA_NUM_UNITS > 0 then
       local totalSAs = 0
-      for guid,count in pairs(Zylla.SA_STATS) do
+      for guid,_ in pairs(Zylla.SA_STATS) do
         if Zylla.SA_STATS[guid].Count <= 0 or (UnitIsDeadOrGhost(guid)) then
           Zylla.SA_DEAD[guid] = true
         else
@@ -692,7 +650,7 @@ NeP.Listener:Add('Zylla.SA', 'COMBAT_LOG_EVENT_UNFILTERED', function(timestamp,c
   end
 end)
 
-NeP.Listener:Add('Zylla_VF_S2M', 'COMBAT_LOG_EVENT_UNFILTERED', function(timestamp,combatevent,_,sourceGUID,sourcename,_,_,destGUID,destname,_,_,spellid,spellname,_,_,_,_,_,_,_,spellcritical,_,_,_,spellmultistrike)
+NeP.Listener:Add('Zylla_VF_S2M', 'COMBAT_LOG_EVENT_UNFILTERED', function(_,combatevent,_,sourceGUID,_,_,_,destGUID,_,_,_,spellid,_,_,_,_,_,_,_,_,_,_,_,_,_)
   if Zylla.class == 5 then
     local CurrentTime = GetTime()
     Zylla.Voidform_Total_Stacks        = Zylla.Voidform_Total_Stacks or 0
@@ -967,7 +925,7 @@ NeP.Listener:Add('Zylla_f_updateDmg', 'UNIT_POWER', function(unit, type)
   end
 end)
 
-NeP.Listener:Add('Zylla_f_Snapshot', 'COMBAT_LOG_EVENT_UNFILTERED', function(timestamp, combatevent, _, sourceGUID, _,_,_, destGUID, _,_,_, spellID)
+NeP.Listener:Add('Zylla_f_Snapshot', 'COMBAT_LOG_EVENT_UNFILTERED', function(_, combatevent, _, sourceGUID, _,_,_, destGUID, _,_,_, spellID)
   if Zylla.class == 11 then
     --This trigger listens for bleed events to record snapshots.
     --This trigger also listens for changes in buffs to recalculate bleed damage.
@@ -1119,52 +1077,6 @@ function Zylla.TravelTime(unit, spell)
   end
 end
 
---------------------------------------------------------------------------------
------------------------------ MISC LISTENERS -----------------------------------
---------------------------------------------------------------------------------
-
-NeP.Listener:Add('Zylla_Listener4', 'COMBAT_LOG_EVENT_UNFILTERED', function(timestamp, combatevent, hideCaster, sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags, spellID, spellName, spellSchool, amount, ...)
-  if (combatevent == "SPELL_CAST_SUCCESS" and sourceName == UnitName("player")) then
-    Zylla.spell_timers[spellID]      = {}
-    Zylla.spell_timers[spellID].name = spellName
-    Zylla.spell_timers[spellID].id   = spellID
-    Zylla.spell_timers[spellID].time = GetTime()
-  end
-  if UnitIsDeadOrGhost("player") or not UnitAffectingCombat("player") or not InCombatLockdown() then
-    Zylla.spell_timers = {}
-  end
-end)
-
-
---[[
-NeP.Listener:Add('Zylla_Listener_TravelSpeed', 'COMBAT_LOG_EVENT_UNFILTERED', function(timestamp, combatevent, hideCaster, sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags, spellID, spellName, spellSchool, amount, ...)
-  if Zylla.TTTL_enable == true then
-    if (combatevent == "SPELL_CAST_SUCCESS" and sourceName == UnitName("player")) then
-      if spellID ~= 228597 then
-        print('SPELL_CAST_SUCCESS: '..spellName..', '..spellID)
-        Zylla.start_timer = GetTime()
-        mirror_name = spellName
-      end
-    end
-    if (combatevent == "SPELL_DAMAGE" and spellName == mirror_name and sourceName == UnitName("player")) then
-      print('SPELL_DAMAGE: '..spellName..', '..spellID)
-      if uniqID == nil then uniqID = 0 end
-        uniqID = uniqID + 1
-        Zylla.TTTL_table[uniqID] = {}
-        Zylla.TTTL_table[uniqID].name = spellName
-        Zylla.TTTL_table[uniqID].spellID = spellID
-        Zylla.TTTL_table[uniqID].start = Zylla.start_timer
-        Zylla.TTTL_table[uniqID].distance = NeP.DSL:Get('range')('target')
-        Zylla.TTTL_table[uniqID].finish = GetTime()
-        Zylla.  TTTL_table[uniqID].travel_time = 0
-        Zylla.TTTL_table[uniqID].travel_speed = 0
-        Zylla.TTTL_calc_tt()
-      end
-    end
-  end
-end)
-]]--
-
 -------------------------
 -- Gabbz fake units + misc
 ---------------------------
@@ -1178,11 +1090,11 @@ function Zylla.GetPredictedHealth(unit)
 end
 
 -- Lowest
-NeP.FakeUnits:Add('healingCandidate', function(nump, role)
+NeP.FakeUnits:Add('healingCandidate', function(nump)
   local tempTable = {}
   local num = nump or 1
 
-  for GUID, Obj in pairs(NeP.OM:Get('Friendly')) do
+  for _, Obj in pairs(NeP.OM:Get('Friendly')) do
     if UnitPlayerOrPetInParty(Obj.key) or UnitIsUnit('player', Obj.key) then
       local healthRaw = Zylla.GetPredictedHealth(Obj.key)
       local maxHealth = UnitHealthMax(Obj.key)
@@ -1210,9 +1122,7 @@ NeP.DSL:Register("area.enemiesheals", function(unit, distance)
   return total
 end)
 
-function Zylla.NrHealsAroundFriendly(number, healthp, distance)
-  local unit = unitp
-  local nrunits = number
+function Zylla.NrHealsAroundFriendly(healthp, distance, unit)
   local health = healthp
   local range = distance
   local total = 0
@@ -1258,6 +1168,7 @@ NeP.FakeUnits:Add('Zylla_sck', function(debuff)
 end)
 
 NeP.Library:Add('Zylla', {
+
   hitcombo = function(spell)
     local HitComboLastCast = ''
     if not spell then return true end
@@ -1272,6 +1183,18 @@ NeP.Library:Add('Zylla', {
     end
     return true
   end,
+
+	face = function(target)
+		local ax, ay = ObjectPosition('player')
+		local bx, by = ObjectPosition(target)
+		if not ax or not bx then return end
+		local angle = rad(atan2(by - ay, bx - ax))
+		if angle < 0 then
+			FaceDirection(rad(atan2(by - ay, bx - ax) + 360))
+		else
+			FaceDirection(angle)
+		end
+	end,
 
   sef = function()
     local SEF_Fixate_Casted = false
