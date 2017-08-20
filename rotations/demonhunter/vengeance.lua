@@ -6,7 +6,7 @@ local Heirlooms = _G['Zylla.Heirlooms']
 
 local GUI = {
 	--Logo
-  {type = "texture", texture = "Interface\\AddOns\\Nerdpack-Zylla\\media\\logo.blp", width = 128, height = 128, offset = 90, y = 42, center = true},
+  {type = 'texture', texture = 'Interface\\AddOns\\Nerdpack-Zylla\\media\\logo.blp', width = 128, height = 128, offset = 90, y = 42, center = true},
   {type = 'ruler'},	  {type = 'spacer'},
 	-- Keybinds
 	{type = 'header', 	text = 'Keybinds', align = 'center'},
@@ -17,7 +17,7 @@ local GUI = {
 	-- Settings
 	{type = 'header', 	text = 'Class Settings',										align = 'center'},
 	{type = 'checkbox', text = 'Pause Enabled', 										key = 'kPause', default = true},
-	{type = 'checkbox', text = 'Auto use Infernal Strike with "Flame Crash" Talent', 	key = 'kIS', 	default = true},
+	{type = 'checkbox', text = 'Auto use Infernal Strike with Flame Crash Talent', 	key = 'kIS', 	default = true},
 	{type = 'ruler'},	{type = 'spacer'},
 	-- Survival
 	{type = 'header', 	text = 'Survival',									  	      align = 'center'},
@@ -48,6 +48,13 @@ local exeOnLoad = function()
 	 icon = 'Interface\\Icons\\inv_ammo_arrow_04',
  })
 
+ NeP.Interface:AddToggle({
+	key = 'super_taunt',
+	name = 'Taunt Lowest Threat',
+	text = 'Taunt a nearby enemy in combat, when threat gets low, without targeting it.',
+	icon = 'Interface\\Icons\\spell_nature_reincarnation',
+})
+
 end
 
 local Keybinds = {
@@ -59,15 +66,19 @@ local Keybinds = {
 local Interrupts = {
 	{'!Consume Magic', 'target.interruptAt(70)&target.inFront&target.inMelee'},
 	{'!Sigil of Misery', 'advanced&target.interruptAt(1)&target.range<31&spell(Consume Magic).cooldown>gcd&!prev_gcd(Consume Magic)', 'target.ground'},
-	{'!Sigil of Silence', 'advanced&target.interruptAt(1)&target.range<31&spell(Sigil of Misery).cooldown>gcd&spell(Consume Magic).cooldown>gcd&!prev_gcd(Consume Magic)', 'target.ground'},
+	{'!Sigil of Silence', 'advanced&target.interruptAt(5)&target.range<31&spell(Sigil of Misery).cooldown>gcd&spell(Consume Magic).cooldown>gcd&!prev_gcd(Consume Magic)', 'target.ground'},
 	{'!Arcane Torrent', 'target.interruptAt(70)&target.inFront&target.inMelee&spell(Consume Magic).cooldown>gcd&!prev_gcd(Consume Magic)'},
 }
 
 local Interrupts_Random = {
 	{'!Consume Magic', 'interruptAt(70)&toggle(xIntRandom)&toggle(Interrupts)&inFront&inMelee', 'enemies'},
 	{'!Sigil of Misery', 'advanced&interruptAt(1)&toggle(xIntRandom)&toggle(Interrupts)&player.spell(Consume Magic).cooldown>gcd&!prev_gcd(Consume Magic)&range<31', 'enemies.ground'},
-	{'!Sigil of Silence', 'advanced&interruptAt(1)&toggle(xIntRandom)&toggle(Interrupts)&player.spell(Sigil of Misery).cooldown>gcd&player.spell(Consume Magic).cooldown>gcd&!prev_gcd(Consume Magic)&range<31', 'enemies.ground'},
+	{'!Sigil of Silence', 'advanced&interruptAt(5)&toggle(xIntRandom)&toggle(Interrupts)&player.spell(Sigil of Misery).cooldown>gcd&player.spell(Consume Magic).cooldown>gcd&!prev_gcd(Consume Magic)&range<31', 'enemies.ground'},
 	{'!Arcane Torrent', 'interruptAt(70)&toggle(xIntRandom)&toggle(Interrupts)&player.spell(Consume Magic).cooldown>gcd&!prev_gcd(Consume Magic)&inMelee'},
+}
+
+local xTaunts = {
+	{'Torment', 'player.area(30).enemies>=1&combat&alive&threat<100', 'enemies'},
 }
 
 local Mitigations = {
@@ -106,6 +117,7 @@ local inCombat = {
 	{Keybinds},
 	{Interrupts_Random},
 	{Interrupts, 'toggle(Interrupts)'},
+	{xTaunts, 'toggle(super_taunt)'},
 	{Ranged},
 	{Mitigations, ''},
 	{xCombat, 'target.inFront&target.inMelee'}
