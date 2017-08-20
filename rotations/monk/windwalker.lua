@@ -6,7 +6,7 @@ local Heirlooms = _G['Zylla.Heirlooms']
 
 local GUI = {
 	--Logo
-	{type = "texture", texture = "Interface\\AddOns\\Nerdpack-Zylla\\media\\logo.blp", width = 128, height = 128, offset = 90, y = 42, center = true},
+	{type = 'texture', texture = 'Interface\\AddOns\\Nerdpack-Zylla\\media\\logo.blp', width = 128, height = 128, offset = 90, y = 42, center = true},
 	{type = 'ruler'},	 {type = 'spacer'},
 	-- General
 	{type = 'header',	text = 'General:',															align = 'center'},
@@ -65,6 +65,13 @@ local exeOnLoad = function()
 		name = 'Interrupt Anyone',
 		text = 'Interrupt all nearby enemies, without targeting them.',
 		icon = 'Interface\\Icons\\inv_ammo_arrow_04',
+	})
+
+	NeP.Interface:AddToggle({
+		key = 'xFistFace',
+		name = 'Auto-Face',
+		text = 'Automatically Face your target while casting Fists of Fury',
+		icon = 'Interface\\Icons\\monk_ability_fistoffury',
 	})
 
 end
@@ -207,7 +214,10 @@ local outCombat = {
 
 NeP.CR:Add(269, {
 	name='[|cff'..Zylla.addonColor..'Zylla\'s|r] Monk - Windwalker',
-	ic = {{inCombat, '!player.casting(Fists of Fury)'}},
+	ic = {
+		{inCombat, '!player.casting(Fists of Fury)'},
+		{'&@Zylla.face', 'toggle(xFistFace)&player.casting(Fists of Fury)', 'target'}
+	},
 	ooc = outCombat,
 	gui = GUI,
 	ids = Zylla.SpellIDs[Zylla.Class],
