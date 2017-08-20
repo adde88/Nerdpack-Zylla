@@ -29,11 +29,11 @@ local exeOnLoad = function()
 	Zylla.ExeOnLoad()
 	Zylla.AFKCheck()
 
-	print("|cffADFF2F ----------------------------------------------------------------------|r")
-	print("|cffADFF2F --- |rWarrior |cffADFF2FFury |r")
-	print("|cffADFF2F --- |rRecommended Talents: 1/1 - 2/3 - 3/3 - 4/2 - 5/2 - 6/3 - 7/2")
-	print("|cffADFF2F --- |rLast Updated: 16.06.2017")
-	print("|cffADFF2F ----------------------------------------------------------------------|r")
+	print('|cffADFF2F ----------------------------------------------------------------------|r')
+	print('|cffADFF2F --- |rWarrior |cffADFF2FFury |r')
+	print('|cffADFF2F --- |rRecommended Talents: 1/1 - 2/3 - 3/3 - 4/2 - 5/2 - 6/3 - 7/2')
+	print('|cffADFF2F --- |rLast Updated: 16.06.2017')
+	print('|cffADFF2F ----------------------------------------------------------------------|r')
 
 end
 
@@ -108,7 +108,7 @@ local TwoTargets = {
 	{Bladestorm},
 	{'Rampage', '!player.buff(Enrage)||{player.rage==100&!player.buff(Juggernaut)}||player.buff(Massacre)'},
 	{'Bloodthirst', '!player.buff(Enrage)'},
-	{'Raging Blow', 'talent(6,3)&player.area(8).enemies=2'},
+	{'Raging Blow', 'talent(6,3)&player.area(8).enemies==2'},
 	{'Whirlwind', 'player.area(8).enemies>2'},
 	{'Dragon Roar'},
 	{'Bloodthirst'},
@@ -123,7 +123,7 @@ local inCombat = {
 	{Interrupts, 'target.interruptAt(70)&toggle(Interrupts)'},
 	{Survival, 'player.health<100'},
 	{Cooldowns, 'toggle(Cooldowns)&target.inMelee'},
-	{TwoTargets, 'player.area(8).enemies=2||player.area(8).enemies=3'},
+	{TwoTargets, 'player.area(8).enemies==2||player.area(8).enemies==3'},
 	{AoE, 'player.area(8).enemies>3'},
 	{ST, 'target.inMelee&target.inFront'},
 	{Ranged, '!target.inMelee&target.inFront'}
