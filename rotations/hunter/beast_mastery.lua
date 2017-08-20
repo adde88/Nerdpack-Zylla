@@ -6,7 +6,7 @@ local Heirlooms = _G['Zylla.Heirlooms']
 
 local GUI = {
 	--Logo
-	{type = "texture", texture = "Interface\\AddOns\\Nerdpack-Zylla\\media\\logo.blp", width = 128, height = 128, offset = 90, y = 42, center = true},
+	{type = 'texture', texture = 'Interface\\AddOns\\Nerdpack-Zylla\\media\\logo.blp', width = 128, height = 128, offset = 90, y = 42, center = true},
 	{type = 'ruler'},	 {type = 'spacer'},
 	-- Keybinds
 	{type = 'header', text = 'Keybinds',	 					 align = 'center'},

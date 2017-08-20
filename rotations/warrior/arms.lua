@@ -25,10 +25,10 @@ local exeOnLoad = function()
 	Zylla.ExeOnLoad()
 	Zylla.AFKCheck()
 
-	print("|cffADFF2F ----------------------------------------------------------------------|r")
-	print("|cffADFF2F --- |rWarrior |cffADFF2FArms |r")
-	print("|cffADFF2F --- |rRecommended Talents: 1/1 - 2/3 - 3/3 - 4/2 - 5/3 - 6/1 - 7/1")
-	print("|cffADFF2F ----------------------------------------------------------------------|r")
+	print('|cffADFF2F ----------------------------------------------------------------------|r')
+	print('|cffADFF2F --- |rWarrior |cffADFF2FArms |r')
+	print('|cffADFF2F --- |rRecommended Talents: 1/1 - 2/3 - 3/3 - 4/2 - 5/3 - 6/1 - 7/1')
+	print('|cffADFF2F ----------------------------------------------------------------------|r')
 
 end
 
@@ -138,7 +138,7 @@ local ST = {
 	{'Focused Rage', '{{{!player.buff(Focused Rage)&prev_gcd(Mortal Strike)}||!prev_gcd(Mortal Strike)}&player.buff(Focused Rage).stack<3&{player.buff(Shattered Defenses)||cooldown(Colossus Smash).remains>gcd}}&player.rage>60'},
 	{'Mortal Strike', 'player.buff(Focused Rage).stack>0'},
 	{'Execute', 'player.buff(Ayala\'s Stone Heart)'},
-	--Whirlwind instead of Slam if "Fevor of Battle" is picked
+	--Whirlwind instead of Slam if 'Fevor of Battle' is picked
 	{'Whirlwind', 'talent(3,1)&{{player.buff(Battle Cry)&talent(6,1)}||player.buff(Focused Rage).stack=3||rage.deficit<40}'},
 	{'Slam', '!talent(3,1)&{{player.buff(Battle Cry)&talent(6,1)}||player.buff(Focused Rage).stack=3||rage.deficit<40}'},
 	{'Mortal Strike', '!talent(5,3)'},

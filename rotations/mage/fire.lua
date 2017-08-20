@@ -6,7 +6,7 @@ local Heirlooms = _G['Zylla.Heirlooms']
 
 local GUI = {
 	--Logo
-  {type = "texture", texture = "Interface\\AddOns\\Nerdpack-Zylla\\media\\logo.blp", width = 128, height = 128, offset = 90, y = 42, center = true},
+  {type = 'texture', texture = 'Interface\\AddOns\\Nerdpack-Zylla\\media\\logo.blp', width = 128, height = 128, offset = 90, y = 42, center = true},
   {type = 'ruler'},	  {type = 'spacer'},
 	-- Keybinds
 	{type = 'header', 	text = 'Keybinds', align = 'center'},
@@ -70,12 +70,12 @@ local PreCombat = {
 local Interrupts = {
 	{'!Counterspell'},
 	{'!Arcane Torrent', 'target.inMelee&spell(Counterspell).cooldown>gcd&!player.lastcast(Counterspell)'},
-	{"!Dragon's Breath", 'player.spell(Counterspell).cooldown>gcd&!prev_gcd(Counterspell)&player.area(12).enemies.infront>0', 'enemies'},
+	{'!Dragon\'s Breath', 'player.spell(Counterspell).cooldown>gcd&!prev_gcd(Counterspell)&player.area(12).enemies.infront>0', 'enemies'},
 }
 
 local Interrupts_Random = {
 	{'!Counterspell', 'interruptAt(70)&toggle(xIntRandom)&toggle(Interrupts)&inFront&range<41', 'enemies'},
-  {"!Dragon's Breath", 'interruptAt(70)&toggle(xIntRandom)&toggle(Interrupts)&player.spell(Counterspell).cooldown>gcd&!prev_gcd(Counterspell)&player.area(12).enemies.infront>0&range<13', 'enemies'},
+  {'!Dragon\'s Breath', 'interruptAt(70)&toggle(xIntRandom)&toggle(Interrupts)&player.spell(Counterspell).cooldown>gcd&!prev_gcd(Counterspell)&player.area(12).enemies.infront>0&range<13', 'enemies'},
 	{'!Ring of Frost', 'advanced&!player.moving&UI(RoF_Int)&interruptAt(1)&toggle(xIntRandom)&toggle(Interrupts)&player.spell(Counterspell).cooldown>gcd&!prev_gcd(Counterspell)&range<31', 'enemies.ground'},
 	{'!Polymorph', '!player.moving&UI(Pol_Int)&interruptAt(1)&toggle(xIntRandom)&toggle(Interrupts)&player.spell(Counterspell).cooldown>gcd&!prev_gcd(Counterspell)&range<31', 'enemies'},
 }

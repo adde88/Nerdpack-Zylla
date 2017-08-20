@@ -27,10 +27,10 @@ local exeOnLoad = function()
 	Zylla.ExeOnLoad()
 	Zylla.AFKCheck()
 
-	print("|cffADFF2F ---------------------------------------------------------------------------|r")
-	print("|cffADFF2F --- |rDEATH KNIGHT |cffADFF2FUnholy|r")
-	print("|cffADFF2F --- |rRecommended Talents: Not ready yet.")
-	print("|cffADFF2F ---------------------------------------------------------------------------|r")
+	print('|cffADFF2F ---------------------------------------------------------------------------|r')
+	print('|cffADFF2F --- |rDEATH KNIGHT |cffADFF2FUnholy|r')
+	print('|cffADFF2F --- |rRecommended Talents: Not ready yet.')
+	print('|cffADFF2F ---------------------------------------------------------------------------|r')
 
 end
 

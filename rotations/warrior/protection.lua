@@ -6,7 +6,7 @@ local Heirlooms = _G['Zylla.Heirlooms']
 
 local GUI = {
 	--Logo
-	{type = "texture", texture = "Interface\\AddOns\\Nerdpack-Zylla\\media\\logo.blp", width = 128, height = 128, offset = 90, y = 42, center = true},
+	{type = 'texture', texture = 'Interface\\AddOns\\Nerdpack-Zylla\\media\\logo.blp', width = 128, height = 128, offset = 90, y = 42, center = true},
 	{type = 'ruler'},	 {type = 'spacer'},
 	--KEYBINDS
 	{type = 'header', 	text = 'Keybinds', align = 'center'},
@@ -32,9 +32,9 @@ local exeOnLoad = function()
 	Zylla.ExeOnLoad()
 	Zylla.AFKCheck()
 
-	print("|cffADFF2F ----------------------------------------------------------------------|r")
-	print("|cffADFF2F --- |rWarrior |cffADFF2FProtection |r")
-	print("|cffADFF2F --- |rRecommended Talents: 1/1 - 2/1 - 3/2 - 4/2 - 5/3 - 6/1 - 7/2")
+	print('|cffADFF2F ----------------------------------------------------------------------|r')
+	print('|cffADFF2F --- |rWarrior |cffADFF2FProtection |r')
+	print('|cffADFF2F --- |rRecommended Talents: 1/1 - 2/1 - 3/2 - 4/2 - 5/3 - 6/1 - 7/2')
 	print('|cffADFF2F ----------------------------------------------------------------------|r')
 	print('|cffFFFB2F Configuration: |rRight-click MasterToggle and go to Combat Routines Settings!|r')
 

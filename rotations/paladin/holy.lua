@@ -1,7 +1,7 @@
 local _, Zylla = ...
 local NeP = NeP
 
--- Thanks to Silver for a "working" Holy routine!
+-- Thanks to Silver for a 'working' Holy routine!
 
 local Util = _G['Zylla.Util']
 local Trinkets = _G['Zylla.Trinkets']

@@ -24,12 +24,12 @@ local exeOnLoad = function()
 	Zylla.ExeOnLoad()
 	Zylla.AFKCheck()
 
-	print("|cffADFF2F ---------------------------------------------------------------------------|r")
-	print("|cffADFF2F --- |PRIEST |cffADFF2FHoly|r")
-	print("|cffADFF2F --- |rRecommended Talents: Not ready yet.")
-	print("|cffADFF2F --- |r")
-	print("|cffADFF2F --- |rThis rotation does not work at the moment!|")
-	print("|cffADFF2F ---------------------------------------------------------------------------|r")
+	print('|cffADFF2F ---------------------------------------------------------------------------|r')
+	print('|cffADFF2F --- |PRIEST |cffADFF2FHoly|r')
+	print('|cffADFF2F --- |rRecommended Talents: Not ready yet.')
+	print('|cffADFF2F --- |r')
+	print('|cffADFF2F --- |rThis rotation does not work at the moment!|')
+	print('|cffADFF2F ---------------------------------------------------------------------------|r')
 end
 
 local Keybinds = {

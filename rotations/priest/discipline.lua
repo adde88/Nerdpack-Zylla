@@ -26,10 +26,10 @@ local exeOnLoad = function()
 	Zylla.ExeOnLoad()
 	Zylla.AFKCheck()
 
-	print("|cffADFF2F ---------------------------------------------------------------------------|r")
-	print("|cffADFF2F --- |PRIEST |cffADFF2FDiscipline|r")
-	print("|cffADFF2F --- |rRecommended Talents: Not ready yet.")
-	print("|cffADFF2F ---------------------------------------------------------------------------|r")
+	print('|cffADFF2F ---------------------------------------------------------------------------|r')
+	print('|cffADFF2F --- |PRIEST |cffADFF2FDiscipline|r')
+	print('|cffADFF2F --- |rRecommended Talents: Not ready yet.')
+	print('|cffADFF2F ---------------------------------------------------------------------------|r')
 end
 
 local Keybinds = {
@@ -56,12 +56,9 @@ local Lowest = {
 	{'Plea', '!buff(Atonement)&health<100', 'lowest'}, --Plea for an instant Atonement.
 	{'Power Word: Shield', 'health<100||player.buff(Rapture)&!buff(Power Word: Shield)', 'lowest'}, --Power Word: Shield Use to absorb low to moderate damage and to apply Atonement.
 	{'Shadow Mend', 'health<70', 'lowest'}, --Shadow Mend for a decent direct heal.
-	{'Penance', 'health<90&talent(1,1)', 'lowest'}, -- Penance (if talent "Penitent" selected)
+	{'Penance', 'health<90&talent(1,1)', 'lowest'}, -- Penance (if talent 'Penitent' selected)
 	{'Plea', 'health<100', 'lowest'}, --Plea for an efficient direct heal and to apply Atonement.
 	{'Divine Star', 'player.area(80, 20).heal>2'} -- Divine Star (if selected) for a quick heal&dmg dealing.
-}
-
-local Player = {
 }
 
 local Atonement = {

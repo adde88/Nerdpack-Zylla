@@ -27,11 +27,11 @@ local exeOnLoad = function()
 	Zylla.ExeOnLoad()
 	Zylla.AFKCheck()
 
-	print("|cffADFF2F ---------------------------------------------------------------------------|r")
-	print("|cffADFF2F --- |rDEATH KNIGHT |cffADFF2FFrost (MACHINEGUN =v required talets v=) |r")
-	print("|cffADFF2F --- |rIf you want use MACHINEGUN =v required talents v= AND enable toggle button) |r")
-	print("|cffADFF2F --- |rRecommended Talents:  1/2 - 2/2 - 3/3 - 4/X - 5/X - 6/1 - 7/3")
-	print("|cffADFF2F ---------------------------------------------------------------------------|r")
+	print('|cffADFF2F ---------------------------------------------------------------------------|r')
+	print('|cffADFF2F --- |rDEATH KNIGHT |cffADFF2FFrost (MACHINEGUN =v required talets v=) |r')
+	print('|cffADFF2F --- |rIf you want use MACHINEGUN =v required talents v= AND enable toggle button) |r')
+	print('|cffADFF2F --- |rRecommended Talents:  1/2 - 2/2 - 3/3 - 4/X - 5/X - 6/1 - 7/3')
+	print('|cffADFF2F ---------------------------------------------------------------------------|r')
 
 	NeP.Interface:AddToggle({
 		key = 'xMACHINEGUN',
