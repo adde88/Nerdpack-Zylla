@@ -6,7 +6,7 @@ local Heirlooms = _G['Zylla.Heirlooms']
 
 local GUI = {
 	-- Logo
-	{type = "texture", texture = "Interface\\AddOns\\Nerdpack-Zylla\\media\\logo.blp", width = 128, height = 128, offset = 90, y = 42, center = true},
+	{type = 'texture', texture = 'Interface\\AddOns\\Nerdpack-Zylla\\media\\logo.blp', width = 128, height = 128, offset = 90, y = 42, center = true},
 	{type = 'ruler'},	  {type = 'spacer'},
 	-- Keybinds
 	{type = 'header', 	text = 'Keybinds', align = 'center'},
@@ -50,7 +50,7 @@ local exeOnLoad = function()
 	print('|cffADFF2F --- |rShaman |cffADFF2FEnhancement (Default)|r')
 	print('|cffADFF2F --- |rRecommended Talents: 1/3 - 2/X - 3/X - 4/3 - 5/1 - 6/1 - 7/2')
 	print('|cffADFF2F ----------------------------------------------------------------------|r')
-		print('|cffFFFB2F Configuration: |rRight-click MasterToggle and go to Combat Routines Settings!|r')
+  print('|cffFFFB2F Configuration: |rRight-click MasterToggle and go to Combat Routines Settings!|r')
 
 	NeP.Interface:AddToggle({
 		key = 'xIntRandom',
@@ -72,7 +72,7 @@ local Keybinds = {
 
 local PreCombat = {
 	{'Healing Surge', '!moving&player.health<80', 'player'},
-	{'Ghost Wolf', 'movingfor>0.75&!player.buff(Ghost Wolf)'}
+	{'Ghost Wolf', 'movingfor>0.5&!player.buff(Ghost Wolf)'}
 }
 
 local Survival = {
@@ -93,17 +93,18 @@ local Cooldowns = {
 	{'Berserking', 'player.buff(Ascendance)||player.buff(Feral Spirit).duration>5||player.level<110', 'player'},
 	{'Blood Fury', 'player.buff(Ascendance)||player.buff(Feral Spirit).duration>5||player.level<110', 'player'},
 	{'Doom Winds', '{player.spell(Flametongue).cooldown<gcd}||{talent(4,3)&player.spell(Frostbrand).cooldown<gcd}', 'player'},
-	{'Ascendance', 'player.spell(Feral Spirit).cooldown<gcd', 'player'}
+	{'Ascendance', 'player.spell(Feral Spirit).cooldown<gcd', 'player'},
+	{'#Trinket1', 'UI(kT1)&player.area(8).enemies>3', 'target'}
 }
 
 local Interrupts = {
-	{'!Wind Shear', 'target.inFront'},
-	{'!Lightning Surge Totem', 'advanced&player.spell(Wind Shear).cooldown>gcd&!player.lastgcd(Wind Shear)', 'target.ground'}
+	{'!Wind Shear', 'range<36&interruptAt(70)'},
+	{'!Lightning Surge Totem', 'advanced&interruptAt(1)&range<36&player.spell(Wind Shear).cooldown>gcd&!player.lastgcd(Wind Shear)', 'target.ground'},
 }
 
 local Interrupts_Random = {
-	{'!Wind Shear', 'interruptAt(70)&toggle(xIntRandom)&toggle(Interrupts)&range<41', 'enemies'},
-	{'!Lightning Surge Totem', 'advanced&interruptAt(1)&toggle(xIntRandom)&toggle(Interrupts)&player.spell(Wind Shear).cooldown>gcd&!player.lastgcd(Wind Shear)&range<41', 'enemies.ground'}
+	{'!Wind Shear', 'interruptAt(70)&toggle(xIntRandom)&toggle(Interrupts)&range<36', 'enemies'},
+	{'!Lightning Surge Totem', 'advanced&interruptAt(1)&toggle(xIntRandom)&toggle(Interrupts)&player.spell(Wind Shear).cooldown>gcd&!player.lastgcd(Wind Shear)&inFront&range<36', 'enemies.ground'},
 }
 
 local xCombat = {
@@ -144,7 +145,8 @@ local inCombat = {
 	{Cooldowns, 'toggle(Cooldowns)&!player.lastgcd(Feral Spirit)'},
 	{'Crash Lightning', 'target.inMelee&target.inFront&player.lastgcd(Feral Spirit)'},
 	{xCombat, 'target.inMelee&target.inFront&!player.lastgcd(Feral Spirit)'},
-	{Ranged, '!player.lastgcd(Feral Spirit)'}
+	{Ranged, '!player.lastgcd(Feral Spirit)'},
+	{'Ghost Wolf', 'player.movingfor>0.75&target.range>12'}
 }
 
 local outCombat = {

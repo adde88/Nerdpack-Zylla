@@ -6,8 +6,8 @@ local Heirlooms = _G['Zylla.Heirlooms']
 
 local GUI = {
 	-- Logo
-  {type = "texture", texture = "Interface\\AddOns\\Nerdpack-Zylla\\media\\logo.blp", width = 128, height = 128, offset = 90, y = 42, center = true},
-  {type = 'ruler'},	  {type = 'spacer'},
+	{type = 'texture', texture = 'Interface\\AddOns\\Nerdpack-Zylla\\media\\logo.blp', width = 128, height = 128, offset = 90, y = 42, center = true},
+	{type = 'ruler'},	  {type = 'spacer'},
 	-- Keybinds
 	{type = 'header', 	text = 'Keybinds', align = 'center'},
 	{type = 'text', 	text = 'Left Shift: Pause', align = 'center'},
@@ -17,18 +17,18 @@ local GUI = {
 	{type = 'checkbox', text = 'Pause Enabled', key = 'kPause', default = true},
 	{type = 'ruler'},	{type = 'spacer'},
 	-- Survival
-  {type = 'header', 	text = 'Survival',									  	      align = 'center'},
+	{type = 'header', 	text = 'Survival',									  	      align = 'center'},
 	{type = 'checkbox', text = 'Enable Healing Surge',								key = 'E_HS',           default = false},
-  {type = 'spinner', 	text = 'Healing Surge below HP%',             key = 'HS_HP',          default = 50},
+	{type = 'spinner', 	text = 'Healing Surge below HP%',             key = 'HS_HP',          default = 50},
 	{type = 'spinner', 	text = 'Astral Shift below HP%',             key = 'AS_HP',          default = 40},
-  {type = 'ruler'},	  {type = 'spacer'},
+	{type = 'ruler'},	  {type = 'spacer'},
 	-- Group/Party stuff...
-  {type = 'header', 	text = 'Party/Group',									  	    align = 'center'},
+	{type = 'header', 	text = 'Party/Group',									  	    align = 'center'},
 	{type = 'checkbox', text = 'Heal Lowest Party Member',						key = 'E_HEAL',        default = false},
-  {type = 'spinner', 	text = 'below HP%',             							key = 'L_HS_HP',       default = 33},
+	{type = 'spinner', 	text = 'below HP%',             							key = 'L_HS_HP',       default = 33},
 	{type = 'checkbox', text = 'Use Rainfall to Heal Party',					key = 'E_HEAL_RF',     default = false},
 	{type = 'spinner', 	text = 'below HP%',             							key = 'L_RF_HP',       default = 33},
-  {type = 'ruler'},	  {type = 'spacer'},
+	{type = 'ruler'},	  {type = 'spacer'},
 	-- Trinkets + Heirlooms for leveling
 	{type = 'header', 	text = 'Trinkets/Heirlooms', align = 'center'},
 	{type = 'checkbox', text = 'Use Trinket #1', key = 'kT1', default = true},
@@ -69,11 +69,11 @@ local PreCombat = {
 }
 
 local Survival = {
-	{'!Healing Surge', 'UI(E_HS)&player.health<=UI(HS_HP)&player.maelstrom>10', 'player'},
+	{'!Healing Surge', '!moving&UI(E_HS)&player.health<=UI(HS_HP)&player.maelstrom>10', 'player'},
 }
 
 local Party = {
-	{'!Healing Surge', 'UI(E_HEAL)&health<UI(L_HS_HP)&player.maelstrom>10&range<41', 'lowest'},
+	{'!Healing Surge', '!moving&UI(E_HEAL)&health<UI(L_HS_HP)&player.maelstrom>10&range<41', 'lowest'},
 	{'!Rainfall', 'advanced&UI(E_HEAL_RF)&health<UI(L_RF_HP)&player.maelstrom>10&range<41', 'lowest.ground'}
 }
 
@@ -87,22 +87,23 @@ local Cooldowns = {
 }
 
 local Interrupts = {
-	{'!Wind Shear'},
+	{'!Wind Shear', 'range<36&interruptAt(70)'},
+	{'!Lightning Surge Totem', 'advanced&interruptAt(1)&range<36&player.spell(Wind Shear).cooldown>gcd&!player.lastgcd(Wind Shear)', 'target.ground'},
 }
 
 local Interrupts_Random = {
-	{'!Wind Shear', 'interruptAt(70)&toggle(xIntRandom)&toggle(Interrupts)&range<41', 'enemies'},
-  {'!Lightning Surge Totem', 'interruptAt(1)&toggle(xIntRandom)&toggle(Interrupts)&player.spell(Wind Shear).cooldown>gcd&!prev_gcd(Wind Shear)&inFront&range<41', 'enemies.ground'},
+	{'!Wind Shear', 'interruptAt(70)&toggle(xIntRandom)&toggle(Interrupts)&range<36', 'enemies'},
+	{'!Lightning Surge Totem', 'advanced&interruptAt(1)&toggle(xIntRandom)&toggle(Interrupts)&player.spell(Wind Shear).cooldown>gcd&!player.lastgcd(Wind Shear)&inFront&range<36', 'enemies.ground'},
 }
 
 local xCombat = {
 	-- Crash Lightning
 	{'Crash Lightning', 'lastgcd(Feral Spirit)', 'target'},
 	{'Crash Lightning', 'talent(6,1)&player.area(10).enemies>=3&{!talent(4,3)||player.buff(Frostbrand).duration>gcd}', 'target'},
-	{'Crash Lightning', 'player.buff(Crash Lightning).duration>gcd&player.area(10).enemies>=2', 'target'},
+	{'Crash Lightning', 'player.buff(Crash Lightning).duration<gcd&player.area(10).enemies>=2', 'target'},
 	{'Crash Lightning', 'player.area(10).enemies>=3', 'target'},
 	{'Crash Lightning', '{{player.area(10).enemies>1||talent(6,1)||talent(7,2)}&!set_bonus(T19)==4}||player.buff(Feral Spirit).duration>5', 'target'},
-  {'Crash Lightning', 'set_bonus(T20)==2&player.buff(Lightning Crash).duration<gcd', 'target'},
+	{'Crash Lightning', 'set_bonus(T20)>=2&player.buff(Lightning Crash).duration<gcd', 'target'},
 	-- Windstrike
 	{'Windstrike', 'player.buff(Stormbringer).react&{{talent(6,2)&player.maelstrom>=26}||{!talent(6,2)}}', 'target'},
 	{'Windstrike', 'talent(5,2)&player.spell(Lightning Bolt)<gcd&player.maelstrom>80', 'target'},
@@ -128,7 +129,7 @@ local xCombat = {
 	{'Flametongue', 'player.buff(Flametongue).remains<gcd||{player.spell(Doom Winds).cooldown<6&player.buff(Flametongue).duration<4}', 'target'},
 	{'Flametongue', 'player.buff(Flametongue).duration<4.8', 'target'},
 	-- Here comes the rest
-	{'Windsong'},
+	{'Windsong', nil, 'target'},
 	{'Fury of Air', 'toggle(AoE)&!player.buff(Fury of Air)&player.maelstrom>22'},
 	{'Lightning Bolt', '{talent(5,2)&player.maelstrom>=40&!talent(6,2)}||{talent(5,2)&talent(6,2)player.maelstom>46}', 'target'},
 	{'Earthen Spike', nil, 'target'},
@@ -147,7 +148,7 @@ local inCombat = {
 	{Heirlooms},
 	{Keybinds},
 	{Interrupts_Random},
-	{Interrupts, 'target.interruptAt(70)&toggle(Interrupts)&target.inFront&target.range<40'},
+	{Interrupts, 'toggle(Interrupts)'},
 	{Survival},
 	{Party},
 	{Cooldowns, 'toggle(Cooldowns)'},
@@ -159,8 +160,8 @@ local outCombat = {
 	{Keybinds},
 	{PreCombat},
 	{Interrupts_Random},
-	{Interrupts, 'target.interruptAt(70)&toggle(Interrupts)&target.inFront&target.range<40'},
-	{'!Healing Surge', 'UI(E_HS)&player.health<90', 'player'},
+	{Interrupts, 'target.interruptAt(70)&toggle(Interrupts)&target.inFront&target.range<41'},
+	{'!Healing Surge', '!moving&UI(E_HS)&player.health<90', 'player'},
 }
 
 NeP.CR:Add(263, {
