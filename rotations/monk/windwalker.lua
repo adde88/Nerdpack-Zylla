@@ -200,7 +200,7 @@ local inCombat = {
 	{Serenity, 'toggle(cooldowns)&target.inMelee&talent(7,3)&{!player.spell(Serenity).cooldown||player.buff(Serenity)}'},
 	{SEF, 'target.inMelee&UI(sef_toggle)&!talent(7,3)&player.spell(Strike of the Windlord).cooldown<24&player.spell(Fists of Fury).cooldown<7&player.spell(Rising Sun Kick).cooldown<7'},
 	{Melee, 'target.inMelee&target.inFront'},
-	{Ranged, 'target.range>8&target.range<41'},
+	{Ranged, '!target.inMelee&target.range<41'},
 }
 
 local outCombat = {
