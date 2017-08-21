@@ -72,11 +72,25 @@ local exeOnLoad = function()
 		icon = 'Interface\\Icons\\inv-mount_raven_54',
 	})
 
+	NeP.Interface:AddToggle({
+		key = 'xIntRandom',
+		name = 'Interrupt Anyone',
+		text = 'Interrupt all nearby enemies, without targeting them.',
+		icon = 'Interface\\Icons\\inv_ammo_arrow_04',
+	})
+
+	NeP.Interface:AddToggle({
+		key = 'disp',
+		name='Dispell',
+		text = 'ON/OFF Dispel All',
+		icon='Interface\\ICONS\\spell_holy_purify',
+	})
+
 end
 
 local PreCombat = {
-	{'Travel Form', 'toggle(xFORM)&!indoors&!player.buff(Travel Form)&!player.buff(Prowl)&!player.combat'},
-	{'Cat Form', 'toggle(xFORM)&!player.buff(Cat Form)&!player.buff(Travel Form)'},
+	--{'Travel Form', 'toggle(xFORM)&movingfor>2&!indoors&!player.form==0'},
+	{'Cat Form', 'toggle(xFORM)&indoors&!player.buff(Cat Form)&!player.buff(Travel Form)'},
  	{'Prowl', '!player.buff(Prowl)&player.area(40).enemies>0'},
 }
 
@@ -86,12 +100,18 @@ local Keybinds = {
 }
 
 local Interrupts = {
-	{'!Mighty Bash', 'talent(4,1)'},
+	{'Skull Bash', 'player.form>0', 'target'},
+	{'!Mighty Bash', nil, 'target'},
+}
+
+local Interrupts_Random = {
+	{'!Skull Bash', 'interruptAt(70)&player.form>0&toggle(xIntRandom)&toggle(Interrupts)&range<14', 'enemies'},
+	{'!Mighty Bash', 'interruptAt(60)&toggle(xIntRandom)&toggle(Interrupts)&inFront&inMelee', 'enemies'},
 }
 
 local DPS = {
-	{'Moonfire', '!debuff&range<41&combat', 'enemies'},
-	{'Sunfire', '!debuff&range<41&combat', 'enemies'},
+	{'Moonfire', 'debuff.duration<3&range<41&combat', 'enemies'},
+	{'Sunfire', 'debuff.duration<3&range<41&combat', 'enemies'},
 	{'Solar Wrath', 'debuff(Moonfire)&debuff(Sunfire)&range<41&combat', 'enemies'},
 }
 
@@ -101,8 +121,7 @@ local Innervate = {
 	{'Regrowth', nil, 'lowest'},
 }
 
-local TreeForm = {
-}
+local TreeForm = {}
 
 local Emergency = {
 	{'!Swiftmend', nil, 'lowest'},
@@ -122,19 +141,19 @@ local Mitigations = {
 
 local Moving = {
 	{'Lifebloom', 'tank.buff(Lifebloom).duration<5.5', 'tank'},
-
+	-- Wardz
 	{'Cenarion Ward', 'talent(1,2)&!tank.buff(Cenarion Ward)', 'tank'},
 	{'Cenarion Ward', 'talent(1,2)&!tank2.buff(Cenarion Ward)', 'tank2'},
 	{'Cenarion Ward', 'talent(1,2)', 'lnbuff(Cenarion Ward)'},
-	-- Rejuv
+	-- Rejuvs
 	{'Rejuvenation', 'tank.health<=UI(trejuv)&!tank.buff(Rejuvenation)', 'tank'},
 	{'Rejuvenation', 'tank2.health<=UI(trejuv)&!tank2.buff(Rejuvenation)', 'tank2)'},
 	{'Rejuvenation', 'health<=UI(lrejuv)&!buff(Rejuvenation)', 'lnbuff(Rejuvenation)'},
-	-- Germ
+	-- Germs
 	{'Rejuvenation', 'talent(6,3)&tank.buff(Rejuvenation)&!tank.buff(Rejuvenation (Germination))&tank.health<=UI(lgerm)', 'tank'},
 	{'Rejuvenation', 'talent(6,3)&tank2.buff(Rejuvenation)&!tank2.buff(Rejuvenation (Germination))&tank2.health<=UI(lgerm)', 'tank2'},
 	{'Rejuvenation', 'talent(6,3)&buff(Rejuvenation)&health<=UI(lgerm)', 'lnbuff(Rejuvenation (Germination))'},
-
+	-- Swifties
 	{'Swiftmend', 'tank.health<=UI(tsm)', 'tank'},
 	{'Swiftmend', 'tank2.health<=UI(tsm)', 'tank2'},
 	{'Swiftmend', 'lowest.health<=UI(lsm)', 'lowest'},
@@ -185,6 +204,7 @@ local inCombat = {
 	{Interrupts, 'target.interruptAt(70)&toggle(Interrupts)&target.inFront&target.inMelee'},
 	{Mitigations},
 	{Cooldowns, 'toggle(Cooldowns)'},
+	{'%dispelall', 'toggle(disp)'},
 	{xHealing, '!player.moving'},
 	{Moving, 'player.moving'},
 	{DPS, 'toggle(xDPS)&lowest.health>=UI(k_DPSHP)'},

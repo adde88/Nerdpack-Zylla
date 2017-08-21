@@ -5,6 +5,9 @@ local Trinkets = _G['Zylla.Trinkets']
 local Heirlooms = _G['Zylla.Heirlooms']
 
 local GUI = {
+	--Logo
+	{type = 'texture', texture = 'Interface\\AddOns\\Nerdpack-Zylla\\media\\logo.blp', width = 128, height = 128, offset = 90, y = 42, center = true},
+	{type = 'ruler'},	  {type = 'spacer'},
 	-- Keybinds
 	{type = 'header', 	text = 'Keybinds', align = 'center'},
 	{type = 'text', 	text = 'Left Shift: Pause', align = 'center'},
@@ -27,16 +30,30 @@ local GUI = {
 local exeOnLoad = function()
 	Zylla.ExeOnLoad()
 	Zylla.AFKCheck()
-	
+
 	print('|cffADFF2F ----------------------------------------------------------------------|r')
 	print('|cffADFF2F --- |rDeath-Knight |cffADFF2FBlood |r')
 	print('|cffADFF2F --- |rRecommended Talents: COMING SOON...')
 	print('|cffADFF2F ----------------------------------------------------------------------|r')
+	print('|cffFFFB2F Configuration: |rRight-click MasterToggle and go to Combat Routines Settings!|r')
+
+	NeP.Interface:AddToggle({
+		key = 'xIntRandom',
+		name = 'Interrupt Anyone',
+		text = 'Interrupt all nearby enemies, without targeting them.',
+		icon = 'Interface\\Icons\\inv_ammo_arrow_04',
+	})
+
+	NeP.Interface:AddToggle({
+	 key = 'super_taunt',
+	 name = 'Taunt Lowest Threat',
+	 text = 'Taunt a nearby enemy in combat, when threat gets low, without targeting it.',
+	 icon = 'Interface\\Icons\\spell_nature_reincarnation',
+ })
 
 end
 
-local PreCombat = {
-}
+local PreCombat = {}
 
 local Survival = {
 	{'Icebound Fortitude', 'player.health<35||player.incdmg(2.5)>player.health.max*0.50||player.state(stun)'},
@@ -61,17 +78,27 @@ local Interrupts = {
 	{'!Arcane Torrent', 'target.inMelee&cooldown(Mind Freeze).remains>gcd&!prev_gcd(Mind Freeze)'},
 }
 
+local Interrupts_Random = {
+	{'!Mind Freeze', 'interruptAt(70)&toggle(xIntRandom)&toggle(Interrupts)&inFront&inMelee', 'enemies'},
+	{'!Asphyxiate', 'interruptAt(70)&toggle(xIntRandom)&toggle(Interrupts)&player.spell(Mind Freeze).cooldown>gcd&!prev_gcd(Mind Freeze)&inFront&range<21', 'enemies'},
+	{'!Arcane Torrent', 'interruptAt(70)&toggle(xIntRandom)&toggle(Interrupts)&player.spell(Mind Freeze).cooldown>gcd&player.spell(Asphyxiate).cooldown>gcd&inMelee', 'enemies'},
+}
+
+local xTaunts = {
+	{'Dark Command', 'player.area(30).enemies>=1&combat&alive&threat<100', 'enemies'},
+}
+
 local xCombat = {
-	{'Death Grip', '!target.inMelee&target.range<40&target.threat<99&target.combat'},
-	{'Death\'s Caress', 'target.range<40&{{!target.debuff(Blood Plague)}||{target.debuff(Blood Plague).remains<3}}'},
+	{'Death Grip', 'target.range>10&target.range<41&target.threat<99&target.combat'},
+	{'Death\'s Caress', 'range<41&debuff(Blood Plague).remains<3', 'target'},
 	{'Marrowrend', 'player.buff(Bone Shield).duration<4&target.inFront&target.inMelee'},
 	{'Marrowrend', 'player.buff(Bone Shield).count<7&talent(3,1)&target.inFront&target.inMelee'},
 	{'Blood Boil', '!target.debuff(Blood Plague)&target.range<20'},
-	{'Death and Decay', 'target.range<40&{{talent(2,1)&player.buff(Crimson Scourge)}||{player.area(10).enemies>1&player.buff(Crimson Scourge}}', 'target.ground'},
-	{'Death and Decay', 'target.range<40&{{talent(2,1)&player.runes>2}||{player.area(10).enemies>2}}', 'target.ground'},
-	{'Death and Decay', '!talent(2,1)&target.range<40&player.area(10).enemies==1&player.buff(Crimson Scourge)', 'target.ground'},
-	{'Death Strike', 'player.runicpower>65&target.inFront&target.inMelee'},
-	{'Heart Strike', 'player.runes>2&target.inFront&target.inMelee'},
+	{'Death and Decay', 'range<41&{{talent(2,1)&player.buff(Crimson Scourge)}||{player.area(10).enemies>1&player.buff(Crimson Scourge}}', 'target.ground'},
+	{'Death and Decay', 'range<41&{{talent(2,1)&player.runes>2}||{player.area(10).enemies>2}}', 'target.ground'},
+	{'Death and Decay', '!talent(2,1)&range<41&player.area(10).enemies==1&player.buff(Crimson Scourge)', 'target.ground'},
+	{'Death Strike', 'player.runicpower>65&inFront&inMelee', 'target'},
+	{'Heart Strike', 'inFront&inMelee&{player.runes>2||player.buff(Death and Decay)}', 'target'},
 	{'Consumption', 'target.inFront&target.inMelee'},
 }
 
@@ -82,14 +109,18 @@ local inCombat = {
 	{Keybinds},
 	{Trinkets},
 	{Interrupts, 'target.interruptAt(70)&toggle(Interrupts)'},
+	{Interrupts_Random},
 	{Survival},
 	{Cooldowns, 'toggle(Cooldowns)'},
 	{xCombat},
+	{xTaunts, 'toggle(super_taunt)'},
 }
 
 local outCombat = {
 	{PreCombat},
 	{Keybinds},
+	{Interrupts, 'target.interruptAt(70)&toggle(Interrupts)'},
+	{Interrupts_Random},
 }
 
 NeP.CR:Add(250, {
