@@ -122,7 +122,7 @@ NeP.Interface:AddToggle({
 })
 
 NeP.Interface:AddToggle({
-	key = 'zyDISP',
+	key = 'disp',
 	name = 'Interrupt Anyone',
 	text = 'Interrupt all nearby enemies, without targeting them. Might require advanced unlocker on some routines!',
 	icon = 'Interface\\Icons\\ability_shaman_cleansespirit',
@@ -207,7 +207,7 @@ local inCombat = {
 	{Trinkets},
 	{Heirlooms},
 	{Keybinds},
-	{Dispel, '&toggle(zyDISP)&spell(Purify Spirit).cooldown<gcd'},
+	{'%dispelall', 'toggle(disp)'},
 	{Survival},
 	{Emergency, 'range<41'},
 	{Totems},
