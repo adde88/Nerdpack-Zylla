@@ -16,14 +16,15 @@ local GUI = {
 	{type = 'text', 	 text = 'Right Alt: Freezing Trap',						align = 'center'},
 	{type = 'ruler'},	 {type = 'spacer'},
 	-- Settings
-	{type = 'header', 	text = 'Class Settings',									 align = 'center'},
-	{type = 'checkbox', text = 'Pause Enabled',									 key = 'kPause', default = true},
-	{type = 'checkbox', text = 'Summon Pet',									 key = 'kPet', default = true},
-	{type = 'checkbox', text = 'Barrage Enabled',									 key = 'kBarrage', default = false},
-	{type = 'checkbox', text = 'Volley Enabled',									 key = 'kVolley', default = true},
-	{type = 'checkbox', text = 'Misdirect Focus/Pet',									key = 'kMisdirect', default = true},
-	{type = 'checkbox', text = 'Freezing Trap (Interrupt)' ,					key = 'FT_Int', default = false},
-	{type = 'checkbox', text = 'Tarnished Sentinel Medallion',				key = 'e_TSM', default = true},
+	{type = 'header', 	text = 'Class Settings',							 	align = 'center'},
+	{type = 'checkbox', text = 'Pause Enabled',								 	key = 'kPause', default = true},
+	{type = 'checkbox', text = 'Enable DBM Integration',				key = 'kDBM', default = true},
+	{type = 'checkbox', text = 'Summon Pet',									 	key = 'kPet', default = true},
+	{type = 'checkbox', text = 'Barrage Enabled',							 	key = 'kBarrage', default = false},
+	{type = 'checkbox', text = 'Volley Enabled',								key = 'kVolley', default = true},
+	{type = 'checkbox', text = 'Misdirect Focus/Pet',						key = 'kMisdirect', default = true},
+	{type = 'checkbox', text = 'Freezing Trap (Interrupt)' ,		key = 'FT_Int', default = false},
+	{type = 'checkbox', text = 'Tarnished Sentinel Medallion',	key = 'e_TSM', default = true},
 	{type = 'ruler'},	 {type = 'spacer'},
 	-- Survival
 	{type = 'header', 	text = 'Survival',									 	 align = 'center'},
@@ -130,12 +131,13 @@ local xCombat = {
 local xPet = {
 	{'Call Pet 1', '!pet.exists&UI(kPet)'},
 	{'Mend Pet', 'pet.alive&pet.health<UI(P_HP)&!pet.buff(Mend Pet)'},
-		{{ 																			 	-- Pet Dead
+		{{ 																			 																			-- Pet Dead
 			{'Heart of the Phoenix', '!player.debuff(Weakened Heart)&player.combat'}, 	-- Heart of the Phoenix
-			{'Revive Pet'} 																-- Revive Pet
+			{'Revive Pet'} 																															-- Revive Pet
 	}, {'pet.dead', 'UI(kPet)'}},
-	{'!Kill Command', 'alive&combat&pet.exists&pet.alive&{{talent(4,3)&petrange<31}||petrange<10}', 'target'},
-	{'/cast [@focus, help] [@pet, nodead, exists] Misdirection', 'player.spell(Misdirection).cooldown<gcd&toggle(xMisdirect)}&{player.combat}||{!player.combat&dbm(pull in)<3}'},
+	{'!Kill Command', 'alive&combat&pet.exists&pet.alive&{{talent(4,3)&petrange<31}||!talent(4,3)&petrange<10}', 'target'},
+	{'/cast [@focus, help] [@pet, nodead, exists] Misdirection', 'UI(kDBM)&toggle(xMisdirect)&{player.combat||{!player.combat&dbm(pull in)<3}}'},
+	{'/cast [@focus, help] [@pet, nodead, exists] Misdirection', '!UI(kDBM)&toggle(xMisdirect)&player.combat'},
 }
 
 local xPvP = {
