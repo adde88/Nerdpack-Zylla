@@ -5,14 +5,9 @@ local Trinkets = _G['Zylla.Trinkets']
 local Heirlooms = _G['Zylla.Heirlooms']
 
 local GUI = {
-	-- Trinkets + Heirlooms for leveling
-	{type = 'header', 	text = 'Trinkets/Heirlooms', align = 'center'},
-	{type = 'checkbox', text = 'Use Trinket #1', key = 'kT1', default = true},
-	{type = 'checkbox', text = 'Use Trinket #2', key = 'kT2', default = true},
-	{type = 'checkbox', text = 'Ring of Collapsing Futures', key = 'kRoCF', default = true},
-	{type = 'checkbox', text = 'Use Heirloom Necks When Below X% HP', key = 'k_HEIR', default = true},
-	{type = 'spinner',	text = '', key = 'k_HeirHP', default = 40},
-	{type = 'ruler'},{type = 'spacer'},
+	--Logo
+	{type = 'texture', texture = 'Interface\\AddOns\\Nerdpack-Zylla\\media\\logo.blp', width = 128, height = 128, offset = 90, y = 42, center = true},
+	{type = 'ruler'},	 {type = 'spacer'},
 	-- GUI Survival
 	{type = 'header', text = 'Survival', align = 'center'},
 	{type = 'checkbox', text = 'Enable Astral Shift', key = 'S_ASE', default = true},
@@ -94,6 +89,14 @@ local GUI = {
 	{type = 'text', text = 'Active: when 3 or more players within 40yds. drop below 80% health.'},
 	{type = 'checkbox', text = 'Enable Chain Heal', key = 'L_CHE', default = true},
 	{type = 'text', text = 'Active: when 3 or more players within 40yds. drop below 80% health.'},
+	{type = 'ruler'},{type = 'spacer'},
+	-- Trinkets + Heirlooms for leveling
+	{type = 'header', 	text = 'Trinkets/Heirlooms', align = 'center'},
+	{type = 'checkbox', text = 'Use Trinket #1', key = 'kT1', default = true},
+	{type = 'checkbox', text = 'Use Trinket #2', key = 'kT2', default = true},
+	{type = 'checkbox', text = 'Ring of Collapsing Futures', key = 'kRoCF', default = true},
+	{type = 'checkbox', text = 'Use Heirloom Necks When Below X% HP', key = 'k_HEIR', default = true},
+	{type = 'spinner',	text = '', key = 'k_HeirHP', default = 40},
 	{type = 'ruler'},{type = 'spacer'},
 }
 
