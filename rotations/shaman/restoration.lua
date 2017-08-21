@@ -123,8 +123,8 @@ NeP.Interface:AddToggle({
 
 NeP.Interface:AddToggle({
 	key = 'disp',
-	name = 'Interrupt Anyone',
-	text = 'Interrupt all nearby enemies, without targeting them. Might require advanced unlocker on some routines!',
+	name = 'Dispel',
+	text = 'Enable/Disable Dispel!',
 	icon = 'Interface\\Icons\\ability_shaman_cleansespirit',
 })
 
