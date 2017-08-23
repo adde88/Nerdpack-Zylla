@@ -23,6 +23,7 @@ local GUI = {
 	-- Survival
 	{type = 'header', 	text = 'Survival',	align = 'center'},
 	{type = 'spinner', 	text = 'Death Strike below HP%',	key = 'DSHP', default = 70},
+	{type = 'spinner', 	text = 'Death Strike above RP',	key = 'DSRP', default = 85},
 	{type = 'spinner', 	text = 'Icebound Fortitude below HP%',	key = 'IFHP', default = 30},
 	{type = 'spinner', 	text = 'Vampiric Blood below HP%',	key = 'VBHP', default = 50},
 	{type = 'spinner',	text = 'Healthstone below HP%', key = 'HSHP',	 default = 45},
@@ -43,7 +44,7 @@ local exeOnLoad = function()
 
 	print('|cffADFF2F ----------------------------------------------------------------------|r')
 	print('|cffADFF2F --- |rDeath-Knight |cffADFF2FBlood |r')
-	print('|cffADFF2F --- |rRecommended Talents: COMING SOON...')
+	print('|cffADFF2F --- |rRecommended Talents: 2112133')
 	print('|cffADFF2F ----------------------------------------------------------------------|r')
 	print('|cffFFFB2F Configuration: |rRight-click MasterToggle and go to Combat Routines Settings!|r')
 
@@ -104,16 +105,18 @@ local xTaunts = {
 }
 
 local xCombat = {
+	{'Death Strike', 'inFront&inMelee&player.runicpower>65&player.health<=UI(DSHP)', 'target'},
 	{'Death\'s Caress', 'range<41&debuff(Blood Plague).remains<3', 'target'},
 	{'Marrowrend', 'player.buff(Bone Shield).duration<4&inFront&inMelee', 'target'},
 	{'Marrowrend', 'player.buff(Bone Shield).count<7&talent(3,1)&inFront&inMelee', 'target'},
+	{'Death Strike', 'inFront&inMelee&player.runicpower>=UI(DSRP)', 'target'},
 	{'Blood Boil', '!target.debuff(Blood Plague)&target.range<20'},
 	{'Death and Decay', 'range<31&{{talent(2,1)&player.buff(Crimson Scourge)}||{player.area(10).enemies>1&player.buff(Crimson Scourge}}', 'target.ground'},
 	{'Death and Decay', 'range<31&{{talent(2,1)&player.runes>2}||{player.area(10).enemies>2}}', 'target.ground'},
 	{'Death and Decay', '!talent(2,1)&range<31&target.area(10).enemies==1&player.buff(Crimson Scourge)', 'target.ground'},
-	{'Death Strike', 'inFront&inMelee&player.runicpower>65&player.health<=UI(DSHP)', 'target'},
 	{'Heart Strike', 'inFront&inMelee&{player.runes>2||player.buff(Death and Decay)}', 'target'},
 	{'Consumption', 'target.inFront&target.inMelee'},
+	{'Blood Boil', 'target.range<=10'},
 }
 
 local inCombat = {
