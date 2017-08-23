@@ -18,8 +18,10 @@ local GUI = {
 	-- General Class/Spec Settings
 	{type = 'header',	text = 'General Settings',					align = 'center'},
 	{type='checkbox',	text='Pause Enabled',						key='kPause',	default=true},
-	{type = 'spinner', 	text = 'Critical Health %',					key = 'k_CH',	default = 33},
-	{type = 'spinner', 	text = 'DPS while ppl. are above HP %',		key = 'k_DPSHP',default = 90},
+	{type = 'spinner', 	text = 'Critical HP%',					key = 'k_CH',	default = 33},
+	{type = 'spinner', 	text = 'DPS while ppl. are above HP%',		key = 'k_DPSHP',default = 90},
+	{type = 'spinner', text = 'Rejuvenation - Player amount', key = 'REJUV_UNITS', align = 'left', width = 55, step = 1, default = 8, max = 40},
+	{type = 'spinner', text = 'Rejuvenation - when below HP%', key = 'MASS_REJUV_HP', align = 'left', width = 55, step = 5, default = 95, max = 100},
 	{type='ruler'},		{type='spacer'},
 	-- TANK
 	{type = 'header', 	text = 'Tank Healing',						align = 'center'},
@@ -80,8 +82,15 @@ local exeOnLoad = function()
 	})
 
 	NeP.Interface:AddToggle({
+		key = 'xRejuv',
+		name = 'Rejuvenation on many players.',
+		text = 'Keep Rejuvenation up on several party/raid members. (Units and HP% changable within settings).',
+		icon = 'Interface\\Icons\\spell_nature_rejuvenation',
+	})
+
+	NeP.Interface:AddToggle({
 		key = 'disp',
-		name='Dispell',
+		name='Dispel',
 		text = 'ON/OFF Dispel All',
 		icon='Interface\\ICONS\\spell_holy_purify',
 	})
@@ -159,6 +168,10 @@ local Moving = {
 	{'Swiftmend', 'lowest.health<=UI(lsm)', 'lowest'},
 }
 
+local SWP_MASS = {
+	{'Rejuvenation', 'range<41&combat&alive&buff.count.any<UI(REJUV_UNITS)&buff.duration<3&health<=UI(MASS_REJUV_HP)', 'lnbuff(Rejuvenation)'}
+}
+
 local xHealing = {
 	{Emergency, 'lowest.health<=UI(k_CH)'},
 	{Innervate, 'player.buff(Innervate)'},
@@ -208,6 +221,7 @@ local inCombat = {
 	{xHealing, '!player.moving'},
 	{Moving, 'player.moving'},
 	{DPS, 'toggle(xDPS)&lowest.health>=UI(k_DPSHP)'},
+	{Rejuvenation, 'toggle(xRejuv)'},
 }
 
 local outCombat = {
