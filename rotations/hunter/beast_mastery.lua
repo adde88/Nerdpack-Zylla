@@ -136,8 +136,8 @@ local xPet = {
 			{'Revive Pet'} 																															-- Revive Pet
 	}, {'pet.dead', 'UI(kPet)'}},
 	{'!Kill Command', 'alive&combat&pet.exists&pet.alive&{{talent(4,3)&petrange<31}||!talent(4,3)&petrange<10}', 'target'},
-	{'/cast [@focus, help] [@pet, nodead, exists] Misdirection', 'UI(kDBM)&toggle(xMisdirect)&{player.combat||{!player.combat&dbm(pull in)<3}}'},
-	{'/cast [@focus, help] [@pet, nodead, exists] Misdirection', '!UI(kDBM)&toggle(xMisdirect)&player.combat'},
+	{'/cast [@focus, help] [@pet, nodead, exists] Misdirection', 'player.spell(Misdirection).cooldown<gcd&UI(kDBM)&toggle(xMisdirect)&{player.combat||{!player.combat&dbm(pull in)<3}}'},
+	{'/cast [@focus, help] [@pet, nodead, exists] Misdirection', 'player.spell(Misdirection).cooldown<gcd&!UI(kDBM)&toggle(xMisdirect)&player.combat'},
 }
 
 local xPvP = {
