@@ -8,75 +8,87 @@ local GUI = {
 	--Logo
 	{type = 'texture', texture = 'Interface\\AddOns\\Nerdpack-Zylla\\media\\logo.blp', width = 128, height = 128, offset = 90, y = 42, center = true},
 	{type = 'ruler'},	 {type = 'spacer'},
+	-- GUI Keybinds
+	{type = 'header', text = 'Keybinds', align = 'center'},
+	{type = 'text', 	 text = 'Left Shift: Force AoE', align = 'left'},
+	{type = 'text', 	 text = 'Left Ctrl: Mass Dispel', align = 'left'},
+	{type = 'text', 	 text = 'Left Alt: SW: Pain @ Mouseover', align = 'left'},
+	{type = 'ruler'},	{type = 'spacer'},
 	-- GENERAL
 	{type = 'header', text = 'General', align = 'center'},
-	{type = 'text', text = 'Before Pull.', align = 'center'},
-	{type = 'spinner', text = 'How many units to give SW: Pain?', key = 'SWP_UNITS', align = 'left', width = 55, step = 1, default = 4},
+	{type = 'checkbox', text = 'Enable DBM Stuff.', key = 'dbm_key', align = 'left', width = 55, default = false},
 	{type = 'checkbox', text = 'Potion of Prolonged Power', key = 's_pull', width = 55, default = false},
+	{type = 'checkbox', text = 'Force AOE', key = 'k_AOE', width = 55, default = true},
+	{type = 'checkbox', text = 'Mass Dispel', key = 'k_MD', width = 55, default = true},
 	{type = 'checkbox', text = 'Mind Blast', key = 'pull_MB', width = 55, default = true},
-	{type = 'text', text = 'Movement', align = 'center'},
 	{type = 'checkbox', text = 'Body and Soul', key = 'm_Body', width = 55, default = true},
+	{type = 'spinner', text = 'SW: Pain - Units', key = 'SWP_UNITS', align = 'left', width = 55, step = 1, default = 4},
 	{type = 'ruler'}, {type = 'spacer'},
 	-- COOLDOWNS
-	{type = 'header', text = 'Cooldowns if Toggled', align = 'center'},
-	{type = 'checkbox', text = 'Hero Potion of Prolonged Power', key = 's_PP', width = 55, default = false},
-	{type = 'text', text = 'Trinkets', align = 'center'},
-	{type = 'checkbox', text = 'Top Trinket', key = 'trinket_1', width = 55, default = false},
-	{type = 'checkbox', text = 'Bottom Trinket', key = 'trinket_2', width = 55, default = false},
-	{type = 'text', text = 'Power Infusion', align = 'center'},
-	{type = 'checkbox', text = 'ON/OFF', key = 'dps_PI', width = 55, default = false},
-	{type = 'spinner', text = 'Target<45%', key = 'dps_PIspin1', align = 'left', width = 55, step = 1, default = 15},
-	{type = 'spinner', text = 'Target>35%', key = 'dps_PIspin2', align = 'left', width = 55, step = 1, default = 15},
-	{type = 'text', text = 'Shadowfiend', align = 'center'},
-	{type = 'checkbox', text = 'ON/OFF', key = 'dps_fiend', width = 55, default = true},
+	{type = 'header', text = 'Cooldowns (if Toggled ON)', align = 'center'},
+	{type = 'checkbox', text = 'Potion of Prolonged Power', key = 's_PP', width = 55, default = false},
+	{type = 'checkbox', text = 'Trinket #1', key = 'trinket_1', width = 55, default = false},
+	{type = 'checkbox', text = 'Trinket #2', key = 'trinket_2', width = 55, default = false},
+	{type = 'spacer'},
+	{type = 'text', text = 'Mindbender', align = 'left'},
+	{type = 'spinner', text = 'Void Count', key = 'mb_vfc', align = 'left', width = 55, step = 1, default = 5, max = 100},
+	{type = 'spacer'},
+	{type = 'checkbox', text = 'Power Infusion', key = 'dps_PI', width = 55, default = false},
+	{type = 'spinner', text = 'Target<45% - Void Count', key = 'dps_PIspin1', align = 'left', width = 55, step = 1, default = 15},
+	{type = 'spinner', text = 'Target>35% - Void Count', key = 'dps_PIspin2', align = 'left', width = 55, step = 1, default = 15},
+	{type = 'spacer'},
+	{type = 'checkbox', text = 'Dispersion', key = 'dps_D', width = 55, default = true},
+	{type = 'spinner', text = 'Target<45% - Void Count', key = 'dps_Dspin', align = 'left', width = 55, min = 15, max = 50, step = 1, default = 44},
+	{type = 'spinner', text = 'Target>35% - Void Count', key = 'dps_D2spin', align = 'left', width = 55, min = 15, max = 50, step = 1, default = 30},
+	{type = 'spacer'},
+	{type = 'checkbox', text = 'Shadowfiend', key = 'dps_fiend', width = 55, default = true},
 	{type = 'spinner', text = 'Shadowfiend Stacks', key = 'dps_SFspin', align = 'left', width = 55, step = 1, default = 22},
-	{type = 'text', text = 'Void Torrent', align = 'center'},
-	{type = 'checkbox', text = 'ON/OFF', key = 'dps_void', width = 55, default = true},
-	{type = 'text', text = 'Dispersion', align = 'center'},
-	{type = 'checkbox', text = 'ON/OFF', key = 'dps_D', width = 55, default = true},
-	{type = 'spinner', text = 'Target<45%', key = 'dps_Dspin', align = 'left', width = 55, min = 15, max = 50, step = 1, default = 44},
-	{type = 'spinner', text = 'Target>35%', key = 'dps_D2spin', align = 'left', width = 55, min = 15, max = 50, step = 1, default = 30},
-	{type = 'text', text = 'Arcane Torrent', align = 'center'},
-	{type = 'checkbox', text = 'ON/OFF', key = 'dps_at', width = 55, default = true},
+	{type = 'spacer'},
+	{type = 'checkbox', text = 'Arcane Torrent', key = 'dps_at', width = 55, default = true},
+	{type = 'checkbox', text = 'Void Torrent', key = 'dps_void', width = 55, default = true},
 	{type = 'ruler'}, {type = 'spacer'},
 	-- GUI Survival & Potions
-	{type = 'header', text = 'Survival&Potions', align = 'center'},
-	{type = 'checkbox', text = 'Self Heal Below X%', key = 'k_SH', width = 55, default = true},
-	{type = 'spinner', text = '', key = 'k_SHspin', width = 55, default = 66},
-	{type = 'checkbox', text = 'Fade', key = 's_F', width = 55, default = false},
+	{type = 'header', text = 'Survival', align = 'center'},
+	{type = 'checkbox', text = 'Self Healing', key = 'k_SH', width = 55, default = true},
+	{type = 'spinner', text = 'below HP%', key = 'k_SHspin', width = 55, default = 66},
+	{type = 'spacer'},
 	{type = 'checkbox', text = 'Power Word: Shield', key = 's_PWS', width = 55, default = true},
-	{type = 'spinner', text = '', key = 's_PWSspin', width = 55, default = 75},
+	{type = 'spinner', text = 'below HP%', key = 's_PWSspin', width = 55, default = 75},
+	{type = 'spacer'},
+	{type = 'checkbox', text = 'Fade (when aggro)', key = 's_F', width = 55, default = false},
+	{type = 'spacer'},
 	{type = 'checkbox', text = 'Dispersion', key = 's_D', width = 55, default = true},
-	{type = 'spinner', text = '', key = 's_Dspin', align = 'left', width = 55, default = 20},
-	{type = 'checkbox', text = 'Vampiric Embrace Below X%', key = 's_VE', width = 55, default = true},
-	{type = 'spinner', text = '', key = 's_VEspin', width = 55, default = 35, align = 'left'},
+	{type = 'spinner', text = 'below HP%', key = 's_Dspin', align = 'left', width = 55, default = 20},
+	{type = 'spacer'},
+	{type = 'checkbox', text = 'Vampiric Embrace', key = 's_VE', width = 55, default = true},
+	{type = 'spinner', text = 'below HP%', key = 's_VEspin', width = 55, default = 35, align = 'left'},
+	{type = 'spacer'},
 	{type = 'checkbox', text = 'Gift of the Naaru', key = 's_GotN', width = 55, default = false},
-	{type = 'spinner', text = '', key = 's_GotNspin', width = 55, default = 40},
+	{type = 'spinner', text = 'below HP%', key = 's_GotNspin', width = 55, default = 40},
+	{type = 'spacer'},
 	{type = 'checkbox', text = 'Healthstone', key = 's_HS', width = 55, default = false},
-	{type = 'spinner', text = '', key = 's_HSspin', width = 55, default = 20},
+	{type = 'spinner', text = 'below HP%', key = 's_HSspin', width = 55, default = 20},
+	{type = 'spacer'},
 	{type = 'checkbox', text = 'Ancient Healing Potion', key = 's_AHP', width = 55, default = false},
-	{type = 'spinner', text = '', key = 's_AHPspin', width = 55, default = 20, align = 'left'},
+	{type = 'spinner', text = 'below HP%', key = 's_AHPspin', width = 55, default = 20, align = 'left'},
 	{type = 'ruler'}, {type = 'spacer'},
 	-- GUI Party Support
 	{type = 'header', text = 'Party Support', align = 'center'},
 	{type = 'checkbox', text = 'Gift of the Naaru', key = 'sup_GotN', width = 55, default = false},
-	{type = 'spinner', text = '', key = 'sup_GotNspin', width = 55, default = 20},
+	{type = 'spinner', text = 'below HP%', key = 'sup_GotNspin', width = 55, default = 20},
+	{type = 'spacer'},
 	{type = 'checkbox', text = 'Power Word: Shield', key = 'sup_PWS', width = 55, default = true},
-	{type = 'spinner', text = '', key = 'sup_PWSspin', width = 55, default = 20},
-	{type = 'checkbox', text = 'Heal Party Below X%', key = 'k_PH', width = 55, default = true},
-	{type = 'spinner', text = '', key = 'k_PHspin', width = 55, default = 30},
-	-- GUI Keybinds
-	{type = 'header', text = 'Keybinds', align = 'center'},
-	{type = 'text', text = 'Left Shift: Force AoE | Left Ctrl: Mass Dispel | Alt: Shadow Word Pain - Mass DoT', align = 'center'},
-	{type = 'checkbox', text = 'Force AOE', key = 'k_AOE', width = 55, default = true},
-	{type = 'checkbox', text = 'Mass Dispel', key = 'k_MD', width = 55, default = true},
-	{type = 'ruler'},	{type = 'spacer'},
+	{type = 'spinner', text = 'below HP%', key = 'sup_PWSspin', width = 55, default = 20},
+	{type = 'spacer'},
+	{type = 'checkbox', text = 'Heal Party', key = 'k_PH', width = 55, default = true},
+	{type = 'spinner', text = 'below HP%', key = 'k_PHspin', width = 55, default = 30},
+	{type = 'ruler'}, {type = 'spacer'},
 	-- Trinkets + Heirlooms for leveling
 	{type = 'header', 	text = 'Trinkets/Heirlooms', align = 'center'},
-	{type = 'checkbox', text = 'Use Trinket #1', key = 'kT1', default = true},
-	{type = 'checkbox', text = 'Use Trinket #2', key = 'kT2', default = true},
-	{type = 'checkbox', text = 'Ring of Collapsing Futures', key = 'kRoCF', default = true},
-	{type = 'checkbox', text = 'Use Heirloom Necks When Below X% HP', key = 'k_HEIR', default = true},
+	{type = 'checkbox', text = 'Use Trinket #1', key = 'kT1', default = false},
+	{type = 'checkbox', text = 'Use Trinket #2', key = 'kT2', default = false},
+	{type = 'checkbox', text = 'Ring of Collapsing Futures', key = 'kRoCF', default = false},
+	{type = 'checkbox', text = 'Use Heirloom Necks When Below X% HP', key = 'k_HEIR', default = false},
 	{type = 'ruler'},	{type = 'spacer'},
 }
 
@@ -87,9 +99,9 @@ local exeOnLoad=function()
 	print('|cffADFF2F ----------------------------------------------------------------------|r')
 	print('|cffADFF2F --- |rPriest: |cff6c00ffShadow|r')
 	print('|cffADFF2F --- |rSupported Talents:ToF,Body&Soul,Mind Bomb, LI, LoS, Tier 5&6&7')
-	print('|cffADFF2F --- |cffff6800Mangaza\'s Madness&Norgannon\'s Foresight|r Supported')
+	print('|cffADFF2F --- |cffff6800Mangaza\'s Madness & Norgannon\'s Foresight|r Supported')
 	print('|cffADFF2F ----------------------------------------------------------------------|r')
-	print('|cffADFF2F --- |rQuestions or Issues? @Zylla NerdPack Discord|')
+	print('|cffADFF2F --- |rQuestions or Issues? @|cffFF0000Zylla|r NerdPack Discord|r')
 	print('|cffADFF2F ----------------------------------------------------------------------|r')
 
 	NeP.Interface:AddToggle({
@@ -118,6 +130,13 @@ local exeOnLoad=function()
 		name = 'Shadow Word: Pain Mass DoT',
 		text = 'Use Shadow Word: Pain on several mobs. (Changable within settings).',
 		icon = 'Interface\\Icons\\spell_shadow_shadowwordpain',
+	})
+
+	NeP.Interface:AddToggle({
+		key = 'disp',
+		name='Dispel',
+		text = 'ON/OFF Dispel All',
+		icon='Interface\\ICONS\\spell_holy_purify',
 	})
 
 end
@@ -149,7 +168,6 @@ local Keybinds = {
 	{'!Shadow Word: Pain', '!target.debuff(Shadow Word: Pain)&UI(k_AOE)&keybind(lshift)', 'target'},
 	{'!Shadow Word: Pain', '!mouseover.debuff(Shadow Word: Pain)&UI(k_AOE)&keybind(lshift)', 'mouseover'},
 	{'!Mind Flay', 'target.debuff(Shadow Word: Pain)&UI(k_AOE)&keybind(lshift)', 'target'},
-	{'!Mass Dispel', 'keybind(lcontrol)&UI(k_MD)&!advanced', 'cursor.ground'},
 	{'!Mass Dispel', 'keybind(lcontrol)&UI(k_MD)', 'cursor.ground'}
 }
 
@@ -193,11 +211,10 @@ local Cooldowns = {
 	{'Power Infusion', 'talent(6,1)&!player.buff(Surrender to Madness)&player.buff(Voidform).count>=UI(dps_PIspin1)&target.health<45&UI(dps_PI)', 'player'},
 	{'Power Infusion', 'talent(6,1)&!player.buff(Surrender to Madness)&player.buff(Voidform).count>=UI(dps_PIspin2)&target.health>35&UI(dps_PI)', 'player'},
 	{'!Mindbender', 'talent(6,3)&player.buff(Surrender to Madness)', 'target'},
-	{'!Mindbender', 'talent(6,3)&!player.buff(Surrender to Madness)&player.buff(Voidform).count>5', 'target'},
+	{'!Mindbender', 'talent(6,3)&!player.buff(Surrender to Madness)&player.buff(Voidform).count>UI(mb_vfc)', 'target'},
 	{'!Shadowfiend', '!talent(6,3)&player.spell(Void Eruption).cooldown>gcd&player.buff(Voidform).count>=UI(dps_SFspin)&!talent(6,1)&UI(dps_fiend)', 'target'},
 	{'!Shadowfiend', 'player.buff(Power Infusion)&player.buff(Voidform).count>=UI(dps_SFspin)&UI(dps_fiend)', 'target'}
 }
-
 
 local AOE = {
 	{'Shadow Crash', '{target.area(8).enemies>1&advanced&toggle(AOE)&player.buff(Voidform)&!target.moving&player.spell(Void Eruption).cooldown>gcd}||{!advanced&toggle(AOE)&player.buff(Voidform)&!target.moving&player.spell(Void Eruption).cooldown>gcd}', 'target.ground'},
@@ -309,15 +326,16 @@ local inCombat = {
 	{lotv1, '{player.buff(Voidform)&talent(7,1)}||{talent(7,3)&!player.buff(Surrender to Madness)&!equipped(132864)&player.buff(Voidform)}||{talent(7,2)&!player.buff(Surrender to Madness)&!equipped(132864)&player.buff(Voidform)}'},
 	{ST2, 'equipped(132864)&!player.buff(Voidform)'},	-- Mangaza's Madness stuff...
 	{ST1, '!player.buff(Voidform)'},
-	{'Mind Flay', nil, 'target'}
+	{'Mind Flay', nil, 'target'},
+	{'%dispelall', 'toggle(disp)'},
 }
 
 local outCombat = {
 	{Keybinds},
 	-- Potion of Prolonged Power usage before pull if enabled in UI.
-	{'#142117', 'dbm(pull in)<4&UI(s_pull)'},
+	{'#142117', 'UI(dbm_key)&dbm(pull in)<4&UI(s_pull)'},
 	-- Mind Blast before Pull.
-	{'Mind Blast', 'dbm(pull in)<2.2&UI(pull_MB)'},
+	{'Mind Blast', 'UI(dbm_key)&dbm(pull in)<2.2&UI(pull_MB)'},
 	{'Shadowform', '!player.buff(Shadowform)'},
 	--No Body and Soul from Class Order Hall.
 	{Movement, '!player.buff(Body and Soul)&!inareaid==1040'},
