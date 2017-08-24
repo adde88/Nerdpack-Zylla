@@ -101,22 +101,21 @@ local Interrupts_Random = {
 
 local xTaunts = {
 	{'Dark Command', 'player.area(30).enemies>=1&combat&alive&threat<100', 'enemies'},
-	{'Death Grip', 'UI(DGTaunt)&player.area(30).enemies>=1&combat&alive&threat<100&player.spell(Dark Command).cooldown>gcd&!player.lastgcd(Dark Command)', 'enemies'},
+	{'Death Grip', 'UI(DGTaunt)&player.area(30).enemies>0&combat&alive&threat<100&player.spell(Dark Command).cooldown>gcd&!player.lastgcd(Dark Command)', 'enemies'},
 }
 
 local xCombat = {
 	{'Death Strike', 'inFront&inMelee&player.runicpower>65&player.health<=UI(DSHP)', 'target'},
+	{'Death Strike', 'inFront&inMelee&player.runicpower>=UI(DSRP)', 'target'},
 	{'Death\'s Caress', 'range<41&debuff(Blood Plague).remains<3', 'target'},
 	{'Marrowrend', 'player.buff(Bone Shield).duration<4&inFront&inMelee', 'target'},
 	{'Marrowrend', 'player.buff(Bone Shield).count<7&talent(3,1)&inFront&inMelee', 'target'},
-	{'Death Strike', 'inFront&inMelee&player.runicpower>=UI(DSRP)', 'target'},
-	{'Blood Boil', '!target.debuff(Blood Plague)&target.range<20'},
+	{'Blood Boil', 'target.range<11'},
 	{'Death and Decay', 'range<31&{{talent(2,1)&player.buff(Crimson Scourge)}||{player.area(10).enemies>1&player.buff(Crimson Scourge}}', 'target.ground'},
 	{'Death and Decay', 'range<31&{{talent(2,1)&player.runes>2}||{player.area(10).enemies>2}}', 'target.ground'},
 	{'Death and Decay', '!talent(2,1)&range<31&target.area(10).enemies==1&player.buff(Crimson Scourge)', 'target.ground'},
 	{'Heart Strike', 'inFront&inMelee&{player.runes>2||player.buff(Death and Decay)}', 'target'},
 	{'Consumption', 'target.inFront&target.inMelee'},
-	{'Blood Boil', 'target.range<=10'},
 }
 
 local inCombat = {
