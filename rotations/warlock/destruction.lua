@@ -1,44 +1,47 @@
 local _, Zylla = ...
 
-local Util = _G['Zylla.Util']
-local Trinkets = _G['Zylla.Trinkets']
-local Heirlooms = _G['Zylla.Heirlooms']
-
 local GUI = {
 	--Logo
-	{type = 'texture', texture = 'Interface\\AddOns\\Nerdpack-Zylla\\media\\logo.blp', width = 128, height = 128, offset = 90, y = 42, center = true},
+	{type = 'texture',  texture = 'Interface\\AddOns\\Nerdpack-Zylla\\media\\logo.blp', width = 128, height = 128, offset = 90, y = 42, center = true},
 	{type = 'ruler'},	  {type = 'spacer'},
 	-- Keybinds
 	{type = 'header', 	text = 'Keybinds',										align = 'center'},
-	{type = 'text', 		text = 'Left Shift: Pause',								align = 'center'},
-	{type = 'text', 		text = 'Left Ctrl: Cataclysm',							align = 'center'},
-	{type = 'text', 		text = 'Left Alt: Rain of Fire',						align = 'center'},
-	{type = 'text', 		text = 'Right Alt: ',									align = 'center'},
+	{type = 'text', 		text = 'Left Shift: Pause',						align = 'left'},
+	{type = 'text', 		text = 'Left Ctrl: Cataclysm',				align = 'left'},
+	{type = 'text', 		text = 'Left Alt: Rain of Fire',			align = 'left'},
+	{type = 'text', 		text = 'Right Alt: ',									align = 'left'},
 	{type = 'ruler'},		{type = 'spacer'},
 	-- Settings
-	{type = 'header', 	text = 'Class Settings',	align = 'center'},
-	{type = 'checkbox', text = 'Pause Enabled',		key = 'kPause',	default = true},
-	{type = 'checkbox', text = 'Summon Pet (Imp)',		key = 'kPet',	default = true},
-	{type = 'checkbox', text = 'Use Doomguard as Pet',		key = 'kDG',	default = false},
-	{type = 'checkbox', text = 'Use Infernal as Pet',		key = 'kINF',	default = false},
+	{type = 'header', 	text = 'Class Settings', align = 'center'},
+	{type = 'checkbox', text = 'Pause Enabled', key = 'kPause',	default = true},
+	{type = 'checkbox', text = 'Summon Pet (Imp)', key = 'kPet',	default = true},
+	{type = 'checkbox', text = 'Use Trinket #1 on Cooldown', key = 'trinket1',	default = false},
+	{type = 'checkbox', text = 'Use Trinket #2 on Cooldown', key = 'trinket2',	default = false},
+	{type = 'spinner', text = 'Immolate Units', key = 'imo_units', align = 'left', width = 55, step = 1, default = 4, max = 20},
+	{type = 'spinner', text = 'Soul Harvest - Immolate Units', key = 'SH_units', align = 'left', width = 55, step = 1, default = 3, max = 6},
+	{type = 'spinner', text = 'Channel Demonfire - Immolate Units', key = 'SH_units', align = 'left', width = 55, step = 1, default = 3, max = 6},
+	{type = 'spacer'},
+	{type = 'text', 		text = 'Grimoire of Sacrifice', align = 'center'},
+	{type = 'checkbox', text = 'Use Doomguard as Pet', key = 'kDG',	default = false},
+	{type = 'checkbox', text = 'Use Infernal as Pet', key = 'kINF',	default = false},
 	{type = 'ruler'},	  {type = 'spacer'},
 	-- Survival
-	{type = 'header', 		text = 'Survival',	align = 'center'},
-	{type = 'spinner',		text = 'Unending Resolve below HP%',						key = 'UR_HP',		default = 40},
-	{type = 'spinner',		text = 'Cauterize Master below HP%',						key = 'CM_HP',		default = 65},
-	{type = 'spinner',		text = 'Healthstone or Healing Potions',	key = 'Health Stone',	default = 45},
-	{type = 'checkbox', 	text = 'Use Fear to Interrupt',							key = 'k_FEAR',		default = false},
-	{type = 'spinner',		text = 'Life Tap below HP%',					key = 'k_LTHP',		default = 35},
-	{type = 'spinner',		text = 'Drain Life below HP%',						key = 'k_DLHP',		default = 40},
-	{type = 'spinner',		text = 'Health Funnel When PET is below HP%',		key = 'k_HFHP',		default = 30},
-	{type = 'spinner',		text = 'Health Funnel When PLAYER is above HP%',	key = 'k_HFHP2',	default = 40},
-	{type = 'ruler'},			{type = 'spacer'},
-	-- Trinkets + Heirlooms for leveling
-	{type = 'checkbox', 	text = 'Use Trinket #1',								key = 'kT1',		default = true},
-	{type = 'checkbox', 	text = 'Use Trinket #2',								key = 'kT2',		default = true},
-	{type = 'checkbox', 	text = 'Ring of Collapsing Futures',					key = 'kRoCF',		default = true},
-	{type = 'checkbox', 	text = 'Use Heirloom Necks When Below X% HP',			key = 'k_HEIR',		default = true},
-	{type = 'spinner',		text = '',												key = 'k_HeirHP',	default = 40},
+	{type = 'header', 	text = 'Survival', align = 'center'},
+	{type = 'spinner',	text = 'Unending Resolve below HP%', key = 'UR_HP',		default = 40},
+	{type = 'spinner',	text = 'Cauterize Master below HP%', key = 'CM_HP',		default = 65},
+	{type = 'checkspin',text = 'Healthstone',	check= true, key = 'HS_HP', spin = 45},
+	{type = 'checkspin',text = 'Ancient Healing Potion', check = true, key = 'AHP_HP',	spin = 40},
+	{type = 'checkbox', text = 'Use Fear to Interrupt', 	key = 'k_FEAR',		default = false},
+	{type = 'spinner',	text = 'Life Tap below HP%', 	key = 'k_LTHP',		default = 35},
+	{type = 'spinner',	text = 'Drain Life below HP%', key = 'k_DLHP',		default = 40},
+	{type = 'spacer'},
+	{type = 'header', text = 'Health Funnel', align = 'center'},
+	{type = 'spinner',	text = 'Health Funnel When PET is below HP%', key = 'k_HFHP', default = 30},
+	{type = 'spinner',	text = 'Health Funnel When PLAYER is above HP%', key = 'k_HFHP2', default = 40},
+	{type = 'spacer'},
+	{type = 'header', text = 'Dark Pact', align = 'center'},
+	{type = 'spinner',	text = 'Dark Pact When PET is below HP%', key = 'DP_PETHP', default = 25},
+	{type = 'spinner',	text = 'Dark Pact When PLAYER is above HP%', key = 'DP_PHP', default = 40},
 	{type = 'ruler'},		{type = 'spacer'},
 }
 
@@ -52,7 +55,25 @@ local exeOnLoad = function()
 	print('|cffADFF2F ----------------------------------------------------------------------|r')
   print('|cffFFFB2F Configuration: |rRight-click MasterToggle and go to Combat Routines Settings!|r')
 
+	NeP.Interface:AddToggle({
+		key = 'xIntRandom',
+		name = 'Interrupt Anyone',
+		text = 'Interrupt all nearby enemies, without targeting them.',
+		icon = 'Interface\\Icons\\inv_ammo_arrow_04',
+	})
+
 end
+
+local Keybinds = {
+	{'%pause', 'keybind(lshift)&UI(kPause)'},
+	{'!Cataclysm', 'toggle(aoe)&keybind(lcontrol)', 'cursor.ground'},
+	{'!Rain of Fire', 'toggle(aoe)&keybind(lalt)', 'cursor.ground'},
+}
+
+local PreCombat = {
+	{'Life Tap', 'talent(2,3)&buff(Empowered Life Tap).duration<gcd', 'player'},
+	{'Grimoire of Sacfifice', 'talent(6,3)&pet.exists'}
+}
 
 local Pets = {
 	{'Summon Imp', 'UI(kPet)&!UI(kDG)&!UI(kINF)&!talent(6,1)&!lastcast(Summon Imp)&{!pet.exist||pet.dead}'},
@@ -62,70 +83,81 @@ local Pets = {
 
 local Survival = {
 	{'Life Tap', 'player.moving&player.health>=UI(k_LTHP)'},
-	{'Life Tap', 'talent(2,3)&!player.buff(Empowered Life Tap)&player.health<=90'},
-	{'Unending Resolve', 'player.health<UI(UR_HP)'},
-	{'Dark Pact', 'player.health<40&pet.health>25'},
+	{'Life Tap', 'talent(2,3)&buff(Empowered Life Tap).duration<gcd', 'player'},
+	{'Unending Resolve', 'player.health<=UI(UR_HP)'},
+	{'Dark Pact', 'player.health<UI(DP_PHP)&pet.health>=UI(DP_PETHP)'},
 	{'Drain Life', 'player.health<=UI(k_DLHP)'},
 	{'Health Funnel', 'pet.health<=UI(k_HFHP)&player.health>=UI(k_HFHP2)'},
-	{'119899', 'pet.exists&player.health<UI(CM_HP)'},
-	{'#127834', 'item(127834).count>0&player.health<UI(Health Stone)'},        -- Ancient Healing Potion
-	{'#5512', 'item(5512).count>0&player.health<UI(Health Stone)', 'player'},  --Health Stone
+	{'&119899', 'pet.exists&player.health<=UI(CM_HP)'},
+	{'#127834', 'item(127834).count>0&player.health<UI(AHP_HP_spin)&UI(AHP_HP_check)'},       -- Ancient Healing Potion
+  {'#5512', 'item(5512).count==3&player.health<UI(HS_HP_spin)&UI(HS_HP_check)', 'player'},  --Health Stone
 }
 
 local Cooldowns = {
-	{'Soul Harvest', 'count(Immolate).debuffs>=1'},
-	{'Grimoire: Imp'},
-}
-
-local Keybinds = {
-	{'%pause', 'keybind(lshift)&UI(kPause)'},
-	{'!Cataclysm', 'toggle(aoe)&keybind(lcontrol)', 'target.ground'},
-	{'!Rain of Fire', 'toggle(aoe)&keybind(lalt)', 'target.ground'},
+	{'Summon Infernal', '!player.moving&toggle(aoe)&UI(kPet)&!talent(6,1)&target.area(10).enemies>2'},
+	{'Summon Doomguard', '!player.moving&UI(kPet)&!talent(6,1)&target.area(10).enemies<3'},
+	{'Soul Harvest', 'enemies.debuff(Immolate).count.any>=UI(SH_units)'},
+	{'Grimoire: Imp', nil, 'target'},
+	{'#Trinket1', 'UI(trinket1)'},
+	{'#Trinket2', 'UI(trinket2)'},
 }
 
 local Interrupts = {
-	{'!Fear', 'target.inFront&target.range<=40&UI(k_FEAR)'},
-	{'!Mortal Coil', 'target.inFront&target.range<=20'},
+	{'!Fear', '!player.moving&interruptAt(12)&inFront&range<41&UI(k_FEAR)', 'target'},
+	{'!Shadowfury', '!player.moving&advanced&interruptAt(12)&inFront&range<31', 'target.ground'},
+	{'!Mortal Coil', 'interruptat(70)&inFront&range<21', 'target'},
+}
+
+local Interrupts_Random = {
+	{'!Fear', '!player.moving&interruptAt(12)&inFront&range<41&UI(k_FEAR)&UI(xIntRandom)&combat&alive', 'enemies'},
+	{'!Shadowfury', '!player.moving&interruptAt(70)&advanced&range<31&combat&alive', 'enemies.ground'},
+	{'!Mortal Coil', 'interruptAt(5)&inFront&range<21&UI(xIntRandom)&combat&alive', 'enemies'},
 }
 
 local xCombat = {
-	{'Havoc', 'toggle(aoe)&player.soulshards==5&player.area(40).enemies>1&!debuff(Havoc)', 'enemies'},
-	{'Chaos Bolt', 'player.soulshards==5&{{player.area(40).enemies==1}||{player.area(40).enemies>1&enemies.debuff(Havoc).duration>=3*gcd}}'},
-	{'Dimensional Rift', 'player.soulshards<5', 'target'},
-	{'Channel Demonfire', 'debuff(Immolate)&range<40', 'enemies'},
-	{'Rain of Fire', 'toggle(aoe)&{{target.area(10).enemies>=3}||{player.area(10).enemies>=3}}', 'target.ground'},
-	{'Shadowburn', 'player.soulshards<5', 'target'},
+	{'Shadowburn', 'player.buff(Conflagration of Chaos).duration<=action(Chaos Bolt.cast_time)'},
+	{'Shadowburn', 'player.soul_shard<5&{{player.spell(Shadowburn).charges==1&set_bonus(T19)==4&player.spell(Shadowburn).recharge<action(Chaos Bolt).cast_time}||{player.spell(Shadowburn).charges==2}&set_bonus(T19)==4}}'},
+	{'Havoc', 'toggle(aoe)&player.area(40).enemies>1&!debuff(Havoc)&!is(target)&combat&alive', 'enemies'},
+	{'Chaos Bolt', '!player.moving&player.soulshards==5'},
+	{'Chaos Bolt', '!player.moving&player.area(40).enemies<4&enemies.debuff(Havoc).duration>player.spell(Chaos Bolt).casttime&!target.debuff(Havoc)', 'target'},
+	{'Chaos Bolt', '!player.moving&player.area(40).enemies<3&target.ttd<11', 'target'},
+	{'Dimensional Rift', '{player.spell(Dimensional Rift).charges>2}||{player.movingfor>0.3&player.soulshards<5}', 'target'},
+	{'Dimensional Rift', 'equipped(144369)&player.buff(Lessons of Spacetime).duration<gcd&{{!talent(6,1)&player.spell(Summon Doomguard).duration<gcd}||{talent(4,3)&player.spell(Soul Harvest).cooldown<gcd}}', 'target'},
+	{'Channel Demonfire', '!player.moving&debuff(Immolate).duration>3&debuff(Immolate).count.any>=UI(cd_units)&range<41&combat&alive', 'enemies'},
+	{'Rain of Fire', '!player.moving&advanced&toggle(aoe)&area(10).enemies>2&combat&alive', 'enemies.ground'},
 	{'Conflagrate', 'player.soulshards<5', 'target'},
-	{'Incinerate', 'player.soulshards<5', 'target'},
-	{'Immolate', 'target.debuff(Immolate).duration<2*gcd&player.area(40).enemies==1', 'target'},
-	{'Immolate', 'debuff(Immolate).duration<2*gcd&player.area(40).enemies>1', 'enemies'},
-	{'Cataclysm', 'talent(4,1)&target.area(8).enemies>2', 'target.ground'},
-	{'Summon Imp', '!lastcast(Summon Imp)&{!pet.exist||pet.dead}'},
+	{'Incinerate', '!player.moving&player.soulshards<5', 'target'},
+	{'Immolate', '!player.moving&debuff(Immolate).duration<2*gcd', 'target'},
+	{'Immolate', '!player.moving&debuff(Immolate).duration<2*gcd&player.area(40).enemies>1&debuff(Immolate).count.any<UI(imo_units)&combat&alive', 'enemies'},
+	{'Cataclysm', 'advanced&target.area(8).enemies>2', 'target.ground'},
+	{Pets},
 }
 
 local inCombat = {
-	{Util},
-	{Trinkets},
-	{Heirlooms},
 	{Keybinds},
-	{Interrupts, 'target.interruptAt(70)&toggle(Interrupts)&target.inFront&target.range<=40'},
+	{Interrupts, 'toggle(interrupts)'},
+	{Interrupts_Random},
 	{Survival, 'player.health<100'},
 	{Cooldowns, 'toggle(Cooldowns)'},
-	{xCombat, 'range<40&inFront'},
+	{xCombat, 'range<41&inFront'},
 }
 
 local outCombat = {
+	{PreCombat},
 	{Keybinds},
-	{Interrupts, 'toggle(Interrupts)&target.inFront&target.range<=30'},
+	{Interrupts, 'toggle(interrupts)'},
+	{Interrupts_Random},
 	{Pets},
-	{'Create Healthstone', 'item(5512).count<1&!lastcast(Create Healthstone)'},
+	{'Create Healthstone', 'item(5512).count<3&!lastcast(Create Healthstone)'},
+	{'Soulstone', '!buff', 'player'},
 }
 
 NeP.CR:Add(267, {
 	name = '[|cff'..Zylla.addonColor..'Zylla\'s|r] Warlock - Destruction',
-	ic = inCombat,
+	ic =  {{inCombat, '!player.channeling(Channel Demonfire)'}},
 	ooc = outCombat,
 	gui = GUI,
+	gui_st = {title='Zylla\'s Combat Routines', width='256', height='256', color='A330C9'},
 	ids = Zylla.SpellIDs[Zylla.Class],
 	wow_ver = Zylla.wow_ver,
 	nep_ver = Zylla.nep_ver,
