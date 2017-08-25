@@ -300,11 +300,15 @@ local s2m2 = {
 	{'Mind Flay', '!player.moving&player.spell(Void Eruption).cooldown>gcd&player.spell(Mind Blast).charges<1&target.debuff(Shadow Word: Pain)&target.debuff(Vampiric Touch)', 'target'}
 }
 
+local Zek_Support = {
+  {'!Shadow Word: Death', 'equipped(144438)&!player.buff(Voidform) & player.spell(Mind Blast).cooldown>gcd', 'target'},
+  {'!Shadow Word: Death', 'equipped(144438)&player.spell(Void Eruption).cooldown>gcd&player.spell(Mind Blast).cooldown>gcd&player.buff(Voidform)', 'target'},
+}
+
 local inCombat = {
 	{Util},
 	{Trinkets},
 	{Heirlooms},
-	-- Shadowform if not in Voidform and not in Shadowform.
 	{SWP_MASS, 'toggle(xSWP)'},
 	{'Shadowform', '!player.buff(Voidform)&!player.buff(Shadowform)'},
 	{Movement, '!player.buff(Voidform)||{player.buff(Voidform)&player.spell(Void Eruption).cooldown>gcd}'},
@@ -326,6 +330,7 @@ local inCombat = {
 	{lotv1, '{player.buff(Voidform)&talent(7,1)}||{talent(7,3)&!player.buff(Surrender to Madness)&!equipped(132864)&player.buff(Voidform)}||{talent(7,2)&!player.buff(Surrender to Madness)&!equipped(132864)&player.buff(Voidform)}'},
 	{ST2, 'equipped(132864)&!player.buff(Voidform)'},	-- Mangaza's Madness stuff...
 	{ST1, '!player.buff(Voidform)'},
+	{Zek_Support},	--Shadow Word Death with Zek's Exterminatus
 	{'Mind Flay', '!player.moving', 'target'},
 	{'%dispelall', 'toggle(disp)'},
 }
