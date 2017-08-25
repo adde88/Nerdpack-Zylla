@@ -21,7 +21,7 @@ local GUI = {
 	{type = 'spinner', text = 'Soul Harvest - Immolate Units', key = 'SH_units', align = 'left', width = 55, step = 1, default = 3, max = 6},
 	{type = 'spinner', text = 'Channel Demonfire - Immolate Units', key = 'SH_units', align = 'left', width = 55, step = 1, default = 3, max = 6},
 	{type = 'spacer'},
-	{type = 'text', 		text = 'Grimoire of Sacrifice', align = 'center'},
+	{type = 'text', 		text = 'Grimoire of Supremacy/Sacrifice', align = 'center'},
 	{type = 'checkbox', text = 'Use Doomguard as Pet', key = 'kDG',	default = false},
 	{type = 'checkbox', text = 'Use Infernal as Pet', key = 'kINF',	default = false},
 	{type = 'ruler'},	  {type = 'spacer'},
@@ -76,9 +76,9 @@ local PreCombat = {
 }
 
 local Pets = {
-	{'Summon Imp', 'UI(kPet)&!UI(kDG)&!UI(kINF)&!talent(6,1)&!lastcast(Summon Imp)&{!pet.exist||pet.dead}'},
-	{'Summon Doomguard', 'UI(kPet)&UI(kDG)&!UI(kINF)&talent(6,1)&!lastcast(Summon Doomguard)&{!pet.exist||pet.dead}'},
-	{'Summon Infernal', 'UI(kPet)&!UI(kDG)&UI(kINF)&talent(6,1)&!lastcast(Summon Infernal)&{!pet.exist||pet.dead}'},
+	{'Summon Imp', 'UI(kPet)&!UI(kDG)&!UI(kINF)&!talent(6,1)&{!petexists||pet.dead}'},
+	{'Summon Doomguard', 'UI(kPet)&UI(kDG)&!UI(kINF)&talent(6,1)&{!petexists||pet.dead}'},
+	{'Summon Infernal', 'UI(kPet)&!UI(kDG)&UI(kINF)&talent(6,1)&!{!petexists||pet.dead}'},
 }
 
 local Survival = {
@@ -118,7 +118,7 @@ local xCombat = {
 	{'Shadowburn', 'player.buff(Conflagration of Chaos).duration<=action(Chaos Bolt.cast_time)'},
 	{'Shadowburn', 'player.soul_shard<5&{{player.spell(Shadowburn).charges==1&set_bonus(T19)==4&player.spell(Shadowburn).recharge<action(Chaos Bolt).cast_time}||{player.spell(Shadowburn).charges==2}&set_bonus(T19)==4}}'},
 	{'Havoc', 'toggle(aoe)&player.area(40).enemies>1&!debuff(Havoc)&!is(target)&combat&alive', 'enemies'},
-	{'Chaos Bolt', '!player.moving&player.soulshards==5'},
+	{'Chaos Bolt', '!player.moving&player.soulshards==5', 'target'},
 	{'Chaos Bolt', '!player.moving&player.area(40).enemies<4&enemies.debuff(Havoc).duration>player.spell(Chaos Bolt).casttime&!target.debuff(Havoc)', 'target'},
 	{'Chaos Bolt', '!player.moving&player.area(40).enemies<3&target.ttd<11', 'target'},
 	{'Dimensional Rift', '{player.spell(Dimensional Rift).charges>2}||{player.movingfor>0.3&player.soulshards<5}', 'target'},
@@ -148,7 +148,7 @@ local outCombat = {
 	{Interrupts, 'toggle(interrupts)'},
 	{Interrupts_Random},
 	{Pets},
-	{'Create Healthstone', 'item(5512).count<3&!lastcast(Create Healthstone)'},
+	{'Create Healthstone', 'item(5512).count<=2&!lastcast(Create Healthstone)'},
 	{'Soulstone', '!buff', 'player'},
 }
 

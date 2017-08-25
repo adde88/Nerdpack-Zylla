@@ -553,6 +553,10 @@ end)
 --------------------------------WARLOCK CONDITIONS------------------------------
 --------------------------------------------------------------------------------
 
+NeP.DSL:Register('petexists', function()
+  return NeP.DSL:Get('exists')('pet')
+end)
+
 --/dump NeP.DSL:Get('warlock.remaining_duration')('Dreadstalker')
 --/dump NeP.DSL:Get('warlock.remaining_duration')('Wild Imp')
 NeP.DSL:Register('warlock.remaining_duration', function(demon)
