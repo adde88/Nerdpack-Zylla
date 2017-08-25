@@ -8,94 +8,98 @@ local GUI = {
 	--Logo
 	{type = 'texture', texture = 'Interface\\AddOns\\Nerdpack-Zylla\\media\\logo.blp', width = 128, height = 128, offset = 90, y = 42, center = true},
 	{type = 'ruler'},	 {type = 'spacer'},
-	-- GUI Survival
+	-- Keybinds
+	{type = 'header', text = 'Keybinds', align = 'center'},
+	{type = 'checkbox', text = 'Left Shift: Healing Rain @ Cursor', key = 'K_HR', default = true},
+	{type = 'checkbox', text = 'Left Ctrl: Lightning Surge Totem @ Cursor', key = 'K_LST', default = true},
+	{type = 'checkbox', text = 'Left Alt: Cloudburst Totem @ Cursor', key = 'K_CT', default = true},
+	{type = 'ruler'},{type = 'spacer'},
+	-- Survival
 	{type = 'header', text = 'Survival', align = 'center'},
 	{type = 'checkbox', text = 'Enable Astral Shift', key = 'S_ASE', default = true},
-	{type = 'spinner', text = '', key = 'S_AS', default = 40},
+	{type = 'spinner', text = 'when below HP%', key = 'S_AS', default = 40},
+	{type = 'spacer'},
 	{type = 'checkbox', text = 'Enable Gift of the Naaru', key = 'S_GOTNE', default = true},
-	{type = 'spinner', text = '', key = 'S_GOTN', default = 40},
+	{type = 'spinner', text = 'when below HP%', key = 'S_GOTN', default = 40},
+	{type = 'spacer'},
 	{type = 'checkbox', text = 'Enable Healthstone', key = 'S_HSE', default = true},
-	{type = 'spinner', text = '', key = 'S_HS', default = 20},
+	{type = 'spinner', text = 'when below HP%', key = 'S_HS', default = 20},
+	{type = 'spacer'},
 	{type = 'checkbox', text = 'Enable Ancient Healing Potion', key = 'S_AHPE', default = true},
-	{type = 'spinner', text = '', key = 'S_AHP', default = 20},
-	-- GUI Keybinds
-	{type = 'header', text = 'Keybinds', align = 'center'},
-	{type = 'checkbox', text = 'L-Shift: Healing Rain @ Cursor', key = 'K_HR', default = true},
-	{type = 'checkbox', text = 'L-Control: Lightning Surge Totem @ Cursor', key = 'K_LST', default = true},
-	{type = 'checkbox', text = 'L-Alt: Cloudburst Totem @ Cursor', key = 'K_CT', default = true},
+	{type = 'spinner', text = 'when below HP%', key = 'S_AHP', default = 20},
 	{type = 'ruler'},{type = 'spacer'},
-	-- GUI Healing Stream Totem
+	-- Healing Stream Totem
 	{type = 'header', text = 'Healing Stream Totem', align = 'center'},
 	{type = 'checkbox', text = 'Enable Healing Stream Totem', key = 'To_HSTE', default = true},
-	{type = 'text', text = 'Deploy totem on cooldown.'},
 	{type = 'ruler'},{type = 'spacer'},
-	-- GUI Earthen Shield Totem
+	-- Earthen Shield Totem
 	{type = 'header', text = 'Earthen Shield Totem', align = 'center'},
-	{type = 'text', text = '|cffff0000Advanced LUA unlocker required to deploy Earthen Shield Totem on top of tank.|r'},
+	{type = 'text', text = '|cffff0000Advanced LUA Unlocker Required!|r'},
 	{type = 'checkbox', text = 'Enable Earthen Shield Totem', key = 'To_ESTE', default = true},
-	{type = 'text', text = 'Deploy totem on cooldown.'},
+	{type = 'text', text = 'When more than one players in 10yd. radius drops below 90%', align = 'center'},
 	{type = 'ruler'},{type = 'spacer'},
-	-- GUI Emergency Healing
+	-- Ancestral Protection Totem
+	{type = 'header', text = 'Ancestral Protection Totem', align = 'center'},
+	{type = 'text', text = '|cffff0000Advanced LUA Unlocker Required!|r'},
+	{type = 'checkbox', text = 'Enable Ancestral Protection Totem', key = 'To_APTE', default = true},
+	{type = 'text', text = 'When more than two players in 20yd. radius drops below 90%', align = 'center'},
+	{type = 'ruler'},{type = 'spacer'},
+	-- Emergency Healing
 	{type = 'header', text = 'Emergency Healing', align = 'center'},
 	{type = 'checkbox', text = 'Enable Emergency Healing', key = 'E_EH', default = true},
-	{type = 'text', text = 'Riptide'},
 	{type = 'spinner', text = 'Riptide', key = 'E_RT', default = 25},
-	{type = 'text', text = 'Healing Surge'},
-	{type = 'spinner', text = '', key = 'E_HSG', default = 35},
+	{type = 'spinner', text = 'Healing Surge', key = 'E_HSG', default = 35},
 	{type = 'ruler'},{type = 'spacer'},
-	-- GUI Tank Healing
+	-- Tank Healing
 	{type = 'header', text = 'Tank Healing', align = 'center'},
-	{type = 'text', text = 'Force Riptide'},
-	{type = 'spinner', text = '', key = 'T_FRT', default = 90},
-	{type = 'text', text = 'Healing Surge'},
-	{type = 'spinner', text = '', key = 'T_HS', default = 80},
+	{type = 'spinner', text = 'Riptide below HP%', key = 'T_FRT', default = 90},
+	{type = 'spinner', text = 'Healing Surge below HP%', key = 'T_HS', default = 80},
 	{type = 'spacer'},
 	{type = 'header', text = 'AoE Tank Healing', align = 'center'},
 	{type = 'text', text = 'Toggle Multitarget on NeP Bar.'},
 	{type = 'text', text = '|cffff0000Advanced LUA unlocker required for Healing Rain ontop of tank.|r'},
 	{type = 'checkbox', text = 'Enable Healing Rain', key = 'T_HRE', default = true},
-	{type = 'text', text = 'Active: when 3 or more players within 40yds. drop below 80% health.'},
+	{type = 'spacer'},
+	{type = 'text', text = 'Active: when 3 or more players within 40yd. are below 80% health.'},
+	{type = 'spacer'},
 	{type = 'checkbox', text = 'Enable Chain Heal', key = 'T_CHE', default = true},
-	{type = 'text', text = 'Active: when 3 or more players within 40yds. drop below 80% health.'},
+	{type = 'text', text = 'Active: when 3 or more players within 40yd. are below 80% health.'},
 	{type = 'ruler'},{type = 'spacer'},
-	-- GUI Player Healing
+	-- Player Healing
 	{type = 'header', text = 'Player Healing', align = 'center'},
-	{type = 'text', text = 'Force Riptide'},
-	{type = 'spinner', text = '', key = 'P_FRT', default = 85},
-	{type = 'text', text = 'Healing Surge'},
-	{type = 'spinner', text = '', key = 'P_HS', default = 75},
+	{type = 'spinner', text = 'Force Riptide below HP%', key = 'P_FRT', default = 85},
+	{type = 'spinner', text = 'Healing Surge below HP%', key = 'P_HS', default = 75},
 	{type = 'spacer'},
 	{type = 'header', text = 'AoE Player Healing', align = 'center'},
 	{type = 'text', text = 'Toggle Multitarget on NeP Bar.'},
 	{type = 'text', text = '|cffff0000Advanced LUA unlocker required for Healing Rain ontop of player.|r'},
 	{type = 'checkbox', text = 'Enable Healing Rain', key = 'P_HRE', default = true},
 	{type = 'text', text = 'Active: when 3 or more players within 40yds. drop below 80% health.'},
+	{type = 'spacer'},
 	{type = 'checkbox', text = 'Enable Chain Heal', key = 'P_CHE', default = true},
 	{type = 'text', text = 'Active: when 3 or more players within 40yds. drop below 80% health.'},
 	{type = 'ruler'},{type = 'spacer'},
-	-- GUI Lowest Healing
+	-- Lowest Healing
 	{type = 'header', text = 'Lowest Healing', align = 'center'},
-	{type = 'text', text = 'Force Riptide'},
-	{type = 'spinner', text = '', key = 'L_FRT', default = 80},
-	{type = 'text', text = 'Healing Surge'},
-	{type = 'spinner', text = '', key = 'L_HS', default = 70},
-	{type = 'text', text = 'Healing Wave'},
-	{type = 'spinner', text = '', key = 'L_HW', default = 100},
+	{type = 'spinner', text = 'Riptide when below HP%', key = 'L_FRT', default = 80},
+	{type = 'spinner', text = 'Healing Surge when below HP%', key = 'L_HS', default = 70},
+	{type = 'spinner', text = 'Healing Wave when below HP%', key = 'L_HW', default = 96},
 	{type = 'spacer'},
 	{type = 'header', text = 'AoE Lowest Healing', align = 'center'},
 	{type = 'text', text = 'Toggle Multitarget on NeP Bar.'},
 	{type = 'text', text = '|cffff0000Advanced LUA unlocker required for Healing Rain ontop of lowest health player.|r'},
 	{type = 'checkbox', text = 'Enable Healing Rain', key = 'L_HRE', default = true},
 	{type = 'text', text = 'Active: when 3 or more players within 40yds. drop below 80% health.'},
+	{type = 'spacer'},
 	{type = 'checkbox', text = 'Enable Chain Heal', key = 'L_CHE', default = true},
 	{type = 'text', text = 'Active: when 3 or more players within 40yds. drop below 80% health.'},
 	{type = 'ruler'},{type = 'spacer'},
 	-- Trinkets + Heirlooms for leveling
 	{type = 'header', 	text = 'Trinkets/Heirlooms', align = 'center'},
-	{type = 'checkbox', text = 'Use Trinket #1', key = 'kT1', default = true},
-	{type = 'checkbox', text = 'Use Trinket #2', key = 'kT2', default = true},
-	{type = 'checkbox', text = 'Ring of Collapsing Futures', key = 'kRoCF', default = true},
-	{type = 'checkbox', text = 'Use Heirloom Necks When Below X% HP', key = 'k_HEIR', default = true},
+	{type = 'checkbox', text = 'Use Trinket #1', key = 'kT1', default = false},
+	{type = 'checkbox', text = 'Use Trinket #2', key = 'kT2', default = false},
+	{type = 'checkbox', text = 'Ring of Collapsing Futures', key = 'kRoCF', default = false},
+	{type = 'checkbox', text = 'Use Heirloom Necks When Below X% HP', key = 'k_HEIR', default = false},
 	{type = 'spinner',	text = '', key = 'k_HeirHP', default = 40},
 	{type = 'ruler'},{type = 'spacer'},
 }
@@ -134,10 +138,11 @@ NeP.Interface:AddToggle({
 end
 
 local Survival = {
-	{'&Astral Shift', 'UI(S_ASE)&health<=UI(S_AS)', 'player'},
-	{'&Gift of the Naaru', 'UI(S_GOTNE)&health<=UI(S_GOTN)', 'player'},
+	{'!Astral Shift', 'UI(S_ASE)&health<=UI(S_AS)', 'player'},
+	{'!Gift of the Naaru', 'UI(S_GOTNE)&health<=UI(S_GOTN)', 'player'},
 	{'#127834', 'item(127834).count>0&health<UI(S_AHP)', 'player'},       -- Ancient Healing Potion
-  {'#5512', 'item(5512).count>0&health<UI(S_HS)', 'player'},  					--Health Stone
+  {'#5512', 'item(5512).count==3&health<UI(S_HS)', 'player'},  					--Health Stone
+	{'Ancestral Guidance', 'player.area(40,60).heal>2'},
 }
 
 local Keybinds = {
@@ -148,12 +153,13 @@ local Keybinds = {
 
 local Totems = {
 	{'Healing Stream Totem', 'UI(To_HSTE)&player.area(40,80).heal>1'},
-	{'Earthen Shield Totem', 'advanced&UI(To_ESTE)&range<41', 'tank.ground'},
+	{'Earthen Shield Totem', 'advanced&UI(To_ESTE)&range<41&area(10,90).heal>1', 'lowest.ground'},
+	{'Ancestral Protection Totem', 'advanced&UI(To_APTE)&range<41&area(20,40).heal>2', 'lowest.ground'},
 }
 
 local Emergency = {
 	{'!Riptide', 'UI(E_EH)&health<=UI(E_RT)', 'lowest'},
-	{'!Healing Surge', '!moving&UI(E_EH)&health<=UI(E_HSG)', 'lowest'},
+	{'!Healing Surge', '!player.moving&UI(E_EH)&health<=UI(E_HSG)', 'lowest'},
 }
 
 local Interrupts = {
@@ -172,9 +178,9 @@ local Dispel = {
 
 local DPS = {
 	{'Flame Shock', '!debuff(Flame Shock)', 'target'},
-	{'Lava Burst', 'debuff(Flame Shock).duration>player.spell(Lava Burst).casttime', 'target'},
-	{'Chain Lightning', 'area(10).enemies>1', 'target'},
-	{'Lightning Bolt', nil, 'target'},
+	{'Lava Burst', '!player.moving&debuff(Flame Shock).duration>player.spell(Lava Burst).casttime', 'target'},
+	{'Chain Lightning', '!player.moving&area(10).enemies>1', 'target'},
+	{'Lightning Bolt', '!player.moving', 'target'},
 }
 
 local Tank = {
@@ -183,7 +189,7 @@ local Tank = {
 		{'Healing Surge', 'health<=UI(T_HS)', 'tank'},
 		{'Healing Rain', 'advanced&UI(T_HRE)&toggle(AoE)&area(10,90).heal>0', 'tank.ground'},
 		{'Chain Heal', 'UI(T_CHE)&toggle(AoE)&area(40,80).heal>1', 'tank'},
-	}, {'!moving||{player.buff(Spiritwalker\'s Grace)&moving}'}},
+	}, {'!player.moving||{player.buff(Spiritwalker\'s Grace)&moving}'}},
 }
 
 local Player = {
@@ -192,7 +198,7 @@ local Player = {
 		{'Healing Surge', 'health<=UI(P_HS)', 'player'},
 		{'Healing Rain', 'advanced&UI(P_HRE)&toggle(AoE)&area(10,90).heal>1', 'player.ground'},
 		{'Chain Heal', 'UI(P_CHE)&toggle(AoE)&area(40,80).heal>1', 'player'},
-	}, {'!moving||{player.buff(Spiritwalker\'s Grace)&moving}'}},
+	}, {'!player.moving||{player.buff(Spiritwalker\'s Grace)&moving}'}},
 }
 
 local Lowest = {
@@ -202,7 +208,7 @@ local Lowest = {
 		{'Healing Rain', 'advanced&UI(L_HRE)&toggle(AoE)&area(10,90).heal>1', 'lowest.ground'},
 		{'Chain Heal', 'UI(L_CHE)&toggle(AoE)&area(40,80).heal>1', 'lowest'},
 		{'Healing Surge', 'health<=UI(L_HS)', 'lowest'},
-	}, {'!moving||{player.buff(Spiritwalker\'s Grace)&moving}'}},
+	}, {'!player.moving||{player.buff(Spiritwalker\'s Grace)&moving}'}},
 }
 
 local inCombat = {
@@ -220,6 +226,7 @@ local inCombat = {
 	{Interrupts_Random},
 	{Interrupts, 'target.interruptAt(70)&toggle(Interrupts)&target.range<41'},
 	{DPS, 'toggle(zyDPS)&range<41&inFront'},
+	{'Ghost Wolf', 'player.movingfor>0.5&target.range>20&!player.buff(Ghost Wolf)'},
 }
 
 local outCombat = {
@@ -228,7 +235,7 @@ local outCombat = {
 	{Interrupts, 'target.interruptAt(70)&toggle(Interrupts)&target.range<41'},
 	{'Riptide', 'health<100', 'lnbuff(Riptide)'},
 	{Lowest, 'lowest.health<100'},
-	{'Ghost Wolf', 'movingfor>0.75&!player.buff(Ghost Wolf)'},
+	{'Ghost Wolf', 'player.movingfor>0.25&!player.buff(Ghost Wolf)'},
 }
 
 NeP.CR:Add(264, {
