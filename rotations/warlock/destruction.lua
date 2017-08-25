@@ -32,7 +32,7 @@ local GUI = {
 	{type = 'checkspin',text = 'Healthstone',	check= true, key = 'HS_HP', spin = 45},
 	{type = 'checkspin',text = 'Ancient Healing Potion', check = true, key = 'AHP_HP',	spin = 40},
 	{type = 'checkbox', text = 'Use Fear to Interrupt', 	key = 'k_FEAR',		default = false},
-	{type = 'spinner',	text = 'Life Tap below HP%', 	key = 'k_LTHP',		default = 35},
+	{type = 'spinner',	text = 'Life Tap above HP%', 	key = 'k_LTHP',		default = 70},
 	{type = 'spinner',	text = 'Drain Life below HP%', key = 'k_DLHP',		default = 40},
 	{type = 'spacer'},
 	{type = 'header', text = 'Health Funnel', align = 'center'},
@@ -66,12 +66,12 @@ end
 
 local Keybinds = {
 	{'%pause', 'keybind(lshift)&UI(kPause)'},
-	{'!Cataclysm', 'toggle(aoe)&keybind(lcontrol)', 'cursor.ground'},
-	{'!Rain of Fire', 'toggle(aoe)&keybind(lalt)', 'cursor.ground'},
+	{'!Cataclysm', 'keybind(lcontrol)', 'cursor.ground'},
+	{'!Rain of Fire', 'keybind(lalt)', 'cursor.ground'},
 }
 
 local PreCombat = {
-	{'Life Tap', 'talent(2,3)&buff(Empowered Life Tap).duration<gcd', 'player'},
+	{'Life Tap', 'talent(2,3)&buff(Empowered Life Tap).duration<gcd&health>=95', 'player'},
 	{'Grimoire of Sacfifice', 'talent(6,3)&pet.exists'}
 }
 
@@ -82,7 +82,7 @@ local Pets = {
 }
 
 local Survival = {
-	{'Life Tap', 'player.moving&player.health>=UI(k_LTHP)'},
+	{'Life Tap', 'player.moving&player.health>=UI(k_LTHP)', 'player'},
 	{'Life Tap', 'talent(2,3)&buff(Empowered Life Tap).duration<gcd', 'player'},
 	{'Unending Resolve', 'player.health<=UI(UR_HP)'},
 	{'Dark Pact', 'player.health<UI(DP_PHP)&pet.health>=UI(DP_PETHP)'},
