@@ -67,7 +67,7 @@ end
 
 local Keybinds = {
 	{'%pause', 'keybind(lshift)&UI(kPause)'},
-	{'!Cataclysm', 'keybind(lcontrol)', 'cursor.ground'},
+	{'!Cataclysm', '!player.moving&keybind(lcontrol)', 'cursor.ground'},
 	{'!Rain of Fire', 'keybind(lalt)', 'cursor.ground'},
 }
 
@@ -126,11 +126,10 @@ local xCombat = {
 	{'Dimensional Rift', 'equipped(144369)&player.buff(Lessons of Spacetime).duration<gcd&{{!talent(6,1)&player.spell(Summon Doomguard).duration<gcd}||{talent(4,3)&player.spell(Soul Harvest).cooldown<gcd}}', 'target'},
 	{'Channel Demonfire', '!player.moving&debuff(Immolate).duration>3&debuff(Immolate).count.any>=UI(cd_units)&range<41&combat&alive', 'enemies'},
 	{'Rain of Fire', '!player.moving&advanced&toggle(aoe)&area(10).enemies>2&combat&alive', 'enemies.ground'},
-	{'Conflagrate', 'player.soulshards<5', 'target'},
-	{'Incinerate', '!player.moving&player.soulshards<5', 'target'},
-	{'Immolate', '!player.moving&debuff(Immolate).duration<2*gcd', 'target'},
-	{'Immolate', '!player.moving&debuff(Immolate).duration<2*gcd&player.area(40).enemies>1&debuff(Immolate).count.any<UI(imo_units)&combat&alive', 'enemies'},
+	{'Conflagrate', 'debuff(Immolate)&player.soulshards<5', 'target'},
+	{'Incinerate', '!player.moving&player.soulshards<5&debuff(Immolate)', 'target'},
 	{'Cataclysm', 'advanced&target.area(8).enemies>2', 'target.ground'},
+	{'Immolate', '!player.moving&combat&alive&debuff.count.any<=UI(umi_units)&debuff.duration<2.5', 'enemies'},
 	{Pets},
 }
 
@@ -159,7 +158,7 @@ NeP.CR:Add(267, {
 	ooc = outCombat,
 	gui = GUI,
 	gui_st = {title='Zylla\'s Combat Routines', width='256', height='690', color='A330C9'},
-	ids = Zylla.SpellIDs[Zylla.Class],
+	--ids = Zylla.SpellIDs[Zylla.Class],
 	wow_ver = Zylla.wow_ver,
 	nep_ver = Zylla.nep_ver,
 	load = exeOnLoad
