@@ -142,7 +142,7 @@ local exeOnLoad=function()
 end
 
 local SWP_MASS = {
-	{'Shadow Word: Pain', 'range<41&combat&alive&debuff.count.any<UI(SWP_UNITS)&debuff.duration<3', 'enemies'}
+	{'Shadow Word: Pain', 'range<41&combat&alive&count.enemies.debuffs<UI(SWP_UNITS)&debuff.duration<3', 'enemies'}
 }
 
 local Survival = {
@@ -301,7 +301,7 @@ local s2m2 = {
 }
 
 local Zek_Support = {
-  {'!Shadow Word: Death', 'equipped(144438)&!player.buff(Voidform) & player.spell(Mind Blast).cooldown>gcd', 'target'},
+  {'!Shadow Word: Death', 'equipped(144438)&!player.buff(Voidform)&player.spell(Mind Blast).cooldown>gcd', 'target'},
   {'!Shadow Word: Death', 'equipped(144438)&player.spell(Void Eruption).cooldown>gcd&player.spell(Mind Blast).cooldown>gcd&player.buff(Voidform)', 'target'},
 }
 
