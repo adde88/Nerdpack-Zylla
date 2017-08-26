@@ -77,9 +77,9 @@ local PreCombat = {
 }
 
 local Pets = {
-	{'Summon Imp', 'UI(kPet)&!UI(kDG)&!UI(kINF)&!talent(6,1)&{!pet.exists||pet.dead}'},
-	{'Summon Doomguard', 'UI(kPet)&UI(kDG)&!UI(kINF)&talent(6,1)&{!pet.exists||pet.dead}'},
-	{'Summon Infernal', 'UI(kPet)&!UI(kDG)&UI(kINF)&talent(6,1)&{!pet.exists||pet.dead}'},
+	{'Summon Imp', 'xtime>0.5&UI(kPet)&!UI(kDG)&!UI(kINF)&!talent(6,1)&{!pet.exists||pet.dead}'},
+	{'Summon Doomguard', 'xtime>0.5&UI(kPet)&UI(kDG)&!UI(kINF)&talent(6,1)&{!pet.exists||pet.dead}'},
+	{'Summon Infernal', 'xtime>0.5&UI(kPet)&!UI(kDG)&UI(kINF)&talent(6,1)&{!pet.exists||pet.dead}'},
 }
 
 local Survival = {
