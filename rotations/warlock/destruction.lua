@@ -2,17 +2,17 @@ local _, Zylla = ...
 
 local GUI = {
 	--Logo
-	{type = 'texture',  texture = 'Interface\\AddOns\\Nerdpack-Zylla\\media\\logo.blp', width = 128, height = 128, offset = 90, y = 42, center = true},
-	{type = 'ruler'},	  {type = 'spacer'},
+	{type = 'texture',  texture = 'Interface\\AddOns\\Nerdpack-Zylla\\media\\logo.blp', width = 128, height = 128, offset = 90, y = -60, align = 'center'},
+	{type = 'spacer'},{type = 'spacer'},{type = 'spacer'},{type = 'spacer'},
 	-- Keybinds
-	{type = 'header', 	text = 'Keybinds',										align = 'center'},
-	{type = 'text', 		text = 'Left Shift: Pause',						align = 'left'},
-	{type = 'text', 		text = 'Left Ctrl: Cataclysm',				align = 'left'},
-	{type = 'text', 		text = 'Left Alt: Rain of Fire',			align = 'left'},
-	{type = 'text', 		text = 'Right Alt: ',									align = 'left'},
-	{type = 'ruler'},		{type = 'spacer'},
+	{type = 'header', text = 'Keybinds', align = 'center'},
+	{type = 'text', text = 'Left Shift: Pause', align = 'center'},
+	{type = 'text', text = 'Left Ctrl: Cataclysm', align = 'center'},
+	{type = 'text', text = 'Left Alt: Rain of Fire', align = 'center'},
+	{type = 'text', text = 'Right Alt: ', align = 'center'},
+	{type = 'spacer'}, {type = 'ruler'}, {type = 'spacer'},
 	-- Settings
-	{type = 'header', 	text = 'Class Settings', align = 'center'},
+	{type = 'header', text = 'Class Settings', align = 'center'},
 	{type = 'checkbox', text = 'Pause Enabled', key = 'kPause',	default = true},
 	{type = 'checkbox', text = 'Handle Pets (Imp, Doomguard, Infernal)', key = 'kPet',	default = true},
 	{type = 'checkbox', text = 'Use Trinket #1 on Cooldown', key = 'trinket1',	default = false},
@@ -21,19 +21,20 @@ local GUI = {
 	{type = 'spinner', text = 'Soul Harvest - Immolate Units', key = 'SH_units', align = 'left', width = 55, step = 1, default = 3, max = 6},
 	{type = 'spinner', text = 'Channel Demonfire - Immolate Units', key = 'SH_units', align = 'left', width = 55, step = 1, default = 3, max = 6},
 	{type = 'spacer'},
-	{type = 'text', 		text = 'Grimoire of Supremacy/Sacrifice', align = 'center'},
+	{type = 'text', text = 'Grimoire of Supremacy/Sacrifice', align = 'center'},
 	{type = 'checkbox', text = 'Use Doomguard as Pet', key = 'kDG',	default = false},
 	{type = 'checkbox', text = 'Use Infernal as Pet', key = 'kINF',	default = false},
-	{type = 'ruler'},	  {type = 'spacer'},
+	{type = 'spacer'}, {type = 'ruler'}, {type = 'spacer'},
 	-- Survival
-	{type = 'header', 	text = 'Survival', align = 'center'},
-	{type = 'spinner',	text = 'Unending Resolve below HP%', key = 'UR_HP',		default = 40},
-	{type = 'spinner',	text = 'Cauterize Master below HP%', key = 'CM_HP',		default = 65},
+	{type = 'header', text = 'Survival', align = 'center'},
+	{type = 'checkbox', text = 'Use Soulstone on yourself', key = 'ss_enable',	default = true},
+	{type = 'checkbox', text = 'Use Fear to Interrupt', key = 'k_FEAR',		default = false},
+	{type = 'checkspin', text = 'Unending Resolve below HP%', check= true, key = 'UR_HP',		spin = 40},
+	{type = 'checkspin', text = 'Cauterize Master below HP%', check= true, key = 'CM_HP',		spin = 65},
 	{type = 'checkspin',text = 'Healthstone',	check= true, key = 'HS_HP', spin = 45},
 	{type = 'checkspin',text = 'Ancient Healing Potion', check = true, key = 'AHP_HP',	spin = 40},
-	{type = 'checkbox', text = 'Use Fear to Interrupt', 	key = 'k_FEAR',		default = false},
-	{type = 'spinner',	text = 'Life Tap above HP%', 	key = 'k_LTHP',		default = 70},
-	{type = 'spinner',	text = 'Drain Life below HP%', key = 'k_DLHP',		default = 40},
+	{type = 'spinner', text = 'Life Tap above HP%', key = 'k_LTHP',		default = 70},
+	{type = 'spinner', text = 'Drain Life below HP%', key = 'k_DLHP',		default = 40},
 	{type = 'spacer'},
 	{type = 'header', text = 'Health Funnel', align = 'center'},
 	{type = 'spinner',	text = 'Health Funnel When PET is below HP%', key = 'k_HFHP', default = 30},
@@ -42,7 +43,7 @@ local GUI = {
 	{type = 'header', text = 'Dark Pact', align = 'center'},
 	{type = 'spinner',	text = 'Dark Pact When PET is below HP%', key = 'DP_PETHP', default = 25},
 	{type = 'spinner',	text = 'Dark Pact When PLAYER is above HP%', key = 'DP_PHP', default = 40},
-	{type = 'ruler'},		{type = 'spacer'},
+	{type = 'spacer'}, {type = 'ruler'}, {type = 'spacer'},
 }
 
 local exeOnLoad = function()
@@ -72,25 +73,25 @@ local Keybinds = {
 
 local PreCombat = {
 	{'Life Tap', 'talent(2,3)&buff(Empowered Life Tap).duration<gcd&health>=95', 'player'},
-	{'Grimoire of Sacfifice', 'talent(6,3)&petexists'}
+	{'Grimoire of Sacfifice', 'talent(6,3)&pet.exists'}
 }
 
 local Pets = {
-	{'Summon Imp', 'UI(kPet)&!UI(kDG)&!UI(kINF)&!talent(6,1)&{!petexists||pet.dead}'},
-	{'Summon Doomguard', 'UI(kPet)&UI(kDG)&!UI(kINF)&talent(6,1)&{!petexists||pet.dead}'},
-	{'Summon Infernal', 'UI(kPet)&!UI(kDG)&UI(kINF)&talent(6,1)&{!petexists||pet.dead}'},
+	{'Summon Imp', 'UI(kPet)&!UI(kDG)&!UI(kINF)&!talent(6,1)&{!pet.exists||pet.dead}'},
+	{'Summon Doomguard', 'UI(kPet)&UI(kDG)&!UI(kINF)&talent(6,1)&{!pet.exists||pet.dead}'},
+	{'Summon Infernal', 'UI(kPet)&!UI(kDG)&UI(kINF)&talent(6,1)&{!pet.exists||pet.dead}'},
 }
 
 local Survival = {
 	{'Life Tap', 'player.moving&player.health>=UI(k_LTHP)', 'player'},
 	{'Life Tap', 'talent(2,3)&buff(Empowered Life Tap).duration<gcd', 'player'},
-	{'Unending Resolve', 'player.health<=UI(UR_HP)'},
+	{'Unending Resolve', 'player.health<=UI(UR_HP_spin)&UI(UR_HP_check)'},
 	{'Dark Pact', 'player.health<UI(DP_PHP)&pet.health>=UI(DP_PETHP)'},
 	{'Drain Life', 'player.health<=UI(k_DLHP)'},
 	{'Health Funnel', 'pet.health<=UI(k_HFHP)&player.health>=UI(k_HFHP2)'},
-	{'&119899', 'petexists&player.health<=UI(CM_HP)'},
-	{'#127834', 'item(127834).count>0&player.health<UI(AHP_HP_spin)&UI(AHP_HP_check)'},       -- Ancient Healing Potion
-  {'#5512', 'item(5512).count==3&player.health<UI(HS_HP_spin)&UI(HS_HP_check)', 'player'},  --Health Stone
+	{'&119899', 'pet.exists&player.health<=UI(CM_HP_spin)&UI(CM_HP_check)'},
+	{'#127834', 'item(127834).usable&item(127834).count>0&player.health<UI(AHP_HP_spin)&UI(AHP_HP_check)'},       -- Ancient Healing Potion
+  {'#5512', 'item(5512).usable&item(5512).count==3&player.health<UI(HS_HP_spin)&UI(HS_HP_check)', 'player'},  --Health Stone
 }
 
 local Cooldowns = {
@@ -149,7 +150,7 @@ local outCombat = {
 	{Interrupts_Random},
 	{Pets},
 	{'Create Healthstone', 'item(5512).count<=2&!lastcast(Create Healthstone)'},
-	{'Soulstone', '!buff', 'player'},
+	{'Soulstone', 'UI(ss_enable)&!buff', 'player'},
 }
 
 NeP.CR:Add(267, {
@@ -157,7 +158,7 @@ NeP.CR:Add(267, {
 	ic =  {{inCombat, '!player.channeling(Channel Demonfire)'}},
 	ooc = outCombat,
 	gui = GUI,
-	gui_st = {title='Zylla\'s Combat Routines', width='256', height='256', color='A330C9'},
+	gui_st = {title='Zylla\'s Combat Routines', width='256', height='690', color='A330C9'},
 	ids = Zylla.SpellIDs[Zylla.Class],
 	wow_ver = Zylla.wow_ver,
 	nep_ver = Zylla.nep_ver,
