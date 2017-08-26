@@ -14,7 +14,7 @@ local GUI = {
 	-- Settings
 	{type = 'header', 	text = 'Class Settings', align = 'center'},
 	{type = 'checkbox', text = 'Pause Enabled', key = 'kPause',	default = true},
-	{type = 'checkbox', text = 'Summon Pet (Imp)', key = 'kPet',	default = true},
+	{type = 'checkbox', text = 'Handle Pets (Imp, Doomguard, Infernal)', key = 'kPet',	default = true},
 	{type = 'checkbox', text = 'Use Trinket #1 on Cooldown', key = 'trinket1',	default = false},
 	{type = 'checkbox', text = 'Use Trinket #2 on Cooldown', key = 'trinket2',	default = false},
 	{type = 'spinner', text = 'Immolate Units', key = 'imo_units', align = 'left', width = 55, step = 1, default = 4, max = 20},
@@ -72,13 +72,13 @@ local Keybinds = {
 
 local PreCombat = {
 	{'Life Tap', 'talent(2,3)&buff(Empowered Life Tap).duration<gcd&health>=95', 'player'},
-	{'Grimoire of Sacfifice', 'talent(6,3)&pet.exists'}
+	{'Grimoire of Sacfifice', 'talent(6,3)&petexists'}
 }
 
 local Pets = {
 	{'Summon Imp', 'UI(kPet)&!UI(kDG)&!UI(kINF)&!talent(6,1)&{!petexists||pet.dead}'},
 	{'Summon Doomguard', 'UI(kPet)&UI(kDG)&!UI(kINF)&talent(6,1)&{!petexists||pet.dead}'},
-	{'Summon Infernal', 'UI(kPet)&!UI(kDG)&UI(kINF)&talent(6,1)&!{!petexists||pet.dead}'},
+	{'Summon Infernal', 'UI(kPet)&!UI(kDG)&UI(kINF)&talent(6,1)&{!petexists||pet.dead}'},
 }
 
 local Survival = {
@@ -88,7 +88,7 @@ local Survival = {
 	{'Dark Pact', 'player.health<UI(DP_PHP)&pet.health>=UI(DP_PETHP)'},
 	{'Drain Life', 'player.health<=UI(k_DLHP)'},
 	{'Health Funnel', 'pet.health<=UI(k_HFHP)&player.health>=UI(k_HFHP2)'},
-	{'&119899', 'pet.exists&player.health<=UI(CM_HP)'},
+	{'&119899', 'petexists&player.health<=UI(CM_HP)'},
 	{'#127834', 'item(127834).count>0&player.health<UI(AHP_HP_spin)&UI(AHP_HP_check)'},       -- Ancient Healing Potion
   {'#5512', 'item(5512).count==3&player.health<UI(HS_HP_spin)&UI(HS_HP_check)', 'player'},  --Health Stone
 }
