@@ -196,7 +196,7 @@ local inCombat = {
 	{Interrupts, 'toggle(Interrupts)'},
 	{Interrupts_Random, 'toggle(xIntRandom)&toggle(Interrupts)'},
 	{Cooldowns, 'toggle(cooldowns)&target.range<=5'},
-	{Serenity, 'toggle(cooldowns)&target.range<=5&talent(7,3)&{!player.spell(Serenity).cooldown||player.buff(Serenity)}'},
+	{Serenity, 'toggle(cooldowns)&target.range<=5'},
 	{SEF, 'target.range<=5&UI(sef_toggle)&!talent(7,3)&player.spell(Strike of the Windlord).cooldown<24&player.spell(Fists of Fury).cooldown<7&player.spell(Rising Sun Kick).cooldown<7'},
 	{Melee, 'target.range<=5&target.inFront'},
 	{Ranged, '!target.range<=5&target.range<41'},
@@ -207,7 +207,7 @@ local outCombat = {
 	{Interrupts, 'toggle(Interrupts)'},
 	{Interrupts_Random, 'toggle(xIntRandom)&toggle(Interrupts)'},
 	{Dispel, 'toggle(dispels)&!player.spell(Detox).cooldown'},
-	{'Effuse', 'UI(ef_toggle)&player.health<90&player.lastmoved>0', 'player'}, -- Self healing. Toggle in Settings
+	{'Effuse', 'UI(eff_check)&player.health<90&player.lastmoved>0', 'player'}, -- Self healing. Toggle in Settings
 	{'%ressdead(Resuscitate)', 'UI(auto_res)'},
 }
 
