@@ -110,7 +110,7 @@ local Interrupts = {
 }
 
 local Interrupts_Random = {
-	{'!Fear', '!player.moving&interruptAt(12)&inFront&range<41&UI(k_FEAR)&UI(xIntRandom)&combat&alive', 'enemies'},
+	{'!Fear', '!player.moving&interruptAt(12)&inFront&range<41&UI(k_FEAR)&combat&alive', 'enemies'},
 	{'!Shadowfury', '!player.moving&interruptAt(70)&advanced&range<31&combat&alive', 'enemies.ground'},
 	{'!Mortal Coil', 'interruptAt(5)&inFront&range<21&UI(xIntRandom)&combat&alive', 'enemies'},
 }
@@ -136,7 +136,7 @@ local xCombat = {
 local inCombat = {
 	{Keybinds},
 	{Interrupts, 'toggle(interrupts)'},
-	{Interrupts_Random},
+	{Interrupts_Random, 'toggle(xIntRandom)'},
 	{Survival, 'player.health<100'},
 	{Cooldowns, 'toggle(Cooldowns)'},
 	{xCombat, 'range<41&inFront'},
@@ -146,7 +146,7 @@ local outCombat = {
 	{PreCombat},
 	{Keybinds},
 	{Interrupts, 'toggle(interrupts)'},
-	{Interrupts_Random},
+	{Interrupts_Random, 'toggle(xIntRandom)'},
 	{Pets},
 	{'Create Healthstone', 'item(5512).count==0&!lastcast(Create Healthstone)'},
 	{'Soulstone', 'UI(ss_enable)&!buff', 'player'},
