@@ -4,6 +4,12 @@ local GUI = {
 	--Logo
 	{type = 'texture',  texture = 'Interface\\AddOns\\Nerdpack-Zylla\\media\\logo.blp', width = 128, height = 128, offset = 90, y = -60, align = 'center'},
 	{type = 'spacer'},{type = 'spacer'},{type = 'spacer'},{type = 'spacer'},
+	-- Keybinds
+	{type = 'header', text = 'Keybinds',	 					 															align = 'center'},
+	{type = 'text', 	 text = 'Left Shift: Pause',																align = 'center'},
+	{type = 'text', 	 text = 'Left Ctrl: Transendence/Transfer',									align = 'center'},
+	{type = 'text', 	 text = 'Left Alt: Touch of Karma',													align = 'center'},
+	{type = 'ruler'},	 {type = 'spacer'},
 	-- General
 	{type = 'header',		text = 'General:',																				align = 'center'},
 	{type = 'checkbox',	text = 'Automatic Res',																		key = 'auto_res',		default = true},
@@ -14,6 +20,9 @@ local GUI = {
 	-- Survival
 	{type = 'spacer'},		{type = 'rule'},
 	{type = 'header',			text = 'Survival:', 																		align = 'center'},
+	{type = 'checkspin',	text = 'Touch of Karma',																key = 'tok',					spin = 70, check = true},
+	{type = 'text', 			text = 'Will also be used when taking big damage', 			align = 'left'},
+	{type = 'spacer'},
 	{type = 'checkspin',	text = 'Healthstone',																		key = 'hs',						spin = 45, check = true},
 	{type = 'checkspin',	text = 'Ancient Healing Potion',												key = 'ahp',					spin = 40, check = true},
 	{type = 'checkspin',	text = 'Effuse below HP%',															key = 'eff',					spin = 60, check = true},
@@ -91,6 +100,7 @@ local Cooldowns = {
 	{'#trinket2', 'UI(trinket2)&{player.buff(Serenity)||player.buff(Storm, Earth, and Fire)}'},
 	-- Use Xuen only while hero or potion (WOD: 156423, Legion: 188027) is active
 	{'Invoke Xuen, the White Tiger', 'player.hashero||{player.buff(Serenity)||player.buff(Storm, Earth, and Fire)}'},
+	{'Touch of Karma', 'UI(tok_check){player.health<=UI(tok_spin)||player.incdmg(5)>player.health.max*0.20}'},
 }
 
 local Dispel = {
@@ -209,7 +219,7 @@ NeP.CR:Add(269, {
 	},
 	ooc = outCombat,
 	gui = GUI,
-	gui_st = {title='Zylla\'s Combat Routines', width='256', height='475', color='A330C9'},
+	gui_st = {title='Zylla\'s Combat Routines', width='256', height='570', color='A330C9'},
 	ids = Zylla.SpellIDs[Zylla.Class],
 	wow_ver = Zylla.wow_ver,
 	nep_ver = Zylla.nep_ver,
