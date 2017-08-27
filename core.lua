@@ -11,7 +11,7 @@ Zylla.spell_timers = {}
 Zylla.isAFK = false;
 
 local Parse = NeP.DSL.Parse
-local Fetch = NeP.Interface.fetchKey
+--local Fetch = NeP.Interface.fetchKey
 
 local gsub = gsub
 local UnitClass = UnitClass
@@ -53,10 +53,12 @@ local rad = rad
 local atan2 = atan2
 local ObjectPosition = ObjectPosition
 local FaceDirection = FaceDirection
+local GetSpellCooldown = GetSpellCooldown
 
 local Zframe = CreateFrame('GameTooltip', 'Zylla_ScanningTooltip', UIParent, 'GameTooltipTemplate')
 
 Zylla.Class = select(3,UnitClass("player"))
+
 -- Toggles off the CR if the player becomes AFK.
 -- And toggle back on when player is un-AFKed.
 function Zylla.onFlagChange(self, event, ...)
@@ -1169,14 +1171,14 @@ end)
 
 NeP.Library:Add('Zylla', {
 
-  hitcombo = function(spell)
+  hitcombo = function(_, spell)
     local HitComboLastCast = ''
     if not spell then return true end
     local _, _, _, _, _, _, spellID = GetSpellInfo(spell)
     if NeP.DSL:Get('buff')('player', 'Hit Combo') then
-      -- we're using hit combo and need to check if the spell we've passed is in the list
+      -- We're using hit-combo and we need to check if the spell we've passed is in the list
       if HitComboLastCast == spellID then
-        -- If the passed-spell is in the list as flagged, we need to return false and exit
+        -- If the passed spell is in the list as flagged, we need to return false and exit
         --print('hitcombo('..spell..') and it is was flagged ('..HitComboLastCast..'), returning false');
         return false
       end
@@ -1231,5 +1233,52 @@ NeP.Library:Add('Zylla', {
     end
     return false
   end,
+
+	rollingbones = function()
+		local int = 0
+    local bearing = false
+    local shark = false
+    -- Shark Infested Waters
+    if UnitBuff('player', GetSpellInfo(193357)) then
+        shark = true
+        int = int + 1
+    end
+    -- True Bearing
+    if UnitBuff('player', GetSpellInfo(193359)) then
+        bearing = true
+        int = int + 1
+    end
+    -- Jolly Roger
+    if UnitBuff('player', GetSpellInfo(199603)) then
+        int = int + 1
+    end
+    -- Grand Melee
+    if UnitBuff('player', GetSpellInfo(193358)) then
+        int = int + 1
+    end
+    -- Buried Treasure
+    if UnitBuff('player', GetSpellInfo(199600)) then
+        int = int + 1
+    end
+    -- Broadsides
+    if UnitBuff('player', GetSpellInfo(193356)) then
+        int = int + 1
+    end
+    -- If all six buffs are active:
+    if int == 6 then
+        return true --"LEEEROY JENKINS!"
+    -- If two or Shark/Bearing and AR/Curse active:
+    elseif int == 2 or int == 3 or ((bearing or shark) and ((UnitBuff("player", GetSpellInfo(13750)) or UnitDebuff("player", GetSpellInfo(202665))))) then
+        return true --"Keep."
+	-- If only Shark or True Bearing and CDs ready
+    elseif (bearing or shark) and ((GetSpellCooldown(13750) == 0) or (GetSpellCooldown(202665) == 0)) then
+        return true --"AR/Curse NOW and keep!"
+	--if we have only ONE bad buff BUT AR/curse is active:
+    elseif int ==1 and ((UnitBuff("player", GetSpellInfo(13750)) or UnitDebuff("player", GetSpellInfo(202665)))) then
+        return true
+	-- If only one bad buff:
+    else return false	--"Reroll now!"
+    end
+	end,
 
 })
