@@ -97,7 +97,7 @@ local Survival = {
 local Cooldowns = {
 	{'Summon Infernal', '!player.moving&toggle(aoe)&UI(kPet)&!talent(6,1)&target.area(10).enemies>2'},
 	{'Summon Doomguard', '!player.moving&UI(kPet)&!talent(6,1)&target.area(10).enemies<3'},
-	{'Soul Harvest', 'enemies.debuff(Immolate).count.any>=UI(SH_units)'},
+	{'Soul Harvest', 'count(Immolate).enemies.debuffs>UI(SH_units)'},
 	{'Grimoire: Imp', nil, 'target'},
 	{'#Trinket1', 'UI(trinket1)'},
 	{'#Trinket2', 'UI(trinket2)'},
@@ -128,7 +128,7 @@ local xCombat = {
 	{'Rain of Fire', '!player.moving&advanced&toggle(aoe)&area(10).enemies>2&combat&alive', 'enemies.ground'},
 	{'Conflagrate', 'debuff(Immolate)&player.soulshards<5', 'target'},
 	{'Incinerate', '!player.moving&player.soulshards<5&debuff(Immolate)', 'target'},
-	{'Cataclysm', 'advanced&target.area(8).enemies>2', 'target.ground'},
+	{'Cataclysm', 'advanced&!target.moving&target.area(8).enemies>2', 'target.ground'},
 	{'Immolate', '!player.moving&combat&alive&count.enemies.debuffs<UI(umi_units)&debuff.duration<2.5', 'enemies'},
 	{Pets},
 }
@@ -148,7 +148,7 @@ local outCombat = {
 	{Interrupts, 'toggle(interrupts)'},
 	{Interrupts_Random},
 	{Pets},
-	{'Create Healthstone', 'item(5512).count<=2&!lastcast(Create Healthstone)'},
+	{'Create Healthstone', 'item(5512).count==0&!lastcast(Create Healthstone)'},
 	{'Soulstone', 'UI(ss_enable)&!buff', 'player'},
 }
 
@@ -158,7 +158,7 @@ NeP.CR:Add(267, {
 	ooc = outCombat,
 	gui = GUI,
 	gui_st = {title='Zylla\'s Combat Routines', width='256', height='690', color='A330C9'},
-	--ids = Zylla.SpellIDs[Zylla.Class],
+	ids = Zylla.SpellIDs[Zylla.Class],
 	wow_ver = Zylla.wow_ver,
 	nep_ver = Zylla.nep_ver,
 	load = exeOnLoad
