@@ -89,16 +89,16 @@ local Survival = {
 	{'Dark Pact', 'player.health<UI(DP_PHP)&pet.health>=UI(DP_PETHP)'},
 	{'Drain Life', 'player.health<=UI(k_DLHP)'},
 	{'Health Funnel', 'pet.health<=UI(k_HFHP)&player.health>=UI(k_HFHP2)'},
-	{'&119899', 'pet.exists&player.health<=UI(CM_HP_spin)&UI(CM_HP_check)'},
-	{'#127834', 'item(127834).usable&item(127834).count>0&player.health<UI(AHP_HP_spin)&UI(AHP_HP_check)'},       -- Ancient Healing Potion
-  {'#5512', 'item(5512).usable&item(5512).count==3&player.health<UI(HS_HP_spin)&UI(HS_HP_check)', 'player'},  --Health Stone
+	{'&119899', 'pet.exists&player.health<=UI(CM_HP_spin)&UI(CM_HP_check)'},																		-- Cauterize Master
+	{'#127834', 'item(127834).usable&item(127834).count>0&player.health<UI(AHP_HP_spin)&UI(AHP_HP_check)'},     -- Ancient Healing Potion
+  {'#5512', 'item(5512).usable&item(5512).count==3&player.health<UI(HS_HP_spin)&UI(HS_HP_check)', 'player'},  -- Health Stone
 }
 
 local Cooldowns = {
 	{'Summon Infernal', '!player.moving&toggle(aoe)&UI(kPet)&!talent(6,1)&target.area(10).enemies>2'},
 	{'Summon Doomguard', '!player.moving&UI(kPet)&!talent(6,1)&target.area(10).enemies<3'},
 	{'Soul Harvest', 'count(Immolate).enemies.debuffs>UI(SH_units)'},
-	{'Grimoire: Imp', nil, 'target'},
+	{'Grimoire: Imp', 'talent(6,2)', 'target'},
 	{'#Trinket1', 'UI(trinket1)'},
 	{'#Trinket2', 'UI(trinket2)'},
 }
