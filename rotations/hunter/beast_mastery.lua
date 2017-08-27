@@ -26,8 +26,8 @@ local GUI = {
 	{type = 'ruler'},	 {type = 'spacer'},
 	-- Survival
 	{type = 'header', 		text = 'Survival',									 	 			align = 'center'},
-	{type = 'spinner', 		text = 'Heal Pet below HP%', 								key = 'P_HP', 				spin = 75, check = true},
-	{type = 'spinner', 		text = 'Exhileration below HP%', 						key = 'E_HP', 				spin = 67, check = true},
+	{type = 'checkspin', 	text = 'Heal Pet below HP%', 								key = 'P_HP', 				spin = 75, check = true},
+	{type = 'checkspin', 	text = 'Exhileration below HP%', 						key = 'E_HP', 				spin = 67, check = true},
 	{type = 'checkspin',	text = 'Healthstone',												key = 'HS',						spin = 45, check = true},
 	{type = 'checkspin',	text = 'Healing Potion',										key = 'AHP',					spin = 45, check = true},
 	{type = 'checkspin',	text = 'Aspect of the Turtle', 							key = 'AotT', 				spin = 20, check = true},
@@ -63,7 +63,7 @@ end
 
 local PreCombat = {
 	{'Call Pet 1', '!pet.exists&UI(kPet)'},
-	{'Volley', '{toggle(aoe)&!player.buff(Volley)}||{player.buff(Volley)&!toggle(aoe)}'},
+	{'Volley', '{UI(kVolley)&toggle(aoe)&!player.buff(Volley)}||{{player.buff(Volley)&{!toggle(aoe)||!UI(kVolley)}}}'},
 	{'%pause', 'player.buff(Feign Death)'},
 }
 
@@ -165,10 +165,10 @@ NeP.CR:Add(253, {
 	ic = inCombat,
 	ooc = outCombat,
 	gui = GUI,
-	gui_st = {title='Zylla\'s Combat Routines', width='256', height='495', color='A330C9'},
+	gui_st = {title='Zylla\'s Combat Routines', width='256', height='520', color='A330C9'},
 	ids = Zylla.SpellIDs[Zylla.Class],
 	wow_ver = Zylla.wow_ver,
 	nep_ver = Zylla.nep_ver,
 	load = exeOnLoad
-	--blacklist = Zylla.Blacklist
+	--blacklist = Zylla.blacklist
 })
