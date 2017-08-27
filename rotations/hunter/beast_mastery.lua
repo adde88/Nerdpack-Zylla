@@ -1,47 +1,38 @@
 local _, Zylla = ...
 
-local Util = _G['Zylla.Util']
-local Trinkets = _G['Zylla.Trinkets']
-local Heirlooms = _G['Zylla.Heirlooms']
-
 local GUI = {
 	--Logo
-	{type = 'texture', texture = 'Interface\\AddOns\\Nerdpack-Zylla\\media\\logo.blp', width = 128, height = 128, offset = 90, y = 42, center = true},
-	{type = 'ruler'},	 {type = 'spacer'},
+	{type = 'texture',  texture = 'Interface\\AddOns\\Nerdpack-Zylla\\media\\logo.blp', width = 128, height = 128, offset = 90, y = -60, align = 'center'},
+	{type = 'spacer'},{type = 'spacer'},{type = 'spacer'},{type = 'spacer'},
 	-- Keybinds
-	{type = 'header', text = 'Keybinds',	 					 align = 'center'},
-	{type = 'text', 	 text = 'Left Shift: Pause',						 align = 'center'},
-	{type = 'text', 	 text = 'Left Ctrl: Tar Trap',						 align = 'center'},
-	{type = 'text', 	 text = 'Left Alt: Binding Shot',						 align = 'center'},
-	{type = 'text', 	 text = 'Right Alt: Freezing Trap',						align = 'center'},
+	{type = 'header', text = 'Keybinds',	 					 			align = 'center'},
+	{type = 'text', 	 text = 'Left Shift: Pause',				align = 'center'},
+	{type = 'text', 	 text = 'Left Ctrl: Tar Trap',			align = 'center'},
+	{type = 'text', 	 text = 'Left Alt: Binding Shot',		align = 'center'},
+	{type = 'text', 	 text = 'Right Alt: Freezing Trap',	align = 'center'},
 	{type = 'ruler'},	 {type = 'spacer'},
 	-- Settings
-	{type = 'header', 	text = 'Class Settings',							 	align = 'center'},
-	{type = 'checkbox', text = 'Pause Enabled',								 	key = 'kPause', default = true},
-	{type = 'checkbox', text = 'Enable DBM Integration',				key = 'kDBM', default = true},
-	{type = 'checkbox', text = 'Summon Pet',									 	key = 'kPet', default = true},
-	{type = 'checkbox', text = 'Barrage Enabled',							 	key = 'kBarrage', default = false},
-	{type = 'checkbox', text = 'Volley Enabled',								key = 'kVolley', default = true},
-	{type = 'checkbox', text = 'Misdirect Focus/Pet',						key = 'kMisdirect', default = true},
-	{type = 'checkbox', text = 'Freezing Trap (Interrupt)' ,		key = 'FT_Int', default = false},
-	{type = 'checkbox', text = 'Tarnished Sentinel Medallion',	key = 'e_TSM', default = true},
+	{type = 'header', 	text = 'Class Settings',							 			align = 'center'},
+	{type = 'checkbox', text = 'Pause Enabled',								 			key = 'kPause', 		default = true},
+	{type = 'checkbox', text = 'Enable DBM Integration',						key = 'kDBM', 			default = true},
+	{type = 'checkbox', text = 'Summon Pet',									 			key = 'kPet', 			default = true},
+	{type = 'checkbox', text = 'Barrage Enabled',							 			key = 'kBarrage', 	default = false},
+	{type = 'checkbox', text = 'Volley Enabled',										key = 'kVolley', 		default = true},
+	{type = 'checkbox', text = 'Misdirect Focus/Pet',								key = 'kMisdirect', default = true},
+	{type = 'checkbox', text = 'Freezing Trap (Interrupt)' ,				key = 'FT_Int', 		default = false},
+	{type = 'checkbox', text = 'Tarnished Sentinel Medallion',			key = 'e_TSM', 			default = true},
+	{type = 'checkbox', text = 'Use Trinket #1', 										key = 'trinket1',		default = true},
+	{type = 'checkbox', text = 'Use Trinket #2', 										key = 'trinket2', 	default = true},
 	{type = 'ruler'},	 {type = 'spacer'},
 	-- Survival
-	{type = 'header', 	text = 'Survival',									 	 align = 'center'},
-	{type = 'spinner', 	text = 'Heal Pet below HP%', key = 'P_HP', default = 75},
-	{type = 'spinner', 	text = 'Exhileration below HP%', key = 'E_HP', default = 67},
-	{type = 'spinner',	text = 'Healthstone or Healing Potions', key = 'Health Stone',	 default = 45},
-	{type = 'spinner',	text = 'Aspect of the Turtle', key = 'AotT', default = 21},
-	{type = 'spinner',	text = 'Feign Death (Legendary Healing) %',	 key = 'FD',		 default = 16},
-	{type = 'ruler'},	 {type = 'spacer'},
-	-- Trinkets + Heirlooms for leveling
-	{type = 'header', 	text = 'Trinkets/Heirlooms', align = 'center'},
-	{type = 'checkbox', text = 'Use Trinket #1', key = 'kT1', default = true},
-	{type = 'checkbox', text = 'Use Trinket #2', key = 'kT2', default = true},
-	{type = 'checkbox', text = 'Ring of Collapsing Futures', key = 'kRoCF', default = true},
-	{type = 'checkbox', text = 'Use Heirloom Necks When Below X% HP', key = 'k_HEIR', default = true},
-	{type = 'spinner',	text = '', key = 'k_HeirHP', default = 40},
-	{type = 'ruler'},	 {type = 'spacer'},
+	{type = 'header', 		text = 'Survival',									 	 			align = 'center'},
+	{type = 'spinner', 		text = 'Heal Pet below HP%', 								key = 'P_HP', 				spin = 75, check = true},
+	{type = 'spinner', 		text = 'Exhileration below HP%', 						key = 'E_HP', 				spin = 67, check = true},
+	{type = 'checkspin',	text = 'Healthstone',												key = 'HS',						spin = 45, check = true},
+	{type = 'checkspin',	text = 'Healing Potion',										key = 'AHP',					spin = 45, check = true},
+	{type = 'checkspin',	text = 'Aspect of the Turtle', 							key = 'AotT', 				spin = 20, check = true},
+	{type = 'checkspin',	text = 'Feign Death (Legendary Healing) %',	key = 'FD',		 				spin = 16, check = true},
+	{type = 'ruler'},		 {type = 'spacer'},
 }
 
 local exeOnLoad = function()
@@ -84,11 +75,11 @@ local Keybinds = {
 }
 
 local Survival = {
-	{'Exhilaration', 'player.health<UI(E_HP)'},
-	{'#127834', 'item(127834).count>0&player.health<UI(Health Stone)'}, -- Ancient Healing Potion
-	{'#5512', 'item(5512).count>0&player.health<UI(Health Stone)', 'player'}, --Health Stone
-	{'Aspect of the Turtle', 'player.health<UI(AotT)'},
-	{'Feign Death', 'player.health<UI(FD)&equipped(137064)'},
+	{'Exhilaration', 'player.health<=UI(E_HP_spin)&UI(E_HP_check)'},
+	{'#127834', 'item(127834).usable&item(127834).count>0&player.health<=UI(AHP_spin)&UI(AHP_check)'}, 		-- Ancient Healing Potion
+	{'#5512', 'item(5512).usable&item(5512).count>0&player.health<=UI(HS_spin)&UI(HS_check)', 'player'}, 	--Health Stone
+	{'Aspect of the Turtle', 'player.health<=UI(AotT_spin)&UI(AotT_check)'},
+	{'Feign Death', 'player.health<=UI(FD_spin)&UI(FD_check)&equipped(137064)'},
 	{'%pause', 'player.buff(Feign Death)'},
 }
 
@@ -99,8 +90,8 @@ local Cooldowns = {
 	{'Aspect of the Wild', 'player.buff(Bestial Wrath)||target.time_to_die<12'},
 	{'Blood Fury'},
 	{'Berserking'},
-	{'#Trinket1', 'UI(kT1)'},
-	{'#Trinket2', 'UI(kT2)'},
+	{'#Trinket1', 'UI(trinket1)'},
+	{'#Trinket2', 'UI(trinket2)'},
 }
 
 local Interrupts_Normal = {
@@ -130,7 +121,7 @@ local xCombat = {
 
 local xPet = {
 	{'Call Pet 1', '!pet.exists&UI(kPet)'},
-	{'Mend Pet', 'pet.alive&pet.health<UI(P_HP)&!pet.buff(Mend Pet)'},
+	{'Mend Pet', 'pet.alive&pet.health<=UI(P_HP_spin)&UI(P_HP_check)&!pet.buff(Mend Pet)'},
 		{{ 																			 																			-- Pet Dead
 			{'Heart of the Phoenix', '!player.debuff(Weakened Heart)&player.combat'}, 	-- Heart of the Phoenix
 			{'Revive Pet'} 																															-- Revive Pet
@@ -151,9 +142,6 @@ local xPvP = {
 }
 
 local inCombat = {
-	{Util},
-	--{Trinkets},
-	{Heirlooms},
 	{Keybinds},
 	{Survival},
 	{Interrupts_Random},
@@ -177,6 +165,7 @@ NeP.CR:Add(253, {
 	ic = inCombat,
 	ooc = outCombat,
 	gui = GUI,
+	gui_st = {title='Zylla\'s Combat Routines', width='256', height='495', color='A330C9'},
 	ids = Zylla.SpellIDs[Zylla.Class],
 	wow_ver = Zylla.wow_ver,
 	nep_ver = Zylla.nep_ver,
