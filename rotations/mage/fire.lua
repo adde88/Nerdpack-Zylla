@@ -83,8 +83,8 @@ local Cooldowns = {
 	{'Berserking', 'toggle(xTimeWarp)'},
 	{'Time Warp', 'toggle(xTimeWarp)'},
 	{'#144259', 'UI(kj_check)&target.range<41&target.area(10).enemies>UI(kj_spin)&equipped(144259)'}, -- Kil'jaeden's Burning Wish / AoE Trinket
-	{'#Trinket1', 'UI(trinket1)'},
-	{'#Trinket2', 'UI(trinket2)'},
+	{'#trinket1', 'UI(trinket1)'},
+	{'#trinket2', 'UI(trinket2)'},
 }
 
 local Survival = {
