@@ -1,13 +1,9 @@
 local _, Zylla = ...
 
-local Util = _G['Zylla.Util']
-local Trinkets = _G['Zylla.Trinkets']
-local Heirlooms = _G['Zylla.Heirlooms']
-
 local GUI = {
-	-- Logo
-	{type = 'texture', texture = 'Interface\\AddOns\\Nerdpack-Zylla\\media\\logo.blp', width = 128, height = 128, offset = 90, y = 42, center = true},
-	{type = 'ruler'},	  {type = 'spacer'},
+	--Logo
+	{type = 'texture',  texture = 'Interface\\AddOns\\Nerdpack-Zylla\\media\\logo.blp', width = 128, height = 128, offset = 90, y = -60, align = 'center'},
+	{type = 'spacer'},{type = 'spacer'},{type = 'spacer'},{type = 'spacer'},
 	-- Keybinds
 	{type = 'header', 	text = 'Keybinds', align = 'center'},
 	{type = 'text', 	text = 'Left Shift: Pause', align = 'center'},
@@ -143,8 +139,8 @@ local inCombat = {
 	{Survival, '!player.lastgcd(Feral Spirit)'},
 	{Party, '!player.lastgcd(Feral Spirit)'},
 	{Cooldowns, 'toggle(Cooldowns)&!player.lastgcd(Feral Spirit)'},
-	{'Crash Lightning', 'target.inMelee&target.inFront&player.lastgcd(Feral Spirit)'},
-	{xCombat, 'target.inMelee&target.inFront&!player.lastgcd(Feral Spirit)'},
+	{'Crash Lightning', 'target.range<=5&target.inFront&player.lastgcd(Feral Spirit)'},
+	{xCombat, 'target.range<=5&target.inFront&!player.lastgcd(Feral Spirit)'},
 	{Ranged, '!player.lastgcd(Feral Spirit)'},
 	{'Ghost Wolf', 'player.movingfor>0.75&target.range>12'}
 }
