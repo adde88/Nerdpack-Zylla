@@ -61,7 +61,7 @@ Zylla.Class = select(3,UnitClass("player"))
 
 -- Toggles off the CR if the player becomes AFK.
 -- And toggle back on when player is un-AFKed.
-function Zylla.onFlagChange(self, event, ...)
+function Zylla.onFlagChange()
   if (UnitIsAFK("player") and not Zylla.isAFK) then
     -- Player has become AFK
     if (C_PetBattles.IsInBattle()==false) then
@@ -143,18 +143,6 @@ _G['Zylla.Heirlooms'] = {
 _G['Zylla.Util'] = {
   {'%pause' , 'player.debuff(200904)||player.debuff(Sapped Soul)'}, -- Vault of the Wardens, Sapped Soul
 }
-
-function Zylla.Face(target)
-	local ax, ay = ObjectPosition('player')
-	local bx, by = ObjectPosition(target)
-	if not ax or not bx then return end
-	local angle = rad(atan2(by - ay, bx - ax))
-	if angle < 0 then
-		FaceDirection(rad(atan2(by - ay, bx - ax) + 360))
-	else
-		FaceDirection(angle)
-	end
-end
 
 function Zylla.Taunt(eval, args)
   local spell = NeP.Engine:Spell(args)
@@ -1154,7 +1142,7 @@ function Zylla.ts()
 end
 
 NeP.FakeUnits:Add('Zylla_sck', function(debuff)
-  for GUID, Obj in pairs(NeP.OM:Get('Enemy')) do
+  for _, Obj in pairs(NeP.OM:Get('Enemy')) do
     if UnitExists(Obj.key) then
       if (NeP.DSL:Get('combat')(Obj.key) or Obj.isdummy) then
         if (NeP.DSL:Get('infront')(Obj.key) and NeP.DSL:Get('inMelee')(Obj.key)) then
