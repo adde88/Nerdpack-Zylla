@@ -19,8 +19,8 @@ local GUI = {
 	{type = 'spinner', 	text = 'Astral Shift below HP%',             	key = 'AS_HP',          default = 40},
 	{type = 'checkbox', text = 'Use Rainfall to Heal Player',					key = 'E_RF_PL',        default = true},
 	{type = 'spinner', 	text = 'below HP%',             							key = 'P_RF_HP',       	default = 33},
-	{type = 'spinner',	text = 'Healthstone',										      key = 'HS',						  default = 30},
-	{type = 'spinner',	text = 'Ancient Healing Potion',		 			    key = 'AHP',	  				default = 25},
+	{type = 'checkspin',text = 'Healthstone',													key = 'HS',							spin = 45, check = true},
+	{type = 'checkspin',text = 'Healing Potion',											key = 'AHP',						spin = 45, check = true},
 	{type = 'ruler'},	  {type = 'spacer'},
 	-- Group/Party stuff...
 	{type = 'header', 	text = 'Party/Group',									  	    align = 'center'},
@@ -29,13 +29,6 @@ local GUI = {
 	{type = 'checkbox', text = 'Use Rainfall to Heal Party',					key = 'E_HEAL_RF',     default = false},
 	{type = 'spinner', 	text = 'below HP%',             							key = 'L_RF_HP',       default = 25},
 	{type = 'ruler'},	  {type = 'spacer'},
-	-- Trinkets + Heirlooms for leveling
-	{type = 'header', 	text = 'Trinkets/Heirlooms', 									align = 'center'},
-	{type = 'checkbox', text = 'Use Trinket #1', 											key = 'kT1', 						default = false},
-	{type = 'checkbox', text = 'Use Trinket #2', 											key = 'kT2',						default = false},
-	{type = 'checkbox', text = 'Ring of Collapsing Futures', 					key = 'kRoCF', 					default = false},
-	{type = 'checkbox', text = 'Use Heirloom Necks When Below X% HP', key = 'k_HEIR', 				default = false},
-	{type = 'spinner',	text = '', 																		key = 'k_HeirHP', 			default = 40},
 }
 
 local exeOnLoad = function()
@@ -74,8 +67,8 @@ local PreCombat = {
 local Survival = {
 	{'!Healing Surge', '!moving&UI(E_HS)&player.health<UI(HS_HP)&player.maelstrom>10', 'player'},
 	{'!Rainfall', 'UI(E_RF_PL)&player.health<UI(P_RF_HP)&player.maelstrom>10&range<41', 'player.ground'},
-	{'#127834', 'item(127834).count>0&player.health<UI(AHP)'},        -- Ancient Healing Potion
-	{'#5512', 'item(5512).count>0&player.health<UI(HS)', 'player'}	  --Health Stone
+	{'#127834', 'item(127834).usable&item(127834).count>0&player.health<=UI(AHP_spin)&UI(AHP_check)'}, 		-- Ancient Healing Potion
+	{'#5512', 'item(5512).usable&item(5512).count>0&player.health<=UI(HS_spin)&UI(HS_check)', 'player'}, 	--Health Stone
 }
 
 local Party = {
@@ -130,9 +123,6 @@ local Ranged = {
 }
 
 local inCombat = {
-	{Util},
-	{Trinkets},
-	{Heirlooms},
 	{Keybinds},
 	{Interrupts_Random, '!player.lastgcd(Feral Spirit)'},
 	{Interrupts, '!player.lastgcd(Feral Spirit)&target.interruptAt(70)&toggle(Interrupts)&target.range<41'},
@@ -157,6 +147,7 @@ NeP.CR:Add(263, {
 	ic = inCombat,
 	ooc = outCombat,
 	gui = GUI,
+	gui_st = {title='Zylla\'s Combat Routines', width='256', height='520', color='A330C9'},
 	ids = Zylla.SpellIDs[Zylla.Class],
 	wow_ver = Zylla.wow_ver,
 	nep_ver = Zylla.nep_ver,

@@ -1,9 +1,5 @@
 local _, Zylla = ...
 
-local Util = _G['Zylla.Util']
-local Trinkets = _G['Zylla.Trinkets']
-local Heirlooms = _G['Zylla.Heirlooms']
-
 local GUI = {
 	--Logo
   {type = 'texture', texture = 'Interface\\AddOns\\Nerdpack-Zylla\\media\\logo.blp', width = 128, height = 128, offset = 90, y = 42, center = true},
@@ -22,6 +18,8 @@ local GUI = {
 	-- Survival
 	{type = 'header', 	text = 'Survival',									  	      align = 'center'},
 	{type = 'spinner', 	text = 'Soul Cleave below HP%',               key = 'SC_HP',           default = 85},
+  {type = 'checkspin',	text = 'Healthstone',												key = 'HS',						spin = 45, check = true},
+  {type = 'checkspin',	text = 'Healing Potion',										key = 'AHP',					spin = 45, check = true},
 	{type = 'ruler'},	  {type = 'spacer'},
 	-- Trinkets + Heirlooms for leveling
 	{type = 'header', 	text = 'Trinkets/Heirlooms', align = 'center'},
@@ -64,17 +62,22 @@ local Keybinds = {
 }
 
 local Interrupts = {
-	{'!Consume Magic', 'target.interruptAt(70)&target.inFront&target.inMelee'},
+	{'!Consume Magic', 'target.interruptAt(70)&target.inFront&target.range<=5'},
 	{'!Sigil of Misery', 'advanced&target.interruptAt(1)&target.range<31&spell(Consume Magic).cooldown>gcd&!prev_gcd(Consume Magic)', 'target.ground'},
 	{'!Sigil of Silence', 'advanced&target.interruptAt(5)&target.range<31&spell(Sigil of Misery).cooldown>gcd&spell(Consume Magic).cooldown>gcd&!prev_gcd(Consume Magic)', 'target.ground'},
-	{'!Arcane Torrent', 'target.interruptAt(70)&target.inFront&target.inMelee&spell(Consume Magic).cooldown>gcd&!prev_gcd(Consume Magic)'},
+	{'!Arcane Torrent', 'target.interruptAt(70)&target.inFront&target.range<=5&spell(Consume Magic).cooldown>gcd&!prev_gcd(Consume Magic)'},
 }
 
 local Interrupts_Random = {
-	{'!Consume Magic', 'interruptAt(70)&toggle(xIntRandom)&toggle(Interrupts)&inFront&inMelee', 'enemies'},
+	{'!Consume Magic', 'interruptAt(70)&toggle(xIntRandom)&toggle(Interrupts)&inFront&range<=5', 'enemies'},
 	{'!Sigil of Misery', 'advanced&interruptAt(1)&toggle(xIntRandom)&toggle(Interrupts)&player.spell(Consume Magic).cooldown>gcd&!prev_gcd(Consume Magic)&range<31', 'enemies.ground'},
 	{'!Sigil of Silence', 'advanced&interruptAt(5)&toggle(xIntRandom)&toggle(Interrupts)&player.spell(Sigil of Misery).cooldown>gcd&player.spell(Consume Magic).cooldown>gcd&!prev_gcd(Consume Magic)&range<31', 'enemies.ground'},
-	{'!Arcane Torrent', 'interruptAt(70)&toggle(xIntRandom)&toggle(Interrupts)&player.spell(Consume Magic).cooldown>gcd&!prev_gcd(Consume Magic)&inMelee'},
+	{'!Arcane Torrent', 'interruptAt(70)&toggle(xIntRandom)&toggle(Interrupts)&player.spell(Consume Magic).cooldown>gcd&!prev_gcd(Consume Magic)&range<=5'},
+}
+
+local Survival ={
+  {'#127834', 'item(127834).usable&item(127834).count>0&player.health<=UI(AHP_spin)&UI(AHP_check)'}, 		-- Ancient Healing Potion
+  {'#5512', 'item(5512).usable&item(5512).count>0&player.health<=UI(HS_spin)&UI(HS_check)', 'player'}, 	--Health Stone
 }
 
 local xTaunts = {
@@ -111,16 +114,13 @@ local Ranged = {
 }
 
 local inCombat = {
-	{Util},
-	{Trinkets},
-	{Heirlooms},
 	{Keybinds},
 	{Interrupts_Random},
 	{Interrupts, 'toggle(Interrupts)'},
 	{xTaunts, 'toggle(super_taunt)'},
 	{Ranged},
-	{Mitigations, ''},
-	{xCombat, 'target.inFront&target.inMelee'}
+	{Mitigations},
+	{xCombat, 'target.inFront&target.range<=5'}
 }
 
 local outCombat = {
@@ -134,6 +134,7 @@ NeP.CR:Add(581, {
 	ic = inCombat,
 	ooc = outCombat,
 	gui = GUI,
+  gui_st = {title='Zylla\'s Combat Routines', width='256', height='520', color='A330C9'},
 	ids = Zylla.SpellIDs[Zylla.Class],
 	wow_ver = Zylla.wow_ver,
 	nep_ver = Zylla.nep_ver,

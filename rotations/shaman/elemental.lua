@@ -1,9 +1,5 @@
 local _, Zylla = ...
 
-local Util = _G['Zylla.Util']
-local Trinkets = _G['Zylla.Trinkets']
-local Heirlooms = _G['Zylla.Heirlooms']
-
 local GUI = {
 	-- GUI Survival
 	{type = 'header', text = 'Survival', align = 'center'},
@@ -15,10 +11,8 @@ local GUI = {
 	{type = 'spinner', text = '', key = 'S_EE', default = 20},
 	{type = 'checkbox', text = 'Enable Gift of the Naaru', key = 'S_GOTNE', default = true},
 	{type = 'spinner', text = '', key = 'S_GOTN', default = 40},
-	{type = 'checkbox', text = 'Enable Healthstone', key = 'S_HSE', default = true},
-	{type = 'spinner', text = '', key = 'S_HS', default = 20},
-	{type = 'checkbox', text = 'Enable Ancient Healing Potion', key = 'S_AHPE', default = true},
-	{type = 'spinner', text = '', key = 'S_AHP', default = 20},
+	{type = 'checkspin',	text = 'Healthstone',												key = 'HS',						spin = 45, check = true},
+	{type = 'checkspin',	text = 'Healing Potion',										key = 'AHP',					spin = 45, check = true},
 	{type = 'ruler'},{type = 'spacer'},
 	-- GUI Emergency Group Healing
 	{type = 'header', text = 'Emergency Group Healing', align = 'center'},
@@ -32,15 +26,7 @@ local GUI = {
 	{type = 'checkbox', text = 'L-Shift: Liquid Magma Totem @ Cursor', key = 'K_LMT', default = true},
 	{type = 'checkbox', text = 'L-Control: Lightning Surge Totem @ Cursor', key = 'K_LST', default = true},
 	{type = 'checkbox', text = 'L-Alt: Earthbind Totem @ Cursor', key = 'K_ET', default = true},
-	{type = 'ruler'},{type = 'spacer'},
 	{type = 'ruler'},	{type = 'spacer'},
-	-- Trinkets + Heirlooms for leveling
-	{type = 'header', 	text = 'Trinkets/Heirlooms', align = 'center'},
-	{type = 'checkbox', text = 'Use Trinket #1', key = 'kT1', default = true},
-	{type = 'checkbox', text = 'Use Trinket #2', key = 'kT2', default = true},
-	{type = 'checkbox', text = 'Ring of Collapsing Futures', key = 'kRoCF', default = true},
-	{type = 'checkbox', text = 'Use Heirloom Necks When Below X% HP', key = 'k_HEIR', default = true},
-	{type = 'spinner',	text = '', key = 'k_HeirHP', default = 40},
 }
 
 local exeOnLoad = function()
@@ -68,17 +54,17 @@ end
 local Survival = {
 	{'&Astral Shift', 'UI(S_ASE)&player.health<=UI(S_AS)'},
 	{'Earth Elemental', '!ingroup&UI(S_EEE)&player.health<=UI(S_EE)'},
-	{'&Gift of the Naaru', 'UI(S_GOTNE)&{!player.debuff(Ignite Soul)}&player.health<=UI(S_GOTN)'},
-	{'#Healthstone', 'UI(S_HSE)&{!player.debuff(Ignite Soul)}&player.health<=UI(S_HS)'},
-	{'#Ancient Healing Potion', 'UI(S_AHPE)&{!player.debuff(Ignite Soul)}&player.health<=UI(S_AHP)'},
+	{'&Gift of the Naaru', 'UI(S_GOTNE)&player.health<=UI(S_GOTN)'},
+	{'#127834', 'item(127834).usable&item(127834).count>0&player.health<=UI(AHP_spin)&UI(AHP_check)'}, 		-- Ancient Healing Potion
+	{'#5512', 'item(5512).usable&item(5512).count>0&player.health<=UI(HS_spin)&UI(HS_check)', 'player'}, 	--Health Stone
 }
 
 local Player = {
-	{'!Healing Surge', 'UI(S_HSGE)&{!player.debuff(Ignite Soul)}&player.health<=UI(S_HSG)', 'player'},
+	{'!Healing Surge', 'UI(S_HSGE)&player.health<=UI(S_HSG)', 'player'},
 }
 
 local Emergency = {
-	{'!Healing Surge', 'UI(E_HSGE)&{!lowest.debuff(Ignite Soul)}&lowest.health<=UI(E_HSG)', 'lowest'},
+	{'!Healing Surge', 'UI(E_HSGE)&lowest.health<=UI(E_HSG)', 'lowest'},
 }
 
 local Keybinds = {
@@ -216,8 +202,8 @@ local inCombat = {
 	{Keybinds},
 	{Dispel, 'toggle(yuPS)&spell(Cleanse Spirit).cooldown==0'},
 	{Survival},
-	{Player, '!moving'},
-	{Emergency, '!moving&ingroup'},
+	{Player, '!player.moving'},
+	{Emergency, '!player.moving'},
 	{Interrupts, 'toggle(Interrupts)&target.interruptAt(70)&target.inFront&target.range<40'},
 	{LRCooldowns, '&talent(7,2)&toggle(Cooldowns)'},
 	{IFCooldowns, 'talent(7,3)&toggle(Cooldowns)'},
@@ -241,6 +227,7 @@ NeP.CR:Add(262, {
 	ic = inCombat,
 	ooc = outCombat,
 	gui = GUI,
+	gui_st = {title='Zylla\'s Combat Routines', width='256', height='520', color='A330C9'},
 	ids = Zylla.SpellIDs[Zylla.Class],
 	wow_ver = Zylla.wow_ver,
 	nep_ver = Zylla.nep_ver,
