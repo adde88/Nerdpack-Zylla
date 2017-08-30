@@ -1,11 +1,11 @@
 local _, Zylla = ...
 
-Zylla.Version = '1.8'
+Zylla.Version = '1.9'
 Zylla.Branch = 'RELEASE'
 Zylla.Name = 'NerdPack - Zylla\'s Rotations'
 Zylla.Author = 'Zylla'
 Zylla.addonColor = 'D11E0E'
-Zylla.wow_ver = '7.2.5'
+Zylla.wow_ver = '7.3.0'
 Zylla.nep_ver = '1.8'
 Zylla.spell_timers = {}
 Zylla.isAFK = false;
