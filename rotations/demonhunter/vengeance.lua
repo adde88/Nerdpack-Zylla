@@ -120,6 +120,7 @@ local inCombat = {
 	{xTaunts, 'toggle(super_taunt)'},
 	{Ranged},
 	{Mitigations},
+  {Survival},
 	{xCombat, 'target.inFront&target.range<=5'}
 }
 
