@@ -4,7 +4,7 @@ local CreateFrame = CreateFrame
 local C_Timer = C_Timer
 local GetTime = GetTime
 local GetSpecialization = GetSpecialization
-local PlaySound = PlaySound
+--local PlaySound = PlaySound -- Temporarily ignored as of API changes in patch 7.3.0
 local UnitClass = UnitClass
 local GetSpecializationInfo = GetSpecializationInfo
 
@@ -47,7 +47,7 @@ local AddonInfo = '|cff'..Zylla.addonColor..Zylla.Name
 function Zylla.Splash()
 	Splash_Frame:SetAlpha(1)
 	Splash_Frame:Show()
-	PlaySound('LEVELUP', 'SFX')
+	--PlaySound('LEVELUP', 'SFX') -- Temporarily ignored as of API changes in patch 7.3.0
 	local color = NeP.Core:ClassColor('player', 'hex')
 	local currentSpec = GetSpecialization()
 	local _, SpecName, _, icon, _ = GetSpecializationInfo(currentSpec)
