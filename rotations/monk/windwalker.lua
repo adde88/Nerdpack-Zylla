@@ -128,9 +128,9 @@ local Interrupts_Random = {
 
 local SEF = {
 	{'Tiger Palm', 'player.energydiff==0&player.chi<2&!player.lastgcd(Tiger Palm)&@Zylla.hitcombo(Tiger Palm)', 'target'},
-	{'Storm, Earth, and Fire', '{{!toggle(AoE)&@Zylla.sef(nil)}||!player.buff(Storm, Earth, and Fire)}&{player.spell(Touch of Death).cooldown<9||player.spell(Touch of Death).cooldown>85}'},
-	{'Storm, Earth, and Fire', '{{!toggle(AoE)&@Zylla.sef(nil)}||!player.buff(Storm, Earth, and Fire)}&target.DeathIn<35'},
-	{'Storm, Earth, and Fire', '{{!toggle(AoE)&@Zylla.sef(nil)}||!player.buff(Storm, Earth, and Fire)}&{player.spell(Fists of Fury).cooldown<2&player.chi>2}'},
+	{'Storm, Earth, and Fire', '{!player.buff(Storm, Earth, and Fire)}&{player.spell(Touch of Death).cooldown<9||player.spell(Touch of Death).cooldown>85}'},
+	{'Storm, Earth, and Fire', '!player.buff(Storm, Earth, and Fire)&target.DeathIn<35'},
+	{'Storm, Earth, and Fire', '!player.buff(Storm, Earth, and Fire)&player.spell(Fists of Fury).cooldown<2&player.chi>2'},
 	{'Fists of Fury', 'player.buff(Storm, Earth, and Fire)', 'target'},
 	{'Rising Sun Kick', 'player.buff(Storm, Earth, and Fire)&player.chi==2&player.energydiff>0', 'target'}
 }
