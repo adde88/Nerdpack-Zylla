@@ -4,7 +4,7 @@ Zylla.Version = '1.9'
 Zylla.Branch = 'RELEASE'
 Zylla.Name = 'NerdPack - Zylla\'s Rotations'
 Zylla.Author = 'Zylla'
-Zylla.addonColor = 'D11E0E'
+Zylla.addonColor = '8801c0'
 Zylla.wow_ver = '7.3.0'
 Zylla.nep_ver = '1.8'
 Zylla.spell_timers = {}
@@ -65,6 +65,9 @@ function Zylla.ExeOnLoad()
   print('|cffFFFB2F i recommend that you visit the GitHub repo.|r')
   print('|cffFFFB2F You can also get support from the NerdPack community on Discord.|r')
   print('|cffFFFB2F ----------------------------------------------------------------------|r')
+
+	Zylla.Splash() -- Call the Splash-screen on all CR's...
+
 end
 
 function Zylla.ExeOnUnload()

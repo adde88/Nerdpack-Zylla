@@ -1,6 +1,6 @@
 local _, Zylla = ...
 
--- Splash stuff
+-- Splash stuff
 local Splash_Frame = CreateFrame("Frame", "Zylla_SPLASH", UIParent)
 
 Splash_Frame:SetBackdrop({bgFile = "Interface/Tooltips/UI-Tooltip-Background",
@@ -23,7 +23,7 @@ local callTime = 0
 
 C_Timer.NewTicker(0.01, (function()
 	if Splash_Frame:IsShown() then
-		if GetTime()-callTime>=2 then
+		if GetTime()-callTime>=5 then
 			local Alpha = Splash_Frame:GetAlpha()
 			Splash_Frame:SetAlpha(Alpha-.01)
 			if Alpha<=0 then
@@ -45,9 +45,9 @@ function Zylla.Splash()
 	local _, SpecName, _, icon, _ = GetSpecializationInfo(currentSpec)
 	local class = UnitClass('player')
 	texture:SetTexture(icon)
-	text:SetText(AddonInfo..'\n|cff'..color..class..' - '..SpecName..' \n|cffC2012F--- Version: '..Zylla.Version..' ---')
+	text:SetText(AddonInfo..'\n|cff'..color..class..' - '..SpecName..' \n|cffD11E0E--- Version: '..Zylla.Version..' ---')
 	callTime = GetTime()
 	local Width = text:GetStringWidth()+texture:GetWidth()+8
 	Splash_Frame:SetSize(Width,100)
-	Splash_Frame:SetPoint("CENTER",0,0)
+	Splash_Frame:SetPoint("CENTER",0,335	)
 end
