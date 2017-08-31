@@ -39,7 +39,7 @@ local AddonInfo = '|cff'..Zylla.addonColor..Zylla.Name
 function Zylla.Splash()
 	Splash_Frame:SetAlpha(1)
 	Splash_Frame:Show()
-	--PlaySound('LEVELUP', 'SFX') -- Temporarily ignored as of API changes in patch 7.3.0
+	PlaySound(124, "SFX");
 	local color = NeP.Core:ClassColor('player', 'hex')
 	local currentSpec = GetSpecialization()
 	local _, SpecName, _, icon, _ = GetSpecializationInfo(currentSpec)
