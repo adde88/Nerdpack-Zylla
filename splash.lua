@@ -1,13 +1,5 @@
 local _, Zylla = ...
 
-local CreateFrame = _G.CreateFrame
-local C_Timer = _G.C_Timer
-local GetTime = _G.GetTime
-local GetSpecialization = _G.GetSpecialization
---local PlaySound = PlaySound -- Temporarily ignored as of API changes in patch 7.3.0
-local UnitClass = _G.UnitClass
-local GetSpecializationInfo = _G.GetSpecializationInfo
-
 -- Splash stuff
 local Splash_Frame = CreateFrame("Frame", "Zylla_SPLASH", UIParent)
 

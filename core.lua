@@ -13,47 +13,6 @@ Zylla.isAFK = false;
 local Parse = NeP.DSL.Parse
 --local Fetch = NeP.Interface.fetchKey
 
-local gsub = _G.gsub
-local UnitClass = _G.UnitClass
-local CreateFrame = _G.CreateFrame
-local UIParent = _G.UIParent
-local UnitIsAFK = _G.UnitIsAFK
-local C_PetBattles = _G.C_PetBattles
-local DEFAULT_CHAT_FRAME = _G.DEFAULT_CHAT_FRAME
-local UnitThreatSituation = _G.UnitThreatSituation
-local UnitExists = _G.UnitExists
-local GetSpellInfo = _G.GetSpellInfo
-local GetNetStats = _G.GetNetStats
-local C_Timer = _G.C_Timer
-local RunMacroText = _G.RunMacroText
-local UnitBuff = _G.UnitBuff
-local UnitPower = _G.UnitPower
-local GetSpellPowerCost = _G.GetSpellPowerCost
-local UnitAttackPower = _G.UnitAttackPower
-local GetCombatRatingBonus = _G.GetCombatRatingBonus
-local GetVersatilityBonus = _G.GetVersatilityBonus
-local UnitHealth = _G.UnitHealth
-local UnitHealthMax = _G.UnitHealthMax
-local GetTalentInfo = _G.GetTalentInfo
-local IsEquippedItem = _G.IsEquippedItem
-local GetTime = _G.GetTime
-local UnitGUID = _G.UnitGUID
-local UnitIsDeadOrGhost = _G.UnitIsDeadOrGhost
-local UnitAffectingCombat = _G.UnitAffectingCombat
-local InCombatLockdown = _G.InCombatLockdown
-local TravelSpeed = _G.TravelSpeed
-local UnitGetIncomingHeals = _G.UnitGetIncomingHeals
-local UnitGetTotalHealAbsorbs = _G.UnitGetTotalHealAbsorbs
-local UnitPlayerOrPetInParty = _G.UnitPlayerOrPetInParty
-local UnitIsUnit = _G.UnitIsUnit
-local UnitDebuff = _G.UnitDebuff
-local UnitStagger = _G.UnitStagger
-local rad = _G.rad
-local atan2 = _G.atan2
-local ObjectPosition = _G.ObjectPosition
-local FaceDirection = _G.FaceDirection
-local GetSpellCooldown = _G.GetSpellCooldown
-
 local Zframe = CreateFrame('GameTooltip', 'Zylla_ScanningTooltip', UIParent, 'GameTooltipTemplate')
 
 Zylla.Class = select(3,UnitClass("player"))
@@ -312,11 +271,11 @@ function Zylla.UnitHot(target, spell, owner)
     local go, i = true, 0
     while i <= 40 and go do
       i = i + 1
-      name,_,_,count,_,_G.duration,expires,caster,_,_,spellID = _G['UnitBuff'](target, i)
+      name,_,_,count,_,duration,expires,caster,_,_,spellID = _G['UnitBuff'](target, i)
       go = oFilter(owner, spell, spellID, caster)
     end
   else
-    name,_,_,count,_,_G.duration,expires,caster = _G['UnitBuff'](target, spell)
+    name,_,_,count,_,duration,expires,caster = _G['UnitBuff'](target, spell)
   end
   -- This adds some random factor
   return name, count, expires, caster
@@ -328,11 +287,11 @@ function Zylla.UnitDot(target, spell, owner)
     local go, i = true, 0
     while i <= 40 and go do
       i = i + 1
-      name,_,_,count,_,_G.duration,expires,caster,_,_,spellID,_,_,_,power = _G['UnitDebuff'](target, i)
+      name,_,_,count,_,duration,expires,caster,_,_,spellID,_,_,_,power = _G['UnitDebuff'](target, i)
       go = oFilter(owner, spell, spellID, caster)
     end
   else
-    name,_,_,count,_,_G.duration,expires,caster = _G['UnitDebuff'](target, spell)
+    name,_,_,count,_,duration,expires,caster = _G['UnitDebuff'](target, spell)
   end
   -- This adds some random factor
   return name, count, _, expires, caster, power
@@ -1179,9 +1138,9 @@ NeP.Library:Add('Zylla', {
 		if not ax or not bx then return end
 		local angle = rad(atan2(by - ay, bx - ax))
 		if angle < 0 then
-			FaceDirection(rad(atan2(by - ay, bx - ax) + 360))
+			UnitSetFacing(rad(atan2(by - ay, bx - ax) + 360))
 		else
-			FaceDirection(angle)
+			UnitSetFacing(angle)
 		end
 	end,
 --[[
