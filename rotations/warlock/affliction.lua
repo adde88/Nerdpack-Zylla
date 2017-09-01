@@ -94,7 +94,7 @@ local Survival = {
 	{'Health Funnel', 'alive&health<=UI(hf_pethp)&player.health>=UI(hf_pethp2)', 'pet'},
 	{'&119899', 'pet.exists&player.health<=UI(CM_spin)&UI(CM_check)'},																		-- Cauterize Master
 	{'#127834', 'item(127834).usable&item(127834).count>0&player.health<UI(AHP_spin)&UI(AHP_check)'},     -- Ancient Healing Potion
-	{'#5512', 'item(5512).usable&item(5512).count==3&player.health<UI(HS_spin)&UI(HS_check)', 'player'}	  -- Health Stone
+	{'#5512', 'item(5512).usable&item(5512).count>0&player.health<UI(HS_spin)&UI(HS_check)', 'player'}	  -- Health Stone
 }
 
 local Cooldowns = {
