@@ -37,8 +37,6 @@ local UnitDebuff = _G.UnitDebuff
 local UnitStagger = _G.UnitStagger
 local rad = _G.rad
 local atan2 = _G.atan2
-local ObjectPosition = _G.ObjectPosition
-local UnitSetFacing = _G.UnitSetFacing
 local GetSpellCooldown = _G.GetSpellCooldown
 
 Zylla.Version = '1.9'
@@ -1182,9 +1180,9 @@ NeP.Library:Add('Zylla', {
 		if not ax or not bx then return end
 		local angle = rad(atan2(by - ay, bx - ax))
 		if angle < 0 then
-			UnitSetFacing(rad(atan2(by - ay, bx - ax) + 360))
+			UnitSetFacing('player', angle + 360)
 		else
-			UnitSetFacing(angle)
+			UnitSetFacing('player', angle)
 		end
 	end,
 --[[
