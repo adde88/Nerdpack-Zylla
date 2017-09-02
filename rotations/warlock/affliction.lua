@@ -140,7 +140,6 @@ local inCombat = {
 
 local outCombat = {
 	{Keybinds},
-	{PreCombat},
 	{Interrupts, 'toggle(Interrupts)&target.inFront&target.range<41'},
 	{Interrupts_Random, 'toggle(Interrupts)&toggle(xIntRandom)'},
 	{'Create Healthstone', 'item(5512).count==0&!lastcast(Create Healthstone)'},
