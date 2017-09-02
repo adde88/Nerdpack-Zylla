@@ -766,6 +766,40 @@ NeP.Listener:Add('Zylla_VF_S2M', 'COMBAT_LOG_EVENT_UNFILTERED', function(_,comba
 end)
 
 --------------------------------------------------------------------------------
+--------------------------------- DEMON HUNTER ---------------------------------
+--------------------------------------------------------------------------------
+-- COMMENTED OUT FOR THE TIME BEING
+--[[
+local Zylla.castable.felRush = false
+local cast.felRush() = false
+local Zylla.castable.vengefulRetreat = false
+Zylla.cast.vengefulRetreat() = false
+
+local function Zylla.cancelRush()
+	if Zylla.castable.felRush and GetUnitSpeed("player") == 0 then
+		MoveBackwardStart()
+		JumpOrAscendStart()
+		cast.felRush()
+		MoveBackwardStop()
+		AscendStop()
+	end
+		return
+end
+
+local function Zylla.cancelRetreat()
+	if Zylla.castable.vengefulRetreat then
+		-- C_Timer.After(.001, function() HackEnabled("NoKnockback", true) end)
+		-- C_Timer.After(.35, function() cast.vengefulRetreat() end)
+		-- C_Timer.After(.55, function() HackEnabled("NoKnockback", false) end)
+		HackEnabled("NoKnockback", true)
+		if Zylla.cast.vengefulRetreat() then HackEnabled("NoKnockback", false) end
+	end
+	return
+end
+if HackEnabled("NoKnockback") then HackEnabled("NoKnockback", false) end
+]]--
+
+--------------------------------------------------------------------------------
 --------------------------------- DRUID ----------------------------------------
 --------------------------------------------------------------------------------
 
@@ -1181,8 +1215,10 @@ NeP.Library:Add('Zylla', {
 		local angle = rad(atan2(by - ay, bx - ax))
 		if angle < 0 then
 			UnitSetFacing('player', angle + 360)
+			SendMovementUpdate()
 		else
 			UnitSetFacing('player', angle)
+			SendMovementUpdate()
 		end
 	end,
 --[[
