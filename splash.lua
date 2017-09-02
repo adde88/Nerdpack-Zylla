@@ -1,5 +1,14 @@
 local _, Zylla = ...
 
+local UIParent = _G.UIParent
+local CreateFrame = _G.CreateFrame
+local C_Timer = _G.C_Timer
+local GetTime = _G.GetTime
+local GetSpecialization = _G.GetSpecialization
+local PlaySound = _G.PlaySound
+local UnitClass = _G.UnitClass
+local GetSpecializationInfo = _G.GetSpecializationInfo
+
 -- Splash stuff
 local Splash_Frame = CreateFrame("Frame", "Zylla_SPLASH", UIParent)
 

@@ -39,9 +39,9 @@ local GUI = {
 	{type = 'checkspin',text = 'Ancient Healing Potion', check = true, key = 'AHP',	spin = 40},
 	{type = 'spinner', text = 'Life Tap above HP%', key = 'lt',		default = 70},
 	{type = 'spacer'},
-	{type = 'header', text = 'Health Funnel', align = 'center'},
-	{type = 'spinner',	text = 'Health Funnel When PET is below HP%', key = 'k_HFHP', default = 30},
-	{type = 'spinner',	text = 'Health Funnel When PLAYER is above HP%', key = 'k_HFHP2', default = 40},
+	{type = 'header', 	text = 'Health Funnel', align = 'center'},
+	{type = 'spinner',	text = 'Health Funnel When PET is below HP%', key = 'hf_pethp', default = 30},
+	{type = 'spinner',	text = 'Health Funnel When PLAYER is above HP%', key = 'hf_pethp2', default = 40},
 	{type = 'spacer'},
 	{type = 'spacer'}, {type = 'ruler'}, {type = 'spacer'},
 }
@@ -75,8 +75,6 @@ local Pets = {
 local Keybinds = {
 	-- Pause
 	{'%pause', 'keybind(lshift)&UI(kPause)'},
-	{'%pause', 'keybind(lcontrol)'},
-	{'%pause', 'keybind(lalt)'}
 }
 
 local Interrupts = {
@@ -93,10 +91,10 @@ local Interrupts_Random = {
 
 local Survival = {
 	{'Unending Resolve', 'health<=UI(UR_spin)&UI(UR_check)', 'player'},
-	{'Health Funnel', 'pet.health<=UI(k_HFHP)&player.health>=UI(k_HFHP2)'},
+	{'Health Funnel', 'alive&health<=UI(hf_pethp)&player.health>=UI(hf_pethp2)', 'pet'},
 	{'&119899', 'pet.exists&player.health<=UI(CM_spin)&UI(CM_check)'},																		-- Cauterize Master
 	{'#127834', 'item(127834).usable&item(127834).count>0&player.health<UI(AHP_spin)&UI(AHP_check)'},     -- Ancient Healing Potion
-	{'#5512', 'item(5512).usable&item(5512).count==3&player.health<UI(HS_spin)&UI(HS_check)', 'player'}	  -- Health Stone
+	{'#5512', 'item(5512).usable&item(5512).count>0&player.health<UI(HS_spin)&UI(HS_check)', 'player'}	  -- Health Stone
 }
 
 local Cooldowns = {
@@ -142,7 +140,6 @@ local inCombat = {
 
 local outCombat = {
 	{Keybinds},
-	{PreCombat},
 	{Interrupts, 'toggle(Interrupts)&target.inFront&target.range<41'},
 	{Interrupts_Random, 'toggle(Interrupts)&toggle(xIntRandom)'},
 	{'Create Healthstone', 'item(5512).count==0&!lastcast(Create Healthstone)'},

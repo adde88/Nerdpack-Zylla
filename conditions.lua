@@ -1,5 +1,31 @@
 local _, Zylla = ...
 
+local strmatch = _G.strmatch
+local gsub = _G.gsub
+local IsFlying = _G.IsFlying
+local GetCurrentMapAreaID = _G.GetCurrentMapAreaID
+local IsIndoors = _G.IsIndoors
+local GetUnitSpeed = _G.GetUnitSpeed
+local UnitDebuff = _G.UnitDebuff
+local GetTime = _G.GetTime
+local GetSpellCharges = _G.GetSpellCharges
+local UnitPowerMax = _G.UnitPowerMax
+local UnitPower = _G.UnitPower
+local GetComboPoints = _G.GetComboPoints
+local GetPowerRegen = _G.GetPowerRegen
+local GetSpellInfo = _G.GetSpellInfo
+local IsEquippedItem = _G.IsEquippedItem
+local UnitClass = _G.UnitClass
+local HasTalent = _G.HasTalent
+local UnitBuff = _G.UnitBuff
+local GetSpellCooldown = _G.GetSpellCooldown
+local GetMasteryEffect = _G.GetMasteryEffect
+local GetCritChance = _G.GetCritChance
+local UnitStat = _G.UnitStat
+local GetCombatRatingBonus = _G.GetCombatRatingBonus
+local IsInRaid = _G.IsInRaid
+local IsInGroup = _G.IsInGroup
+
 --------------------------------------------------------------------------------
 -----------------------------------MISC CONDITIONS------------------------------
 --------------------------------------------------------------------------------
@@ -80,7 +106,7 @@ NeP.DSL:Register('action.cost', function(_, spell)
             numcost = gsub(cost, '%D', '') + 0
         end
     end
-    if numcost>0 then
+    if numcost > 0 then
         return numcost
     else
         return 0
@@ -92,7 +118,7 @@ NeP.DSL:Register('dot.refreshable', function(_, spell)
     local _,_,_,_,_,duration,expires,_,_,_,spellID = UnitDebuff('target', spell, nil, 'PLAYER|HARMFUL')
     if spellID and expires then
         local time_left = expires - GetTime()
-        if time_left<(duration/3) then
+        if time_left < (duration/3) then
             return true
         end
     end
@@ -122,7 +148,22 @@ end)
 NeP.DSL:Register('dot.remains', function(target, spell)
     return NeP.DSL:Get('debuff.duration')(target, spell)
 end)
+--[[
+NeP.DSL:Register('dot.ticks_remain', function(target, spell)
+    end)
 
+NeP.DSL:Register('dot.current_ticks', function(target, spell)
+    end)
+
+NeP.DSL:Register('dot.ticks', function(target, spell)
+    end)
+
+NeP.DSL:Register('dot.tick_time_remains', function(target, spell)
+    end)
+
+NeP.DSL:Register('dot.active_dot', function(target, spell)
+    end)
+]]--
 --/dump NeP.DSL:Get('buff.up')('player','Incanter\'s Flow')
 --/dump NeP.DSL:Get('buff')('player','Rejuvenation')
 --/dump NeP.DSL:Get('debuff')('target','Sunfire')
@@ -317,7 +358,7 @@ NeP.DSL:Register('execute_time', function(_, spell)
     if NeP.DSL:Get('spell.exists')(_, spell) then
         local GCD = NeP.DSL:Get('gcd')()
         local CTT = NeP.DSL:Get('spell.casttime')(_, spell)
-        if CTT>GCD then
+        if CTT > GCD then
             return CTT
         else
             return GCD
@@ -354,8 +395,8 @@ NeP.DSL:Register('astral_power.deficit', function()
 end)
 
 --/dump NeP.DSL:Get('combo_points.deficit')()
-NeP.DSL:Register('combo_points.deficit', function()
-    return (UnitPowerMax('player', SPELL_POWER_COMBO_POINTS)) - (UnitPower('player', SPELL_POWER_COMBO_POINTS))
+NeP.DSL:Register('combo_points.deficit', function(target)
+    return (UnitPowerMax(target, SPELL_POWER_COMBO_POINTS)) - (UnitPower(target, SPELL_POWER_COMBO_POINTS))
 end)
 
 --/dump NeP.DSL:Get('combo_points')()
@@ -380,7 +421,7 @@ end)
 NeP.DSL:Register('max_energy', function()
     local ttm = NeP.DSL:Get('energy.time_to_max')()
     local GCD = NeP.DSL:Get('gcd')()
-    if GCD>ttm then
+    if GCD > ttm then
         return 1
     else
         return false
@@ -499,6 +540,53 @@ end)
 --------------------------------------------------------------------------------
 ---------------------------------FERAL DRUID CONDITIONS-------------------------
 --------------------------------------------------------------------------------
+
+local DotTicks = {
+    [1] = {
+        [1822] = 3,
+        [1079] = 2,
+        [106832] = 3,
+    },
+    [2] = {
+        [8921] = 2,
+        [155625] = 2,
+    },
+    [3] = {
+        [195452] = 2,
+    },
+}
+
+--/dump NeP.DSL:Get('dot.tick_time')(_, 'Moonfire')
+NeP.DSL:Register('dot.tick_time', function(_, spell)
+    local zspell = NeP.Core:GetSpellID(spell)
+    if not zspell then return end
+    local class = select(3,UnitClass('player'))
+    if class == 11 and GetSpecialization() == 2 then
+        if NeP.DSL:Get('talent')(nil, '6,2') and DotTicks[1][spell] then
+            return DotTicks[1][spell] * 0.67
+        else
+            if DotTicks[1][spell] then
+                return DotTicks[1][spell]
+            else
+                local tick = DotTicks[2][spell]
+                return math.floor((tick / ((GetHaste() / 100) + 1)) * 10^3 ) / 10^3
+            end
+        end
+    else
+        return DotTicks[3][spell]
+    end
+end)
+
+--/dump NeP.DSL:Get('dot.pmultiplier')(nil, 'Rip')
+NeP.DSL:Register('dot.pmultiplier', function(_, spell)
+    local GUID = UnitGUID('target')
+    local name = string.lower(spell)
+    if Zylla.f_Snapshots[name][GUID] then
+      return Zylla.f_Snapshots[name][GUID]
+    else
+      return 0
+    end
+end)
 
 --/dump NeP.DSL:Get('persistent_multiplier')(nil, 'Rip')
 NeP.DSL:Register('persistent_multiplier', function(_, spell)

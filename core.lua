@@ -1,5 +1,44 @@
 local _, Zylla = ...
 
+local gsub = _G.gsub
+local UnitClass = _G.UnitClass
+local CreateFrame = _G.CreateFrame
+local UIParent = _G.UIParent
+local UnitIsAFK = _G.UnitIsAFK
+local C_PetBattles = _G.C_PetBattles
+local DEFAULT_CHAT_FRAME = _G.DEFAULT_CHAT_FRAME
+local UnitThreatSituation = _G.UnitThreatSituation
+local UnitExists = _G.UnitExists
+local GetSpellInfo = _G.GetSpellInfo
+local GetNetStats = _G.GetNetStats
+local C_Timer = _G.C_Timer
+local RunMacroText = _G.RunMacroText
+local UnitBuff = _G.UnitBuff
+local UnitPower = _G.UnitPower
+local GetSpellPowerCost = _G.GetSpellPowerCost
+local UnitAttackPower = _G.UnitAttackPower
+local GetCombatRatingBonus = _G.GetCombatRatingBonus
+local GetVersatilityBonus = _G.GetVersatilityBonus
+local UnitHealth = _G.UnitHealth
+local UnitHealthMax = _G.UnitHealthMax
+local GetTalentInfo = _G.GetTalentInfo
+local IsEquippedItem = _G.IsEquippedItem
+local GetTime = _G.GetTime
+local UnitGUID = _G.UnitGUID
+local UnitIsDeadOrGhost = _G.UnitIsDeadOrGhost
+local UnitAffectingCombat = _G.UnitAffectingCombat
+local InCombatLockdown = _G.InCombatLockdown
+local TravelSpeed = _G.TravelSpeed
+local UnitGetIncomingHeals = _G.UnitGetIncomingHeals
+local UnitGetTotalHealAbsorbs = _G.UnitGetTotalHealAbsorbs
+local UnitPlayerOrPetInParty = _G.UnitPlayerOrPetInParty
+local UnitIsUnit = _G.UnitIsUnit
+local UnitDebuff = _G.UnitDebuff
+local UnitStagger = _G.UnitStagger
+local rad = _G.rad
+local atan2 = _G.atan2
+local GetSpellCooldown = _G.GetSpellCooldown
+
 Zylla.Version = '1.9'
 Zylla.Branch = 'RELEASE'
 Zylla.Name = 'NerdPack - Zylla\'s Rotations'
@@ -274,11 +313,11 @@ function Zylla.UnitHot(target, spell, owner)
     local go, i = true, 0
     while i <= 40 and go do
       i = i + 1
-      name,_,_,count,_,duration,expires,caster,_,_,spellID = _G['UnitBuff'](target, i)
+      name,_,_,count,_,_G.duration,expires,caster,_,_,spellID = _G['UnitBuff'](target, i)
       go = oFilter(owner, spell, spellID, caster)
     end
   else
-    name,_,_,count,_,duration,expires,caster = _G['UnitBuff'](target, spell)
+    name,_,_,count,_,_G.duration,expires,caster = _G['UnitBuff'](target, spell)
   end
   -- This adds some random factor
   return name, count, expires, caster
@@ -290,11 +329,11 @@ function Zylla.UnitDot(target, spell, owner)
     local go, i = true, 0
     while i <= 40 and go do
       i = i + 1
-      name,_,_,count,_,duration,expires,caster,_,_,spellID,_,_,_,power = _G['UnitDebuff'](target, i)
+      name,_,_,count,_,_G.duration,expires,caster,_,_,spellID,_,_,_,power = _G['UnitDebuff'](target, i)
       go = oFilter(owner, spell, spellID, caster)
     end
   else
-    name,_,_,count,_,duration,expires,caster = _G['UnitDebuff'](target, spell)
+    name,_,_,count,_,_G.duration,expires,caster = _G['UnitDebuff'](target, spell)
   end
   -- This adds some random factor
   return name, count, _, expires, caster, power
@@ -727,6 +766,40 @@ NeP.Listener:Add('Zylla_VF_S2M', 'COMBAT_LOG_EVENT_UNFILTERED', function(_,comba
 end)
 
 --------------------------------------------------------------------------------
+--------------------------------- DEMON HUNTER ---------------------------------
+--------------------------------------------------------------------------------
+-- COMMENTED OUT FOR THE TIME BEING
+--[[
+local Zylla.castable.felRush = false
+local cast.felRush() = false
+local Zylla.castable.vengefulRetreat = false
+Zylla.cast.vengefulRetreat() = false
+
+local function Zylla.cancelRush()
+	if Zylla.castable.felRush and GetUnitSpeed("player") == 0 then
+		MoveBackwardStart()
+		JumpOrAscendStart()
+		cast.felRush()
+		MoveBackwardStop()
+		AscendStop()
+	end
+		return
+end
+
+local function Zylla.cancelRetreat()
+	if Zylla.castable.vengefulRetreat then
+		-- C_Timer.After(.001, function() HackEnabled("NoKnockback", true) end)
+		-- C_Timer.After(.35, function() cast.vengefulRetreat() end)
+		-- C_Timer.After(.55, function() HackEnabled("NoKnockback", false) end)
+		HackEnabled("NoKnockback", true)
+		if Zylla.cast.vengefulRetreat() then HackEnabled("NoKnockback", false) end
+	end
+	return
+end
+if HackEnabled("NoKnockback") then HackEnabled("NoKnockback", false) end
+]]--
+
+--------------------------------------------------------------------------------
 --------------------------------- DRUID ----------------------------------------
 --------------------------------------------------------------------------------
 
@@ -1141,9 +1214,11 @@ NeP.Library:Add('Zylla', {
 		if not ax or not bx then return end
 		local angle = rad(atan2(by - ay, bx - ax))
 		if angle < 0 then
-			UnitSetFacing(rad(atan2(by - ay, bx - ax) + 360))
+			UnitSetFacing('player', angle + 360)
+			SendMovementUpdate()
 		else
-			UnitSetFacing(angle)
+			UnitSetFacing('player', angle)
+			SendMovementUpdate()
 		end
 	end,
 --[[

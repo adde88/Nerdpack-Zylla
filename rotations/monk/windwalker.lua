@@ -84,9 +84,9 @@ local Keybinds = {
 
 local Cooldowns = {
 	-- No Serenity
-	{'Touch of Death', 'target.range<=5&target.DeathIn>7&{!player.spell.usable(Gale Burst)||{player.spell.usable(Gale Burst)&!talent(7,3)&player.spell(Strike of the Windlord).cooldown<8&player.spell(Fists of Fury).cooldown<5&player.spell(Rising Sun Kick).cooldown<7&player.chi>1}}'},
+	{'Touch of Death', 'target.range<=5&target.ttd>11&!talent(7,3)&player.spell(Strike of the Windlord).cooldown<8&player.spell(Fists of Fury).cooldown<5&player.spell(Rising Sun Kick).cooldown<7&player.chi>1', 'target'},
 	-- Serenity
-	{'Touch of Death', 'target.range<=5&target.DeathIn>7&{!player.spell.usable(Gale Burst)||{player.spell.usable(Gale Burst)&talent(7,3)&player.spell(Strike of the Windlord).cooldown<8&player.spell(Fists of Fury).cooldown<5&player.spell(Rising Sun Kick).cooldown<7}}'},
+	{'Touch of Death', 'target.range<=5&target.ttd>11&talent(7,3)&player.spell(Strike of the Windlord).cooldown<8&player.spell(Fists of Fury).cooldown<5&player.spell(Rising Sun Kick).cooldown<7', 'target'},
 	{'Lifeblood'},
 	{'Berserking'},
 	{'Blood Fury'},
@@ -94,7 +94,7 @@ local Cooldowns = {
 	{'#trinket2', 'UI(trinket2)&{player.buff(Serenity)||player.buff(Storm, Earth, and Fire)}'},
 	-- Use Xuen only while hero or potion (WOD: 156423, Legion: 188027) is active
 	{'Invoke Xuen, the White Tiger', 'player.hashero||{player.buff(Serenity)||player.buff(Storm, Earth, and Fire)}'},
-	{'Touch of Karma', 'UI(tok_check){player.health<=UI(tok_spin)||player.incdmg(5)>player.health.max*0.20}'}
+	{'Touch of Karma', 'UI(tok_check)&{player.health<=UI(tok_spin)||player.incdmg(5)>player.health.max*0.20}', 'player'}
 }
 
 local Dispel = {
@@ -146,7 +146,7 @@ local Ranged = {
 }
 
 local Serenity = {
-	{'Serenity'},
+	{'Serenity', nil, 'player'},
 	{'Strike of the Windlord', 'toggle(AoE)&player.area(8).enemies.infront>0', 'target'},
 	{'Spinning Crane Kick', 'toggle(AoE){{!player.lastgcd(Spinning Crane Kick)&@Zylla.hitcombo(Spinning Crane Kick)}&{player.spell(Spinning Crane Kick).count>7||{player.spell(Spinning Crane Kick).count>2&player.area(8).enemies>1&toggle(AoE)}||{player.area(8).enemies>2}}}'},
 	{'Spinning Crane Kick', 'player.area(8).enemies>2&toggle(AoE)&!player.lastgcd(Spinning Crane Kick)&@Zylla.hitcombo(Spinning Crane Kick)'},

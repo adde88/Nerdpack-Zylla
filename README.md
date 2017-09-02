@@ -1,5 +1,5 @@
 # NerdPack - Zylla's Routines
-This repository contains my private NerdPack routines for World of Warcraft.  
+This repository contains my own NerdPack combat-routines for World of Warcraft.  
 
 [![paypal](https://www.paypalobjects.com/en_US/NO/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=23HX4QKDAD4YG)
 
@@ -18,6 +18,4 @@ You can find me on the these Discord channels:
 * [Nerdpack-Zylla](https://discord.gg/jhq3jU5)
 
 ### Acknowledgments
-* Hat tip to anyone who's code was used
-* MrTheSoulz, Xeer, Yobleed, Yumad, Silver, Trip
-* and everyone else in the pLUA/NeP community!
+* Hat-tip to everyone in the pLUA/NerdPack community!
