@@ -94,7 +94,8 @@ local Cooldowns = {
 	{'#trinket2', 'UI(trinket2)&{player.buff(Serenity)||player.buff(Storm, Earth, and Fire)}'},
 	-- Use Xuen only while hero or potion (WOD: 156423, Legion: 188027) is active
 	{'Invoke Xuen, the White Tiger', 'player.hashero||{player.buff(Serenity)||player.buff(Storm, Earth, and Fire)}'},
-	{'Touch of Karma', 'UI(tok_check)&{player.health<=UI(tok_spin)||player.incdmg(5)>player.health.max*0.20}', 'player'}
+	{'Touch of Karma', 'UI(tok_check)&{player.health<=UI(tok_spin)||player.incdmg(5)>player.health.max*0.20}', 'player'},
+	{'Serenity', nil, 'player'}
 }
 
 local Dispel = {
@@ -131,8 +132,8 @@ local SEF = {
 	{'Storm, Earth, and Fire', '{!player.buff(Storm, Earth, and Fire)}&{player.spell(Touch of Death).cooldown<9||player.spell(Touch of Death).cooldown>85}'},
 	{'Storm, Earth, and Fire', '!player.buff(Storm, Earth, and Fire)&target.DeathIn<35'},
 	{'Storm, Earth, and Fire', '!player.buff(Storm, Earth, and Fire)&player.spell(Fists of Fury).cooldown<2&player.chi>2'},
-	{'Fists of Fury', 'player.buff(Storm, Earth, and Fire)', 'target'},
-	{'Rising Sun Kick', 'player.buff(Storm, Earth, and Fire)&player.chi==2&player.energydiff>0', 'target'}
+	{'Fists of Fury', 'player.chi>=3&player.buff(Storm, Earth, and Fire)', 'target'},
+	{'Rising Sun Kick', 'player.chi>=2&player.buff(Storm, Earth, and Fire)&player.chi==2&player.energydiff>0', 'target'}
 }
 
 local Ranged = {
@@ -146,9 +147,8 @@ local Ranged = {
 }
 
 local Serenity = {
-	{'Serenity', nil, 'player'},
 	{'Strike of the Windlord', 'toggle(AoE)&player.area(8).enemies.infront>0', 'target'},
-	{'Spinning Crane Kick', 'toggle(AoE){{!player.lastgcd(Spinning Crane Kick)&@Zylla.hitcombo(Spinning Crane Kick)}&{player.spell(Spinning Crane Kick).count>7||{player.spell(Spinning Crane Kick).count>2&player.area(8).enemies>1&toggle(AoE)}||{player.area(8).enemies>2}}}'},
+	{'Spinning Crane Kick', 'toggle(AoE)&{{!player.lastgcd(Spinning Crane Kick)&@Zylla.hitcombo(Spinning Crane Kick)}&{player.spell(Spinning Crane Kick).count>7||{player.spell(Spinning Crane Kick).count>2&player.area(8).enemies>1}||{player.area(8).enemies>2}}}'},
 	{'Spinning Crane Kick', 'player.area(8).enemies>2&toggle(AoE)&!player.lastgcd(Spinning Crane Kick)&@Zylla.hitcombo(Spinning Crane Kick)'},
 	{'Spinning Crane Kick', '{!player.lastgcd(Spinning Crane Kick)&@Zylla.hitcombo(Spinning Crane Kick)}&{player.spell(Spinning Crane Kick).count>4||{player.area(8).enemies>1&toggle(AoE)}}'},
 	{'Rising Sun Kick', 'UI(auto_dot)&player.area(5).enemies<3&inFront', 'Zylla_sck(Mark of the Crane)'},
@@ -161,21 +161,21 @@ local Serenity = {
 
 local Melee = {
 	{'Energizing Elixir', 'player.energydiff>0&player.chi<2'},
-	{'Strike of the Windlord', 'toggle(aoe)&player.area(9).enemies>0', 'target'},
-	{'Fists of Fury', 'toggle(aoe)&player.area(6).enemies.infront>=2', 'target'},
+	{'Strike of the Windlord', 'player.chi>=2&toggle(aoe)&player.area(9).enemies>0', 'target'},
+	{'Fists of Fury', 'player.chi>=3&toggle(aoe)&player.area(6).enemies.infront>=2', 'target'},
 		{{
 			{'Tiger Palm', 'UI(auto_dot)', 'Zylla_sck(Mark of the Crane)'},
 			{'Tiger Palm'},
 	}, 'player.energydiff==0&player.chi<4&player.buff(Storm, Earth, and Fire)&!player.lastgcd(Tiger Palm)&@Zylla.hitcombo(Tiger Palm)'},
-	{'Spinning Crane Kick', 'toggle(AoE)&{{!player.lastgcd(Spinning Crane Kick)&@Zylla.hitcombo(Spinning Crane Kick)}&{player.spell(Spinning Crane Kick).count>7||{player.spell(Spinning Crane Kick).count>2&player.area(8).enemies>1}||{player.area(8).enemies>2}}}'},
-	{'Rising Sun Kick', 'UI(auto_dot)', 'Zylla_sck(Mark of the Crane)'},
-	{'Rising Sun Kick'},
+	{'Spinning Crane Kick', 'player.chi>=3&toggle(AoE)&{{!player.lastgcd(Spinning Crane Kick)&@Zylla.hitcombo(Spinning Crane Kick)}&{player.spell(Spinning Crane Kick).count>7||{player.spell(Spinning Crane Kick).count>2&player.area(8).enemies>1}||{player.area(8).enemies>2}}}'},
+	{'Rising Sun Kick', 'player.chi>=2&UI(auto_dot)', 'Zylla_sck(Mark of the Crane)'},
+	{'Rising Sun Kick', 'player.chi>=2', 'target'},
 	{'Whirling Dragon Punch', 'toggle(aoe)&player.area(6).enemies>=2', 'target'},
 	{'Rushing Jade Wind', 'toggle(AoE)&player.chidiff>1&!player.lastgcd(Rushing Jade Wind)&@Zylla.hitcombo(Rushing Jade Wind)'},
 		{{
 			{'Blackout Kick', 'UI(auto_dot)&{player.chi>1||player.buff(Blackout Kick!)}', 'Zylla_sck(Mark of the Crane)'},
 			{'Blackout Kick', 'player.buff(Blackout Kick!)||player.chi>1', 'target'},
-	}, '!player.lastgcd(Blackout Kick)&@Zylla.hitcombo(Blackout Kick)'},
+	}, 'player.chi>=1&!player.lastgcd(Blackout Kick)&@Zylla.hitcombo(Blackout Kick)'},
 		{{
 			{'Tiger Palm', 'UI(auto_dot)', 'Zylla_sck(Mark of the Crane)'},
 			{'Tiger Palm'},
@@ -192,7 +192,7 @@ local inCombat = {
 	{Interrupts, 'toggle(Interrupts)'},
 	{Interrupts_Random, 'toggle(xIntRandom)&toggle(Interrupts)'},
 	{Cooldowns, 'toggle(cooldowns)&target.range<=5'},
-	{Serenity, 'toggle(cooldowns)&target.range<=5'},
+	{Serenity, 'player.buff(Serenity)&target.range<=5'},
 	{SEF, 'target.range<=5&UI(sef_toggle)&!talent(7,3)&player.spell(Strike of the Windlord).cooldown<24&player.spell(Fists of Fury).cooldown<7&player.spell(Rising Sun Kick).cooldown<7'},
 	{Melee, 'target.range<=5&target.inFront'},
 	{Ranged, 'target.range>5&target.range<41'}
@@ -210,8 +210,8 @@ local outCombat = {
 NeP.CR:Add(269, {
 	name='[|cff'..Zylla.addonColor..'Zylla\'s|r] Monk - Windwalker',
 	ic = {
-		{inCombat, '!player.casting(Fists of Fury)'},
-		{'&@Zylla.face', 'UI(xfistface)&player.casting(Fists of Fury)', 'target'}
+		{inCombat, '!player.channeling(Fists of Fury)'},
+		{'&@Zylla.face', 'UI(xfistface)&player.channeling(Fists of Fury)', 'target'}
 	},
 	ooc = outCombat,
 	gui = GUI,
