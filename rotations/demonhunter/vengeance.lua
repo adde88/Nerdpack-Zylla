@@ -45,14 +45,13 @@ local exeOnLoad = function()
 	 text = 'Interrupt all nearby enemies, without targeting them.',
 	 icon = 'Interface\\Icons\\inv_ammo_arrow_04',
  })
---[[
+
  NeP.Interface:AddToggle({
 	key = 'super_taunt',
 	name = 'Taunt Lowest Threat',
 	text = 'Taunt a nearby enemy in combat, when threat gets low, without targeting it.',
 	icon = 'Interface\\Icons\\spell_nature_reincarnation',
 })
-]]--
 
 end
 
@@ -118,7 +117,7 @@ local inCombat = {
 	{Keybinds},
 	{Interrupts_Random},
 	{Interrupts, 'toggle(Interrupts)'},
-	--{xTaunts, 'toggle(super_taunt)'}, -- temp disabled
+	{xTaunts, 'toggle(super_taunt)'},
 	{Ranged},
 	{Mitigations},
   {Survival},
