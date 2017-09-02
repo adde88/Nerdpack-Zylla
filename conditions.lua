@@ -558,8 +558,8 @@ local DotTicks = {
 
 --/dump NeP.DSL:Get('dot.tick_time')(_, 'Moonfire')
 NeP.DSL:Register('dot.tick_time', function(_, spell)
-    local zspell = NeP.Core:GetSpellID(spell)
-    if not zspell then return end
+    spell = NeP.Core:GetSpellID(spell)
+    if not spell then return end
     local class = select(3,UnitClass('player'))
     if class == 11 and GetSpecialization() == 2 then
         if NeP.DSL:Get('talent')(nil, '6,2') and DotTicks[1][spell] then
