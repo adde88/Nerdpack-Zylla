@@ -148,9 +148,17 @@ local Survival = {
 }
 
 local inCombat = {
-	{'Rake'},
-	{'Moonfire'},
-	{'Thrash'},
+	{Util},
+	{Trinkets},
+	{Heirlooms},
+	{Keybinds},
+	{Interrupts, 'target.interruptAt(70)&toggle(Interrupts)&target.inFront&target.inMelee'},
+	{Interrupts_Random},
+	{Survival, 'player.health<100'},
+	{'Cat Form', '!player.buff(Frenzied Regeneration)&{!player.buff(Cat Form)&{!player.buff(Travel Form)||player.area(8).enemies>0}}'},
+	{Cooldowns, '!player.buff(Frenzied Regeneration)&toggle(Cooldowns)'},
+	{'Moonfire', 'talent(1,3)&!target.inMelee&target.range<50&target.inFront&!player.buff(Prowl)&!target.debuff(Moonfire)'},
+	{xCombat, '!player.buff(Frenzied Regeneration)&target.inMelee&target.inFront'},
 }
 
 local outCombat = {
