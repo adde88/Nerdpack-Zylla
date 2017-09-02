@@ -1214,11 +1214,9 @@ NeP.Library:Add('Zylla', {
 		if not ax or not bx then return end
 		local angle = rad(atan2(by - ay, bx - ax))
 		if angle < 0 then
-			UnitSetFacing('player', angle + 360)
-			SendMovementUpdate()
+			FaceDirection(angle + 360)
 		else
-			UnitSetFacing('player', angle)
-			SendMovementUpdate()
+			FaceDirection(angle + 360)
 		end
 	end,
 --[[
