@@ -1,13 +1,9 @@
 local _, Zylla = ...
 
-local Util = _G['Zylla.Util']
-local Trinkets = _G['Zylla.Trinkets']
-local Heirlooms = _G['Zylla.Heirlooms']
-
 local GUI = {
 	--Logo
-	{type = 'texture', texture = 'Interface\\AddOns\\Nerdpack-Zylla\\media\\logo.blp', width = 128, height = 128, offset = 90, y = 42, center = true},
-	{type = 'ruler'},	 {type = 'spacer'},
+	{type = 'texture',  texture = 'Interface\\AddOns\\Nerdpack-Zylla\\media\\logo.blp', width = 128, height = 128, offset = 90, y = -60, align = 'center'},
+	{type = 'spacer'},{type = 'spacer'},{type = 'spacer'},{type = 'spacer'},
 	-- GUI Keybinds
 	{type = 'header', text = 'Keybinds', align = 'center'},
 	{type = 'text', 	 text = 'Left Shift: Force AoE', align = 'left'},
@@ -83,13 +79,6 @@ local GUI = {
 	{type = 'checkbox', text = 'Heal Party', key = 'k_PH', width = 55, default = true},
 	{type = 'spinner', text = 'below HP%', key = 'k_PHspin', width = 55, default = 30},
 	{type = 'ruler'}, {type = 'spacer'},
-	-- Trinkets + Heirlooms for leveling
-	{type = 'header', 	text = 'Trinkets/Heirlooms', align = 'center'},
-	{type = 'checkbox', text = 'Use Trinket #1', key = 'kT1', default = false},
-	{type = 'checkbox', text = 'Use Trinket #2', key = 'kT2', default = false},
-	{type = 'checkbox', text = 'Ring of Collapsing Futures', key = 'kRoCF', default = false},
-	{type = 'checkbox', text = 'Use Heirloom Necks When Below X% HP', key = 'k_HEIR', default = false},
-	{type = 'ruler'},	{type = 'spacer'},
 }
 
 local exeOnLoad=function()
@@ -306,9 +295,6 @@ local Zek_Support = {
 }
 
 local inCombat = {
-	{Util},
-	{Trinkets},
-	{Heirlooms},
 	{SWP_MASS, 'toggle(xSWP)'},
 	{'Shadowform', '!player.buff(Voidform)&!player.buff(Shadowform)'},
 	{Movement, '!player.buff(Voidform)||{player.buff(Voidform)&player.spell(Void Eruption).cooldown>gcd}'},
@@ -352,6 +338,7 @@ NeP.CR:Add(258, {
 	ic = {{inCombat, '!player.channeling(Void Torrent)'}},
 	ooc = outCombat,
 	gui = GUI,
+	gui_st = {title='Zylla\'s Combat Routines', width='256', height='900', color='A330C9'},
 	ids = Zylla.SpellIDs[Zylla.Class],
 	wow_ver = Zylla.wow_ver,
 	nep_ver = Zylla.nep_ver,
