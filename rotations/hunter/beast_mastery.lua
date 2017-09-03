@@ -162,6 +162,7 @@ local outCombat = {
 
 NeP.CR:Add(253, {
 	name = '[|cff'..Zylla.addonColor..'Zylla\'s|r] Hunter - Beast Mastery',
+	waitfor = true,
 	ic = inCombat,
 	ooc = outCombat,
 	gui = GUI,
