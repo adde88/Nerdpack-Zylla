@@ -94,7 +94,7 @@ local Cooldowns = {
 	{'#trinket2', 'UI(trinket2)&{player.buff(Serenity)||player.buff(Storm, Earth, and Fire)}'},
 	-- Use Xuen only while hero or potion (WOD: 156423, Legion: 188027) is active
 	{'Invoke Xuen, the White Tiger', 'player.hashero||{player.buff(Serenity)||player.buff(Storm, Earth, and Fire)}'},
-	{'Touch of Karma', 'UI(tok_check)&{player.health<=UI(tok_spin)||player.incdmg(5)>player.health.max*0.20}', 'player'},
+	{'Touch of Karma', 'UI(tok_check)&{player.health<=UI(tok_spin)||player.incdmg(5)>player.health.max*0.20}', 'target'},
 	{'Serenity', nil, 'player'}
 }
 
