@@ -1151,7 +1151,7 @@ function Zylla.NrHealsAroundFriendly(healthp, distance, unit)
   local range = distance
   local total = 0
   if not UnitExists(unit) then return total end
-  for _, Obj in pairs(NeP.OM:GetRoster()) do
+  for _, Obj in pairs(NeP.OM:Get('Roster')) do
     if NeP.Protected.Distance(unit, Obj.key) <= tonumber(range) and Obj.health < health then
       total = total +1
     end
