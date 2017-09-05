@@ -152,13 +152,13 @@ local inCombat = {
 
 local outCombat = {
 	{'Stealth', 'toggle(xStealth)&!player.buff&!player.buff(Vanish)&!nfly'},
-	{Stealth_Opener, '!toggle(xPickPock)'},
+	{Stealth_Opener, '!toggle(xPickPock)&!target.debuff(Sap)'},
   {Blade_Flurry},
 	{Keybinds},
 	{TricksofTrade},
   {Interrupts_Random, 'toggle(xIntRandom)&toggle(Interrupts)'},
 	{Interrupts, 'target.interruptAt(70)&toggle(Interrupts)'},
-	{'Pick Pocket', 'toggle(xPickPock)&enemy&alive&range<=10&player.buff(Stealth)', 'enemies'},
+	{'Pick Pocket', 'toggle(xPickPock)&enemy&alive&range<11&player.buff(Stealth)', 'enemies'},
 }
 
 NeP.CR:Add(260, {
