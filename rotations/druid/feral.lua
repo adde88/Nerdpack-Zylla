@@ -163,6 +163,7 @@ local Finisher = {
 	{Savage_Roar_Pool, 'talent(6,3)&{{{player.buff(Savage Roar).duration<20.5&talent(5,3)}||{player.buff(Savage Roar).duration<8.2&!talent(5,3)}}&combo_points==5&{energy.time_to_max<1||player.buff(Berserk)||player.buff(Incarnation: King of the Jungle)||player.spell(Tiger\'s Fury).cooldown<3||player.buff(Clearcasting)||talent(5,1)||!target.debuff(Rip)||{target.debuff(Rake).duration<1.5&player.area(8).enemies.inFront<6}}}'},
 	{'Swipe', 'combo_points==5&{player.area(8).enemies.inFront>5||{player.area(8).enemies.inFront>2&!talent(7,2)}}&combo_points==5&{energy.time_to_max<1||player.buff(Berserk)||player.buff(Incarnation: King of the Jungle)||player.spell(Tiger\'s Fury).cooldown<3||{talent(6,2)&player.buff(Clearcasting)}}'},
 	{'Ferocious Bite', 'energy.deficit==0&combo_points==5&{energy.time_to_max<1||player.buff(Berserk)||player.buff(Incarnation: King of the Jungle)||player.spell(Tiger\'s Fury).cooldown<3||{talent(6,2)&player.buff(Clearcasting)}}'},
+	{'Ferociuos Bite', 'player.combopoints>=5&player.buff(Savage Roar).duration>10&debuff(Rip).duration>10', 'target'}
 }
 
 local Generator = {
