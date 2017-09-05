@@ -103,7 +103,8 @@ local Finishers = {
 }
 
 local Blade_Flurry = {
-	{'Blade Flurry', '{area(8).enemies>=3&!buff(Blade Flurry)}||{area(8).enemies<=2&buff(Blade Flurry)}', 'player'}
+	{'Blade Flurry', 'area(8).enemies>=3&!buff(Blade Flurry)', 'player'},
+	{'Blade Flurry', 'area(8).enemies<=2&buff(Blade Flurry)', 'player'}
 }
 
 local Cooldowns = {
@@ -144,6 +145,7 @@ local inCombat = {
   {Interrupts_Random, 'toggle(xIntRandom)&toggle(Interrupts)'},
 	{Interrupts, 'target.interruptAt(70)&toggle(Interrupts)'},
 	{Survival, 'player.health<100'},
+	{Blade_Flurry},
 	{xCombat, 'target.inFront&target.range<=5'},
 	{TricksofTrade},
 }
