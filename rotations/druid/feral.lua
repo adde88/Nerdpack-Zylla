@@ -22,6 +22,10 @@ local GUI = {
 	{type = 'header', 	text = 'Survival',						align = 'center'},
 	{type = 'checkspin',text = 'Swiftmend below HP%', key = 'swiftm', 		spin = 85, step = 5, max = 100, check = true},
 	{type = 'ruler'},		{type = 'spacer'},
+	-- Mythic + / Raiding
+	{type = 'header', 	text = 'Mythic+ Raid Settings',							align = 'center'},
+	{type = 'checkbox', text = 'Attack Fel Explosives', 						key = 'mythic_fel', width = 55, default = false},
+	{type = 'ruler'},	 {type = 'spacer'},
 }
 
 local exeOnLoad = function()
@@ -168,8 +172,8 @@ local Generator = {
 	{'Elune\'s Guidance', 'talent(6,3)&{combo_points==0&player.energy>=action(Ferocious Bite).cost+25}'},
 	{Thrash_Pool, 'talent(7,1)&player.area(8).enemies.inFront>8'},
 	{Swipe_Pool, 'player.area(8).enemies.inFront>5'},
-	{Rake_Pool, 'combo_points<5&{!target.dot(Rake).ticking||{!talent(7,2)&target.dot(Rake).remains<target.dot(Rake).duration*0.3}||{talent(7,2)&player.buff(Bloodtalons)&{!talent(5,1)&target.dot(Rake).remains<8||target.dot(Rake).remains<6}&persistent_multiplier(Rake)>dot(Rake).pmultiplier*0.80}}&target.time_to_die-target.dot(Rake).remains>dot(Rake).tick_time'},
-	{Moonfire_Pool, 'talent(1,2)&combo_points<5&target.dot(Moonfire).remains<5.2&target.time_to_die-target.dot(Moonfire).remains>dot(Moonfire).tick_time*2'},
+	{Rake_Pool, 'combo_points<5&{!target.dot(Rake).ticking||{!talent(7,2)&target.dot(Rake).remains<target.dot(Rake).duration*0.3}||{talent(7,2)&player.buff(Bloodtalons)&{!talent(5,1)&target.dot(Rake).remains<8||target.dot(Rake).remains<6}&persistent_multiplier(Rake)>dot(Rake).pmultiplier*0.80}}&target.dot(Rake).remains>dot(Rake).tick_time'},
+	{Moonfire_Pool, 'talent(1,3)&combo_points<5&target.dot(Moonfire).remains<5.2&target.dot(Moonfire).remains>dot(Moonfire).tick_time*2'},
 	{Thrash_Pool, 'target.dot(Thrash).remains<=target.dot(Thrash).duration*0.3&player.area(8).enemies.inFront>1'},
 	{'Swipe', 'combo_points<5&player.area(8).enemies.inFront>2'},
 	{'Shred', 'combo_points<5&{player.area(8).enemies.inFront<3||talent(7,1)}'},
@@ -189,7 +193,7 @@ local Survival = {
 }
 
 local inCombat = {
-	{Fel_Explosives, 'range<=5'},
+	{Fel_Explosives, 'UI(mythic_fel)&range<=5'},
 	{Keybinds},
 	{Interrupts, 'target.interruptAt(70)&toggle(Interrupts)&target.inFront&target.range<=5'},
 	{Interrupts_Random},
