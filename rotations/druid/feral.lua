@@ -48,7 +48,14 @@ local exeOnLoad = function()
 		text = 'Interrupt all nearby enemies, without targeting them.',
 		icon = 'Interface\\Icons\\inv_ammo_arrow_04',
 	})
-
+--[[
+		NeP.Interface:AddToggle({
+		key = 'moc',
+		name = 'Moment of Clarity',
+		text = 'something something something.',
+		icon = 'Interface\\Icons\\spell_druid_momentofclarity',
+	})
+]]--
 end
 
 local Keybinds = {
@@ -126,9 +133,9 @@ local PreCombat = {
 
 local SBT_Opener = {
 	--# Hard-cast a Regrowth for Bloodtalons buff. Use Dash to re-enter Cat Form.
-	{Regrowth_Pool, 'talent(7,2)&combo_points=5&!player.buff(Bloodtalons)&!target.dot(Rip).ticking'},
+	{Regrowth_Pool, 'talent(7,2)&combo_points==5&!player.buff(Bloodtalons)&!target.dot(Rip).ticking'},
 	--# Force use of Tiger's Fury before applying Rip.
-	{'Tiger\'s Fury', '!target.dot(Rip).ticking&combo_points=5'},
+	{'Tiger\'s Fury', '!target.dot(Rip).ticking&combo_points==5'},
 }
 
 local Cooldowns = {
@@ -145,13 +152,13 @@ local Cooldowns = {
 }
 
 local Finisher = {
-	{Savage_Roar_Pool, 'talent(6,3)&{!player.buff(Savage Roar)&{combo_points=5||talent(6,2)&action(Brutal Slash).charges>0}}'},
+	{Savage_Roar_Pool, 'talent(6,3)&{!player.buff(Savage Roar)&{combo_points==5||talent(6,2)&action(Brutal Slash).charges>0}}'},
 	{Thrash_Pool, 'target.dot(Thrash).remains<=target.dot(Thrash).duration*0.3&player.area(8).enemies>4'},
 	{Swipe_Pool, 'player.area(8).enemies>7'},
-	{Rip_Pool, '{!target.dot(Rip).ticking||{target.dot(Rip).remains<8&target.health>25&!talent(6,1)}||persistent_multiplier(Rip)>dot(Rip).pmultiplier}&{target.time_to_die-target.dot(Rip).remains>dot(Rip).tick_time*4&combo_points=5}&{energy.time_to_max<1||player.buff(Berserk)||player.buff(Incarnation: King of the Jungle)||player.spell(Tiger\'s Fury).cooldown<3||{talent(6,2)&player.buff(Clearcasting)}||talent(5,1)||!target.dot(Rip).ticking||{target.dot(Rake).remains<1.5&player.area(8).enemies<6}}'},
-	{Savage_Roar_Pool, 'talent(6,3)&{{{player.buff(Savage Roar).duration<20.5&talent(5,3)}||{player.buff(Savage Roar).duration<8.2&!talent(5,3)}}&combo_points=5&{energy.time_to_max<1||player.buff(Berserk)||player.buff(Incarnation: King of the Jungle)||player.spell(Tiger\'s Fury).cooldown<3||player.buff(Clearcasting)||talent(5,1)||!target.debuff(Rip)||{target.debuff(Rake).duration<1.5&player.area(8).enemies<6}}}'},
-	{'Swipe', 'combo_points=5&{player.area(8).enemies>5||{player.area(8).enemies>2&!talent(7,2)}}&combo_points=5&{energy.time_to_max<1||player.buff(Berserk)||player.buff(Incarnation: King of the Jungle)||player.spell(Tiger\'s Fury).cooldown<3||{talent(6,2)&player.buff(Clearcasting)}}'},
-	{'Ferocious Bite', 'energy.deficit==0&combo_points=5&{energy.time_to_max<1||player.buff(Berserk)||player.buff(Incarnation: King of the Jungle)||player.spell(Tiger\'s Fury).cooldown<3||{talent(6,2)&player.buff(Clearcasting)}}'},
+	{Rip_Pool, '{!target.dot(Rip).ticking||{target.dot(Rip).remains<8&target.health>25&!talent(6,1)}||persistent_multiplier(Rip)>dot(Rip).pmultiplier}&{target.time_to_die-target.dot(Rip).remains>dot(Rip).tick_time*4&combo_points==5}&{energy.time_to_max<1||player.buff(Berserk)||player.buff(Incarnation: King of the Jungle)||player.spell(Tiger\'s Fury).cooldown<3||{talent(6,2)&player.buff(Clearcasting)}||talent(5,1)||!target.dot(Rip).ticking||{target.dot(Rake).remains<1.5&player.area(8).enemies<6}}'},
+	{Savage_Roar_Pool, 'talent(6,3)&{{{player.buff(Savage Roar).duration<20.5&talent(5,3)}||{player.buff(Savage Roar).duration<8.2&!talent(5,3)}}&combo_points==5&{energy.time_to_max<1||player.buff(Berserk)||player.buff(Incarnation: King of the Jungle)||player.spell(Tiger\'s Fury).cooldown<3||player.buff(Clearcasting)||talent(5,1)||!target.debuff(Rip)||{target.debuff(Rake).duration<1.5&player.area(8).enemies<6}}}'},
+	{'Swipe', 'combo_points==5&{player.area(8).enemies>5||{player.area(8).enemies>2&!talent(7,2)}}&combo_points==5&{energy.time_to_max<1||player.buff(Berserk)||player.buff(Incarnation: King of the Jungle)||player.spell(Tiger\'s Fury).cooldown<3||{talent(6,2)&player.buff(Clearcasting)}}'},
+	{'Ferocious Bite', 'energy.deficit==0&combo_points==5&{energy.time_to_max<1||player.buff(Berserk)||player.buff(Incarnation: King of the Jungle)||player.spell(Tiger\'s Fury).cooldown<3||{talent(6,2)&player.buff(Clearcasting)}}'},
 }
 
 local Generator = {
@@ -187,7 +194,7 @@ local inCombat = {
 	{Interrupts, 'target.interruptAt(70)&toggle(Interrupts)&target.inFront&target.range<=5'},
 	{Interrupts_Random},
 	{Survival, 'player.health<100'},
-	{'Cat Form', '!player.buff(Frenzied Regeneration)&{!player.buff(Cat Form)&{!player.buff(Travel Form)||player.area(8).enemies>0}}'},
+	{'Cat Form', 'toggle(xFORM)&!player.buff(Frenzied Regeneration)&!player.buff(Cat Form)&{!player.buff(Travel Form)||player.area(8).enemies>0}'},
 	{Cooldowns, '!player.buff(Frenzied Regeneration)&toggle(Cooldowns)'},
 	{Moonfire_Pool, 'talent(1,2)&!target.range<=5&target.range<50&target.inFront&!player.buff(Prowl)&!target.debuff(Moonfire)'},
 	{xCombat, '!player.buff(Frenzied Regeneration)&target.range<=5&target.inFront'},
