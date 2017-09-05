@@ -144,6 +144,12 @@ _G['Zylla.Util'] = {
   {'%pause' , 'player.debuff(200904)||player.debuff(Sapped Soul)'}, -- Vault of the Wardens, Sapped Soul
 }
 
+_G.Fel_Explosives = {
+	{{
+			{"/target 'Fel Explosives'", 'id(120651)&range<41&inFront', 'enemies'}
+	},	'UI(mythic_fel)'}
+}
+
 function Zylla.Taunt(eval, args)
   local spell = NeP.Engine:Spell(args)
   if not spell then return end
@@ -1101,9 +1107,22 @@ function Zylla.TravelTime(unit, spell)
   end
 end
 
--------------------------
+---------------------------
 -- Gabbz fake units + misc
 ---------------------------
+
+Zylla.flySpells = {
+	 [0]    =  90267, -- Eastern Kingdoms = Flight Master's License
+	 [1]    =  90267, -- Kalimdor         = Flight Master's License
+	 [646]  =  90267, -- Deepholm         = Flight Master's License
+	 [571]  =  54197, -- Northrend        = Cold Weather Flying
+	 [870]  = 115913, -- Pandaria         = Wisdom of the Four Winds
+	 [1116] = 191645, -- Draenor          = Draenor Pathfinder
+	 [1464] = 191645, -- Tanaan Jungle    = Draenor Pathfinder
+	 [1191] = -1, -- Ashran - World PvP
+	 [1265] = -1, -- Tanaan Jungle Intro
+	 [1220] = 233368, -- Broken Isles     = Broken Isles Pathfinder Rank 2
+}
 
 function Zylla.dynEval(condition, spell)
   return Parse(condition, spell or '')
