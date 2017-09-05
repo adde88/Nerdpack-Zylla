@@ -25,10 +25,28 @@ local UnitStat = _G.UnitStat
 local GetCombatRatingBonus = _G.GetCombatRatingBonus
 local IsInRaid = _G.IsInRaid
 local IsInGroup = _G.IsInGroup
+local GetInstanceInfo = _G.GetInstanceInfo
+local IsFlyableArea = _G.IsFlyableArea
+local IsSpellKnown = _G.IsSpellKnown
+local IsOnGarrisonMap = _G.C_Garrison.IsOnGarrisonMap
+local IsOnShipyardMap = _G.C_Garrison.IsOnShipyardMap
 
 --------------------------------------------------------------------------------
 -----------------------------------MISC CONDITIONS------------------------------
 --------------------------------------------------------------------------------
+
+--/dump NeP.DSL:Get('abletofly')()
+NeP.DSL:Register('isflyable', function()
+      if IsFlyableArea() then
+         local _, _, _, _, _, _, _, instanceMapID = GetInstanceInfo()
+         local reqSpell = Zylla.flySpells[instanceMapID]
+         if reqSpell then
+            return reqSpell > 0 and IsSpellKnown(reqSpell)
+         elseif not IsOnGarrisonMap() and not IsOnShipyardMap() then
+            return IsSpellKnown(34090) or IsSpellKnown(34091) or IsSpellKnown(90265)
+         end
+      end
+end)
 
 --/dump NeP.DSL:Get('nfly')()  Thanks to [EU]Noel on Discord for this function.
 NeP.DSL:Register('nfly', function()
