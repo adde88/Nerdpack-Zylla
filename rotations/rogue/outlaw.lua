@@ -11,11 +11,12 @@ local GUI = {
 	{type = 'text', 	 text = 'Left Alt: Grappling Hook',										align = 'left'},
 	{type = 'text', 	 text = 'Right Alt: ',																align = 'left'},
 	-- Settings
-	{type = 'header', 	text = 'Class Settings',							 			align = 'center'},
-	{type = 'checkbox', text = 'Pause Enabled', key = 'kPause', default = true},
+	{type = 'header', 	text = 'Class Settings',							 					align = 'center'},
+	{type = 'checkbox', text = 'Pause Enabled', 												key = 'kPause', default = true},
+	{type = 'checkbox', text = 'Use Tricks of the Trade on focus/tank', key = 'tot', default = true},
 	{type='ruler'},			{type='spacer'},
   -- Survival
-	{type = 'header', 	text = 'Survival',							align = 'center'},
+	{type = 'header', 	text = 'Survival',														align = 'center'},
 	{type = 'checkspin',	text = 'Use Crisom Vial when below %',			key = 'h_CV',					spin = 75, check = true},
 	{type = 'checkspin',	text = 'Use Riposte when below %',					key = 'h_RIP',				spin = 25, check = true},
 	{type = 'checkspin',	text = 'Healthstone',												key = 'HS',						spin = 45, check = true},
