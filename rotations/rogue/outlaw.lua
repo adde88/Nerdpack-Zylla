@@ -1,34 +1,26 @@
 local _, Zylla = ...
 
-local Util = _G['Zylla.Util']
-local Trinkets = _G['Zylla.Trinkets']
-local Heirlooms = _G['Zylla.Heirlooms']
-
 local GUI = {
 	--Logo
-  {type = 'texture', texture = 'Interface\\AddOns\\Nerdpack-Zylla\\media\\logo.blp', width = 128, height = 128, offset = 90, y = 42, center = true},
-  {type = 'ruler'},	  {type = 'spacer'},
-	-- General
-	{type = 'header', 	text = 'General', align = 'center'},
-	{type = 'text', 	text = 'Left Shift: Pause', align = 'center'},
-	{type = 'text', 	text = 'Left Ctrl: Cannonball Barrage (Cursor}', align = 'center'},
-	{type = 'text', 	text = 'Left Alt: Grappling Hook (Cursor)', align = 'center'},
-	{type = 'text', 	text = 'Right Alt: ', align = 'center'},
+	{type = 'texture',  texture = 'Interface\\AddOns\\Nerdpack-Zylla\\media\\logo.blp', width = 128, height = 128, offset = 90, y = -60, align = 'center'},
+	{type = 'spacer'},{type = 'spacer'},{type = 'spacer'},{type = 'spacer'},
+	-- Keybinds
+	{type = 'header', text = 'Keybinds',	 					 												align = 'center'},
+	{type = 'text', 	 text = 'Left Shift: Pause',													align = 'left'},
+	{type = 'text', 	 text = 'Left Ctrl: Cannonball Barrage',							align = 'left'},
+	{type = 'text', 	 text = 'Left Alt: Grappling Hook',										align = 'left'},
+	{type = 'text', 	 text = 'Right Alt: ',																align = 'left'},
+	-- Settings
+	{type = 'header', 	text = 'Class Settings',							 			align = 'center'},
 	{type = 'checkbox', text = 'Pause Enabled', key = 'kPause', default = true},
-	{type = 'ruler'},	{type = 'spacer'},
+	{type='ruler'},			{type='spacer'},
   -- Survival
 	{type = 'header', 	text = 'Survival',							align = 'center'},
-	{type = 'spinner',	text = 'Use Crisom Vial when below %',		key = 'h_CV',	default = 75},
-	{type = 'spinner',	text = 'Use Riposte when below %',			key = 'h_RIP',	default = 25},
-	{type = 'spinner',	text = 'Healthstone or Healing Potions',	key = 'Health Stone',	default = 45},
+	{type = 'checkspin',	text = 'Use Crisom Vial when below %',			key = 'h_CV',					spin = 75, check = true},
+	{type = 'checkspin',	text = 'Use Riposte when below %',					key = 'h_RIP',				spin = 25, check = true},
+	{type = 'checkspin',	text = 'Healthstone',												key = 'HS',						spin = 45, check = true},
+	{type = 'checkspin',	text = 'Healing Potion',										key = 'AHP',					spin = 45, check = true},
 	{type = 'ruler'},	  {type = 'spacer'},
-	-- Trinkets + Heirlooms for leveling
-	{type = 'header', 	text = 'Trinkets/Heirlooms', align = 'center'},
-	{type = 'checkbox', text = 'Use Trinket #1', key = 'kT1', default = true},
-	{type = 'checkbox', text = 'Use Trinket #2', key = 'kT2', default = true},
-	{type = 'checkbox', text = 'Ring of Collapsing Futures', key = 'kRoCF', default = true},
-	{type = 'checkbox', text = 'Use Heirloom Necks When Below X% HP', key = 'k_HEIR', default = true},
-	{type = 'spinner',	text = '', key = 'k_HeirHP', default = 40},
 }
 
 local exeOnLoad = function()
@@ -72,11 +64,11 @@ local exeOnLoad = function()
 end
 
 local Survival ={
-	{'Crimson Vial', 'player.health<UI(h_CV)'},
-	{'Riposte', 'player.health<UI(h_RIP)||player.incdmg(5)>player.health.max*0.20'},
-	{'Cloak of Shadows', 'incdmg(5).magic>player.health.max*0.20'},
-	{'#127834', 'item(127834).count>0&player.health<UI(Health Stone)'},        -- Ancient Healing Potion
-	{'#5512', 'item(5512).count>0&player.health<UI(Health Stone)', 'player'},  --Health Stone
+	{'Crimson Vial', 'health<UI(h_CV_spin)&UI(h_CV_check)', 'player'},
+	{'Riposte', 'UI(h_RIP_check)&{health<UI(h_RIP_spin)||incdmg(5)>health.max*0.20}' ,'player'},
+	{'Cloak of Shadows', 'incdmg(5).magic>health.max*0.20', 'player'},
+	{'#127834', 'item(127834).usable&item(127834).count>0&health<=UI(AHP_spin)&UI(AHP_check)', 'player'}, 		-- Ancient Healing Potion
+	{'#5512', 'item(5512).usable&item(5512).count>0&health<=UI(HS_spin)&UI(HS_check)', 'player'}, 						--Health Stone
 }
 
 local Keybinds = {
@@ -86,9 +78,9 @@ local Keybinds = {
 }
 
 local Interrupts = {
-	{'!Kick', 'target.range<=5&target.inFront'},
-	{'!Between the Eyes', 'target.range<21&target.inFront&player.spell(Kick).cooldown>gcd&combo_points>0&!player.lastgcd(Kick)'},
-	{'!Cloak of Shadows', 'player.spell(Kick).cooldown>gcd&player.spell(Between the Eyes).cooldown>gcd'},
+	{'!Kick', 'range<=5&inFront', 'target'},
+	{'!Between the Eyes', 'range<21&inFront&player.spell(Kick).cooldown>gcd&player.combopoints>0&!player.lastgcd(Kick)', 'target'},
+	{'!Cloak of Shadows', 'spell(Kick).cooldown>gcd&spell(Between the Eyes).cooldown>gcd', 'player'},
 }
 
 local Interrupts_Random = {
@@ -97,29 +89,28 @@ local Interrupts_Random = {
 }
 
 local Build = {
-	{'Ghostly Strike', 'target.range<=5&combo_points.deficit>0&target.debuff(Ghostly Strike).duration<2'},
-	{'Pistol Shot', 'target.range<30&player.buff(Opportunity)&combo_points<5'},
-	{'Saber Slash', 'target.range<=5&{combo_points<5||{combo_points<6&buff(Broadsides)}}'},
+	{'Ghostly Strike', 'range<=5&combo_points.deficit>0&debuff(Ghostly Strike).duration<2', 'target'},
+	{'Pistol Shot', 'range<31&player.buff(Opportunity)&player.combopoints<5', 'target'},
+	{'Saber Slash', 'range<=5&{player.combopoints<5||{player.combopoints<6&buff(Broadsides)}}', 'target'},
 }
 
 local Finishers = {
-	{'Between the Eyes', 'target.range<30&combo_points>4&buff(Shark Infested Waters)'},
-	{'Run Through', 'target.range<=5&combo_points>4'},
-	{'Death from Above', 'talent(7,3)&target.area(8).enemies>4&combo_points>4'},
-	{'Slice and Dice', 'talent(7,1)&combo_points>4&player.buff(Slice and Dice).remains<3'},
+	{'Between the Eyes', 'range<30&player.combopoints>4&buff(Shark Infested Waters)', 'target'},
+	{'Run Through', 'range<=5&player.combopoints>4', 'target'},
+	{'Death from Above', 'talent(7,3)&area(8).enemies>4&player.combopoints>4', 'target'},
+	{'Slice and Dice', 'talent(7,1)&combopoints>4&buff(Slice and Dice).remains<3', 'player'},
 }
 
 local Blade_Flurry = {
-	{'Blade Flurry', 'player.area(8).enemies>=3&!player.buff(Blade Flurry)'},
-	{'Blade Flurry', 'player.area(8).enemies<=2&player.buff(Blade Flurry)'},
+	{'Blade Flurry', '{area(8).enemies>=3&!buff(Blade Flurry)}||{area(8).enemies<=2&buff(Blade Flurry)}', 'player'}
 }
 
 local Cooldowns = {
-	{'Cannonball Barrage', 'target.area(10).enemies<4', 'target.ground'},
-	{'Adrenaline Rush', 'target.range<=5&energy.deficit>0'},
-	{'Marked for Death', 'talent(7,2)&{combo_points<6&player.energy>16}||pull_timer<20'},
-	{'Curse of the Dreadblades', 'combo_points.deficit>3&{!talent(1,1)||target.debuff(Ghostly Strike)}'},
-	{'Killing Spree', 'talent(6,3)&energy.time_to_max>5||player.energy<15'},
+	{'Cannonball Barrage', 'area(10).enemies<4', 'target.ground'},
+	{'Adrenaline Rush', 'target.range<=5&energy.deficit>0', 'player'},
+	{'Marked for Death', 'talent(7,2)&{player.combopoints<6&player.energy>16}||xtime<20', 'target'},
+	{'Curse of the Dreadblades', 'combo_points.deficit>3&{!talent(1,1)||debuff(Ghostly Strike)}', 'target'},
+	{'Killing Spree', 'talent(6,3)&energy.time_to_max>5||player.energy<15', 'target'},
 }
 
 local RollingBones ={
@@ -131,12 +122,12 @@ local RollingBones ={
 }
 
 local TricksofTrade = {
-	{'Tricks of the Trade', '!is(player)&!buff&range<99', {'focus', 'tank'}},
+	{'Tricks of the Trade', 'UI(tott)&!is(player)&!buff&range<99', {'focus', 'tank'}},
 }
 
 local Stealth_Opener = {
 	{'Ambush', 'enemy&range<=5&inFront&player.buff(Stealth)&toggle(opener)', 'target'},
-	{'Cheap Shot', 'enemy&range<=5&inFront&player.buff(Stealth)&!toggle(opener)', 'target'},
+	{'Cheap Shot', 'enemy&range<=5&inFront&player.buff(Stealth)&!toggle(opener)', 'target'}
 }
 
 local xCombat = {
@@ -148,9 +139,6 @@ local xCombat = {
 }
 
 local inCombat = {
-	{Util},
-	{Trinkets},
-	{Heirlooms},
 	{Keybinds},
   {Interrupts_Random, 'toggle(xIntRandom)&toggle(Interrupts)'},
 	{Interrupts, 'target.interruptAt(70)&toggle(Interrupts)'},
@@ -175,6 +163,7 @@ NeP.CR:Add(260, {
 	ic = inCombat,
 	ooc = outCombat,
 	gui = GUI,
+	gui_st = {title='Zylla\'s Combat Routines', width='256', height='520', color='A330C9'},
 	ids = Zylla.SpellIDs[Zylla.Class],
 	wow_ver = Zylla.wow_ver,
 	nep_ver = Zylla.nep_ver,

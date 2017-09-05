@@ -1,15 +1,19 @@
 local _, Zylla = ...
 
-local Util = _G['Zylla.Util']
-local Trinkets = _G['Zylla.Trinkets']
-local Heirlooms = _G['Zylla.Heirlooms']
-
 local GUI= {
 	--Logo
-  {type = 'texture', texture = 'Interface\\AddOns\\Nerdpack-Zylla\\media\\logo.blp', width = 128, height = 128, offset = 90, y = 42, center = true},
-  {type = 'ruler'},	  {type = 'spacer'},
-	-- General
-	{type = 'header', 		text = 'General', 								align = 'center'},
+	{type = 'texture',  texture = 'Interface\\AddOns\\Nerdpack-Zylla\\media\\logo.blp', width = 128, height = 128, offset = 90, y = -60, align = 'center'},
+	{type = 'spacer'},{type = 'spacer'},{type = 'spacer'},{type = 'spacer'},
+	-- Keybinds
+	{type = 'header', text = 'Keybinds',	 					 			align = 'center'},
+	{type = 'text', 	 text = 'Left Shift: Pause',				align = 'left'},
+	{type = 'text', 	 text = 'Left Ctrl: ',							align = 'left'},
+	{type = 'text', 	 text = 'Left Alt: ',								align = 'left'},
+	{type = 'text', 	 text = 'Right Alt: ',							align = 'left'},
+	{type = 'ruler'},	 {type = 'spacer'},
+	-- Settings
+	{type = 'header', 	text = 'Class Settings',							 			align = 'center'},
+	{type = 'checkbox', text = 'Pause Enabled', key = 'kPause', default = true},
 	{type='checkbox',		text = 'Multi-Dot (Target/Focus/MousOver)',		key='multi', 	default=true},
 	{type='checkbox',		text = 'Mantle of the Master Assassin',			key='mantle', 	default=false},
 	{type = 'checkbox', 	text = 'Pause Enabled', 						key = 'kPause', default = true},
@@ -18,20 +22,15 @@ local GUI= {
 	{type = 'header', 		text = 'Survival', align = 'center'},
 	{type='spinner', 		text = 'Crimson Vial', 							key='cv', 		default_spin=65},
 	{type='spinner', 		text = 'Evasion (HP%)', 							key='E_HP', 	default_spin=40},
-	{type = 'spinner',	text = 'Healthstone / Healing Potions',      key = 'Health Stone',	  default = 45},
+	{type = 'checkspin',	text = 'Healthstone',												key = 'HS',						spin = 45, check = true},
+	{type = 'checkspin',	text = 'Healing Potion',										key = 'AHP',					spin = 45, check = true},
 	{type='ruler'},			{type='spacer'},
 	--Cooldowns
-	{type = 'header', 		text = 'Cooldowns When Toggled ON', 				align = 'center'},
+	{type = 'header', 	text = 'Cooldowns When Toggled ON', 				align = 'center'},
 	{type='checkbox',		text = 'Vanish',									key='van', 		default=true},
 	{type='checkbox',		text = 'Vendetta',								key='ven', 		default=true},
 	{type='checkbox',		text = 'Potion of the Old War',					key='ow', 		default=false},
 	{type='ruler'},			{type='spacer'},
-	-- Trinkets + Heirlooms for leveling
-	{type = 'header', 	text = 'Trinkets/Heirlooms', align = 'center'},
-	{type = 'checkbox', text = 'Use Trinket #1', key = 'kT1', default = true},
-	{type = 'checkbox', text = 'Use Trinket #2', key = 'kT2', default = true},
-	{type = 'checkbox', text = 'Ring of Collapsing Futures', key = 'kRoCF', default = true},
-	{type = 'checkbox', text = 'Use Heirloom Necks When Below X% HP', key = 'k_HEIR', default = true},
 }
 
 local exeOnLoad=function()
@@ -81,8 +80,8 @@ local Survival = {
 	--{'Feint', ''},
 	{'Crimson Vial', 'player.health<=UI(cv)&player.energy>25'},
 	{'Evasion', 'player.health<=UI(E_HP)'},
-	{'#127834', 'item(127834).count>0&player.health<UI(Health Stone)'},        -- Ancient Healing Potion
-	{'#5512', 'item(5512).count>0&player.health<UI(Health Stone)', 'player'},  --Health Stone
+	{'#127834', 'item(127834).usable&item(127834).count>0&health<=UI(AHP_spin)&UI(AHP_check)', 'player'}, 		-- Ancient Healing Potion
+	{'#5512', 'item(5512).usable&item(5512).count>0&health<=UI(HS_spin)&UI(HS_check)', 'player'}, 						--Health Stone
 	{'Cloak of Shadows', 'incdmg(5).magic>player.health.max'},
 }
 
@@ -140,9 +139,6 @@ local xCombat = {
 }
 
 local inCombat = {
-	{Util},
-	{Trinkets},
-	{Heirlooms},
 	{Keybinds},
 	{Interrupts, 'target.interruptAt(70)&toggle(Interrupts)'},
 	{TricksofTrade},
@@ -168,6 +164,7 @@ NeP.CR:Add(259, {
 	ic = inCombat,
 	ooc = outCombat,
 	gui = GUI,
+	gui_st = {title='Zylla\'s Combat Routines', width='256', height='520', color='A330C9'},
 	ids = Zylla.SpellIDs[Zylla.Class],
 	wow_ver = Zylla.wow_ver,
 	nep_ver = Zylla.nep_ver,
