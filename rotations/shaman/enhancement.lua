@@ -1,5 +1,7 @@
 local _, Zylla = ...
 
+local Fel_Explosives = _G.Fel_Explosives
+
 local GUI = {
 	--Logo
 	{type = 'texture',  texture = 'Interface\\AddOns\\Nerdpack-Zylla\\media\\logo.blp', width = 128, height = 128, offset = 90, y = -60, align = 'center'},
@@ -10,8 +12,12 @@ local GUI = {
 	{type = 'text', 	text = 'Left Ctrl: Tier 3 Talent Totems @ cursor', align = 'center'},
 	{type = 'text', 	text = 'Left Alt: ', align = 'center'},
 	{type = 'text', 	text = 'Right Alt: ', align = 'center'},
-	{type = 'checkbox', text = 'Pause Enabled', key = 'kPause', default = true},
-	{type = 'ruler'},	{type = 'spacer'},
+	{type = 'ruler'},	 {type = 'spacer'},
+	-- Settings
+	{type = 'header', 	text = 'Class Settings',							 			align = 'center'},
+	{type = 'checkbox', text = 'Pause Enabled',								 			key = 'kPause', 		default = true},
+	{type = 'checkbox', text = 'Use Trinket #1', 										key = 'trinket1',		default = true},
+	{type = 'checkbox', text = 'Use Trinket #2', 										key = 'trinket2', 	default = true},
 	-- Survival
 	{type = 'header', 	text = 'Survival',									  	      align = 'center'},
 	{type = 'checkbox', text = 'Enable Healing Surge',								key = 'E_HS',           default = false},
@@ -29,6 +35,10 @@ local GUI = {
 	{type = 'checkbox', text = 'Use Rainfall to Heal Party',					key = 'E_HEAL_RF',     default = false},
 	{type = 'spinner', 	text = 'below HP%',             							key = 'L_RF_HP',       default = 25},
 	{type = 'ruler'},	  {type = 'spacer'},
+	-- Mythic + / Raiding
+	{type = 'header', 	text = 'Mythic+ Raid Settings',							align = 'center'},
+	{type = 'checkbox', text = 'Attack Fel Explosives', 						key = 'mythic_fel', width = 55, default = false},
+	{type = 'ruler'},	 {type = 'spacer'},
 }
 
 local exeOnLoad = function()
@@ -83,7 +93,8 @@ local Cooldowns = {
 	{'Blood Fury', 'player.buff(Ascendance)||player.buff(Feral Spirit).duration>5||player.level<110', 'player'},
 	{'Doom Winds', '{player.spell(Flametongue).cooldown<gcd}||{talent(4,3)&player.spell(Frostbrand).cooldown<gcd}', 'player'},
 	{'Ascendance', 'player.spell(Feral Spirit).cooldown<gcd', 'player'},
-	{'#Trinket1', 'UI(kT1)&player.area(8).enemies>3', 'target'}
+	{'#Trinket1', 'UI(trinket1)'},
+	{'#Trinket2', 'UI(trinket2)'}
 }
 
 local Interrupts = {
@@ -130,6 +141,7 @@ local inCombat = {
 	{Party, '!player.lastgcd(Feral Spirit)'},
 	{Cooldowns, 'toggle(Cooldowns)&!player.lastgcd(Feral Spirit)'},
 	{'Crash Lightning', 'target.range<=5&target.inFront&player.lastgcd(Feral Spirit)'},
+	{Fel_Explosives, 'ui(mythic_fel)&range<=5'},
 	{xCombat, 'target.range<=5&target.inFront&!player.lastgcd(Feral Spirit)'},
 	{Ranged, '!player.lastgcd(Feral Spirit)'},
 	{'Ghost Wolf', 'player.movingfor>0.75&target.range>12'}
