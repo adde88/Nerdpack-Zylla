@@ -1,20 +1,23 @@
 local _, Zylla = ...
 
+local Mythic_GUI = _G.Mythic_GUI
+local Fel_Explosives = _G.Fel_Explosives
+local Logo_GUI = _G.Logo_GUI
+
 local GUI = {
-	--Logo
-	{type = 'texture',  texture = 'Interface\\AddOns\\Nerdpack-Zylla\\media\\logo.blp', width = 128, height = 128, offset = 90, y = -60, align = 'center'},
-	{type = 'spacer'},{type = 'spacer'},{type = 'spacer'},{type = 'spacer'},
+	unpack(Logo_GUI),
 	-- Keybinds
-	{type = 'header', text = 'Keybinds',	 					 			align = 'center'},
-	{type = 'text', 	 text = 'Left Shift: Pause',				align = 'center'},
-	{type = 'text', 	 text = 'Left Ctrl: Tar Trap',			align = 'center'},
-	{type = 'text', 	 text = 'Left Alt: Binding Shot',		align = 'center'},
-	{type = 'text', 	 text = 'Right Alt: Freezing Trap',	align = 'center'},
+	{type = 'header',  size = 16, text = 'Keybinds',	 		align = 'center'},
+	{type = 'text', 	 text = 'Left Shift: |cffABD473Pause|r',				align = 'center'},
+	{type = 'text', 	 text = 'Left Ctrl: |cffABD473Tar Trap|r',			align = 'center'},
+	{type = 'text', 	 text = 'Left Alt: |cffABD473Binding Shot|r',		align = 'center'},
+	{type = 'text', 	 text = 'Right Alt: |cffABD473Freezing Trap|r',	align = 'center'},
 	{type = 'ruler'},	 {type = 'spacer'},
 	-- Settings
-	{type = 'header', 	text = 'Class Settings',							 			align = 'center'},
+	{type = 'header', 	size = 16, text = 'Class Settings',					align = 'center'},
 	{type = 'checkbox', text = 'Pause Enabled',								 			key = 'kPause', 		default = true},
 	{type = 'checkbox', text = 'Enable DBM Integration',						key = 'kDBM', 			default = true},
+	{type = 'checkspin',text = 'Light\'s Judgment - Units', 				key = 'LJ',					spin = 4, step = 1, max = 20, check = true,	desc = '|cffABD473World Spell usable on Argus.|r'},
 	{type = 'checkbox', text = 'Summon Pet',									 			key = 'kPet', 			default = true},
 	{type = 'checkbox', text = 'Barrage Enabled',							 			key = 'kBarrage', 	default = false},
 	{type = 'checkbox', text = 'Volley Enabled',										key = 'kVolley', 		default = true},
@@ -22,17 +25,18 @@ local GUI = {
 	{type = 'checkbox', text = 'Freezing Trap (Interrupt)' ,				key = 'FT_Int', 		default = false},
 	{type = 'checkbox', text = 'Tarnished Sentinel Medallion',			key = 'e_TSM', 			default = true},
 	{type = 'checkbox', text = 'Use Trinket #1', 										key = 'trinket1',		default = true},
-	{type = 'checkbox', text = 'Use Trinket #2', 										key = 'trinket2', 	default = true},
-	{type = 'ruler'},	 {type = 'spacer'},
+	{type = 'checkbox', text = 'Use Trinket #2', 										key = 'trinket2', 	default = true,	desc = '|cffABD473Trinkets will be used whenever possible!|r'},
+	{type = 'ruler'},	  {type = 'spacer'},
 	-- Survival
-	{type = 'header', 		text = 'Survival',									 	 			align = 'center'},
+	{type = 'header', 		size = 16, text = 'Survival',								align = 'center'},
 	{type = 'checkspin', 	text = 'Heal Pet below HP%', 								key = 'P_HP', 				spin = 75, check = true},
 	{type = 'checkspin', 	text = 'Exhileration below HP%', 						key = 'E_HP', 				spin = 67, check = true},
 	{type = 'checkspin',	text = 'Healthstone',												key = 'HS',						spin = 45, check = true},
 	{type = 'checkspin',	text = 'Healing Potion',										key = 'AHP',					spin = 45, check = true},
 	{type = 'checkspin',	text = 'Aspect of the Turtle', 							key = 'AotT', 				spin = 20, check = true},
 	{type = 'checkspin',	text = 'Feign Death (Legendary Healing) %',	key = 'FD',		 				spin = 16, check = true},
-	{type = 'ruler'},		 {type = 'spacer'},
+	{type = 'ruler'},		  {type = 'spacer'},
+	unpack(Mythic_GUI),
 }
 
 local exeOnLoad = function()
@@ -92,6 +96,7 @@ local Cooldowns = {
 	{'Berserking'},
 	{'#Trinket1', 'UI(trinket1)'},
 	{'#Trinket2', 'UI(trinket2)'},
+	{'Light\'s Judgment', 'UI(LJ_check)&range<61&area(15).enemies>UI(LJ_spin)', 'enemies'}
 }
 
 local Interrupts_Normal = {
@@ -109,7 +114,7 @@ local Interrupts_Random = {
 local xCombat = {
 	{'A Murder of Crows'},
 	{'Stampede', '{player.buff(Bloodlust)||player.buff(Bestial Wrath)||player.spell(Bestial Wrath).cooldown<3}||target.time_to_die<24'},
-	{'Dire Beast', 'player.spell(Bestial Wrath).cooldown>3'},
+	{'Dire Beast', 'player.spell(Bestial Wrath).cooldown>3', 'target'},
 	{'Dire Frenzy', '{pet.buff(Dire Frenzy).duration<=gcd.max*1.2}||player.spell(Dire Frenzy).charges>0.8||target.ttd<9'},
 	{'Barrage', 'toggle(aoe)&UI(kBarrage)&{target.area(15).enemies>1||{target.area(15).enemies==1&player.focus>90}}'},
 	{'Multi-Shot', 'toggle(aoe)&target.area(10).enemies>4&{pet.buff(Beast Cleave).duration<gcd.max||!pet.buff(Beast Cleave)}'},
@@ -147,6 +152,7 @@ local inCombat = {
 	{Interrupts_Random},
 	{Interrupts_Normal, 'target.interruptAt(70)&toggle(Interrupts)&target.inFront&target.range<41'},
 	{Cooldowns, 'toggle(Cooldowns)'},
+	{Fel_Explosives, 'range<41'},
 	{xCombat, 'target.range<41&target.inFront'},
 	{xPet},
 	{xPvP},
