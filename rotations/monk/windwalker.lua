@@ -43,6 +43,7 @@ local GUI = {
 	{type = 'checkbox',	text = 'Mark of the Crane Dotting',												key = 'auto_dot',			default = true},
 	{type = 'checkbox',	text = 'Crackling Jade Lightning to Maintain Hit Combo',	key = 'auto_cjl_hc',	default = true},
 	{type = 'ruler'},		{type = 'spacer'},
+	unpack(Mythic_GUI),
 }
 
 local exeOnLoad = function()
@@ -196,6 +197,7 @@ local inCombat = {
 	{Cooldowns, 'toggle(cooldowns)&target.range<=5'},
 	{Serenity, 'player.buff(Serenity)&target.range<=5'},
 	{SEF, 'target.range<=5&UI(sef_toggle)&!talent(7,3)&player.spell(Strike of the Windlord).cooldown<24&player.spell(Fists of Fury).cooldown<7&player.spell(Rising Sun Kick).cooldown<7'},
+	{Fel_Explosives, 'range<=5'},
 	{Melee, 'target.range<=5&target.inFront'},
 	{Ranged, 'target.range>5&target.range<41'}
 }

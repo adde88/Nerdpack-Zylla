@@ -46,6 +46,7 @@ local GUI = {
 	{type = 'spinner',	text = 'Dark Pact When PET is below HP%', key = 'DP_PETHP', default = 25},
 	{type = 'spinner',	text = 'Dark Pact When PLAYER is above HP%', key = 'DP_PHP', default = 40},
 	{type = 'spacer'}, {type = 'ruler'}, {type = 'spacer'},
+	unpack(Mythic_GUI),
 }
 
 local exeOnLoad = function()
@@ -141,6 +142,7 @@ local inCombat = {
 	{Interrupts_Random, 'toggle(xIntRandom)'},
 	{Survival, 'player.health<100'},
 	{Cooldowns, 'toggle(Cooldowns)'},
+	{Fel_Explosives, 'range<41'}
 	{xCombat, 'range<41&inFront'},
 }
 

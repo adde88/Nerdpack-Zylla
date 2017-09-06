@@ -35,10 +35,7 @@ local GUI = {
 	{type = 'checkbox', text = 'Use Rainfall to Heal Party',					key = 'E_HEAL_RF',     default = false},
 	{type = 'spinner', 	text = 'below HP%',             							key = 'L_RF_HP',       default = 25},
 	{type = 'ruler'},	  {type = 'spacer'},
-	-- Mythic + / Raiding
-	{type = 'header', 	text = 'Mythic+ Raid Settings',							align = 'center'},
-	{type = 'checkbox', text = 'Attack Fel Explosives', 						key = 'mythic_fel', width = 55, default = false},
-	{type = 'ruler'},	 {type = 'spacer'},
+	unpack(Mythic_GUI),
 }
 
 local exeOnLoad = function()
@@ -142,6 +139,7 @@ local inCombat = {
 	{Cooldowns, 'toggle(Cooldowns)&!player.lastgcd(Feral Spirit)'},
 	{'Crash Lightning', 'target.range<=5&target.inFront&player.lastgcd(Feral Spirit)'},
 	{Fel_Explosives, 'ui(mythic_fel)&range<=5'},
+	{Fel_Explosives, 'range<=5'}
 	{xCombat, 'target.range<=5&target.inFront&!player.lastgcd(Feral Spirit)'},
 	{Ranged, '!player.lastgcd(Feral Spirit)'},
 	{'Ghost Wolf', 'player.movingfor>0.75&target.range>12'}

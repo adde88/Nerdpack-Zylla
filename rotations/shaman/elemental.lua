@@ -32,6 +32,7 @@ local GUI = {
 	{type = 'checkbox', text = 'L-Control: Lightning Surge Totem @ Cursor', key = 'K_LST', default = true},
 	{type = 'checkbox', text = 'L-Alt: Earthbind Totem @ Cursor', key = 'K_ET', default = true},
 	{type = 'ruler'},	{type = 'spacer'},
+	unpack(Mythic_GUI),
 }
 
 local exeOnLoad = function()
@@ -201,27 +202,25 @@ local ASSingle = {
 }
 
 local inCombat = {
-	{Util},
-	{Trinkets},
-	{Heirlooms},
 	{Keybinds},
 	{Dispel, 'toggle(yuPS)&spell(Cleanse Spirit).cooldown==0'},
 	{Survival},
 	{Player, '!player.moving'},
 	{Emergency, '!player.moving'},
+	{Fel_Explosives, 'range<41'}
 	{Interrupts, 'toggle(Interrupts)&target.interruptAt(70)&target.inFront&target.range<40'},
 	{LRCooldowns, '&talent(7,2)&toggle(Cooldowns)'},
 	{IFCooldowns, 'talent(7,3)&toggle(Cooldowns)'},
 	{ASCooldowns, 'talent(7,1)&toggle(Cooldowns)'},
 	{AoE, 'toggle(aoe)&player.area(40).enemies>2'},
-	{LRSingle, 'talent(7,2)&target.inFront&target.range<50'},
-	{IFSingle, 'talent(7,3)&target.inFront&target.range<50'},
-	{ASSingle, 'talent(7,1)&target.inFront&target.range<50'},
+	{LRSingle, 'talent(7,2)&target.inFront&target.range<41'},
+	{IFSingle, 'talent(7,3)&target.inFront&target.range<41'},
+	{ASSingle, 'talent(7,1)&target.inFront&target.range<41'},
 }
 
 local outCombat = {
 	{Dispel, 'toggle(yuPS)&spell(Cleanse Spirit).cooldown<gcd'},
-	{Interrupts, 'toggle(Interrupts)&target.interruptAt(70)&target.inFront&target.range<40'},
+	{Interrupts, 'toggle(Interrupts)&target.interruptAt(70)&target.inFront&target.range<41'},
 	{Emergency, '!moving&ingroup'},
 	{'Healing Surge', '!moving&player.health<80', 'player'},
 	{'Ghost Wolf', 'movingfor>1&!player.buff(Ghost Wolf)'},

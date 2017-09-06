@@ -23,6 +23,7 @@ local GUI = {
   {type = 'checkspin',	text = 'Healthstone',												key = 'HS',						spin = 45, check = true},
   {type = 'checkspin',	text = 'Healing Potion',										key = 'AHP',					spin = 45, check = true},
 	{type = 'ruler'},	  {type = 'spacer'},
+	unpack(Mythic_GUI),
 }
 
 local exeOnLoad = function()
@@ -116,6 +117,7 @@ local inCombat = {
 	{Ranged},
 	{Mitigations},
   {Survival},
+	{Fel_Explosives, 'range<=5'},
 	{xCombat, 'target.inFront&target.range<=5'}
 }
 

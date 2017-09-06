@@ -29,6 +29,7 @@ local GUI = {
 	{type = 'checkbox', text = 'Use Rainfall to Heal Party',					key = 'E_HEAL_RF',     default = false},
 	{type = 'spinner', 	text = 'below HP%',             							key = 'L_RF_HP',       default = 33},
 	{type = 'ruler'},	  {type = 'spacer'},
+	unpack(Mythic_GUI),
 }
 
 local exeOnLoad = function()
@@ -144,6 +145,7 @@ local inCombat = {
 	{Survival},
 	{Party},
 	{Cooldowns, 'toggle(Cooldowns)'},
+	{Fel_Explosives, 'range<=5'}
 	{xCombat, 'target.range<=5&target.inFront'},
 	{Ranged},
 	{'Ghost Wolf', 'player.movingfor>0.75&target.range>12'}

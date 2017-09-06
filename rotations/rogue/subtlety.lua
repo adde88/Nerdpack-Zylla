@@ -22,6 +22,7 @@ local GUI = {
 	{type = 'checkspin',	text = 'Healthstone',												key = 'HS',						spin = 45, check = true},
 	{type = 'checkspin',	text = 'Healing Potion',										key = 'AHP',					spin = 45, check = true},
 	{type = 'ruler'},	{type = 'spacer'},
+	unpack(Mythic_GUI),
 }
 
 local exeOnLoad = function()
@@ -129,6 +130,7 @@ local inCombat = {
 	{Keybinds},
 	{Interrupts, 'target.interruptAt(70)&toggle(Interrupts)&target.inFront&target.inMelee'},
 	{Survival, 'player.health<100'},
+	{Fel_Explosives, 'range<=5'}
 	{xCombat, 'target.inMelee&target.inFront'},
 }
 

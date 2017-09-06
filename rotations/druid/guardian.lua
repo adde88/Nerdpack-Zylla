@@ -22,6 +22,7 @@ local GUI = {
 	{type = 'checkbox', text = 'Ring of Collapsing Futures', key = 'kRoCF', default = true},
 	{type = 'checkbox', text = 'Use Heirloom Necks When Below X% HP', key = 'k_HEIR', default = true},
 	{type = 'spinner',	text = '', key = 'k_HeirHP', default = 40},
+	unpack(Mythic_GUI),
 }
 
 local exeOnLoad = function()
@@ -85,11 +86,12 @@ local inCombat = {
 	{Trinkets},
 	{Heirlooms},
 	{Keybinds},
-	{Interrupts, 'target.interruptAt(70)&toggle(Interrupts)&target.inFront&target.inMelee'},
+	{Interrupts, 'target.interruptAt(70)&toggle(Interrupts)&target.inFront&target.range<=5'},
 	{Survival, 'player.health<100'},
 	{Cooldowns, 'toggle(Cooldowns)'},
 	{'Bear Form', 'form~=1'},
-	{xCombat, 'target.inMelee&target.inFront'}
+	{Fel_Explosives, 'range<=5'}
+	{xCombat, 'target.range<=5&target.inFront'}
 }
 
 local outCombat = {
@@ -101,6 +103,7 @@ NeP.CR:Add(104, {
 	ic = inCombat,
 	ooc = outCombat,
 	gui = GUI,
+	gui_st = {title='Zylla\'s Combat Routines', width='256', height='520', color='A330C9'},
 	ids = Zylla.SpellIDs[Zylla.Class],
 	wow_ver = Zylla.wow_ver,
 	nep_ver = Zylla.nep_ver,

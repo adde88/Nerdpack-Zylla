@@ -15,12 +15,7 @@ local GUI = {
 	{type = 'checkbox', text = 'Mass Dispel enabled', key = 'kMD', default = false},
 	{type = 'checkbox', text = 'Power Word: Barrier enabled', key = 'kPWB', default = false},
 	{type = 'ruler'},	{type = 'spacer'},
-	-- Trinkets + Heirlooms for leveling
-	{type = 'header', 	text = 'Trinkets/Heirlooms', align = 'center'},
-	{type = 'checkbox', text = 'Use Trinket #1', key = 'kT1', default = true},
-	{type = 'checkbox', text = 'Use Trinket #2', key = 'kT2', default = true},
-	{type = 'checkbox', text = 'Ring of Collapsing Futures', key = 'kRoCF', default = true},
-	{type = 'checkbox', text = 'Use Heirloom Necks When Below X% HP', key = 'k_HEIR', default = true},
+	unpack(Mythic_GUI),
 }
 
 local exeOnLoad = function()
@@ -31,6 +26,7 @@ local exeOnLoad = function()
 	print('|cffADFF2F --- |PRIEST |cffADFF2FDiscipline|r')
 	print('|cffADFF2F --- |rRecommended Talents: Not ready yet.')
 	print('|cffADFF2F ---------------------------------------------------------------------------|r')
+
 end
 
 local Keybinds = {
@@ -73,15 +69,13 @@ local Atonement = {
 }
 
 local inCombat = {
-	{Util},
-	{Trinkets},
-	{Heirlooms},
 	{'%dispelall'},
 	{'Arcane Torrent', 'player.mana<50'},
 	{Keybinds},
 	{Cooldowns, 'toggle(Cooldowns)'},
 	{Tank, 'tank.health<100'},
 	{Lowest, 'lowest.health<100'},
+	{Fel_Explosives, 'range<=40'}
 	{Atonement}
 }
 
@@ -95,6 +89,7 @@ NeP.CR:Add(256, {
 	ic = inCombat,
 	ooc = outCombat,
 	gui = GUI,
+	gui_st = {title='Zylla\'s Combat Routines', width='256', height='520', color='A330C9'},
 	ids = Zylla.SpellIDs[Zylla.Class],
 	wow_ver = Zylla.wow_ver,
 	nep_ver = Zylla.nep_ver,

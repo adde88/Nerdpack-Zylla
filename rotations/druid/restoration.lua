@@ -37,13 +37,7 @@ local GUI = {
 	{type = 'spinner', 	text = 'Healing touch)', 					key = 'lht',	default = 90},
 	{type = 'spinner', 	text = 'Regrowth', 							key = 'lrg', 	default = 60},
 	{type='ruler'},		{type='spacer'},
-	-- Trinkets + Heirlooms for leveling
-	{type='header',		text='Trinkets/Heirlooms', 					align='center'},
-	{type='checkbox',	text='Use Trinket #1', 						key='kT1',		default=true},
-	{type='checkbox',	text='Use Trinket #2', 						key='kT2',		default=true},
-	{type='checkbox',	text='Ring of Collapsing Futures', 			key='kRoCF',	default=true},
-	{type='checkbox',	text='Use Heirloom Necks When Below X% HP',	key='k_HEIR',	default=true},
-	{type='spinner',	text='', 									key='k_HeirHP',	default=40},
+	unpack(Mythic_GUI),
 }
 
 local exeOnLoad = function()
@@ -220,6 +214,7 @@ local inCombat = {
 	{Moving, 'player.moving'},
 	{DPS, 'toggle(xDPS)&lowest.health>=UI(k_DPSHP)'},
 	{Rejuvenation, 'toggle(xRejuv)'},
+	{Fel_Explosives, 'range<=40'},
 }
 
 local outCombat = {
@@ -232,6 +227,7 @@ NeP.CR:Add(105, {
 	ic =  {{inCombat, '!player.channeling(Tranquility)'}},
 	ooc = outCombat,
 	gui = GUI,
+	gui_st = {title='Zylla\'s Combat Routines', width='256', height='520', color='A330C9'},
 	ids = Zylla.SpellIDs[Zylla.Class],
 	wow_ver = Zylla.wow_ver,
 	nep_ver = Zylla.nep_ver,

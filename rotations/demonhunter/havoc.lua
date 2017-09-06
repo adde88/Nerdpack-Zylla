@@ -1,9 +1,11 @@
 local _, Zylla = ...
 
+local Mythic_GUI = _G.Mythic_GUI
+local Fel_Explosives = _G.Fel_Explosives
+local Logo_GUI = _G.Logo_GUI
+
 local GUI = {
-	--Logo
-	{type = 'texture',  texture = 'Interface\\AddOns\\Nerdpack-Zylla\\media\\logo.blp', width = 128, height = 128, offset = 90, y = -60, align = 'center'},
-	{type = 'spacer'},{type = 'spacer'},{type = 'spacer'},{type = 'spacer'},
+	unpack(Logo_GUI),
 	{type = 'header', text = 'Keybinds', align = 'center'},
 	{type = 'text', 	text = 'Left Shift: Pause', align = 'left'},
 	{type = 'text', 	text = 'Left Ctrl: Metamorphosis', align = 'left'},
@@ -14,6 +16,7 @@ local GUI = {
 	{type = 'header', 	text = 'Class Settings',							 								align = 'center'},
 	{type = 'checkbox', text = 'Pause Enabled',								 								key = 'kPause', 		default = true},
 	{type = 'checkbox', text = 'Enable Bursting',								 							key = 'burst', 			default = true},
+--{type = 'checkbox', text = 'Auto-target enemy during Eye Beam',						key = 'eyeface', 		default = false},	-- Will be implemented soon...
 --{type = 'checkbox', text = 'Cancel Movement/Action Animations',						key = 'kanime', 		default = false},	-- Will be implemented soon...
 	{type = 'checkbox', text = 'Use \'Vengeful Retreat\'',										key = 'vengeful', 	default = true},
 	{type = 'checkbox', text = 'Use \'Fel Rush\'',														key = 'felrush', 		default = true},
@@ -27,6 +30,7 @@ local GUI = {
   {type = 'checkspin',	text = 'Healthstone',												key = 'HS',						spin = 45, check = true},
   {type = 'checkspin',	text = 'Healing Potion',										key = 'AHP',					spin = 45, check = true},
 	{type = 'ruler'},	  {type = 'spacer'},
+	unpack(Mythic_GUI),
 }
 
 local exeOnLoad = function()
@@ -56,10 +60,10 @@ local Keybinds = {
 }
 
 local Survival = {
-	{'Blur', 'player.health<=UI(blur_spin)&UI(blur_check)'},
-	{'Netherwalk', 'player.health<=UI(nether_spin)&UI(nether_check)', 'player'},
-	{'#127834', 'item(127834).usable&item(127834).count>0&player.health<=UI(AHP_spin)&UI(AHP_check)'}, 		-- Ancient Healing Potion
-	{'#5512', 'item(5512).usable&item(5512).count>0&player.health<=UI(HS_spin)&UI(HS_check)', 'player'}	 	--Health Stone
+	{'Blur', 'health<=UI(blur_spin)&UI(blur_check)', 'player'},
+	{'Netherwalk', 'health<=UI(nether_spin)&UI(nether_check)', 'player'},
+	{'#127834', 'item(127834).usable&item(127834).count>0&health<=UI(AHP_spin)&UI(AHP_check)', 'player'}, 		-- Ancient Healing Potion
+	{'#5512', 'item(5512).usable&item(5512).count>0&health<=UI(HS_spin)&UI(HS_check)', 'player'}	 	--Health Stone
 }
 
 local Interrupts = {
@@ -81,14 +85,14 @@ local Cooldowns = {
 
 local Burst = {
 	{'Nemesis', 'player.spell(Metamorphosis).cooldown<gcd&player.spell(Chaos Blades).cooldown<gcd', 'target'},
-	{'Chaos Blades', 'target.debuff(Nemesis)'},
+	{'Chaos Blades', 'target.debuff(Nemesis)', 'player'},
 	{'Metamorphosis', 'player.buff(Chaos Blades)', 'target.ground'}
 }
 
 local xAoECombat = {
 	{Cooldowns, 'toggle(cooldowns)'},
 	{'Fel Rush', 'UI(felrush)&{{talent(1,1)&player.fury.diff<30}||{spell.charges==1&spell.recharge<=2&player.area(8).enemies>3}||{talent(5,1)&!player.buff(Momentum)}}', 'player'},
-	{'Vengeful Retreat', 'UI(vengeful)&{{talent(2,1)&player.fury<85}||{talent(5,1)&!player.buff(Momentum)}}'},
+	{'Vengeful Retreat', 'UI(vengeful)&{{talent(2,1)&player.fury<85}||{talent(5,1)&!player.buff(Momentum)}}', 'player'},
 	{'Fel Barrage', '{talent(5,1)&player.buff(Momentum)}||{!talent(5,1)}', 'target'},
 	{'Fury of the Illidari', '{talent(5,1)&player.buff(Momentum)}||{!talent(5,1)}', 'target'},
 	{'Eye Beam', '{talent(5,1)&player.buff(Momentum)}||{!talent(5,1)}', 'target'},
@@ -98,14 +102,14 @@ local xAoECombat = {
 	{'Throw Glaive', 'player.area(8).enemies>=2', 'target'},
 	{'Death Sweep', 'player.area(8).enemies>3', 'target'},
 	{'Death Sweep', 'talent(3,2)', 'target'},
-	{'Chaos Strike', 'player.area(8).enemies>2&talent(3,1)'},
-	{'Chaos Strike', 'player.fury>70||{player.fury>60&talent(2,2)}'},
+	{'Chaos Strike', 'player.area(8).enemies>2&talent(3,1)', 'target'},
+	{'Chaos Strike', 'player.fury>70||{player.fury>60&talent(2,2)}', 'target'},
 	{'Demon\'s Bite', '!talent(2,2)', 'target'}
 }
 
 local xSTCombat = {
 	{Cooldowns, 'toggle(cooldowns)'},
-	{'Vengeful Retreat', 'UI(vengeful)&{{player.state(snare)}||{target.range<7&player.spell(Fel Rush).charges>1&player.fury<95}}'},
+	{'Vengeful Retreat', 'UI(vengeful)&{{player.state(snare)}||{target.range<7&player.spell(Fel Rush).charges>1&player.fury<95}}', 'player'},
 	{'Fel Rush', 'UI(felrush)&spell.charges==1&spell.recharge<=2', 'player'},
 	{'Fel Barrage', nil, 'target'},
 	{'Fury of the Illidari', nil, 'target'},
@@ -126,10 +130,11 @@ local inCombat = {
 	{Survival, 'player.health<100'},
 	{Interrupts, 'target.interruptAt(70)'},
 	{Interrupts_Random},
-	{Burst, 'UI(burst)&xtime<5&target.range<=5&target.inFront'},
+	{Burst, 'UI(burst)&xtime<4&target.range<=5&target.inFront'},
+	{Fel_Explosives, 'range<=5'},
 	{xSTCombat, 'player.area(15).enemies<3&target.range<=5&target.inFront&{{UI(burst)&xtime>4}||{!UI(burst)}}'},
 	{xAoECombat, 'player.area(15).enemies>2&target.range<=5&target.inFront&{{UI(burst)&xtime>4}||{!UI(burst)}}'},
-	{'Fel Rush', 'UI(felrush)&target.range>12&target.range<41', 'player'}
+	{'Fel Rush', 'UI(felrush)&target.range>12&target.range<41&target.inFront', 'player'}
 }
 
 local outCombat = {
@@ -139,9 +144,10 @@ local outCombat = {
 NeP.CR:Add(577, {
 	name = '[|cff'..Zylla.addonColor..'Zylla\'s|r] Demon Hunter - Havoc',
 	ic = {
-		{inCombat, '!player.channeling(Eye Beam)'},
-		{'&@Zylla.face', 'UI(eyeface)&player.channeling(Eye Beam)', 'target'}
-	},	ooc = outCombat,
+		{inCombat, '!player.channeling(Eye Beam)'}
+	--{'&@Zylla.face', 'UI(eyeface)&player.channeling(Eye Beam)', 'target'} -- Temp disabled.
+	},
+	ooc = outCombat,
 	gui = GUI,
 	gui_st = {title='Zylla\'s Combat Routines', width='256', height='520', color='A330C9'},
 	ids = Zylla.SpellIDs[Zylla.Class],

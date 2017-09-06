@@ -16,14 +16,7 @@ local GUI = {
 	{type = 'checkbox', text = 'Pause enabled', key = 'kPause', default = true},
 	{type = 'checkbox', text = 'Intercept enabled', key = 'kIntercept', default = false},
 	{type = 'ruler'},	{type = 'spacer'},
-	-- Trinkets + Heirlooms for leveling
-	{type = 'header', 	text = 'Trinkets/Heirlooms', align = 'center'},
-	{type = 'checkbox', text = 'Use Trinket #1', key = 'kT1', default = false},
-	{type = 'checkbox', text = 'Use Trinket #2', key = 'kT2', default = false},
-	{type = 'checkbox', text = 'Ring of Collapsing Futures', key = 'kRoCF', default = false},
-	{type = 'checkbox', text = 'Use Heirloom Necks When Below X% HP', key = 'k_HEIR', default = false},
-	{type = 'spinner',	text = '', key = 'k_HeirHP', default = 40},
-	{type = 'ruler'},	{type = 'spacer'},
+	unpack(Mythic_GUI),
 }
 
 local exeOnLoad = function()
@@ -109,9 +102,6 @@ local ST = {
 }
 
 local inCombat = {
-	{Util},
-	{Trinkets},
-	{Heirlooms},
 	{Etc},
 	{Keybinds},
 	{Interrupts_Random},
@@ -120,6 +110,7 @@ local inCombat = {
 	{ST, 'target.inMelee&target.inFront&player.area(8).enemies<2'},
 	{AoE, 'toggle(aoe)&target.inMelee&target.inFront&player.area(8).enemies>1'},
 	{'Taunt', 'toggle(super_taunt)&combat&alive&threat<100', 'enemies'},
+	{Fel_Explosives, 'range<=5'}
 }
 
 local outCombat = {
@@ -134,6 +125,7 @@ NeP.CR:Add(73, {
 	ic = inCombat,
 	ooc = outCombat,
 	gui = GUI,
+	gui_st = {title='Zylla\'s Combat Routines', width='256', height='520', color='A330C9'},
 	ids = Zylla.SpellIDs[Zylla.Class],
 	wow_ver = Zylla.wow_ver,
 	nep_ver = Zylla.nep_ver,

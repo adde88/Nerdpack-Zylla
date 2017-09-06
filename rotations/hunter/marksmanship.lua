@@ -28,14 +28,7 @@ local GUI = {
 	{type = 'spinner',	text = 'Aspect of the Turtle',					key = 'AotT',           default = 21},
 	{type = 'spinner',	text = 'Feign Death (Legendary Healing) %',		key = 'FD',				default = 16},
   	{type = 'ruler'},	{type = 'spacer'},
-	-- Trinkets + Heirlooms for leveling
-	{type = 'header', 	text = 'Trinkets/Heirlooms',					align = 'center'},
-	{type = 'checkbox', text = 'Use Trinket #1',						key = 'kT1',			default = false},
-	{type = 'checkbox', text = 'Use Trinket #2',						key = 'kT2',			default = false},
-	{type = 'checkbox', text = 'Ring of Collapsing Futures',			key = 'kRoCF',			default = true},
-	{type = 'checkbox', text = 'Use Heirloom Necks When Below X% HP',	key = 'k_HEIR',			default = true},
-	{type = 'spinner',	text = '',										key = 'k_HeirHP',		default = 40},
-	{type = 'ruler'},	{type = 'spacer'},
+	unpack(Mythic_GUI),
 }
 
 local exeOnLoad = function()
@@ -202,6 +195,7 @@ local inCombat = {
 	{Interrupts_Random},
 	{Interrupts_Normal, 'target.interruptAt(70)&toggle(Interrupts)&target.inFront&target.range<51'},
 	{Cooldowns, 'toggle(Cooldowns)'},
+	{Fel_Explosives, 'range<51'}
 	{xCombat,'target.range<51&target.inFront'},
 	{xPetCombat, 'UI(kPet)&!talent(1,1)'},
 }
@@ -218,6 +212,7 @@ NeP.CR:Add(254, {
 	ic = inCombat,
 	ooc = outCombat,
 	gui = GUI,
+	gui_st = {title='Zylla\'s Combat Routines', width='256', height='520', color='A330C9'},
 	ids = Zylla.SpellIDs[Zylla.Class],
 	wow_ver = Zylla.wow_ver,
 	nep_ver = Zylla.nep_ver,

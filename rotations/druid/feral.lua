@@ -22,10 +22,7 @@ local GUI = {
 	{type = 'header', 	text = 'Survival',						align = 'center'},
 	{type = 'checkspin',text = 'Swiftmend below HP%', key = 'swiftm', 		spin = 85, step = 5, max = 100, check = true},
 	{type = 'ruler'},		{type = 'spacer'},
-	-- Mythic + / Raiding
-	{type = 'header', 	text = 'Mythic+ Raid Settings',							align = 'center'},
-	{type = 'checkbox', text = 'Attack Fel Explosives', 						key = 'mythic_fel', width = 55, default = false},
-	{type = 'ruler'},	 {type = 'spacer'},
+	unpack(Mythic_GUI),
 }
 
 local exeOnLoad = function()
@@ -202,6 +199,7 @@ local inCombat = {
 	{'Cat Form', 'toggle(xFORM)&!player.buff(Frenzied Regeneration)&!player.buff(Cat Form)&{!player.buff(Travel Form)||player.area(8).enemies.inFront>0}'},
 	{Cooldowns, '!player.buff(Frenzied Regeneration)&toggle(Cooldowns)'},
 	{Moonfire_Pool, 'talent(1,2)&!target.range<=5&target.range<50&target.inFront&!player.buff(Prowl)&!target.debuff(Moonfire)'},
+	{Fel_Explosives, 'range<=5'},
 	{xCombat, '!player.buff(Frenzied Regeneration)&target.range<=5&target.inFront'},
 }
 

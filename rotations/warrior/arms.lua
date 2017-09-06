@@ -13,13 +13,7 @@ local GUI = {
 	{type = 'text', 	text = 'Right Alt: ', align = 'center'},
 	{type = 'checkbox', text = 'Pause Enabled', key = 'kPause', default = true},
 	{type = 'ruler'},	{type = 'spacer'},
-	-- Trinkets + Heirlooms for leveling
-	{type = 'header', 	text = 'Trinkets/Heirlooms', align = 'center'},
-	{type = 'checkbox', text = 'Use Trinket #1', key = 'kT1', default = true},
-	{type = 'checkbox', text = 'Use Trinket #2', key = 'kT2', default = true},
-	{type = 'checkbox', text = 'Ring of Collapsing Futures', key = 'kRoCF', default = true},
-	{type = 'checkbox', text = 'Use Heirloom Necks When Below X% HP', key = 'k_HEIR', default = true},
-	{type = 'spinner',	text = '', key = 'k_HeirHP', default = 40},
+	unpack(Mythic_GUI),
 }
 
 local exeOnLoad = function()
@@ -43,7 +37,7 @@ local Keybinds = {
 
 local Interrupts = {
 	{'!Pummel'},
-	{'!Arcane Torrent', 'target.inMelee&cooldown(Pummel).remains>gcd&!prev_gcd(Pummel)'},
+	{'!Arcane Torrent', 'target.range<=5&cooldown(Pummel).remains>gcd&!prev_gcd(Pummel)'},
 }
 
 local Survival = {
@@ -151,24 +145,22 @@ local ST = {
 }
 
 local inCombat = {
-	{Util},
-	{Trinkets},
-	{Heirlooms},
 	{Keybinds},
-	{Interrupts, 'target.interruptAt(70)&toggle(Interrupts)&target.inFront&target.inMelee'},
+	{Interrupts, 'target.interruptAt(70)&toggle(Interrupts)&target.inFront&target.range<=5'},
 	{Survival, 'player.health<100'},
-	{Cooldowns, 'toggle(Cooldowns)&target.inMelee'},
-	{Etc, 'target.inMelee&target.inFront'},
+	{Cooldowns, 'toggle(Cooldowns)&target.range<=5'},
+	{Etc, 'target.range<=5&target.inFront'},
 	{Cleave, 'toggle(aoe)&player.area(8).enemies>1&talent(1,3)'},
 	{AoE, 'toggle(aoe)&player.area(8).enemies>4&!talent(1,3)'},
-	{Execute, 'target.inMelee&target.inFront&target.health<30&player.area(8).enemies<5'},
-	{ST, 'target.inMelee&target.inFront&target.health>20'}
+	{Execute, 'target.range<=5&target.inFront&target.health<30&player.area(8).enemies<5'},
+	{ST, 'target.range<=5&target.inFront&target.health>20'},
+	{Fel_Explosives, 'range<=5'}
 }
 
 local outCombat = {
 	{Keybinds},
 	{PreCombat},
-	{Interrupts, 'target.interruptAt(70)&toggle(Interrupts)&target.inFront&target.inMelee'},
+	{Interrupts, 'target.interruptAt(70)&toggle(Interrupts)&target.inFront&target.range<=5'},
 }
 
 NeP.CR:Add(71, {
@@ -176,6 +168,7 @@ NeP.CR:Add(71, {
 	ic = inCombat,
 	ooc = outCombat,
 	gui = GUI,
+	gui_st = {title='Zylla\'s Combat Routines', width='256', height='520', color='A330C9'},
 	ids = Zylla.SpellIDs[Zylla.Class],
 	wow_ver = Zylla.wow_ver,
 	nep_ver = Zylla.nep_ver,

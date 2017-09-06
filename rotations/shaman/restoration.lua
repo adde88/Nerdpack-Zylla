@@ -92,14 +92,7 @@ local GUI = {
 	{type = 'checkbox', text = 'Enable Chain Heal', key = 'L_CHE', default = true},
 	{type = 'text', text = 'Active: when 3 or more players within 40yds. drop below 80% health.'},
 	{type = 'ruler'},{type = 'spacer'},
-	-- Trinkets + Heirlooms for leveling
-	{type = 'header', 	text = 'Trinkets/Heirlooms', align = 'center'},
-	{type = 'checkbox', text = 'Use Trinket #1', key = 'kT1', default = false},
-	{type = 'checkbox', text = 'Use Trinket #2', key = 'kT2', default = false},
-	{type = 'checkbox', text = 'Ring of Collapsing Futures', key = 'kRoCF', default = false},
-	{type = 'checkbox', text = 'Use Heirloom Necks When Below X% HP', key = 'k_HEIR', default = false},
-	{type = 'spinner',	text = '', key = 'k_HeirHP', default = 40},
-	{type = 'ruler'},{type = 'spacer'},
+	unpack(Mythic_GUI),
 }
 
 local exeOnLoad = function()
@@ -210,14 +203,12 @@ local Lowest = {
 }
 
 local inCombat = {
-	{Util},
-	{Trinkets},
-	{Heirlooms},
 	{Keybinds},
 	{'%dispelall', 'toggle(disp)'},
 	{Survival},
 	{Emergency, 'range<41'},
 	{Totems},
+	{Fel_Explosives, 'range<41'}
 	{Tank, 'range<41&tank.exists&tank.health<100'},
 	{Lowest, 'range<41&&lowest.health<100'},
 	{Player, 'range<41&player.health<100'},
@@ -241,6 +232,7 @@ NeP.CR:Add(264, {
 	ic = inCombat,
 	ooc = outCombat,
 	gui = GUI,
+	gui_st = {title='Zylla\'s Combat Routines', width='256', height='520', color='A330C9'},
 	ids = Zylla.SpellIDs[Zylla.Class],
 	wow_ver = Zylla.wow_ver,
 	nep_ver = Zylla.nep_ver,

@@ -14,9 +14,7 @@ local GUI = {
 	{type = 'spinner', 	text = 'Mana Restore', key = 'P_MR', default = 20},
 	{type = 'checkbox',	text = 'Offensive Holy Shock', key = 'O_HS', default = true},
 	{type = 'ruler'},	{type = 'spacer'},
-	--------------------------------
 	-- Toggles
-	--------------------------------
 	{type = 'header', 	text = 'Toggles', align = 'center'},
 	{type = 'checkbox',	text = 'Avenging Wrath', key = 'AW', default = true},
 	{type = 'checkbox',	text = 'Aura Mastery', key = 'AM', default = true},
@@ -26,10 +24,7 @@ local GUI = {
 	{type = 'checkspin',text = 'Healing Potion', key = 'P_HP', default = false},
 	{type = 'checkspin',text = 'Mana Potion', key = 'P_MP', default = false},
 	{type = 'ruler'},	{type = 'spacer'},
-
-	--------------------------------
 	-- TANK
-	--------------------------------
 	{type = 'header', 	text = 'Tank', align = 'center'},
 	{type = 'spinner', 	text = 'Lay on Hands (Health %)', key = 'T_LoH', default = 20},
 	{type = 'spinner', 	text = 'Blessing of Sacrifice (Health %)', key = 'T_BoS', default = 30},
@@ -38,10 +33,7 @@ local GUI = {
 	{type = 'spinner', 	text = 'Flash of Light (Health %)', key = 'T_FoL', default = 75},
 	{type = 'spinner', 	text = 'Holy Light (Health %)', key = 'T_HL', default = 90},
 	{type = 'ruler'},	{type = 'spacer'},
-
-	--------------------------------
 	-- LOWEST
-	--------------------------------
 	{type = 'header', 	text = 'Lowest', align = 'center'},
 	{type = 'spinner', 	text = 'Lay on Hands (Health %)', key = 'L_LoH', default = 15},
 	{type = 'spinner', 	text = 'Holy Shock (Health %)', key = 'L_HS', default = 100},
@@ -50,19 +42,11 @@ local GUI = {
 	{type = 'spinner', 	text = 'Flash of Light (Health %)', key = 'L_FoL', default = 70},
 	{type = 'spinner', 	text = 'Holy Light (Health %)', key = 'L_HL', default = 90},
 	{type = 'ruler'},	{type = 'spacer'},
-	-- Trinkets + Heirlooms for leveling
-	{type = 'header', 	text = 'Trinkets/Heirlooms', align = 'center'},
-	{type = 'checkbox', text = 'Use Trinket #1', key = 'kT1',	default = true},
-	{type = 'checkbox', text = 'Use Trinket #2', key = 'kT2',	default = true},
-	{type = 'checkbox', text = 'Ring of Collapsing Futures', key = 'kRoCF',	default = true},
-	{type = 'checkbox', text = 'Use Heirloom Necks When Below X% HP', key = 'k_HEIR',	default = true},
-	{type = 'ruler'},	{type = 'spacer'},
-
-	--------------------------------
 	-- LOWEST
-	--------------------------------
 	{type = 'header', 	text = 'Out of combat', align = 'center'},
 	{type = 'spinner', 	text = 'Holy Shock (Health %)', key = 'occ_HS', default = 100},
+	{type = 'ruler'},	{type = 'spacer'},
+	unpack(Mythic_GUI)
 }
 
 local exeOnLoad = function()
@@ -218,9 +202,6 @@ local Mana_Restore = {
 }
 
 local inCombat = {
-	{Util},
-	{Trinkets},
-	{Heirlooms},
 	{Keybinds},
 	{Survival},
 	{Interrupts, 'target.interruptAt(70)&target.inMelee&target.inFront'},
@@ -232,10 +213,10 @@ local inCombat = {
 	{Moving, 'player.moving'},
 	{Mana_Restore, 'player.mana<=UI(P_MR)'},
 	{Healing, '!player.moving&player.mana>=UI(P_MR)'},
+	{Fel_Explosives, 'range<=8'}
 }
 
 local outCombat = {
-	-- Need to prevent this while eating
 	--{Tank},
 	{Keybinds},
 	-- Precombat
@@ -251,6 +232,7 @@ NeP.CR:Add(65, {
 	ic = inCombat,
 	ooc = outCombat,
 	gui = GUI,
+	gui_st = {title='Zylla\'s Combat Routines', width='256', height='520', color='A330C9'},
 	ids = Zylla.SpellIDs[Zylla.Class],
 	wow_ver = Zylla.wow_ver,
 	nep_ver = Zylla.nep_ver,

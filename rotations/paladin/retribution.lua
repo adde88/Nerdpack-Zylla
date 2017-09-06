@@ -42,14 +42,7 @@ local GUI = {
 	{type = 'checkbox', text = 'Blessing of Kings', key = 'B_BoK', default = false},
 	{type = 'checkbox', text = 'Blessing of Wisdom', key = 'B_BoW', default = false},
 	{type = 'ruler'},{type = 'spacer'},
-	-- Trinkets + Heirlooms for leveling
-	{type = 'header', 	text = 'Trinkets/Heirlooms',                  align = 'center'},
-	{type = 'checkbox', text = 'Use Trinket #1',                      key = 'kT1',            default = true},
-	{type = 'checkbox', text = 'Use Trinket #2',                      key = 'kT2',            default = true},
-	{type = 'checkbox', text = 'Ring of Collapsing Futures',          key = 'kRoCF',          default = true},
-	{type = 'checkbox', text = 'Use Heirloom Necks When Below X% HP', key = 'k_HEIR',         default = true},
-	{type = 'spinner',	text = '',                                    key = 'k_HeirHP',       default = 40},
-	{type = 'ruler'},	  {type = 'spacer'},
+	unpack(Mythic_GUI),
 }
 
 local exeOnLoad = function()
@@ -104,19 +97,19 @@ local Group = {
 }
 
 local Interrupts = {
-	{'!Rebuke', 'target.inMelee'},
+	{'!Rebuke', 'target.range<=5'},
 	{'!Hammer of Justice', '!equipped(137065)&target.range<20&player.spell(Rebuke).cooldown>gcd&!player.lastgcd(Rebuke)', 'target'},
 	{'!Hammer of Justice', 'equipped(137065)&target.health>74&target.range<20&player.spell(Rebuke).cooldown>gcd&!player.lastgcd(Rebuke)', 'target'},
 	{'!Blinding Light', 'target.range<20&spell(Rebuke).cooldown>gcd&!player.lastgcd(Rebuke)'},
-	{'!Arcane Torrent', 'target.inMelee&spell(Rebuke).cooldown>gcd&!player.lastgcd(Rebuke)'},
+	{'!Arcane Torrent', 'target.range<=5&spell(Rebuke).cooldown>gcd&!player.lastgcd(Rebuke)'},
 }
 
 local Interrupts_Random = {
-	{'!Rebuke', 'interruptAt(70)&toggle(xIntRandom)&toggle(Interrupts)&inFront&inMelee', 'enemies'},
+	{'!Rebuke', 'interruptAt(70)&toggle(xIntRandom)&toggle(Interrupts)&inFront&range<=5', 'enemies'},
 	{'!Hammer of Justice', '!equipped(137065)&range<20&player.spell(Rebuke).cooldown>gcd&!player.lastgcd(Rebuke)', 'enemies'},
 	{'!Hammer of Justice', 'equipped(137065)&health>74&range<20&player.spell(Rebuke).cooldown>gcd&!player.lastgcd(Rebuke)', 'enemies'},
 	{'!Blinding Light', 'interruptAt(70)&toggle(xIntRandom)&toggle(Interrupts)&player.spell(Rebuke).cooldown>gcd&!prev_gcd(Rebuke)&!immune(Stun)&inFront&range<20', 'enemies'},
-	{'!Arcane Torrent', 'interruptAt(70)&toggle(xIntRandom)&toggle(Interrupts)&player.spell(Rebuke).cooldown>gcd&!prev_gcd(Rebuke)&!immune(Stun)&inFront&inMelee', 'enemies'},
+	{'!Arcane Torrent', 'interruptAt(70)&toggle(xIntRandom)&toggle(Interrupts)&player.spell(Rebuke).cooldown>gcd&!prev_gcd(Rebuke)&!immune(Stun)&inFront&range<=5', 'enemies'},
 }
 
 local Dispel = {
@@ -181,8 +174,8 @@ local Combat = {
 local Opener = {
 	{'Judgment', 'target.enemy&target.range<=30&target.inFront', 'target'},
 	{'Blade of Justice', 'target.enemy&target.range<=12&target.inFront&{equipped(137048)||player.race(Blood Elf)||player.spell(Wake of Ashes).cooldown}' ,'target'},
-	{'Divine Hammer', 'toggle(aoe)&target.inMelee&target.inFront&target.enemy&{equipped(137048)||player.race(Blood Elf)||player.spell(Wake of Ashes).cooldown}', 'target'},
-	{'Wake of Ashes', 'toggle(aoe)&target.inMelee&target.inFront', 'target'},
+	{'Divine Hammer', 'toggle(aoe)&target.range<=5&target.inFront&target.enemy&{equipped(137048)||player.race(Blood Elf)||player.spell(Wake of Ashes).cooldown}', 'target'},
+	{'Wake of Ashes', 'toggle(aoe)&target.range<=5&target.inFront', 'target'},
 }
 
 local inCombat = {
@@ -192,12 +185,13 @@ local inCombat = {
 	{Dispel, 'toggle(dispels)&!player.spell(Cleanse Toxins).cooldown'},
 	{Survival},
 	{Blessings},
-	{Opener, 'target.inMelee&target.inFront&xtime<2&{player.spell(Judgment).cooldown||player.spell(Blade of Justice).cooldown||player.spell(Wake of Ashes).cooldown}'},
-	{Combat, 'target.enemy&target.inMelee&target.inFront'},
+	{Opener, 'target.range<=5&target.inFront&xtime<2&{player.spell(Judgment).cooldown||player.spell(Blade of Justice).cooldown||player.spell(Wake of Ashes).cooldown}'},
+	{Fel_Explosives, 'range<=5'}
+	{Combat, 'target.enemy&target.range<=5&target.inFront'},
 	{Group, '!player.moving&inGroup&toggle(groupAssist)'},
 	{Interrupts_Random},
 	{Interrupts, 'toggle(interrupts)&target.interruptAt(70)&target.inFront'},
-	{Cooldowns, 'toggle(cooldowns)&target.inMelee'},
+	{Cooldowns, 'toggle(cooldowns)&target.range<=5'},
 }
 
 local outCombat = {
@@ -214,6 +208,7 @@ NeP.CR:Add(70, {
 	ic = inCombat,
 	ooc = outCombat,
 	gui = GUI,
+	gui_st = {title='Zylla\'s Combat Routines', width='256', height='520', color='A330C9'},
 	ids = Zylla.SpellIDs[Zylla.Class],
 	wow_ver = Zylla.wow_ver,
 	nep_ver = Zylla.nep_ver,

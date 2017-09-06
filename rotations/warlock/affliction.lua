@@ -46,6 +46,7 @@ local GUI = {
 	{type = 'spinner',	text = 'Health Funnel When PLAYER is above HP%', key = 'hf_pethp2', default = 40},
 	{type = 'spacer'},
 	{type = 'spacer'}, {type = 'ruler'}, {type = 'spacer'},
+	unpack(Mythic_GUI),
 }
 
 local exeOnLoad = function()
@@ -136,6 +137,7 @@ local inCombat = {
 	{Interrupts_Random, 'toggle(Interrupts)&toggle(xIntRandom)'},
 	{Survival, 'player.health<100'},
 	{Cooldowns, 'toggle(cooldowns)'},
+	{Fel_Explosives, 'range<41'},
 	{xCombat, 'range<41&inFront'},
 	{Pets}
 }

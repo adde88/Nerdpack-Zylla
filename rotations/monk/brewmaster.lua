@@ -30,14 +30,7 @@ local GUI = {
 	{type = 'spinner',	text = 'Fortifying Brew',									key = 'Fortifying Brew',	default = 20},
 	{type = 'spinner',	text = 'Ironskin Brew',										key = 'Ironskin Brew',		default = 80},
 	{type = 'ruler'},	{type = 'spacer'},
-	-- Trinkets + Heirlooms for leveling
-  {type = 'header', 	text = 'Trinkets/Heirlooms',                  align = 'center'},
-  {type = 'checkbox', text = 'Use Trinket #1',                      key = 'kT1',            default = true},
-  {type = 'checkbox', text = 'Use Trinket #2',                      key = 'kT2',            default = true},
-  {type = 'checkbox', text = 'Ring of Collapsing Futures',          key = 'kRoCF',          default = true},
-  {type = 'checkbox', text = 'Use Heirloom Necks When Below X% HP', key = 'k_HEIR',         default = true},
-  {type = 'spinner',	text = '',                                    key = 'k_HeirHP',       default = 40},
-  {type = 'ruler'},	  {type = 'spacer'},
+	unpack(Mythic_GUI),
 }
 
 local exeOnLoad=function()
@@ -158,9 +151,6 @@ local xCombat = {
 }
 
 local inCombat = {
-	{Util},
-	{Trinkets},
-	{Heirlooms},
 	{Artifact},
 	{Keybinds},
 	{Snares},
@@ -186,6 +176,7 @@ NeP.CR:Add(268, {
 	ic = inCombat,
 	ooc = outCombat,
 	gui = GUI,
+	gui_st = {title='Zylla\'s Combat Routines', width='256', height='520', color='A330C9'},
 	ids = Zylla.SpellIDs[Zylla.Class],
 	wow_ver = Zylla.wow_ver,
 	nep_ver = Zylla.nep_ver,

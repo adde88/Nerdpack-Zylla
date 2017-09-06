@@ -25,6 +25,7 @@ local GUI = {
   {type = 'header', text = 'Survival', align = 'center'},
   {type='checkbox', text = 'Enable Self-Heal (Flash of Light)',	key='kFoL', default=false},
   {type='spinner', text = 'Flash of Light (HP%)', key='E_FoL', default=60},
+	unpack(Mythic_GUI),
 }
 
 local exeOnLoad = function()
@@ -51,7 +52,7 @@ local Keybinds = {
 local Interrupts = {
   {'!Rebuke'},
   {'!Hammer of Justice', 'cooldown(Rebuke).remains>gcd'},
-  {'!Arcane Torrent', 'target.inMelee&spell(Rebuke).cooldown>gcd&!prev_gcd(Rebuke)'},
+  {'!Arcane Torrent', 'target.range<=5&spell(Rebuke).cooldown>gcd&!prev_gcd(Rebuke)'},
 }
 
 local Survival ={
@@ -72,7 +73,7 @@ local EyeofTyr = {
 }
 local Cooldowns = {
   {'Seraphim', 'talent(7,2)&spell(Shield of the Righteous).charges>1', 'player'},
-  {'Shield of the Righteous', 'inMelee&inFront&{!talent(7,2)||spell(Shield of the Righteous).charges>2}&!{player.buff(Eye of Tyr)&player.buff(Aegis of Light)&player.buff(Ardent Defender)&player.buff(Guardian of Ancient Kings)&player.buff(Divine Shield)}', 'target'},
+  {'Shield of the Righteous', 'range<=5&inFront&{!talent(7,2)||spell(Shield of the Righteous).charges>2}&!{player.buff(Eye of Tyr)&player.buff(Aegis of Light)&player.buff(Ardent Defender)&player.buff(Guardian of Ancient Kings)&player.buff(Divine Shield)}', 'target'},
   {'Bastion of Light', 'talent(2,2)&spell(Shield of the Righteous).charges<1', 'player'},
   {'Light of the Protector', 'player.health<40', 'player'},
   {'Hand of the Protector', 'talent(5,1)&health<40', 'player'},
@@ -103,17 +104,15 @@ local ST = {
 }
 
 local inCombat = {
-  {Util},
-  {Trinkets},
-  {Heirlooms},
   {Keybinds},
   {Survival, 'player.health<100'},
-  {Interrupts, 'target.interruptAt(70)&toggle(Interrupts)&target.inFront&target.inMelee'},
+  {Interrupts, 'target.interruptAt(70)&toggle(Interrupts)&target.inFront&target.range<=5'},
   {Cooldowns, 'toggle(Cooldowns)'},
   {'%taunt(Hand of Reckoning)', 'toggle(aoe)'},
   {'Shield of the Righteous', '!player.buff&{player.health<60||spell.count>1}', 'target'},
   {AoE, 'toggle(AoE)&player.area(8).enemies>2'},
-  {ST, 'target.inFront&target.inMelee'}
+	{Fel_Explosives, 'range<=5'}
+  {ST, 'target.inFront&target.range<=5'}
 }
 
 local outCombat = {
@@ -126,6 +125,7 @@ NeP.CR:Add(66, {
 	ic = inCombat,
 	ooc = outCombat,
 	gui = GUI,
+	gui_st = {title='Zylla\'s Combat Routines', width='256', height='520', color='A330C9'},
 	ids = Zylla.SpellIDs[Zylla.Class],
 	wow_ver = Zylla.wow_ver,
 	nep_ver = Zylla.nep_ver,

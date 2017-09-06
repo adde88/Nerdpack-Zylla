@@ -1,9 +1,11 @@
 local _, Zylla = ...
 
+local Mythic_GUI = _G.Mythic_GUI
+local Fel_Explosives = _G.Fel_Explosives
+local Logo_GUI = _G.Logo_GUI
+
 local GUI = {
-	--Logo
-	{type = 'texture',  texture = 'Interface\\AddOns\\Nerdpack-Zylla\\media\\logo.blp', width = 128, height = 128, offset = 90, y = -60, align = 'center'},
-	{type = 'spacer'},{type = 'spacer'},{type = 'spacer'},{type = 'spacer'},
+	unpack(Logo_GUI),
 	-- Keybinds
 	{type = 'header', 	text = 'Keybinds', 																align = 'center'},
 	{type = 'text', 	text = 'Left Shift: Pause', 												align = 'center'},
@@ -28,6 +30,7 @@ local GUI = {
 	{type = 'checkspin',	text = 'Healing Potion',												key = 'AHP',			spin = 45, check = true},
 	{type = 'checkspin', 	text = 'Ice Block', 														key = 'ib', 			spin = 20, check = true},
 	{type = 'ruler'},		 {type = 'spacer'},
+	unpack(Mythic_GUI),
 }
 
 local exeOnLoad = function()
@@ -90,8 +93,8 @@ local Cooldowns = {
 local Survival = {
 	{'!Ice Block', 'UI(ib_check)&{health<UI(ib_spin)||debuff(Cauterize)}', 'player'},
 	{'Blazing Barrier' , 'player.buff(Blazing Barrier).duration<gcd'},
-	{'#127834', 'item(127834).usable&item(127834).count>0&player.health<=UI(AHP_spin)&UI(AHP_check)'}, 		-- Ancient Healing Potion
-	{'#5512', 'item(5512).usable&item(5512).count>0&player.health<=UI(HS_spin)&UI(HS_check)', 'player'}, 	--Health Stone
+	{'#127834', 'item(127834).usable&item(127834).count>0&player.health<=UI(AHP_spin)&UI(AHP_check)', 'player'}, 		-- Ancient Healing Potion
+	{'#5512', 'item(5512).usable&item(5512).count>0&player.health<=UI(HS_spin)&UI(HS_check)', 'player'}, 						--Health Stone
 }
 
 local Talents = {
@@ -162,6 +165,7 @@ local inCombat = {
 	{Survival},
 	{Talents},
 	{xCombat, 'target.range<41&target.inFront'},
+	{Fel_Explosives, 'range<41'}
 }
 
 local outCombat = {
@@ -177,6 +181,7 @@ NeP.CR:Add(63, {
 		{inCombat, '!player.casting(Rune of Power)'},
 		{Cumbustion}
 	},
+--waitfor = true,
 	ooc = outCombat,
 	gui = GUI,
 	gui_st = {title='Zylla\'s Combat Routines', width='256', height='520', color='A330C9'},
