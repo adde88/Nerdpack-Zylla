@@ -1,9 +1,11 @@
 local _, Zylla = ...
 
+local Mythic_GUI = _G.Mythic_GUI
+local Fel_Explosives = _G.Fel_Explosives
+local Logo_GUI = _G.Logo_GUI
+
 local GUI = {
-	--Logo
-	{type = 'texture',  texture = 'Interface\\AddOns\\Nerdpack-Zylla\\media\\logo.blp', width = 128, height = 128, offset = 90, y = -60, align = 'center'},
-	{type = 'spacer'},{type = 'spacer'},{type = 'spacer'},{type = 'spacer'},
+	unpack(Logo_GUI),
 	-- Keybinds
 	{type = 'header', text = 'Keybinds',	 					 			align = 'center'},
 	{type = 'text', 	 text = 'Left Shift: Pause',				align = 'left'},

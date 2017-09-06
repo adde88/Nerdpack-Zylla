@@ -1,11 +1,11 @@
 local _, Zylla = ...
 
+local Mythic_GUI = _G.Mythic_GUI
 local Fel_Explosives = _G.Fel_Explosives
+local Logo_GUI = _G.Logo_GUI
 
 local GUI = {
-	--Logo
-	{type = 'texture',  texture = 'Interface\\AddOns\\Nerdpack-Zylla\\media\\logo.blp', width = 128, height = 128, offset = 90, y = -60, align = 'center'},
-	{type = 'spacer'},{type = 'spacer'},{type = 'spacer'},{type = 'spacer'},
+	unpack(Logo_GUI),
 	-- Keybinds
 	{type = 'header', 	text = 'Keybinds', align = 'center'},
 	{type = 'text', 	text = 'Left Shift: Pause', align = 'center'},
@@ -93,8 +93,8 @@ local Cooldowns = {
 	{'Blood Fury', 'player.buff(Ascendance)||player.buff(Feral Spirit).duration>5||player.level<110', 'player'},
 	{'Doom Winds', '{player.spell(Flametongue).cooldown<gcd}||{talent(4,3)&player.spell(Frostbrand).cooldown<gcd}', 'player'},
 	{'Ascendance', 'player.spell(Feral Spirit).cooldown<gcd', 'player'},
-	{'#Trinket1', 'UI(trinket1)'},
-	{'#Trinket2', 'UI(trinket2)'}
+	{'#trinket1', 'UI(trinket1)'},
+	{'#trinket2', 'UI(trinket2)'}
 }
 
 local Interrupts = {

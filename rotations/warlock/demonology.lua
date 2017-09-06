@@ -1,13 +1,11 @@
 local _, Zylla = ...
 
-local Util = _G['Zylla.Util']
-local Trinkets = _G['Zylla.Trinkets']
-local Heirlooms = _G['Zylla.Heirlooms']
+local Mythic_GUI = _G.Mythic_GUI
+local Fel_Explosives = _G.Fel_Explosives
+local Logo_GUI = _G.Logo_GUI
 
 local GUI = {
-	--Logo
-	{type = 'texture', texture = 'Interface\\AddOns\\Nerdpack-Zylla\\media\\logo.blp', width = 128, height = 128, offset = 90, y = 42, center = true},
-	{type = 'ruler'},	  {type = 'spacer'},
+	unpack(Logo_GUI),
 	-- Keybinds
 	{type = 'header', 	text = 'Keybinds', 							align = 'center'},
 	{type = 'checkbox', text = 'L-Control: Shadowfury @ Cursor',	key = 'K_SF',		default = true},

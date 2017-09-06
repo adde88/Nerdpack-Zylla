@@ -1,11 +1,11 @@
 local _, Zylla = ...
-local NeP = NeP
 
-local Util = _G['Zylla.Util']
-local Trinkets = _G['Zylla.Trinkets']
-local Heirlooms = _G['Zylla.Heirlooms']
+local Mythic_GUI = _G.Mythic_GUI
+local Fel_Explosives = _G.Fel_Explosives
+local Logo_GUI = _G.Logo_GUI
 
 local GUI = {
+	unpack(Logo_GUI),
   -- General
   {type = 'header', text = 'Keybinds', 		align = 'center'},
   {type = 'text', text = 'Left Shift: Pause', align = 'center'},

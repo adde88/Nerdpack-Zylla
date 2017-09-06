@@ -1,20 +1,11 @@
 local _, Zylla = ...
-local NeP = NeP
 
--- Thanks to Silver for a 'working' Holy routine!
-
-local Util = _G['Zylla.Util']
-local Trinkets = _G['Zylla.Trinkets']
-local Heirlooms = _G['Zylla.Heirlooms']
-
---[[
-	TO DO:
-	Add Nighthold encounter support
-	Add mythic 5 man utility
-	Add support for all talents
---]]
+local Mythic_GUI = _G.Mythic_GUI
+local Fel_Explosives = _G.Fel_Explosives
+local Logo_GUI = _G.Logo_GUI
 
 local GUI = {
+	unpack(Logo_GUI),
 	{type = 'checkspin',text = 'Mana Potion', key = 'P_MP', default = false},
 	{type = 'header', 	text = 'Generic', align = 'center'},
 	{type = 'spinner', 	text = 'DPS while lowest above % ', key = 'G_DPS', default = 70},

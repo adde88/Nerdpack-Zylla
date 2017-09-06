@@ -1,6 +1,11 @@
 local _, Zylla = ...
 
+local Mythic_GUI = _G.Mythic_GUI
+local Fel_Explosives = _G.Fel_Explosives
+local Logo_GUI = _G.Logo_GUI
+
 local GUI = {
+	unpack(Logo_GUI),
 	-- GUI Survival
 	{type = 'header', text = 'Survival', align = 'center'},
 	{type = 'checkbox', text = 'Enable Astral Shift', key = 'S_ASE', default = true},
