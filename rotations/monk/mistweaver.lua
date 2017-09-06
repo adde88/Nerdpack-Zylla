@@ -68,7 +68,7 @@ local inCombat = {
 	{Keybinds}
 }
 
-local outcombat = {
+local outCombat = {
 	{Keybinds},
 }
 

@@ -111,7 +111,7 @@ local inCombat = {
   {'%taunt(Hand of Reckoning)', 'toggle(aoe)'},
   {'Shield of the Righteous', '!player.buff&{player.health<60||spell.count>1}', 'target'},
   {AoE, 'toggle(AoE)&player.area(8).enemies>2'},
-	{Fel_Explosives, 'range<=5'}
+	{Fel_Explosives, 'range<=5'},
   {ST, 'target.inFront&target.range<=5'}
 }
 

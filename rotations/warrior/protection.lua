@@ -37,10 +37,10 @@ local exeOnLoad = function()
 	})
 
 	NeP.Interface:AddToggle({
- 	key = 'super_taunt',
- 	name = 'Taunt Lowest Threat',
- 	text = 'Taunt a nearby enemy in combat, when threat gets low, without targeting it.',
- 	icon = 'Interface\\Icons\\spell_nature_reincarnation',
+  key = 'super_taunt',
+  name = 'Taunt Lowest Threat',
+  text = 'Taunt a nearby enemy in combat, when threat gets low, without targeting it.',
+  icon = 'Interface\\Icons\\spell_nature_reincarnation',
  })
 
 end

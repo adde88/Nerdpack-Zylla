@@ -15,6 +15,7 @@ local GUI = {
 	-- Settings
 	{type = 'checkbox', text = 'Pause Enabled', key = 'kPause', default = true},
 	{type = 'ruler'},	{type = 'spacer'},
+	unpack(Mythic_GUI),
 }
 
 local exeOnLoad = function()
@@ -63,6 +64,7 @@ local inCombat = {
 	{Survival, 'player.health<100'},
 	{Cooldowns, 'toggle(Cooldowns)'},
 	{AoE, 'toggle(AoE)&player.area(8).enemies>2'},
+	{Fel_Explosives, 'range<=31'},
 	{ST, 'target.inMelee&target.inFront'}
 }
 

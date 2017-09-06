@@ -207,7 +207,7 @@ local inCombat = {
 	{Survival},
 	{Player, '!player.moving'},
 	{Emergency, '!player.moving'},
-	{Fel_Explosives, 'range<41'}
+	{Fel_Explosives, 'range<41'},
 	{Interrupts, 'toggle(Interrupts)&target.interruptAt(70)&target.inFront&target.range<40'},
 	{LRCooldowns, '&talent(7,2)&toggle(Cooldowns)'},
 	{IFCooldowns, 'talent(7,3)&toggle(Cooldowns)'},

@@ -130,7 +130,7 @@ local inCombat = {
 	{Keybinds},
 	{Interrupts, 'target.interruptAt(70)&toggle(Interrupts)&target.inFront&target.inMelee'},
 	{Survival, 'player.health<100'},
-	{Fel_Explosives, 'range<=5'}
+	{Fel_Explosives, 'range<=5'},
 	{xCombat, 'target.inMelee&target.inFront'},
 }
 

@@ -142,7 +142,7 @@ local inCombat = {
 	{Interrupts_Random, 'toggle(xIntRandom)'},
 	{Survival, 'player.health<100'},
 	{Cooldowns, 'toggle(Cooldowns)'},
-	{Fel_Explosives, 'range<41'}
+	{Fel_Explosives, 'range<41'},
 	{xCombat, 'range<41&inFront'},
 }
 

@@ -146,7 +146,7 @@ local inCombat = {
 	{Interrupts, 'toggle(Interrupts)&target.inFront&target.range<31'},
 	{Survival},
 	{Player, '!player.moving'},
-	{Fel_Explosives, 'range<31'}
+	{Fel_Explosives, 'range<31'},
 	{Cooldowns, 'toggle(cooldowns)'},
 	{ST, 'target.inFront&target.range<31'},
 }

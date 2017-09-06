@@ -195,7 +195,7 @@ local inCombat = {
 	{Interrupts_Random},
 	{Interrupts_Normal, 'target.interruptAt(70)&toggle(Interrupts)&target.inFront&target.range<51'},
 	{Cooldowns, 'toggle(Cooldowns)'},
-	{Fel_Explosives, 'range<51'}
+	{Fel_Explosives, 'range<51'},
 	{xCombat,'target.range<51&target.inFront'},
 	{xPetCombat, 'UI(kPet)&!talent(1,1)'},
 }

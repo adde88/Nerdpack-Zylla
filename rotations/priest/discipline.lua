@@ -75,7 +75,7 @@ local inCombat = {
 	{Cooldowns, 'toggle(Cooldowns)'},
 	{Tank, 'tank.health<100'},
 	{Lowest, 'lowest.health<100'},
-	{Fel_Explosives, 'range<=40'}
+	{Fel_Explosives, 'range<=40'},
 	{Atonement}
 }
 

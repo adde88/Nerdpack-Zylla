@@ -145,7 +145,7 @@ local inCombat = {
 	{Survival},
 	{Party},
 	{Cooldowns, 'toggle(Cooldowns)'},
-	{Fel_Explosives, 'range<=5'}
+	{Fel_Explosives, 'range<=5'},
 	{xCombat, 'target.range<=5&target.inFront'},
 	{Ranged},
 	{'Ghost Wolf', 'player.movingfor>0.75&target.range>12'}

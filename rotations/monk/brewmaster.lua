@@ -161,6 +161,7 @@ local inCombat = {
 	{Mitigations, 'target.inMelee&{!talent(7,2)||!player.buff(Blackout Combo)||player.spell(Keg Smash).cooldown>gcd}'},
 	{Cooldowns, 'toggle(Cooldowns)'},
 	{xCombat},
+	{Fel_Explosives, 'range<=5'}
 	{Crackle, 'target.range>8&target.range<41&target.inFront'},
 	{'Provoke', 'target.range<45&target.combat&target.threat<100&toggle(xTaunt)'},
 }

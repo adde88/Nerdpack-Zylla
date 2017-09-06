@@ -149,7 +149,7 @@ local inCombat = {
 	{Interrupts, 'target.interruptAt(70)&toggle(Interrupts)'},
 	{Survival, 'player.health<100'},
 	{Blade_Flurry},
-	{Fel_Explosives, 'range<=5'}
+	{Fel_Explosives, 'range<=5'},
 	{xCombat, 'target.inFront&target.range<=5'},
 	{TricksofTrade},
 }

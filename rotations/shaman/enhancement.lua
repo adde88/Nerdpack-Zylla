@@ -139,7 +139,7 @@ local inCombat = {
 	{Cooldowns, 'toggle(Cooldowns)&!player.lastgcd(Feral Spirit)'},
 	{'Crash Lightning', 'target.range<=5&target.inFront&player.lastgcd(Feral Spirit)'},
 	{Fel_Explosives, 'ui(mythic_fel)&range<=5'},
-	{Fel_Explosives, 'range<=5'}
+	{Fel_Explosives, 'range<=5'},
 	{xCombat, 'target.range<=5&target.inFront&!player.lastgcd(Feral Spirit)'},
 	{Ranged, '!player.lastgcd(Feral Spirit)'},
 	{'Ghost Wolf', 'player.movingfor>0.75&target.range>12'}

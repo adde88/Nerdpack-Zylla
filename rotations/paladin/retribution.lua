@@ -179,14 +179,11 @@ local Opener = {
 }
 
 local inCombat = {
-	{Util},
-	{Trinkets},
-	{Heirlooms},
 	{Dispel, 'toggle(dispels)&!player.spell(Cleanse Toxins).cooldown'},
 	{Survival},
 	{Blessings},
 	{Opener, 'target.range<=5&target.inFront&xtime<2&{player.spell(Judgment).cooldown||player.spell(Blade of Justice).cooldown||player.spell(Wake of Ashes).cooldown}'},
-	{Fel_Explosives, 'range<=5'}
+	{Fel_Explosives, 'range<=5'},
 	{Combat, 'target.enemy&target.range<=5&target.inFront'},
 	{Group, '!player.moving&inGroup&toggle(groupAssist)'},
 	{Interrupts_Random},

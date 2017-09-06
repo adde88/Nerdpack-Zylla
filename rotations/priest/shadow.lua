@@ -299,7 +299,7 @@ local Zek_Support = {
 
 local inCombat = {
 	{SWP_MASS, 'toggle(xSWP)'},
-	{Fel_Explosives, 'range<=40'}
+	{Fel_Explosives, 'range<=40'},
 	{'Shadowform', '!player.buff(Voidform)&!player.buff(Shadowform)'},
 	{Movement, '!player.buff(Voidform)||{player.buff(Voidform)&player.spell(Void Eruption).cooldown>gcd}'},
 	{Surrender},

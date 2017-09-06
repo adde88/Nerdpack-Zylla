@@ -146,7 +146,7 @@ local inCombat = {
 	{Interrupts, 'target.interruptAt(70)&toggle(Interrupts)'},
 	{TricksofTrade},
 	{Cooldowns, 'toggle(cooldowns)'},
-	{Fel_Explosives, 'range<=5'}
+	{Fel_Explosives, 'range<=5'},
 	{xCombat, 'target.range<=5&!player.buff(Stealth)'},
 	{inStealth},
 	{Ranged, '!target.range<=5&target.inRanged'},

@@ -208,7 +208,7 @@ local inCombat = {
 	{Survival},
 	{Emergency, 'range<41'},
 	{Totems},
-	{Fel_Explosives, 'range<41'}
+	{Fel_Explosives, 'range<41'},
 	{Tank, 'range<41&tank.exists&tank.health<100'},
 	{Lowest, 'range<41&&lowest.health<100'},
 	{Player, 'range<41&player.health<100'},

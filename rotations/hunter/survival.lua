@@ -169,7 +169,7 @@ local inCombat = {
 	{Interrupts, 'target.interruptAt(70)&toggle(Interrupts)&target.inFront&target.range<6'},
 	{Pet, 'pet.exists&pet.alive'},
 	{AoE, 'toggle(AoE)&player.area(8).enemies>2'},
-	{Fel_Explosives, 'range<=5'}
+	{Fel_Explosives, 'range<=5'},
 	{Melee, 'target.range<=5&target.inFront'},
 	{Ranged, '!target.inMelee&target.inFront'},
 }

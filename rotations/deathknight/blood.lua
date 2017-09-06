@@ -27,6 +27,7 @@ local GUI = {
 	{type = 'spinner',	text = 'Healthstone below HP%', key = 'HSHP',	 default = 45},
 	{type = 'spinner',	text = 'Ancient Healing Potion below HP%', key = 'AHPHP',	 default = 45},
 	{type = 'ruler'},	 {type = 'spacer'},
+	unpack(Mythic_GUI),
 }
 
 local exeOnLoad = function()

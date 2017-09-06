@@ -147,7 +147,7 @@ local inCombat = {
 	{'Cat Form', '!buff(Frenzied Regeneration)&{!buff(Cat Form)&{!buff(Travel Form)||area(8).enemies.inFront>0}}', 'player'},
 	{Cooldowns, '!player.buff(Frenzied Regeneration)&toggle(Cooldowns)'},
 	{'Moonfire', 'talent(1,3)&!range>8&range<41&inFront&!player.buff(Prowl)&!debuff(Moonfire)', 'target'},
-	{Fel_Explosives, 'range<=5'}
+	{Fel_Explosives, 'range<=5'},
 	{xCombat, '!player.buff(Frenzied Regeneration)&target.range<=5&target.inFront'}
 }
 
