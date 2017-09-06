@@ -14,9 +14,15 @@ local GUI = {
 	{type = 'text', 	text = 'Right Alt: ', align = 'center'},
 	{type = 'ruler'},	{type = 'spacer'},
 	-- Settings
-	{type = 'header', 	text = 'Class Settings', align = 'center'},
-	{type = 'checkbox', text = 'Pause Enabled', key = 'kPause', default = true},
+	{type = 'header', 	text = 'Class Settings', 										align = 'center'},
+	{type = 'checkbox', text = 'Pause Enabled', 										key = 'kPause', 		default = true},
+	{type = 'checkbox', text = 'Use Trinket #1', 										key = 'trinket1',		default = true},
+	{type = 'checkbox', text = 'Use Trinket #2', 										key = 'trinket2', 	default = true,	desc = '|cffABD473Trinkets will be used whenever possible!|r'},
 	{type = 'ruler'},	{type = 'spacer'},
+	-- Survival
+	{type = 'header', 		size = 16, text = 'Survival',							align = 'center'},
+	{type = 'checkspin',	text = 'Healthstone',											key = 'HS',						spin = 45, check = true},
+	{type = 'checkspin',	text = 'Healing Potion',									key = 'AHP',					spin = 45, check = true},
 	unpack(Mythic_GUI),
 }
 
@@ -47,6 +53,8 @@ local Interrupts = {
 
 local Survival = {
 	{'Victory Rush', 'player.health<80'},
+	{'#127834', 'item(127834).usable&item(127834).count>0&player.health<=UI(AHP_spin)&UI(AHP_check)'}, 		-- Ancient Healing Potion
+	{'#5512', 'item(5512).usable&item(5512).count>0&player.health<=UI(HS_spin)&UI(HS_check)', 'player'}, 	--Health Stone
 }
 
 local Cooldowns = {
@@ -55,6 +63,8 @@ local Cooldowns = {
 	{'Bloodbath', 'talent(6,1)&{player.buff(Dragon Roar)||{!talent(7,3)&{player.buff(Battle Cry)||spell(Battle Cry).cooldown>10}}}'},
 	{'Blood Fury', 'player.buff(Battle Cry)'},
 	{'Berserking', 'player.buff(Battle Cry)'},
+	{'#Trinket1', 'UI(trinket1)'},
+	{'#Trinket2', 'UI(trinket2)'},
 }
 
 local Bladestorm = {
