@@ -121,7 +121,7 @@ buffs = {{name = "special_buff", count = 2}, "special_buff", ####},
 debuff = {####, ####, ####}
 --]]
 
-_G.Zylla.PauseCR = {
+_G.PauseCR = {
   {'%pause' , 'player.debuff(200904)||player.debuff(Sapped Soul)'}, -- Vault of the Wardens, Sapped Soul
 }
 
