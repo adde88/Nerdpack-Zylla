@@ -6,6 +6,7 @@ Zylla.SpellIDs = {}
 --------------------- Warrior ---------------------
 ---------------------------------------------------
 Zylla.SpellIDs[1] = {
+	["Light's Judgment"]							 = 247427,
   ["Sweeping Strikes"]               = 202161,
   ["Berserker Rage"]                 = 18499,
   ["Protection Warrior"]             = 137048,
@@ -160,6 +161,7 @@ Zylla.SpellIDs[1] = {
 --------------------- Paladin ---------------------
 ---------------------------------------------------
 Zylla.SpellIDs[2] = {
+	["Light's Judgment"]							 	 = 247427,
   ["Cleanse"]                          = 4987,
   ["Specialized Bio-Optic Killshades"] = 81715,
   ["Eye for an Eye"]                   = 205191,
@@ -310,6 +312,7 @@ Zylla.SpellIDs[2] = {
 ---------------------- Hunter ----------------------
 ----------------------------------------------------
 Zylla.SpellIDs[3] = {
+	["Light's Judgment"]							 = 247427,
   ["Steel Trap Expert"]              = 201199,
   ["Call of the Hunter"]             = 191070,
   ["Molten Hide"]                    = 160124,
@@ -511,6 +514,7 @@ Zylla.SpellIDs[3] = {
 ---------------------- Rogue ----------------------
 ---------------------------------------------------
 Zylla.SpellIDs[4] = {
+	["Light's Judgment"]				 = 247427,
   ["Ruthlessness"]             = 14161,
   ["Shadow Blade"]             = 121473,
   ["Quick Draw"]               = 196938,
@@ -663,6 +667,7 @@ Zylla.SpellIDs[4] = {
 ---------------------- Priest ----------------------
 ----------------------------------------------------
 Zylla.SpellIDs[5] = {
+	["Light's Judgment"]				 = 247427,
   ["Shadow Word: Pain"]        = 589,
   ["The Val'kyr"]              = 126695,
   ["Ascension"]                = 161862,
@@ -808,6 +813,7 @@ Zylla.SpellIDs[5] = {
 ------------------- Death Knight -------------------
 ----------------------------------------------------
 Zylla.SpellIDs[6] = {
+	["Light's Judgment"]							 = 247427,
   ["Castigator"]                     = 207305,
   ["Unholy Death Knight"]            = 137007,
   ["Infected Claws"]                 = 207272,
@@ -994,6 +1000,7 @@ Zylla.SpellIDs[6] = {
 ---------------------- Shaman ----------------------
 ----------------------------------------------------
 Zylla.SpellIDs[7] = {
+	["Light's Judgment"]								 = 247427,
   ["Elemental Shaman"]                 = 137040,
   ["Totem Mastery"]                    = 210643,
   ["Cloudburst"]                       = 157503,
@@ -1198,6 +1205,7 @@ Zylla.SpellIDs[7] = {
 ----------------------- Mage -----------------------
 ----------------------------------------------------
 Zylla.SpellIDs[8] = {
+	["Light's Judgment"]							 = 247427,
   ["Bone Chilling"]                  = 205027,
   ["Controlled Burn"]                = 205033,
   ["Aftershocks"]                    = 194432,
@@ -1334,6 +1342,7 @@ Zylla.SpellIDs[8] = {
 --------------------- Warlock ---------------------
 ---------------------------------------------------
 Zylla.SpellIDs[9] = {
+	["Light's Judgment"]					= 247427,
   ["Singe Magic"]               = 89808,
   ["Fel Firebolt"]              = 104318,
   ["Doom"]                      = 603,
@@ -1491,6 +1500,7 @@ Zylla.SpellIDs[9] = {
 ----------------------- Monk -----------------------
 ----------------------------------------------------
 Zylla.SpellIDs[10] = {
+	["Light's Judgment"]								 									 = 247427,
   ["Life Cocoon"]                                        = 116849,
   ["Ring of Peace"]                                      = 116844,
   ["Ascension"]                                          = 115396,
@@ -1635,6 +1645,7 @@ Zylla.SpellIDs[10] = {
 ---------------------- Druid ----------------------
 ---------------------------------------------------
 Zylla.SpellIDs[11] = {
+	["Light's Judgment"]								= 247427,
   ["Swiftmend"]                       = 18562,
   ["Ashamane's Bite"]                 = 210702,
   ["Skull Bash"]                      = 106839,
@@ -1825,6 +1836,7 @@ Zylla.SpellIDs[11] = {
 ------------------- Demon Hunter -------------------
 ----------------------------------------------------
 Zylla.SpellIDs[12] = {
+	["Light's Judgment"]				= 247427,
   ["First Blood"]             = 206416,
   ["Chaos Blades"]            = 211048,
   ["Quickened Sigils"]        = 209281,
@@ -1919,4 +1931,3 @@ Zylla.SpellIDs[12] = {
   ["Consume Soul"]            = 210042,
   ["Consume Magic"]           = 218903,
 }
-
