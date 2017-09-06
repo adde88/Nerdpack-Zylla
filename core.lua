@@ -39,7 +39,7 @@ local rad = _G.rad
 local atan2 = _G.atan2
 local GetSpellCooldown = _G.GetSpellCooldown
 
-Zylla.Version = '1.9'
+Zylla.Version = '2.0'
 Zylla.Branch = 'RELEASE'
 Zylla.Name = 'NerdPack - Zylla\'s Rotations'
 Zylla.Author = 'Zylla'
@@ -120,27 +120,8 @@ units = {"UNIT_ID", ####},
 buffs = {{name = "special_buff", count = 2}, "special_buff", ####},
 debuff = {####, ####, ####}
 --]]
-_G['Zylla.Trinkets'] = {
-  {'#trinket1', 'UI(kT1)'},
-  {'#trinket2', 'UI(kT2)'},
-  {'#142173', 'equipped(142173)&!player.debuff(Temptation)&UI(kRoCF)', 'target'},  --Ring of Collapsing Futures
-}
 
-_G['Zylla.Heirlooms'] = {
-  {'#122664', 'equipped(122664)&UI(k_HEIR)&player.health<=UI(k_HeirHP)'},
-  {'#122663', 'equipped(122663)&UI(k_HEIR)&player.health<=UI(k_HeirHP)'},
-  {'#122666', 'equipped(122666)&UI(k_HEIR)&player.health<=UI(k_HeirHP)'},
-  {'#122667', 'equipped(122667)&UI(k_HEIR)&player.health<=UI(k_HeirHP)'},
-  {'#122668', 'equipped(122668)&UI(k_HEIR)&player.health<=UI(k_HeirHP)'},
-  {'#128318', 'equipped(128318)&UI(k_HEIR)&player.area(8).enemies>=3'},
-  {'#122530', 'equipped(122530)&UI(k_HEIR)&player.incdmg(2.5)>player.health.max*0.50'},
-  {'#44098', 'equipped(44098)&UI(k_HEIR)&{player.state.incapacitate||player.state.stun||player.state.fear||player.state.horror||player.state.sleep||player.state.charm}'},
-  {'#44097', 'equipped(44097)&UI(k_HEIR)&{player.state.incapacitate||player.state.stun||player.state.fear||player.state.horror||player.state.sleep||player.state.charm}'},
-  {'#126949', 'equipped(126949)&UI(k_HEIR)&{player.incdmg(2.5)>player.health.max*0.50}||{player.health<=20}'},
-  {'#126948', 'equipped(126948)&UI(k_HEIR)&{player.incdmg(2.5)>player.health.max*0.50}||{player.health<=20}'},
-}
-
-_G['Zylla.Util'] = {
+_G.Zylla.PauseCR = {
   {'%pause' , 'player.debuff(200904)||player.debuff(Sapped Soul)'}, -- Vault of the Wardens, Sapped Soul
 }
 
