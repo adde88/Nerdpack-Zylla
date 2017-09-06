@@ -144,9 +144,22 @@ _G['Zylla.Util'] = {
   {'%pause' , 'player.debuff(200904)||player.debuff(Sapped Soul)'}, -- Vault of the Wardens, Sapped Soul
 }
 
+_G.Logo_GUI = {
+	--  Zylla's Combat Routine Logo
+	{type = 'texture',  texture = 'Interface\\AddOns\\Nerdpack-Zylla\\media\\logo.blp', width = 128, height = 128, offset = 90, y = -60, align = 'center'},
+	{type = 'spacer'},{type = 'spacer'},{type = 'spacer'},{type = 'spacer'},
+}
+
+_G.Mythic_GUI = {
+	-- Mythic + / Raiding
+	{type = 'header', 	text = 'Mythic+ Raid Settings',							align = 'center'},
+	{type = 'checkbox', text = 'Attack Fel Explosives', 						key = 'mythic_fel', width = 55, default = true, desc = '|cffC41F3BThis will automatically target the \'Fel Explosives\' in Mythic+ dungeons!'},
+	{type = 'ruler'},	 {type = 'spacer'},
+}
+
 _G.Fel_Explosives = {
 	{{
-			{"/target 'Fel Explosives'", 'id(120651)&range<41&inFront', 'enemies'}
+			{"/target 'Fel Explosives'", 'id(120651)&inFront', 'enemies'}
 	},	'UI(mythic_fel)'}
 }
 
