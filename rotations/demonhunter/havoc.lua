@@ -6,33 +6,33 @@ local Logo_GUI = _G.Logo_GUI
 
 local GUI = {
 	unpack(Logo_GUI),
-	{type = 'header', text = 'Keybinds', align = 'center'},
-	{type = 'text', 	text = 'Left Shift: Pause', align = 'left'},
-	{type = 'text', 	text = 'Left Ctrl: Metamorphosis', align = 'left'},
-	{type = 'text', 	text = 'Left Alt: Netherwalk', align = 'left'},
-	{type = 'text', 	text = 'Right Alt: Darkness', align = 'left'},
-	{type = 'ruler'},	{type = 'spacer'},
+	{type = 'header', 		text = 'Keybinds', 																		align = 'center'},
+	{type = 'text', 			text = 'Left Shift: Pause',			 											align = 'left'},
+	{type = 'text', 			text = 'Left Ctrl: Metamorphosis', 										align = 'left'},
+	{type = 'text', 			text = 'Left Alt: Netherwalk',												align = 'left'},
+	{type = 'text', 			text = 'Right Alt: Darkness',	 												align = 'left'},
+	{type = 'ruler'},			{type = 'spacer'},
 	-- Settings
-	{type = 'header', 	text = 'Class Settings',							 								align = 'center'},
-	{type = 'checkbox', text = 'Pause Enabled',								 								key = 'kPause', 		default = true},
-	{type = 'checkspin',text = 'Light\'s Judgment - Units', 									key = 'LJ',					spin = 4, step = 1, max = 20, check = true,	desc = '|cffABD473World Spell usable on Argus.|r'},
-	{type = 'checkbox', text = 'Enable Bursting',								 							key = 'burst', 			default = true},
---{type = 'checkbox', text = 'Auto-target enemy during Eye Beam',						key = 'eyeface', 		default = false},	-- Will be implemented soon...
---{type = 'checkbox', text = 'Cancel Movement/Action Animations',						key = 'kanime', 		default = false},	-- Will be implemented soon...
-	{type = 'checkbox', text = 'Use \'Vengeful Retreat\'',										key = 'vengeful', 	default = true},
-	{type = 'checkbox', text = 'Use \'Fel Rush\'',														key = 'felrush', 		default = true},
-	{type = 'checkspin', 	text = 'Use \'Metamorphosis + Units to strike\'',		key = 'meta',       spin = 4, step = 1, max = 20, check = true },
-	{type = 'checkspin', 	text = 'Use \'Chaos Nova + Units to strike\'',			key = 'chaos',      spin = 4, step = 1, max = 20, check = true },
-	{type = 'checkbox', text = 'Use Trinket #1', 															key = 'trinket1',		default = true},
-	{type = 'checkbox', text = 'Use Trinket #2', 															key = 'trinket2', 	default = true,	desc = '|cffABD473Trinkets will be used whenever possible!|r'},
-	{type = 'ruler'},	{type = 'spacer'},
+	{type = 'header', 		text = 'Class Settings',							 								align = 'center'},
+	{type = 'checkbox', 	text = 'Pause Enabled',								 								key = 'kPause', 		default = true},
+	{type = 'checkspin',	text = 'Light\'s Judgment - Units', 									key = 'LJ',					spin = 4, step = 1, max = 20, check = true,	desc = '|cffABD473World Spell usable on Argus.|r'},
+	{type = 'checkbox', 	text = 'Enable Bursting',								 							key = 'burst', 			default = true},
+--{type = 'checkbox', 	text = 'Auto-target enemy during Eye Beam',						key = 'eyeface', 		default = false},	-- Will be implemented soon...
+--{type = 'checkbox', 	text = 'Cancel Movement/Action Animations',						key = 'kanime', 		default = false},	-- Will be implemented soon...
+	{type = 'checkbox', 	text = 'Use \'Vengeful Retreat\'',										key = 'vengeful', 	default = true},
+	{type = 'checkbox', 	text = 'Use \'Fel Rush\'',														key = 'felrush', 		default = true},
+	{type = 'checkspin', 	text = 'Use \'Metamorphosis + Units to strike\'',			key = 'meta',       spin = 4, step = 1, max = 20, check = true },
+	{type = 'checkspin', 	text = 'Use \'Chaos Nova + Units to strike\'',				key = 'chaos',      spin = 4, step = 1, max = 20, check = true },
+	{type = 'checkbox', 	text = 'Use Trinket #1', 															key = 'trinket1',		default = true},
+	{type = 'checkbox', 	text = 'Use Trinket #2', 															key = 'trinket2', 	default = true,	desc = '|cffABD473Trinkets will be used whenever possible!|r'},
+	{type = 'ruler'},			{type = 'spacer'},
 	-- Survival
-	{type = 'header', 	text = 'Survival',									  	      align = 'center'},
-	{type = 'checkspin', 	text = 'Blur below HP%',               			key = 'blur',         spin = 60, check = true},
-	{type = 'checkspin', 	text = 'Netherwalk below HP%',              key = 'nether',       spin = 25, check = true},
-  {type = 'checkspin',	text = 'Healthstone',												key = 'HS',						spin = 45, check = true},
-  {type = 'checkspin',	text = 'Healing Potion',										key = 'AHP',					spin = 45, check = true},
-	{type = 'ruler'},	  {type = 'spacer'},
+	{type = 'header', 		text = 'Survival',									  	    					align = 'center'},
+	{type = 'checkspin', 	text = 'Blur below HP%',               								key = 'blur',         spin = 60, check = true},
+	{type = 'checkspin', 	text = 'Netherwalk below HP%',              					key = 'nether',       spin = 25, check = true},
+  {type = 'checkspin',	text = 'Healthstone',																	key = 'HS',						spin = 45, check = true},
+  {type = 'checkspin',	text = 'Healing Potion',															key = 'AHP',					spin = 45, check = true},
+	{type = 'ruler'},	  	{type = 'spacer'},
 	unpack(Mythic_GUI),
 }
 
@@ -86,7 +86,7 @@ local Cooldowns = {
 	{'Chaos Nova', 'player.area(8).enemies>UI(chaos_spin)&UI(chaos_check)'},
 	{'#Trinket1', 'UI(trinket1)'},
 	{'#Trinket2', 'UI(trinket2)'},
-	{'Light\'s Judgment', 'UI(LJ_check)&range<61&area(15).enemies>UI(LJ_spin)', 'enemies'}
+	{'Light\'s Judgment', 'UI(LJ_check)&range<61&area(15).enemies>UI(LJ_spin)', 'enemies.ground'}
 }
 
 local Burst = {
