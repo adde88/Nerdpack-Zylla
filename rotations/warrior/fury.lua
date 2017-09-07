@@ -3,6 +3,7 @@ local _, Zylla = ...
 local Mythic_GUI = _G.Mythic_GUI
 local Fel_Explosives = _G.Fel_Explosives
 local Logo_GUI = _G.Logo_GUI
+local unpack = _G.unpack
 
 local GUI = {
 	unpack(Logo_GUI),
@@ -21,9 +22,13 @@ local GUI = {
 	{type = 'ruler'},	{type = 'spacer'},
 	-- Survival
 	{type = 'header', 		size = 16, text = 'Survival',							align = 'center'},
-	{type = 'checkspin',	text = 'Victory Rush below HP%',					key = 'vrush',				spin = 80, check = true},
-	{type = 'checkspin',	text = 'Healthstone',											key = 'HS',						spin = 45, check = true},
-	{type = 'checkspin',	text = 'Healing Potion',									key = 'AHP',					spin = 45, check = true},
+	{type = 'checkspin',	text = 'Victory Rush below HP%',					key = 'vrush',				spin = 80, 	check = true},
+	{type = 'checkspin',	text = 'Healthstone',											key = 'HS',						spin = 45, 	check = true},
+	{type = 'checkspin',	text = 'Healing Potion',									key = 'AHP',					spin = 45, 	check = true},
+	-- PvP
+	{type = 'header', 		size = 16, text = 'PvP',									align = 'center'},
+	{type = 'checkspin',	text = 'Death Wish Stacks (max)',					key = 'DWS',					spin = 5, 	max = 10, 	step = 1, 	check = true},
+	{type = 'checkspin',	text = 'Death Wish HP% limit',						key = 'DWH',					spin = 5, 	max = 100, 	step = 5, 	check = true, desc = '|cffABD473Select how many stacks you want of \'Death Wish\', and the HP% limit you want to have on \'Death Wish\'!|r'},
 	unpack(Mythic_GUI),
 }
 
@@ -105,13 +110,13 @@ local AoE = {
 local ST = {
 	{'Bloodthirst', 'player.buff(Fujieda\'s Fury).stack<2', 'target'},
 	{'Execute', '{!player.buff(Juggernaut)||player.buff(Juggernaut).remains<2}}||player.buff(Stone Heart)', 'target'},
-	{'Rampage', 'player.rage==100&{target.health>20||{target.health<20&!talent(5,1)}||{player.buff(Massacre)&player.buff(Enrage).remains<1}}', 'player'},
+	{'Rampage', 'player.rage>=100&{target.health>20||{target.health<20&!talent(5,1)}||{player.buff(Massacre)&player.buff(Enrage).remains<gcd}}'},
 	{'Berserker Rage', 'talent(3,2)&spell(Odyn\'s Fury).cooldown<gcd&!buff(Enrage)', 'player'},
 	{'Dragon Roar', 'player.spell(Odyn\'s Fury).cooldown>20||player.spell(Odyn\'s Fury).cooldown<3', 'target'},
 	{'Odyn\'s Fury', 'player.buff(Battle Cry)&player.buff(Enrage)', 'target'},
 	{'Rampage', '!player.buff(Enrage)&!player.buff(Juggernaut)', 'target'},
 	{'Furious Slash', 'talent(6,2)&{!player.buff(Frenzy)||player.buff(Frenzy).stack<4}', 'target'},
-	{'Raging Blow', '!player.buff(Juggernaut)&player.buff(Enrage)', 'target'},
+	{'Raging Blow', '!player.buff(Juggernaut)&player.buff(Enrage)&!player.buff(Battle Trance)', 'target'},
 	{'Whirlwind', 'talent(3,1)&player.buff(Wrecking Ball)&player.buff(Enrage)', 'target'},
 	{'Execute', 'talent(6,3)||{!talent(6,3)&player.rage>50}', 'target'},
 	{'Bloodthirst', '!buff(Enrage)', 'player'},
@@ -134,9 +139,17 @@ local TwoTargets = {
 	{'Whirlwind', nil, 'target'}
 }
 
+local xPvP = {
+	{'Gladiator\'s Medallion', 'state(incapacitate)||state(stun)||state(fear)||state(horror)||state(sleep)||state(charm)', 'player'},
+	{'Adaptation', 'state(incapacitate)||state(stun)||state(fear)||state(horror)||state(sleep)||state(charm)', 'player'},
+	{'Disarm', 'range<=5&inFront', 'target'},
+	{'Spell Reflection', 'range<41&combat&alive&{interruptAt(80)||channeling.percent(5)}', 'enemies'},
+	{'Death Wish', 'player.buff(Death Wish).count<UI(DWS)&player.health>=UI(DWH)', 'player'}
+}
+
 local inCombat = {
 	{Keybinds},
-	{Interrupts, 'target.interruptAt(70)&toggle(Interrupts)'},
+	{Interrupts, '{channeling.percent(5)||interruptAt(70)}&toggle(Interrupts)'},
 	{Interrupts_Random},
 	{Survival, 'player.health<100'},
 	{Cooldowns, 'toggle(Cooldowns)&target.range<=5'},
@@ -144,12 +157,13 @@ local inCombat = {
 	{AoE, 'player.area(8).enemies>3'},
 	{ST, 'player.area(8).enemies<=3&target.range<=5&target.inFront'},
 	{Ranged, '!target.inMelee&target.inFront'},
+	{xPvP},
 	{Fel_Explosives, 'range<=5'}
 }
 
 local outCombat = {
 	{Keybinds},
-	{Interrupts, 'target.interruptAt(70)&toggle(Interrupts)'},
+	{Interrupts, '{channeling.percent(5)||interruptAt(70)}&toggle(Interrupts)'},
 	{Interrupts_Random}
 }
 
