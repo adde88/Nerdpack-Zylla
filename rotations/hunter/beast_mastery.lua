@@ -99,16 +99,16 @@ local Cooldowns = {
 	{'Light\'s Judgment', 'UI(LJ_check)&range<61&area(15).enemies>UI(LJ_spin)', 'enemies'}
 }
 
-local Interrupts_Normal = {
-	{'!Counter Shot'},
-	{'!Intimidation', 'player.spell(Counter Shot).cooldown>gcd&!prev_gcd(Counter Shot)&!target.immune(Stun)'},
+local Interrupts = {
+	{'!Counter Shot', nil, 'target'},
+	{'!Intimidation', 'player.spell(Counter Shot).cooldown>gcd&!prev_gcd(Counter Shot)&!immune(Stun)', 'target'},
 	{'!Freezing Trap', 'UI(FT_Int)&player.spell(Counter Shot).cooldown>gcd&!prev_gcd(Counter Shot)', 'target.ground'},
 }
 
 local Interrupts_Random = {
-	{'!Counter Shot', 'interruptAt(70)&toggle(xIntRandom)&toggle(Interrupts)&inFront&range<41', 'enemies'},
-	{'!Intimidation', 'interruptAt(70)&toggle(xIntRandom)&toggle(Interrupts)&player.spell(Counter Shot).cooldown>gcd&!prev_gcd(Counter Shot)&inFront&range<41', 'enemies'},
-	{'!Freezing Trap', 'UI(FT_Int)&interruptAt(1)&toggle(xIntRandom)&toggle(Interrupts)&player.spell(Counter Shot).cooldown>gcd&!prev_gcd(Counter Shot)&range<41', 'enemies.ground'},
+	{'!Counter Shot', '{channeling.percent(5)||interruptAt(70)}&toggle(xIntRandom)&toggle(Interrupts)&inFront&range<41', 'enemies'},
+	{'!Intimidation', '{channeling.percent(5)||interruptAt(70)}&toggle(xIntRandom)&toggle(Interrupts)&player.spell(Counter Shot).cooldown>gcd&!prev_gcd(Counter Shot)&inFront&range<41', 'enemies'},
+	{'!Freezing Trap', '{channeling.percent(5)||interruptAt(5)}&UI(FT_Int)&toggle(xIntRandom)&toggle(Interrupts)&player.spell(Counter Shot).cooldown>gcd&!prev_gcd(Counter Shot)&range<41', 'enemies.ground'},
 }
 
 local xCombat = {
@@ -137,20 +137,21 @@ local xPet = {
 }
 
 local xPvP = {
-	{'Gladiator\'s Medallion', 'player.state(incapacitate)||player.state(stun)||player.state(fear)||player.state(horror)||player.state(sleep)||player.state(charm)', 'player'},
-	{'Viper Sting', 'target.range<41&target.health<80', 'target'},
-	{'Scorpid Sting', 'target.inMelee', 'target'},
-	{'Spider Sting', 'target.range<41', 'target'},
-	{'Dire Beast: Hawk', 'target.range<41', 'target.ground'},
-	{'Dire Beast: Basilisk', 'target.range<41', 'target.ground'},
-	{'Interlope', 'target.range<41'},
+	{'Gladiator\'s Medallion', 'state(incapacitate)||state(stun)||state(fear)||state(horror)||state(sleep)||state(charm)', 'player'},
+	{'Adaptation', 'state(incapacitate)||state(stun)||state(fear)||state(horror)||state(sleep)||state(charm)', 'player'},
+	{'Viper Sting', 'range<41&health<80', 'target'},
+	{'Scorpid Sting', 'inMelee', 'target'},
+	{'Spider Sting', 'range<41', 'target'},
+	{'Dire Beast: Hawk', 'range<41', 'target.ground'},
+	{'Dire Beast: Basilisk', 'range<41', 'target.ground'},
+	{'Interlope', 'range<41'},
 }
 
 local inCombat = {
 	{Keybinds},
 	{Survival},
 	{Interrupts_Random},
-	{Interrupts_Normal, 'target.interruptAt(70)&toggle(Interrupts)&target.inFront&target.range<41'},
+	{Interrupts, '{channeling.percent(5)||interruptAt(70)}&toggle(Interrupts)&inFront&range<41'},
 	{Cooldowns, 'toggle(Cooldowns)'},
 	{Fel_Explosives, 'range<41'},
 	{xCombat, 'target.range<41&target.inFront'},
@@ -163,7 +164,7 @@ local outCombat = {
 	{Keybinds},
 	{PreCombat},
 	{Interrupts_Random},
-	{Interrupts_Normal, 'target.interruptAt(70)&toggle(Interrupts)&target.inFront&target.range<41'},
+	{Interrupts, '{channeling.percent(5)||interruptAt(70)}&toggle(Interrupts)&inFront&range<41'},
 }
 
 NeP.CR:Add(253, {
