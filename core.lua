@@ -65,13 +65,13 @@ function Zylla.onFlagChange()
       -- This should contain the stuff to execute when player is flagged AFK
       NeP.Interface:toggleToggle('mastertoggle')
     end
-    DEFAULT_CHAT_FRAME:AddMessage("Player is AFK. Stopping Zylla's Rotation.");
+    DEFAULT_CHAT_FRAME:AddMessage("|cffC41F3BPlayer is AFK! Stopping Zylla's Combat Routine.|r");
     Zylla.isAFK = true;
   elseif (not UnitIsAFK("player") and Zylla.isAFK) then
     -- Player has been flagged un-AFK
     -- This should contain the stuff to execute when player is flagged as not AFK
     NeP.Interface:toggleToggle('mastertoggle')
-    DEFAULT_CHAT_FRAME:AddMessage("Player is unAFK. Restarting Zylla's Rotation.")
+    DEFAULT_CHAT_FRAME:AddMessage("|cffFFFB2FPlayer is unAFK! Restarting Zylla's Combat Routine.|r")
     Zylla.isAFK = false;
   -- else
   -- Player's flag change concerned DND, not becoming AFK or un-AFK
