@@ -42,7 +42,7 @@ local exeOnLoad = function()
 
 	print('|cffADFF2F ---------------------------------------------------------------------------|r')
 	print('|cffADFF2F --- |rDemon Hunter |cffADFF2FHavoc|r')
-	print('|cffADFF2F --- |rRecommended Talents: ROTATION IS NOT READY FOR RELEASE.')
+	print('|cffADFF2F --- |rRecommended Talents: Rotation is in dev. phase. Please report any issues found!.')
 	print('|cffADFF2F ----------------------------------------------------------------------|r')
 	print('|cffFFFB2F Configuration: |rRight-click MasterToggle and go to Combat Routines Settings!|r')
 
