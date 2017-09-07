@@ -16,12 +16,13 @@ local GUI = {
 	-- Settings
 	{type = 'header', 	text = 'Class Settings', 													align = 'center'},
 	{type = 'checkbox', text = 'Pause Enabled', 													key = 'kPause', 	default = true},
+	{type = 'checkspin',text = 'Light\'s Judgment - Units', 							key = 'LJ',				spin = 4, step = 1, max = 20, check = true,	desc = '|cff69CCF0World Spell usable on Argus.|r'},
 	{type = 'checkbox', text = 'Ring of Frost (Interrupt)',								key = 'RoF_Int',	default = true},
 	{type = 'checkbox', text = 'Polymorph (Interrupt)',										key = 'Pol_Int',	default = false},
 	{type = 'checkbox', text = 'Use Trinket #1', 													key = 'trinket1',	default = true},
-	{type = 'checkbox', text = 'Use Trinket #2', 													key = 'trinket2', default = true},
+	{type = 'checkbox', text = 'Use Trinket #2', 													key = 'trinket2', default = true,	desc = '|cff69CCF0Trinkets will be used whenever possible!|r'},
 	{type = 'spacer'},
-	{type = 'checkspin', 	text = 'Kil\'Jaeden\'s Burning Wish - Units', 	key = 'kj', align = 'left', width = 55, step = 1, spin = 4, max = 15, check = true},
+	{type = 'checkspin', 	text = 'Kil\'Jaeden\'s Burning Wish - Units', 	key = 'kj', align = 'left', width = 55, step = 1, spin = 4, max = 15, check = true, desc = '|cff69CCF0Legendary will be used only on selected amount of units!|r'},
 	{type = 'ruler'},	{type = 'spacer'},
 	-- Survival
 	{type = 'header', 		text = 'Survival',									 	 					align = 'center'},
@@ -88,6 +89,7 @@ local Cooldowns = {
 	{'#144259', 'UI(kj_check)&target.range<41&target.area(10).enemies>UI(kj_spin)&equipped(144259)'}, -- Kil'jaeden's Burning Wish / AoE Trinket
 	{'#trinket1', 'UI(trinket1)'},
 	{'#trinket2', 'UI(trinket2)'},
+	{'Light\'s Judgment', 'UI(LJ_check)&range<61&area(15).enemies>=UI(LJ_spin)', 'enemies.ground'}
 }
 
 local Survival = {
@@ -184,7 +186,7 @@ NeP.CR:Add(63, {
 --waitfor = true,
 	ooc = outCombat,
 	gui = GUI,
-	gui_st = {title='Zylla\'s Combat Routines', width='256', height='520', color='A330C9'},
+	gui_st = {title='Zylla\'s Combat Routines', width='256', height='570', color='A330C9'},
 	ids = Zylla.SpellIDs[Zylla.Class],
 	wow_ver = Zylla.wow_ver,
 	nep_ver = Zylla.nep_ver,
