@@ -27,7 +27,7 @@ local GUI = {
 	{type = 'checkspin',	text = 'Healing Potion',									key = 'AHP',					spin = 45, 	check = true},
 	-- PvP
 	{type = 'header', 		size = 16, text = 'PvP',									align = 'center'},
-	{type = 'checkspin',	text = 'Death Wish Stacks (max)',					key = 'DWS',					spin = 5, 	max = 10, 	step = 1, 	check = true},
+	{type = 'checkspin',	text = 'Death Wish - Max Stacks',					key = 'DWS',					spin = 5, 	max = 10, 	step = 1, 	check = true},
 	{type = 'checkspin',	text = 'Death Wish HP% limit',						key = 'DWH',					spin = 5, 	max = 100, 	step = 5, 	check = true, desc = '|cffABD473Select how many stacks you want of \'Death Wish\', and the HP% limit you want to have on \'Death Wish\'!|r'},
 	unpack(Mythic_GUI),
 }
@@ -58,17 +58,17 @@ local Keybinds = {
 }
 
 local Interrupts = {
-	{'!Pummel', 'range<=5&inFront', 'target'},
-	{'!Storm Bolt', 'inFront&range<30&talent(2,2)&!immune(stun)&spell(Pummel).cooldown>gcd&!prev_gcd(Pummel)', 'target'},
-	{'!Arcane Torrent', 'range<=5&spell(Pummel).cooldown>gcd&!prev_gcd(Pummel)', 'target'},
-	{'!Shockwave', 'inFront&range<=5&talent(2,1)&!immune(stun)&spell(Pummel).cooldown>gcd&!prev_gcd(Pummel)', 'target'},
+	{'!Pummel', '{channeling.percent(5)||interruptAt(70)}&range<=5&inFront', 'target'},
+	{'!Storm Bolt', '{channeling.percent(5)||interruptAt(70)}&inFront&range<30&talent(2,2)&!immune(stun)&spell(Pummel).cooldown>gcd&!prev_gcd(Pummel)', 'target'},
+	{'!Arcane Torrent', '{channeling.percent(5)||interruptAt(70)}&range<=5&spell(Pummel).cooldown>gcd&!prev_gcd(Pummel)', 'target'},
+	{'!Shockwave', '{channeling.percent(5)||interruptAt(70)}&inFront&range<=5&talent(2,1)&!immune(stun)&spell(Pummel).cooldown>gcd&!prev_gcd(Pummel)', 'target'},
 }
 
 local Interrupts_Random = {
-	{'!Pummel', 'interruptAt(70)&toggle(xIntRandom)&toggle(Interrupts)&inFront&range<=5', 'enemies'},
-	{'!Storm Bolt', 'interruptAt(70)&toggle(xIntRandom)&toggle(Interrupts)&player.spell(Pummel).cooldown>gcd&!prev_gcd(Pummel)&inFront&range<21', 'enemies'},
-	{'!Arcane Torrent', 'interruptAt(70)&toggle(xIntRandom)&toggle(Interrupts)&player.spell(Pummel).cooldown>gcd&!prev_gcd(Pummel)&inFront&range<=5', 'enemies'},
-	{'!Shockwave', 'interruptAt(75)&toggle(xIntRandom)&toggle(Interrupts)&player.spell(Pummel).cooldown>gcd&!prev_gcd(Pummel)&inFront&range<11', 'enemies'},
+	{'!Pummel', '{channeling.percent(5)||interruptAt(70)}&toggle(xIntRandom)&toggle(Interrupts)&inFront&range<=5', 'enemies'},
+	{'!Storm Bolt', '{channeling.percent(5)||interruptAt(70)}&toggle(xIntRandom)&toggle(Interrupts)&player.spell(Pummel).cooldown>gcd&!prev_gcd(Pummel)&inFront&range<21', 'enemies'},
+	{'!Arcane Torrent', '{channeling.percent(5)||interruptAt(70)}&toggle(xIntRandom)&toggle(Interrupts)&player.spell(Pummel).cooldown>gcd&!prev_gcd(Pummel)&inFront&range<=5', 'enemies'},
+	{'!Shockwave', '{channeling.percent(5)||interruptAt(75)}&toggle(xIntRandom)&toggle(Interrupts)&player.spell(Pummel).cooldown>gcd&!prev_gcd(Pummel)&inFront&range<11', 'enemies'},
 }
 
 local Survival = {
@@ -149,7 +149,7 @@ local xPvP = {
 
 local inCombat = {
 	{Keybinds},
-	{Interrupts, '{channeling.percent(5)||interruptAt(70)}&toggle(Interrupts)'},
+	{Interrupts, 'toggle(Interrupts)'},
 	{Interrupts_Random},
 	{Survival, 'player.health<100'},
 	{Cooldowns, 'toggle(Cooldowns)&target.range<=5'},
