@@ -14,12 +14,13 @@ local GUI = {
 	{type = 'ruler'},	 {type = 'spacer'},
 	-- General
 	{type = 'header',		text = 'General:',																				align = 'center'},
-	{type = 'checkbox', text = 'Auto-target when casting Fists of Fury', 					key = 'xfistface', 	default = true},
+--{type = 'checkbox', text = 'Auto-target when casting Fists of Fury', 					key = 'xfistface', 	default = true},	--XXX: temp disabled.
+	{type = 'checkspin',text = 'Light\'s Judgment - Units', 				key = 'LJ',					spin = 4, step = 1, max = 20, check = true,	desc = '|cff00FF96World Spell usable on Argus.|r'},
 	{type = 'checkbox',	text = 'Automatic Res',																		key = 'auto_res',		default = true},
 	{type = 'checkbox',	text = '5 min DPS test', 																	key = 'dpstest',		default = false},
 	{type = 'checkbox',	text = 'Pause Enabled', 																	key = 'kPause',			default = true},
 	{type = 'checkbox', text = 'Use Trinket #1', 																	key = 'trinket1',		default = true},
-	{type = 'checkbox', text = 'Use Trinket #2', 																	key = 'trinket2', 	default = true},
+	{type = 'checkbox', text = 'Use Trinket #2', 																	key = 'trinket2', 	default = true, 	desc = '|cff00FF96Trinkets will be used in sync with \'Serenity\' or \'Storm, Earth, and Fire\'!|r'},
 	-- Survival
 	{type = 'spacer'},		{type = 'rule'},
 	{type = 'header',			text = 'Survival:', 																		align = 'center'},
@@ -98,7 +99,8 @@ local Cooldowns = {
 	-- Use Xuen only while hero or potion (WOD: 156423, Legion: 188027) is active
 	{'Invoke Xuen, the White Tiger', 'player.hashero||{player.buff(Serenity)||player.buff(Storm, Earth, and Fire)}'},
 	{'Touch of Karma', 'UI(tok_check)&{player.health<=UI(tok_spin)||player.incdmg(5)>player.health.max*0.20}', 'target'},
-	{'Serenity', nil, 'player'}
+	{'Serenity', nil, 'player'},
+	{'Light\'s Judgment', 'UI(LJ_check)&range<61&area(15).enemies>=UI(LJ_spin)', 'enemies.ground'}
 }
 
 local Dispel = {
@@ -215,11 +217,11 @@ NeP.CR:Add(269, {
 	name='[|cff'..Zylla.addonColor..'Zylla\'s|r] Monk - Windwalker',
 	ic = {
 		{inCombat, '!player.channeling(Fists of Fury)'},
-		{'&@Zylla.face', 'UI(xfistface)&player.channeling(Fists of Fury)', 'target'}
+	--{'&@Zylla.face', 'UI(xfistface)&player.channeling(Fists of Fury)', 'target'}	-- XXX:temp disabled
 	},
 	ooc = outCombat,
 	gui = GUI,
-	gui_st = {title='Zylla\'s Combat Routines', width='256', height='570', color='A330C9'},
+	gui_st = {title='Zylla\'s Combat Routines', width='256', height='670', color='A330C9'},
 	ids = Zylla.SpellIDs[Zylla.Class],
 	wow_ver = Zylla.wow_ver,
 	nep_ver = Zylla.nep_ver,
