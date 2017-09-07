@@ -15,6 +15,7 @@ local GUI = {
 	-- Settings
 	{type = 'header', 	text = 'Class Settings',							 								align = 'center'},
 	{type = 'checkbox', text = 'Pause Enabled',								 								key = 'kPause', 		default = true},
+	{type = 'checkspin',text = 'Light\'s Judgment - Units', 									key = 'LJ',					spin = 4, step = 1, max = 20, check = true,	desc = '|cffABD473World Spell usable on Argus.|r'},
 	{type = 'checkbox', text = 'Enable Bursting',								 							key = 'burst', 			default = true},
 --{type = 'checkbox', text = 'Auto-target enemy during Eye Beam',						key = 'eyeface', 		default = false},	-- Will be implemented soon...
 --{type = 'checkbox', text = 'Cancel Movement/Action Animations',						key = 'kanime', 		default = false},	-- Will be implemented soon...
@@ -22,6 +23,8 @@ local GUI = {
 	{type = 'checkbox', text = 'Use \'Fel Rush\'',														key = 'felrush', 		default = true},
 	{type = 'checkspin', 	text = 'Use \'Metamorphosis + Units to strike\'',		key = 'meta',       spin = 4, step = 1, max = 20, check = true },
 	{type = 'checkspin', 	text = 'Use \'Chaos Nova + Units to strike\'',			key = 'chaos',      spin = 4, step = 1, max = 20, check = true },
+	{type = 'checkbox', text = 'Use Trinket #1', 															key = 'trinket1',		default = true},
+	{type = 'checkbox', text = 'Use Trinket #2', 															key = 'trinket2', 	default = true,	desc = '|cffABD473Trinkets will be used whenever possible!|r'},
 	{type = 'ruler'},	{type = 'spacer'},
 	-- Survival
 	{type = 'header', 	text = 'Survival',									  	      align = 'center'},
@@ -63,7 +66,7 @@ local Survival = {
 	{'Blur', 'health<=UI(blur_spin)&UI(blur_check)', 'player'},
 	{'Netherwalk', 'health<=UI(nether_spin)&UI(nether_check)', 'player'},
 	{'#127834', 'item(127834).usable&item(127834).count>0&health<=UI(AHP_spin)&UI(AHP_check)', 'player'}, 		-- Ancient Healing Potion
-	{'#5512', 'item(5512).usable&item(5512).count>0&health<=UI(HS_spin)&UI(HS_check)', 'player'}	 	--Health Stone
+	{'#5512', 'item(5512).usable&item(5512).count>0&health<=UI(HS_spin)&UI(HS_check)', 'player'}	 						--Health Stone
 }
 
 local Interrupts = {
@@ -80,7 +83,10 @@ local Cooldowns = {
 	{'Metamorphosis', 'range<41&combat&alive&area(8).enemies>UI(meta_spin)&UI(meta_check)', 'enemies.ground'},
 	{'Nemesis', 'player.spell(Chaos Blades).cooldown<gcd', 'target'},
 	{'Chaos Blades', nil, 'player'},
-	{'Chaos Nova', 'player.area(8).enemies>UI(chaos_spin)&UI(chaos_check)'}
+	{'Chaos Nova', 'player.area(8).enemies>UI(chaos_spin)&UI(chaos_check)'},
+	{'#Trinket1', 'UI(trinket1)'},
+	{'#Trinket2', 'UI(trinket2)'},
+	{'Light\'s Judgment', 'UI(LJ_check)&range<61&area(15).enemies>UI(LJ_spin)', 'enemies'}
 }
 
 local Burst = {

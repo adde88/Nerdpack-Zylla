@@ -7,22 +7,25 @@ local Logo_GUI = _G.Logo_GUI
 local GUI = {
 	unpack(Logo_GUI),
 	-- Keybinds
-	{type = 'header', 	text = 'Keybinds', align = 'center'},
-	{type = 'text', 	text = 'Left Shift: Pause', align = 'center'},
-	{type = 'text', 	text = 'Left Ctrl: Infernal Strike @ Cursor', align = 'center'},
-	{type = 'text', 	text = 'Left Alt: Sigil of Flame @ Cursor', align = 'center'},
-	{type = 'ruler'},	{type = 'spacer'},
+	{type = 'header', 		text = 'Keybinds', 																					align = 'center'},
+	{type = 'text', 			text = 'Left Shift: Pause', 																align = 'center'},
+	{type = 'text', 			text = 'Left Ctrl: Infernal Strike @ Cursor',						 		align = 'center'},
+	{type = 'text', 			text = 'Left Alt: Sigil of Flame @ Cursor', 								align = 'center'},
+	{type = 'ruler'},			{type = 'spacer'},
 	-- Settings
-	{type = 'header', 	text = 'Class Settings',										align = 'center'},
-	{type = 'checkbox', text = 'Pause Enabled', 										key = 'kPause', default = true},
-	{type = 'checkbox', text = 'Auto use Infernal Strike with Flame Crash Talent', 	key = 'kIS', 	default = true},
-	{type = 'ruler'},	{type = 'spacer'},
+	{type = 'header', 		text = 'Class Settings',																		align = 'center'},
+	{type = 'checkbox', 	text = 'Pause Enabled', 																		key = 'kPause', 	default = true},
+	{type = 'checkspin',	text = 'Light\'s Judgment - Units', 												key = 'LJ',				spin = 4, step = 1, max = 20, check = true,	desc = '|cffABD473World Spell usable on Argus.|r'},
+	{type = 'checkbox', 	text = 'Auto use Infernal Strike with Flame Crash Talent', 	key = 'kIS', 			default = true},
+	{type = 'checkbox', 	text = 'Use Trinket #1', 																		key = 'trinket1',	default = true},
+	{type = 'checkbox', 	text = 'Use Trinket #2', 																		key = 'trinket2', default = true,	desc = '|cffABD473Trinkets will be used whenever possible!|r'},
+	{type = 'ruler'},			{type = 'spacer'},
 	-- Survival
-	{type = 'header', 	text = 'Survival',									  	      align = 'center'},
-	{type = 'spinner', 	text = 'Soul Cleave below HP%',               key = 'SC_HP',           default = 85},
-  {type = 'checkspin',	text = 'Healthstone',												key = 'HS',						spin = 45, check = true},
-  {type = 'checkspin',	text = 'Healing Potion',										key = 'AHP',					spin = 45, check = true},
-	{type = 'ruler'},	  {type = 'spacer'},
+	{type = 'header', 		text = 'Survival',									  	      							align = 'center'},
+	{type = 'spinner', 		text = 'Soul Cleave below HP%',               							key = 'SC_HP',    default = 85},
+  {type = 'checkspin',	text = 'Healthstone',																				key = 'HS',				spin = 45, check = true},
+  {type = 'checkspin',	text = 'Healing Potion',																		key = 'AHP',			spin = 45, check = true},
+	{type = 'ruler'},	  	{type = 'spacer'},
 	unpack(Mythic_GUI),
 }
 
@@ -72,8 +75,8 @@ local Interrupts_Random = {
 }
 
 local Survival ={
-  {'#127834', 'item(127834).usable&item(127834).count>0&player.health<=UI(AHP_spin)&UI(AHP_check)'}, 		-- Ancient Healing Potion
-  {'#5512', 'item(5512).usable&item(5512).count>0&player.health<=UI(HS_spin)&UI(HS_check)', 'player'}, 	--Health Stone
+	{'#127834', 'item(127834).usable&item(127834).count>0&health<=UI(AHP_spin)&UI(AHP_check)', 'player'}, 		-- Ancient Healing Potion
+	{'#5512', 'item(5512).usable&item(5512).count>0&health<=UI(HS_spin)&UI(HS_check)', 'player'}	 						--Health Stone
 }
 
 local xTaunts = {
@@ -89,6 +92,9 @@ local Mitigations = {
 }
 
 local xCombat = {
+	{'#Trinket1', 'UI(trinket1)'},
+	{'#Trinket2', 'UI(trinket2)'},
+	{'Light\'s Judgment', 'UI(LJ_check)&range<61&area(15).enemies>UI(LJ_spin)', 'enemies'},
 	{'Spirit Bomb', 'count(Frailty).enemies.debuffs==0&player.buff(Soul Fragments).count>0', 'target'},
 	{'Immolation Aura'},
 	{'Felblade', 'player.pain<81', 'target'},
