@@ -81,8 +81,8 @@ local Keybinds = {
 
 local Survival = {
 	{'Exhilaration', 'player.health<=UI(E_HP_spin)&UI(E_HP_check)'},
-	{'#127834', 'item(127834).usable&item(127834).count>0&player.health<=UI(AHP_spin)&UI(AHP_check)'}, 		-- Ancient Healing Potion
-	{'#5512', 'item(5512).usable&item(5512).count>0&player.health<=UI(HS_spin)&UI(HS_check)', 'player'}, 	--Health Stone
+	{'#127834', 'item(127834).usable&item(127834).count>0&health<=UI(AHP_spin)&UI(AHP_check)', 'player'}, 		-- Ancient Healing Potion
+	{'#5512', 'item(5512).usable&item(5512).count>0&health<=UI(HS_spin)&UI(HS_check)', 'player'}, 						--Health Stone
 	{'Aspect of the Turtle', 'player.health<=UI(AotT_spin)&UI(AotT_check)'},
 	{'Feign Death', 'player.health<=UI(FD_spin)&UI(FD_check)&equipped(137064)'},
 	{'%pause', 'player.buff(Feign Death)'},
