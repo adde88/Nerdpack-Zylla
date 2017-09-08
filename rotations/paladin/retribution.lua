@@ -105,7 +105,7 @@ local Group = {
 }
 
 local Interrupts = {
-	{'!Rebuke', 'range<=5', 'target'},
+	{'!Rebuke', 'inFront&range<=5', 'target'},
 	{'!Hammer of Justice', '!equipped(137065)&range<20&player.spell(Rebuke).cooldown>gcd&!player.lastgcd(Rebuke)', 'target'},
 	{'!Hammer of Justice', 'equipped(137065)&health>74&range<20&player.spell(Rebuke).cooldown>gcd&!player.lastgcd(Rebuke)', 'target'},
 	{'!Blinding Light', 'range<20&spell(Rebuke).cooldown>gcd&!player.lastgcd(Rebuke)', 'target'},
@@ -113,11 +113,11 @@ local Interrupts = {
 }
 
 local Interrupts_Random = {
-	{'!Rebuke', 'toggle(xIntRandom)&toggle(Interrupts)&inFront&range<=5&interruptAt(70)', 'enemies'},
-	{'!Hammer of Justice', '!equipped(137065)&range<20&player.spell(Rebuke).cooldown>gcd&!player.lastgcd(Rebuke)&interruptAt(70)', 'enemies'},
-	{'!Hammer of Justice', 'equipped(137065)&health>74&range<20&player.spell(Rebuke).cooldown>gcd&!player.lastgcd(Rebuke)&interruptAt(70)', 'enemies'},
-	{'!Blinding Light', 'toggle(xIntRandom)&toggle(Interrupts)&player.spell(Rebuke).cooldown>gcd&!prev_gcd(Rebuke)&!immune(Stun)&inFront&range<20&interruptAt(70)', 'enemies'},
-	{'!Arcane Torrent', 'toggle(xIntRandom)&toggle(Interrupts)&player.spell(Rebuke).cooldown>gcd&!prev_gcd(Rebuke)&!immune(Stun)&inFront&range<=5&interruptAt(70)', 'enemies'}
+	{'!Rebuke', 'inFront&range<=5', 'enemies'},
+	{'!Hammer of Justice', '!equipped(137065)&range<20&player.spell(Rebuke).cooldown>gcd&!player.lastgcd(Rebuke)', 'enemies'},
+	{'!Hammer of Justice', 'equipped(137065)&health>74&range<20&player.spell(Rebuke).cooldown>gcd&!player.lastgcd(Rebuke)', 'enemies'},
+	{'!Blinding Light', 'player.spell(Rebuke).cooldown>gcd&!prev_gcd(Rebuke)&!immune(Stun)&inFront&range<20', 'enemies'},
+	{'!Arcane Torrent', 'player.spell(Rebuke).cooldown>gcd&!prev_gcd(Rebuke)&!immune(Stun)&inFront&range<=5', 'enemies'}
 }
 
 local Dispel = {
@@ -198,8 +198,8 @@ local inCombat = {
 	{Fel_Explosives, 'range<=5'},
 	{Combat, 'enemy&range<=5&inFront'},
 	{Group, 'player.movingfor<0.75&inGroup&toggle(groupAssist)'},
-	{Interrupts_Random},
-	{Interrupts, 'toggle(interrupts)&inFront&interruptAt(70)'},
+	{Interrupts_Random, 'toggle(xIntRandom)&toggle(interrupts)&interruptAt(70)'},
+	{Interrupts, 'toggle(interrupts)&interruptAt(70)'},
 	{Cooldowns, 'toggle(cooldowns)&range<=5'}
 }
 
