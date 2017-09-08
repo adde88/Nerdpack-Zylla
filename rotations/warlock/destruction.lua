@@ -71,7 +71,7 @@ end
 
 local Keybinds = {
 	{'%pause', 'keybind(lshift)&UI(kPause)'},
-	{'!Cataclysm', '!player.moving&keybind(lcontrol)', 'cursor.ground'},
+	{'!Cataclysm', 'player.movingfor<0.75&keybind(lcontrol)', 'cursor.ground'},
 	{'!Rain of Fire', 'keybind(lalt)', 'cursor.ground'},
 }
 
@@ -99,8 +99,8 @@ local Survival = {
 }
 
 local Cooldowns = {
-	{'Summon Infernal', '!player.moving&toggle(aoe)&UI(kPet)&!talent(6,1)&target.area(10).enemies>2'},
-	{'Summon Doomguard', '!player.moving&UI(kPet)&!talent(6,1)&target.area(10).enemies<3'},
+	{'Summon Infernal', 'player.movingfor<0.75&toggle(aoe)&UI(kPet)&!talent(6,1)&target.area(10).enemies>2'},
+	{'Summon Doomguard', 'player.movingfor<0.75&UI(kPet)&!talent(6,1)&target.area(10).enemies<3'},
 	{'Soul Harvest', 'count(Immolate).enemies.debuffs>UI(SH_units)'},
 	{'Grimoire: Imp', 'talent(6,2)', 'target'},
 	{'#Trinket1', 'UI(trinket1)'},
@@ -108,14 +108,14 @@ local Cooldowns = {
 }
 
 local Interrupts = {
-	{'!Fear', '!player.moving&interruptAt(12)&inFront&range<41&UI(k_FEAR)', 'target'},
-	{'!Shadowfury', '!player.moving&advanced&interruptAt(12)&inFront&range<31', 'target.ground'},
+	{'!Fear', 'player.movingfor<0.75&interruptAt(12)&inFront&range<41&UI(k_FEAR)', 'target'},
+	{'!Shadowfury', 'player.movingfor<0.75&advanced&interruptAt(12)&inFront&range<31', 'target.ground'},
 	{'!Mortal Coil', 'interruptat(70)&inFront&range<21', 'target'},
 }
 
 local Interrupts_Random = {
-	{'!Fear', '!player.moving&interruptAt(12)&inFront&range<41&UI(k_FEAR)&combat&alive', 'enemies'},
-	{'!Shadowfury', '!player.moving&interruptAt(70)&advanced&range<31&combat&alive', 'enemies.ground'},
+	{'!Fear', 'player.movingfor<0.75&interruptAt(12)&inFront&range<41&UI(k_FEAR)&combat&alive', 'enemies'},
+	{'!Shadowfury', 'player.movingfor<0.75&interruptAt(70)&advanced&range<31&combat&alive', 'enemies.ground'},
 	{'!Mortal Coil', 'interruptAt(5)&inFront&range<21&UI(xIntRandom)&combat&alive', 'enemies'},
 }
 
@@ -123,17 +123,17 @@ local xCombat = {
 	{'Shadowburn', 'player.buff(Conflagration of Chaos).duration<=action(Chaos Bolt.cast_time)'},
 	{'Shadowburn', 'player.soul_shard<5&{{player.spell(Shadowburn).charges==1&set_bonus(T19)==4&player.spell(Shadowburn).recharge<action(Chaos Bolt).cast_time}||{player.spell(Shadowburn).charges==2}&set_bonus(T19)==4}}'},
 	{'Havoc', 'toggle(aoe)&player.area(40).enemies>1&!debuff&!is(target)&combat&alive', 'enemies'},
-	{'Chaos Bolt', '!player.moving&player.soulshards==5', 'target'},
-	{'Chaos Bolt', '!player.moving&player.area(40).enemies<4&enemies.debuff(Havoc).duration>player.spell(Chaos Bolt).casttime&!target.debuff(Havoc)', 'target'},
-	{'Chaos Bolt', '!player.moving&player.area(40).enemies<3&target.ttd<11', 'target'},
+	{'Chaos Bolt', 'player.movingfor<0.75&player.soulshards==5', 'target'},
+	{'Chaos Bolt', 'player.movingfor<0.75&player.area(40).enemies<4&enemies.debuff(Havoc).duration>player.spell(Chaos Bolt).casttime&!target.debuff(Havoc)', 'target'},
+	{'Chaos Bolt', 'player.movingfor<0.75&player.area(40).enemies<3', 'target'},
 	{'Dimensional Rift', '{player.spell(Dimensional Rift).charges>1}||{player.movingfor>0.3&player.soulshards<5}', 'target'},
 	{'Dimensional Rift', 'equipped(144369)&player.buff(Lessons of Spacetime).duration<gcd&{{!talent(6,1)&player.spell(Summon Doomguard).duration<gcd}||{talent(4,3)&player.spell(Soul Harvest).cooldown<gcd}}', 'target'},
-	{'Channel Demonfire', '!player.moving&debuff(Immolate).duration>3&debuff(Immolate).count.any>=UI(cd_units)&range<41&combat&alive', 'enemies'},
-	{'Rain of Fire', '!player.moving&advanced&toggle(aoe)&area(10).enemies>2&combat&alive', 'enemies.ground'},
+	{'Channel Demonfire', 'player.movingfor<0.75&debuff(Immolate).duration>3&count(Immolate).enemies.debuffs>UI(cd_units)&range<41&combat&alive', 'enemies'},
+	{'Rain of Fire', 'player.movingfor<0.75&advanced&toggle(aoe)&area(10).enemies>2&combat&alive', 'enemies.ground'},
 	{'Conflagrate', 'debuff(Immolate)&player.soulshards<5', 'target'},
-	{'Incinerate', '!player.moving&player.soulshards<5&debuff(Immolate)', 'target'},
+	{'Incinerate', 'player.movingfor<0.75&player.soulshards<5&debuff(Immolate)', 'target'},
 	{'Cataclysm', 'advanced&!target.moving&target.area(8).enemies>2', 'target.ground'},
-	{'Immolate', '!player.moving&combat&alive&count.enemies.debuffs<UI(umi_units)&debuff.duration<2.5', 'enemies'},
+	{'Immolate', 'player.movingfor<0.75&combat&alive&count.enemies.debuffs<UI(umi_units)&debuff.duration<2.5', 'enemies'},
 	{Pets},
 }
 
