@@ -8,22 +8,22 @@ local unpack = _G.unpack
 local GUI = {
 	unpack(Logo_GUI),
 	-- Keybinds
-	{type = 'header', 	text = 'Keybinds', 													align = 'center'},
-	{type = 'text', 		text = 'Left Shift: |cffF58CBAPause|r', 		align = 'center'},
-	{type = 'text', 		text = 'Left Ctrl:', 												align = 'left'},
-	{type = 'text', 		text = 'Left Alt: ', 												align = 'left'},
-	{type = 'text', 		text = 'Right Alt: ', 											align = 'left'},
+	{type = 'header', 	text = 'Keybinds', 														align = 'center'},
+	{type = 'text', 		text = 'Left Shift: |cffF58CBAPause|r', 			align = 'center'},
+	{type = 'text', 		text = 'Left Ctrl:|cffF58CBADivine Steed|r',	align = 'left'},
+	{type = 'text', 		text = 'Left Alt: ', 													align = 'left'},
+	{type = 'text', 		text = 'Right Alt: ', 												align = 'left'},
 	{type = 'ruler'},		{type = 'spacer'},
 	-- Settings
-	{type = 'header', 	text = 'Class Settings', 										align = 'center'},
-	{type = 'checkbox', text = 'Pause Enabled',											key = 'kPause', 		default = true},
-	{type = 'checkspin',text = 'Light\'s Judgment - Units', 				key = 'LJ',					spin = 4, step = 1, max = 20, check = true,	desc = '|cffF58CBAWorld Spell usable on Argus.|r'},
-	{type = 'checkbox', text = 'Blessing of Kings', 								key = 'BoK', 				default = true},
-	{type = 'checkbox', text = 'Blessing of Wisdom', 								key = 'BoW', 				default = true, desc = '|cffF58CBACheck to Enable Blessings on yourself.|r'},
-	{type = 'checkbox', text = 'Use Every Man for Himself', 				key = 'EMfH', 			default = true},
-	{type = 'checkbox', text = 'Use Blessing of Freedom', 					key = 'BoF', 				default = true},
-	{type = 'checkbox', text = 'Use Trinket #1', 										key = 'trinket1',		default = true},
-	{type = 'checkbox', text = 'Use Trinket #2', 										key = 'trinket2', 	default = true,	desc = '|cffF58CBATrinkets will be used whenever possible!|r'},
+	{type = 'header', 	text = 'Class Settings', 											align = 'center'},
+	{type = 'checkbox', text = 'Pause Enabled',												key = 'kPause', 		default = true},
+	{type = 'checkspin',text = 'Light\'s Judgment - Units', 					key = 'LJ',					spin = 4, step = 1, max = 20, check = true,	desc = '|cffF58CBAWorld Spell usable on Argus.|r'},
+	{type = 'checkbox', text = 'Blessing of Kings', 									key = 'BoK', 				default = true},
+	{type = 'checkbox', text = 'Blessing of Wisdom', 									key = 'BoW', 				default = true, desc = '|cffF58CBACheck to Enable Blessings on yourself.|r'},
+	{type = 'checkbox', text = 'Use Every Man for Himself', 					key = 'EMfH', 			default = true},
+	{type = 'checkbox', text = 'Use Blessing of Freedom', 						key = 'BoF', 				default = true},
+	{type = 'checkbox', text = 'Use Trinket #1', 											key = 'trinket1',		default = true},
+	{type = 'checkbox', text = 'Use Trinket #2', 											key = 'trinket2', 	default = true,	desc = '|cffF58CBATrinkets will be used whenever possible!|r'},
 	{type = 'ruler'},	{type = 'spacer'},
 	-- Survival
 	{type = 'header', 	text = 'Survival', 														align = 'center'},
@@ -190,6 +190,7 @@ local Opener = {
 }
 
 local inCombat = {
+	{Keybinds},
 	{Dispel, 'toggle(dispels)&!player.spell(Cleanse Toxins).cooldown'},
 	{Survival},
 	{Blessings},
@@ -203,6 +204,7 @@ local inCombat = {
 }
 
 local outCombat = {
+	{Keybinds},
 	{Dispel, 'toggle(dispels)&!spell(Cleanse Toxins).cooldown'},
 	{Interrupts_Random},
 	{Interrupts, 'toggle(interrupts)&inFront&{channeling.percent(5)||interruptAt(70)}'},
