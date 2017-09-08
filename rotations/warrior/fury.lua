@@ -68,7 +68,7 @@ local Interrupts_Random = {
 	{'!Pummel', 'interruptAt(70)&toggle(xIntRandom)&toggle(Interrupts)&inFront&range<=5', 'enemies'},
 	{'!Storm Bolt', 'interruptAt(70)&toggle(xIntRandom)&toggle(Interrupts)&player.spell(Pummel).cooldown>gcd&!prev_gcd(Pummel)&inFront&range<21', 'enemies'},
 	{'!Arcane Torrent', 'interruptAt(70)&toggle(xIntRandom)&toggle(Interrupts)&player.spell(Pummel).cooldown>gcd&!prev_gcd(Pummel)&inFront&range<=5', 'enemies'},
-	{'!Shockwave', '{channeling.percent(5)||interruptAt(75)}&toggle(xIntRandom)&toggle(Interrupts)&player.spell(Pummel).cooldown>gcd&!prev_gcd(Pummel)&inFront&range<11', 'enemies'},
+	{'!Shockwave', 'interruptAt(75)&toggle(xIntRandom)&toggle(Interrupts)&player.spell(Pummel).cooldown>gcd&!prev_gcd(Pummel)&inFront&range<11', 'enemies'},
 }
 
 local Survival = {
@@ -143,7 +143,7 @@ local xPvP = {
 	{'Gladiator\'s Medallion', 'state(incapacitate)||state(stun)||state(fear)||state(horror)||state(sleep)||state(charm)', 'player'},
 	{'Adaptation', 'state(incapacitate)||state(stun)||state(fear)||state(horror)||state(sleep)||state(charm)', 'player'},
 	{'Disarm', 'range<=5&inFront', 'target'},
-	{'Spell Reflection', 'range<41&combat&alive&{interruptAt(80)||channeling.percent(5)}', 'enemies'},
+	{'Spell Reflection', 'range<41&combat&alive&interruptAt(80)', 'enemies'},
 	{'Death Wish', 'player.buff(Death Wish).count<UI(DWS)&player.health>=UI(DWH)', 'player'}
 }
 
