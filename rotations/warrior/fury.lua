@@ -58,16 +58,16 @@ local Keybinds = {
 }
 
 local Interrupts = {
-	{'!Pummel', '{channeling.percent(5)||interruptAt(70)}&range<=5&inFront', 'target'},
-	{'!Storm Bolt', '{channeling.percent(5)||interruptAt(70)}&inFront&range<30&talent(2,2)&!immune(stun)&spell(Pummel).cooldown>gcd&!prev_gcd(Pummel)', 'target'},
-	{'!Arcane Torrent', '{channeling.percent(5)||interruptAt(70)}&range<=5&spell(Pummel).cooldown>gcd&!prev_gcd(Pummel)', 'target'},
-	{'!Shockwave', '{channeling.percent(5)||interruptAt(70)}&inFront&range<=5&talent(2,1)&!immune(stun)&spell(Pummel).cooldown>gcd&!prev_gcd(Pummel)', 'target'},
+	{'!Pummel', 'interruptAt(70)&range<=5&inFront', 'target'},
+	{'!Storm Bolt', 'interruptAt(70)&inFront&range<30&talent(2,2)&!immune(stun)&spell(Pummel).cooldown>gcd&!prev_gcd(Pummel)', 'target'},
+	{'!Arcane Torrent', 'interruptAt(70)&range<=5&spell(Pummel).cooldown>gcd&!prev_gcd(Pummel)', 'target'},
+	{'!Shockwave', 'interruptAt(70)&inFront&range<=5&talent(2,1)&!immune(stun)&spell(Pummel).cooldown>gcd&!prev_gcd(Pummel)', 'target'},
 }
 
 local Interrupts_Random = {
-	{'!Pummel', '{channeling.percent(5)||interruptAt(70)}&toggle(xIntRandom)&toggle(Interrupts)&inFront&range<=5', 'enemies'},
-	{'!Storm Bolt', '{channeling.percent(5)||interruptAt(70)}&toggle(xIntRandom)&toggle(Interrupts)&player.spell(Pummel).cooldown>gcd&!prev_gcd(Pummel)&inFront&range<21', 'enemies'},
-	{'!Arcane Torrent', '{channeling.percent(5)||interruptAt(70)}&toggle(xIntRandom)&toggle(Interrupts)&player.spell(Pummel).cooldown>gcd&!prev_gcd(Pummel)&inFront&range<=5', 'enemies'},
+	{'!Pummel', 'interruptAt(70)&toggle(xIntRandom)&toggle(Interrupts)&inFront&range<=5', 'enemies'},
+	{'!Storm Bolt', 'interruptAt(70)&toggle(xIntRandom)&toggle(Interrupts)&player.spell(Pummel).cooldown>gcd&!prev_gcd(Pummel)&inFront&range<21', 'enemies'},
+	{'!Arcane Torrent', 'interruptAt(70)&toggle(xIntRandom)&toggle(Interrupts)&player.spell(Pummel).cooldown>gcd&!prev_gcd(Pummel)&inFront&range<=5', 'enemies'},
 	{'!Shockwave', '{channeling.percent(5)||interruptAt(75)}&toggle(xIntRandom)&toggle(Interrupts)&player.spell(Pummel).cooldown>gcd&!prev_gcd(Pummel)&inFront&range<11', 'enemies'},
 }
 
@@ -163,7 +163,7 @@ local inCombat = {
 
 local outCombat = {
 	{Keybinds},
-	{Interrupts, '{channeling.percent(5)||interruptAt(70)}&toggle(Interrupts)'},
+	{Interrupts, 'interruptAt(70)&toggle(Interrupts)'},
 	{Interrupts_Random}
 }
 
