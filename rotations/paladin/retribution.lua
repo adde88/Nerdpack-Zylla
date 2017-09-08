@@ -113,11 +113,11 @@ local Interrupts = {
 }
 
 local Interrupts_Random = {
-	{'!Rebuke', 'toggle(xIntRandom)&toggle(Interrupts)&inFront&range<=5&{channeling.percent(5)||interruptAt(70)}', 'enemies'},
-	{'!Hammer of Justice', '!equipped(137065)&range<20&player.spell(Rebuke).cooldown>gcd&!player.lastgcd(Rebuke)&{channeling.percent(5)||interruptAt(70)}', 'enemies'},
-	{'!Hammer of Justice', 'equipped(137065)&health>74&range<20&player.spell(Rebuke).cooldown>gcd&!player.lastgcd(Rebuke)&{channeling.percent(5)||interruptAt(70)}', 'enemies'},
-	{'!Blinding Light', 'toggle(xIntRandom)&toggle(Interrupts)&player.spell(Rebuke).cooldown>gcd&!prev_gcd(Rebuke)&!immune(Stun)&inFront&range<20&{channeling.percent(5)||interruptAt(70)}', 'enemies'},
-	{'!Arcane Torrent', 'toggle(xIntRandom)&toggle(Interrupts)&player.spell(Rebuke).cooldown>gcd&!prev_gcd(Rebuke)&!immune(Stun)&inFront&range<=5&{channeling.percent(5)||interruptAt(70)}', 'enemies'}
+	{'!Rebuke', 'toggle(xIntRandom)&toggle(Interrupts)&inFront&range<=5&interruptAt(70)', 'enemies'},
+	{'!Hammer of Justice', '!equipped(137065)&range<20&player.spell(Rebuke).cooldown>gcd&!player.lastgcd(Rebuke)&interruptAt(70)', 'enemies'},
+	{'!Hammer of Justice', 'equipped(137065)&health>74&range<20&player.spell(Rebuke).cooldown>gcd&!player.lastgcd(Rebuke)&interruptAt(70)', 'enemies'},
+	{'!Blinding Light', 'toggle(xIntRandom)&toggle(Interrupts)&player.spell(Rebuke).cooldown>gcd&!prev_gcd(Rebuke)&!immune(Stun)&inFront&range<20&interruptAt(70)', 'enemies'},
+	{'!Arcane Torrent', 'toggle(xIntRandom)&toggle(Interrupts)&player.spell(Rebuke).cooldown>gcd&!prev_gcd(Rebuke)&!immune(Stun)&inFront&range<=5&interruptAt(70)', 'enemies'}
 }
 
 local Dispel = {
@@ -199,7 +199,7 @@ local inCombat = {
 	{Combat, 'enemy&range<=5&inFront'},
 	{Group, '!player.moving&inGroup&toggle(groupAssist)'},
 	{Interrupts_Random},
-	{Interrupts, 'toggle(interrupts)&inFront&{channeling.percent(5)||interruptAt(70)}'},
+	{Interrupts, 'toggle(interrupts)&inFront&interruptAt(70)'},
 	{Cooldowns, 'toggle(cooldowns)&range<=5'}
 }
 
@@ -207,7 +207,7 @@ local outCombat = {
 	{Keybinds},
 	{Dispel, 'toggle(dispels)&!spell(Cleanse Toxins).cooldown'},
 	{Interrupts_Random},
-	{Interrupts, 'toggle(interrupts)&inFront&{channeling.percent(5)||interruptAt(70)}'},
+	{Interrupts, 'toggle(interrupts)&inFront&interruptAt(70)'},
 	{Blessings},
 	{Group, '!player.moving&inGroup&toggle(groupAssist)'},
 	{'Flash of Light', '!player.moving&player.health<98', 'player'}

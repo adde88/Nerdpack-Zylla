@@ -107,9 +107,9 @@ local Interrupts = {
 }
 
 local Interrupts_Random = {
-	{'!Counter Shot', '{channeling.percent(5)||interruptAt(70)}&toggle(xIntRandom)&toggle(Interrupts)&inFront&range<41', 'enemies'},
-	{'!Intimidation', '{channeling.percent(5)||interruptAt(70)}&toggle(xIntRandom)&toggle(Interrupts)&player.spell(Counter Shot).cooldown>gcd&!prev_gcd(Counter Shot)&inFront&range<41', 'enemies'},
-	{'!Freezing Trap', '{channeling.percent(5)||interruptAt(5)}&UI(FT_Int)&toggle(xIntRandom)&toggle(Interrupts)&player.spell(Counter Shot).cooldown>gcd&!prev_gcd(Counter Shot)&range<41', 'enemies.ground'},
+	{'!Counter Shot', 'interruptAt(70)&toggle(xIntRandom)&toggle(Interrupts)&inFront&range<41', 'enemies'},
+	{'!Intimidation', 'interruptAt(70)&toggle(xIntRandom)&toggle(Interrupts)&player.spell(Counter Shot).cooldown>gcd&!prev_gcd(Counter Shot)&inFront&range<41', 'enemies'},
+	{'!Freezing Trap', 'interruptAt(5)&UI(FT_Int)&toggle(xIntRandom)&toggle(Interrupts)&player.spell(Counter Shot).cooldown>gcd&!prev_gcd(Counter Shot)&range<41', 'enemies.ground'},
 }
 
 local xCombat = {
@@ -152,7 +152,7 @@ local inCombat = {
 	{Keybinds},
 	{Survival},
 	{Interrupts_Random},
-	{Interrupts, '{channeling.percent(5)||interruptAt(70)}&toggle(Interrupts)&inFront&range<41'},
+	{Interrupts, 'interruptAt(70)&toggle(Interrupts)&inFront&range<41'},
 	{Cooldowns, 'toggle(Cooldowns)'},
 	{Fel_Explosives, 'range<41'},
 	{xCombat, 'target.range<41&target.inFront'},
@@ -165,7 +165,7 @@ local outCombat = {
 	{Keybinds},
 	{PreCombat},
 	{Interrupts_Random},
-	{Interrupts, '{channeling.percent(5)||interruptAt(70)}&toggle(Interrupts)&inFront&range<41'},
+	{Interrupts, 'interruptAt(70)&toggle(Interrupts)&inFront&range<41'},
 }
 
 NeP.CR:Add(253, {
