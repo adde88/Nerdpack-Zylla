@@ -101,7 +101,7 @@ local AoE = {
 	{Bladestorm},
 	{'Whirlwind', 'player.buff(Enrage)', 'target'},
 	{'Dragon Roar', 'talent(7,3)', 'target'},
-	{'Rampage', 'buff(Meat Cleaver)', 'player'},
+	{'Rampage', 'buff(Meat Cleaver)', 'target'},
 	{'Bloodthirst', nil, 'target'},
 	{'Whirlwind', nil, 'target'},
 	{'Shockwave', '!immune(stun)&player.area(10).enemies.inFront>2', 'target'},
@@ -110,7 +110,7 @@ local AoE = {
 local ST = {
 	{'Bloodthirst', 'player.buff(Fujieda\'s Fury).stack<2', 'target'},
 	{'Execute', '{!player.buff(Juggernaut)||player.buff(Juggernaut).remains<2}}||player.buff(Stone Heart)', 'target'},
-	{'Rampage', 'player.rage>=100&{target.health>20||{target.health<20&!talent(5,1)}||{player.buff(Massacre)&player.buff(Enrage).remains<gcd}}'},
+	{'Rampage', 'player.rage>=100&{health>20||{health<20&!talent(5,1)}||{player.buff(Massacre)&player.buff(Enrage).remains<gcd}}', 'target'},
 	{'Berserker Rage', 'talent(3,2)&spell(Odyn\'s Fury).cooldown<gcd&!buff(Enrage)', 'player'},
 	{'Dragon Roar', 'player.spell(Odyn\'s Fury).cooldown>20||player.spell(Odyn\'s Fury).cooldown<3', 'target'},
 	{'Odyn\'s Fury', 'player.buff(Battle Cry)&player.buff(Enrage)', 'target'},
@@ -131,7 +131,7 @@ local ST = {
 
 local TwoTargets = {
 	{Bladestorm},
-	{'Rampage', '!buff(Enrage)||{rage==100&!buff(Juggernaut)}||.buff(Massacre)', 'player'},
+	{'Rampage', '!buff(Enrage)||{rage==100&!buff(Juggernaut)}||buff(Massacre)', 'target'},
 	{'Bloodthirst', '!player.buff(Enrage)'},
 	{'Raging Blow', 'talent(6,3)', 'target'},
 	{'Dragon Roar', nil, 'target'},
@@ -152,11 +152,11 @@ local inCombat = {
 	{Interrupts, 'toggle(Interrupts)'},
 	{Interrupts_Random},
 	{Survival, 'player.health<100'},
-	{Cooldowns, 'toggle(Cooldowns)&target.range<=5'},
+	{Cooldowns, 'toggle(Cooldowns)&range<=5'},
 	{TwoTargets, 'player.area(8).enemies==2||player.area(8).enemies==3'},
 	{AoE, 'player.area(8).enemies>3'},
-	{ST, 'player.area(8).enemies<=3&target.range<=5&target.inFront'},
-	{Ranged, '!target.inMelee&target.inFront'},
+	{ST, 'player.area(8).enemies<=3&range<=5&inFront'},
+	{Ranged, '!inMelee&inFront'},
 	{xPvP},
 	{Fel_Explosives, 'range<=5'}
 }
