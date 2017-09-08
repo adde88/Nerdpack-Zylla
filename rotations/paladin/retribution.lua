@@ -210,7 +210,7 @@ local outCombat = {
 	{Interrupts, 'toggle(interrupts)&inFront&interruptAt(70)'},
 	{Blessings},
 	{Group, '!player.moving&inGroup&toggle(groupAssist)'},
-	{'Flash of Light', '!player.moving&player.health<98', 'player'}
+	{'Flash of Light', '!player.moving&player.health<90&UI(FoL_check)', 'player'}
 }
 
 NeP.CR:Add(70, {
