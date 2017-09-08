@@ -8,27 +8,28 @@ local unpack = _G.unpack
 local GUI = {
 	unpack(Logo_GUI),
 	-- Keybinds
-	{type = 'header', 	text = 'Keybinds', align = 'center'},
-	{type = 'text', 	text = 'Left Shift: Pause', align = 'center'},
-	{type = 'text', 	text = 'Left Ctrl: Heroic Leap', align = 'center'},
-	{type = 'text', 	text = 'Left Alt: ', align = 'center'},
-	{type = 'text', 	text = 'Right Alt: ', align = 'center'},
-	{type = 'ruler'},	{type = 'spacer'},
+	{type = 'header', 	size = 16, text = 'Keybinds', 										align = 'center'},
+	{type = 'text', 		text = 'Left Shift: |cffC79C6EPause', 						align = 'center'},
+	{type = 'text', 		text = 'Left Ctrl: |cffC79C6EHeroic Leap', 				align = 'center'},
+	{type = 'text', 		text = 'Left Alt: |cffC79C6EIntimidating Shout',	align = 'center'},
+	{type = 'ruler'},		{type = 'spacer'},
 	-- Settings
-	{type = 'header', 	text = 'Class Settings', 										align = 'center'},
-	{type = 'checkbox', text = 'Pause Enabled', 										key = 'kPause', 		default = true},
-	{type = 'checkbox', text = 'Use Trinket #1', 										key = 'trinket1',		default = true},
-	{type = 'checkbox', text = 'Use Trinket #2', 										key = 'trinket2', 	default = true,	desc = '|cffABD473Trinkets will be used whenever possible!|r'},
+	{type = 'header', 	size = 16, text = 'Class Settings', 							align = 'center'},
+	{type = 'checkbox', text = 'Pause Enabled', 													key = 'kPause', 		default = true},
+	{type = 'checkspin',text = 'Light\'s Judgment - Units', 							key = 'LJ',					spin = 4,	step = 1,	max = 20,	check = true,	desc = '|cffC79C6EWorld Spell usable on Argus.|r'},
+	{type = 'checkbox', text = 'Use Trinket #1', 													key = 'trinket1',		default = true},
+	{type = 'checkbox', text = 'Use Trinket #2', 													key = 'trinket2', 	default = true,	desc = '|cffC79C6ETrinkets will be used whenever possible!|r'},
 	{type = 'ruler'},	{type = 'spacer'},
 	-- Survival
-	{type = 'header', 		size = 16, text = 'Survival',							align = 'center'},
-	{type = 'checkspin',	text = 'Victory Rush below HP%',					key = 'vrush',				spin = 80, 	check = true},
-	{type = 'checkspin',	text = 'Healthstone',											key = 'HS',						spin = 45, 	check = true},
-	{type = 'checkspin',	text = 'Healing Potion',									key = 'AHP',					spin = 45, 	check = true},
+	{type = 'header', 		size = 16, text = 'Survival',										align = 'center'},
+	{type = 'checkspin',	text = 'Victory Rush below HP%',								key = 'vrush',				spin = 80, 	max = 100, step = 5, check = true, },
+	{type = 'checkspin',	text = 'Enraged Regeneration',									key = 'en_rege',			spin = 45, 	max = 100, step = 5, check = true, },
+	{type = 'checkspin',	text = 'Healthstone',														key = 'HS',						spin = 45, 	max = 100, step = 5, check = true, },
+	{type = 'checkspin',	text = 'Healing Potion',												key = 'AHP',					spin = 45, 	max = 100, step = 5, check = true, },
 	-- PvP
-	{type = 'header', 		size = 16, text = 'PvP',									align = 'center'},
-	{type = 'checkspin',	text = 'Death Wish - Max Stacks',					key = 'DWS',					spin = 5, 	max = 10, 	step = 1, 	check = true},
-	{type = 'checkspin',	text = 'Death Wish HP% limit',						key = 'DWH',					spin = 5, 	max = 100, 	step = 5, 	check = true, desc = '|cffABD473Select how many stacks you want of \'Death Wish\', and the HP% limit you want to have on \'Death Wish\'!|r'},
+	{type = 'header', 		size = 16, text = 'PvP',												align = 'center'},
+	{type = 'checkspin',	text = 'Death Wish - Max Stacks',								key = 'DWS',					spin = 5, 	max = 10, 	step = 1, 	check = true},
+	{type = 'checkspin',	text = 'Death Wish HP% limit',									key = 'DWH',					spin = 5, 	max = 100, 	step = 5, 	check = true, desc = '|cffC79C6ESelect how many stacks you want of \'Death Wish\', and the HP% limit you want to have on \'Death Wish\'!|r'},
 	unpack(Mythic_GUI),
 }
 
@@ -73,8 +74,10 @@ local Interrupts_Random = {
 
 local Survival = {
 	{'Victory Rush', 'player.health<=UI(vrush_spin)&UI(vrush_check)', 'target'},
+	{'Enraged Regeneration', 'player.health<=UI(en_rege)', 'player'},
 	{'#127834', 'item(127834).usable&item(127834).count>0&health<=UI(AHP_spin)&UI(AHP_check)', 'player'}, 		-- Ancient Healing Potion
 	{'#5512', 'item(5512).usable&item(5512).count>0&player.health<=UI(HS_spin)&UI(HS_check)', 'player'}, 			--Health Stone
+	{'Piercing Howl', 'player.area(15).enemies>4'},
 }
 
 local Cooldowns = {
@@ -100,6 +103,7 @@ local AoE = {
 	{'Odyn\'s Fury', 'player.buff(Battle Cry)&player.buff(Enrage)', 'target'},
 	{Bladestorm},
 	{'Whirlwind', 'player.buff(Enrage)', 'target'},
+	{'Blood Bath', nil, 'target'},
 	{'Dragon Roar', 'talent(7,3)', 'target'},
 	{'Rampage', 'buff(Meat Cleaver)', 'target'},
 	{'Bloodthirst', nil, 'target'},
@@ -123,6 +127,7 @@ local ST = {
 	{'Raging Blow', '!player.buff(Enrage)', 'target'},
 	{'Execute', nil, 'target'},
 	{'Raging Blow', nil, 'target'},
+	{'Blood Bath', nil, 'target'},
 	{'Bloodthirst', nil, 'target'},
 	{'Furious Slash', nil, 'target'},
 	{Bladestorm},
@@ -134,6 +139,7 @@ local TwoTargets = {
 	{'Rampage', '!buff(Enrage)||{rage==100&!buff(Juggernaut)}||buff(Massacre)', 'target'},
 	{'Bloodthirst', '!player.buff(Enrage)'},
 	{'Raging Blow', 'talent(6,3)', 'target'},
+	{'Blood Bath', nil, 'target'},
 	{'Dragon Roar', nil, 'target'},
 	{'Bloodthirst', nil, 'target'},
 	{'Whirlwind', nil, 'target'}
