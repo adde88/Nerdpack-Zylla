@@ -3,29 +3,34 @@ local _, Zylla = ...
 local Mythic_GUI = _G.Mythic_GUI
 local Fel_Explosives = _G.Fel_Explosives
 local Logo_GUI = _G.Logo_GUI
+local unpack = _G.unpack
 
 local GUI = {
 	unpack(Logo_GUI),
 	-- Keybinds
-	{type = 'header', 	text = 'Keybinds', align = 'center'},
-	{type = 'text', 	text = 'Left Shift: Pause', align = 'center'},
-	{type = 'text', 	text = 'Left Ctrl: Death and Decay @ cursor', align = 'center'},
-	{type = 'text', 	text = 'Left Alt: ', align = 'center'},
-	{type = 'text', 	text = 'Right Alt: ', align = 'center'},
-	{type = 'ruler'},	{type = 'spacer'},
+	{type = 'header', 		text = 'Keybinds', 																				align = 'center',	size = 16},
+	{type = 'text', 			text = 'Left Shift: |cffABD473Pause|r', 									align = 'center'},
+	{type = 'text', 			text = 'Left Ctrl: |cffABD473Death and Decay @ cursor|r', align = 'center'},
+	{type = 'text', 			text = 'Left Alt: ', 																			align = 'center'},
+	{type = 'text', 			text = 'Right Alt: ', 																		align = 'center'},
+	{type = 'ruler'},			{type = 'spacer'},
 	-- Settings
-	{type = 'checkbox', text = 'Pause Enabled', key = 'kPause', default = true},
-	{type = 'checkbox', text = 'Use Death Grip as backup Interrupt', key = 'DGInt', default = false},
-	{type = 'checkbox', text = 'Use Death Grip as backup Taunt', key = 'DGTaunt', default = false},
-	{type = 'ruler'},	{type = 'spacer'},
+	{type = 'header', 		text = 'Class Settings',																	align = 'center',	size = 16},
+	{type = 'checkbox', 	text = 'Pause Enabled', key = 'kPause', 									default = true},
+	{type = 'checkspin',	text = 'Light\'s Judgment - Units', 											key = 'LJ',				spin = 4, step = 1, max = 20, check = true,	desc = '|cffC41F3BWorld Spell usable on Argus.|r'},
+	{type = 'checkbox', 	text = 'Use Death Grip as backup Interrupt', 							key = 'DGInt', 		default = false},
+	{type = 'checkbox', 	text = 'Use Death Grip as backup Taunt', 									key = 'DGTaunt', 	default = false},
+	{type = 'checkbox', 	text = 'Use Trinket #1', 																	key = 'trinket1',	default = true},
+	{type = 'checkbox', 	text = 'Use Trinket #2', 																	key = 'trinket2', default = true,	desc = '|cffC41F3BTrinkets will be used whenever possible!|r'},
+	{type = 'ruler'},			{type = 'spacer'},
 	-- Survival
-	{type = 'header', 	text = 'Survival',	align = 'center'},
-	{type = 'spinner', 	text = 'Death Strike below HP%',	key = 'DSHP', default = 70},
-	{type = 'spinner', 	text = 'Death Strike above RP',	key = 'DSRP', default = 85},
-	{type = 'spinner', 	text = 'Icebound Fortitude below HP%',	key = 'IFHP', default = 30},
-	{type = 'spinner', 	text = 'Vampiric Blood below HP%',	key = 'VBHP', default = 50},
-	{type = 'spinner',	text = 'Healthstone below HP%', key = 'HSHP',	 default = 45},
-	{type = 'spinner',	text = 'Ancient Healing Potion below HP%', key = 'AHPHP',	 default = 45},
+	{type = 'header', 		text = 'Survival',																				align = 'center',	size = 16},
+	{type = 'checkspin',	text = 'Death Strike below HP%',													key = 'DSA', 			spin = 70, step = 5, max = 100},
+	{type = 'checkspin',	text = 'Death Strike above RP',														key = 'DSb', 			spin = 85, step = 5, max = 100},
+	{type = 'checkspin', 	text = 'Icebound Fortitude below HP%',										key = 'IwF', 			spin = 30, step = 5, max = 100},
+	{type = 'checkspin', 	text = 'Vampiric Blood below HP%',												key = 'VB', 			spin = 50, step = 5, max = 100},
+	{type = 'checkspin',	text = 'Healthstone', 																		key = 'HS',	 			spin = 45, step = 5, max = 100},
+	{type = 'checkspin',	text = 'Ancient Healing Potion', 													key = 'AHP',	 		spin = 45, step = 5, max = 100},
 	{type = 'ruler'},	 {type = 'spacer'},
 	unpack(Mythic_GUI),
 }
@@ -56,14 +61,12 @@ local exeOnLoad = function()
 
 end
 
-local PreCombat = {}
-
 local Survival = {
-	{'Icebound Fortitude', 'player.health<=(IFHP)||player.incdmg(2.5)>player.health.max*0.50||player.state(stun)'},
-	{'Anti-Magic Shell', 'player.incdmg(2.5).magic>player.health.max*0.50'},
-	{'Wraith Walk', 'player.state(root)'},
-	{'#127834', 'item(127834).count>0&player.health<UI(AHPHP)'}, 			-- Ancient Healing Potion
-	{'#5512', 'item(5512).count>0&player.health<UI(HSHP)', 'player'}, --Health Stone
+	{'Icebound Fortitude', 'UI(IF_check)&health<=(IF_spin)&{{incdmg(2.5)>health.max*0.50}||state(stun)}', 'player'},
+	{'Anti-Magic Shell', 'incdmg(2.5).magic>health.max*0.70', 'player'},
+	{'Wraith Walk', 'state(root)||state(snare)', 'player'},
+	{'#127834', 'item(127834).usable&item(127834).count>0&health<=UI(AHP_spin)&UI(AHP_check)', 'player'}, 		-- Ancient Healing Potion
+	{'#5512', 'item(5512).usable&item(5512).count>0&health<=UI(HS_spin)&UI(HS_check)', 'player'}, 						--Health Stone
 }
 
 local Keybinds = {
@@ -73,22 +76,25 @@ local Keybinds = {
 }
 
 local Cooldowns = {
-	{'Dancing Rune Weapon', 'target.inFront&target.inMelee&{{player.incdmg(2.5)>player.health.max*0.50}||{player.health<30}}'},
-	{'Vampiric Blood', 'player.incdmg(2.5)>player.health.max*0.50||player.health<UI(VBHP)'},
+	{'Dancing Rune Weapon', 'inFront&range<=5&{{player.incdmg(2.5)>player.health.max*0.50}||{player.health<30}}', 'target'},
+	{'Vampiric Blood', 'UI(VB_check)&{incdmg(2.5)>health.max*0.50||health<=UI(VB_spin)}', 'player'},
+	{'#Trinket1', 'UI(trinket1)'},
+	{'#Trinket2', 'UI(trinket2)'},
+	{'Light\'s Judgment', 'UI(LJ_check)&range<61&area(15).enemies>=UI(LJ_spin)', 'enemies.ground'}
 }
 
 local Interrupts = {
-	{'!Mind Freeze', 'target.inFront&target.inMelee'},
-	{'!Asphyxiate', 'target.range<31&player.spell(Mind Freeze).cooldown>gcd&!player.lastgcd(Mind Freeze)'},
-	{'!Death Grip', 'UI(DGInt)&target.range<31&player.spell(Mind Freeze).cooldown>gcd&player.spell(Asphyxiate).cooldown>gcd'},
-	{'!Arcane Torrent', 'target.inMelee&player.spell(Mind Freeze).cooldown>gcd&!player.lastgcd(Mind Freeze)'},
+	{'!Mind Freeze', 'inFront&range<=5', 'target'},
+	{'!Asphyxiate', 'range<31&inFront&player.spell(Mind Freeze).cooldown>gcd&!player.lastgcd(Mind Freeze)', 'target'},
+	{'!Death Grip', 'UI(DGInt)&range<31&inFront&player.spell(Mind Freeze).cooldown>gcd&player.spell(Asphyxiate).cooldown>gcd', 'target'},
+	{'!Arcane Torrent', 'range<=5&player.spell(Mind Freeze).cooldown>gcd&!player.lastgcd(Mind Freeze)', 'target'},
 }
 
 local Interrupts_Random = {
-	{'!Mind Freeze', 'interruptAt(70)&toggle(xIntRandom)&toggle(Interrupts)&inFront&inMelee', 'enemies'},
-	{'!Asphyxiate', 'interruptAt(70)&toggle(xIntRandom)&toggle(Interrupts)&player.spell(Mind Freeze).cooldown>gcd&!player.lastgcd(Mind Freeze)&inFront&range<21', 'enemies'},
-	{'!Death Grip', 'interruptAt(70)&UI(DGInt)&range<31&player.spell(Mind Freeze).cooldown>gcd&player.spell(Asphyxiate).cooldown>gcd', 'enemies'},
-	{'!Arcane Torrent', 'interruptAt(70)&toggle(xIntRandom)&toggle(Interrupts)&player.spell(Mind Freeze).cooldown>gcd&player.spell(Asphyxiate).cooldown>gcd&inMelee', 'enemies'},
+	{'!Mind Freeze', 'inFront&range<=5', 'enemies'},
+	{'!Asphyxiate', 'player.spell(Mind Freeze).cooldown>gcd&!player.lastgcd(Mind Freeze)&inFront&range<21&combat&alive&', 'enemies'},
+	{'!Death Grip', 'UI(DGInt)&range<31&player.spell(Mind Freeze).cooldown>gcd&player.spell(Asphyxiate).cooldown>gcd&combat&alive&', 'enemies'},
+	{'!Arcane Torrent', 'player.spell(Mind Freeze).cooldown>gcd&player.spell(Asphyxiate).cooldown>gcd&range<=5', 'enemies'},
 }
 
 local xTaunts = {
@@ -97,24 +103,23 @@ local xTaunts = {
 }
 
 local xCombat = {
-	{'Death Strike', 'inFront&inMelee&player.runicpower>65&player.health<=UI(DSHP)', 'target'},
-	{'Death Strike', 'inFront&inMelee&player.runicpower>=UI(DSRP)', 'target'},
+	{'Death Strike', 'inFront&range<=5&player.runicpower>65&player.health<=UI(DSA_spin)&UI(DSA_check)', 'target'},
+	{'Death Strike', 'inFront&range<=5&player.runicpower>=UI(DSb_spin)&UI(DSb_check)', 'target'},
 	{'Death\'s Caress', 'range<41&debuff(Blood Plague).remains<3', 'target'},
-	{'Marrowrend', 'player.buff(Bone Shield).duration<4&inFront&inMelee', 'target'},
-	{'Marrowrend', 'player.buff(Bone Shield).count<7&talent(3,1)&inFront&inMelee', 'target'},
+	{'Marrowrend', 'player.buff(Bone Shield).duration<4&inFront&range<=5', 'target'},
+	{'Marrowrend', 'player.buff(Bone Shield).count<7&talent(3,1)&inFront&range<=5', 'target'},
 	{'Blood Boil', 'target.range<11'},
 	{'Death and Decay', 'range<31&{{talent(2,1)&player.buff(Crimson Scourge)}||{player.area(10).enemies>1&player.buff(Crimson Scourge}}', 'target.ground'},
 	{'Death and Decay', 'range<31&{{talent(2,1)&player.runes>2}||{player.area(10).enemies>2}}', 'target.ground'},
 	{'Death and Decay', '!talent(2,1)&range<31&target.area(10).enemies==1&player.buff(Crimson Scourge)', 'target.ground'},
-	{'Heart Strike', 'inFront&inMelee&{player.runes>2||player.buff(Death and Decay)}', 'target'},
-	{'Consumption', 'target.inFront&target.inMelee'},
+	{'Heart Strike', 'inFront&range<=5&{player.runes>2||player.buff(Death and Decay)}', 'target'},
+	{'Consumption', 'inFront&range<=5', 'target'},
 }
 
 local inCombat = {
-
 	{Keybinds},
-	{Interrupts, 'target.interruptAt(70)&toggle(Interrupts)'},
-	{Interrupts_Random},
+	{Interrupts, 'toggle(Interrupts)&{channeling.percent(5)||interruptAt(70)}'},
+	{Interrupts_Random, 'toggle(xIntRandom)&toggle(Interrupts)&{channeling.percent(5)||interruptAt(70)}'},
 	{Survival},
 	{Cooldowns, 'toggle(Cooldowns)'},
 	{Fel_Explosives, 'range<=5'},
@@ -123,10 +128,9 @@ local inCombat = {
 }
 
 local outCombat = {
-	{PreCombat},
 	{Keybinds},
-	{Interrupts, 'target.interruptAt(70)&toggle(Interrupts)'},
-	{Interrupts_Random},
+	{Interrupts, 'toggle(Interrupts)&{channeling.percent(5)||interruptAt(70)}'},
+	{Interrupts_Random, 'toggle(xIntRandom)&toggle(Interrupts)&{channeling.percent(5)||interruptAt(70)}'},
 }
 
 NeP.CR:Add(250, {
@@ -134,7 +138,7 @@ NeP.CR:Add(250, {
 	ic = inCombat,
 	ooc = outCombat,
 	gui = GUI,
-	gui_st = {title='Zylla\'s Combat Routines', width='256', height='520', color='A330C9'},
+	gui_st = {title='Zylla\'s Combat Routines', width='256', height='760', color='A330C9'},
 	ids = Zylla.SpellIDs[Zylla.Class],
 	wow_ver = Zylla.wow_ver,
 	nep_ver = Zylla.nep_ver,
