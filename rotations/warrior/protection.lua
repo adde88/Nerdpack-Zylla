@@ -8,16 +8,19 @@ local unpack = _G.unpack
 local GUI = {
 	unpack(Logo_GUI),
 	--KEYBINDS
-	{type = 'header', 	text = 'Keybinds', align = 'center'},
-	{type = 'text', 	text = 'Left Shift: Pause', align = 'center'},
-	{type = 'text', 	text = 'Left Ctrl: Heroic Leap', align = 'center'},
-	{type = 'ruler'},	{type = 'spacer'},
+	{type = 'header', 	size = 16, text = 'Keybinds', 								align = 'center'},
+	{type = 'text', 		text = 'Left Shift: |cffC79C6EPause|r', 			align = 'left'},
+	{type = 'text', 		text = 'Left Ctrl: |cffC79C6EHeroic Leap|r', 	align = 'left'},
+	{type = 'ruler'},		{type = 'spacer'},
 	-- Settings
-	{type = 'header', 	text = 'Class Settings', align = 'center'},
-	{type = 'checkbox', text = 'Pause enabled', key = 'kPause', default = true},
-	{type = 'checkbox', text = 'Intercept enabled', key = 'kIntercept', default = false},
-	{type = 'ruler'},	{type = 'spacer'},
-	unpack(Mythic_GUI),
+	{type = 'header', 	size = 16, text = 'Class Settings',						align = 'center'},
+	{type = 'checkbox', text = 'Pause Enabled',								 				key = 'kPause', 			default = true},
+	{type = 'checkbox', text = 'Intercept enabled', 									key = 'kIntercept', 	default = false},
+	{type = 'checkspin',text = 'Light\'s Judgment - Units', 					key = 'LJ',						spin = 4,	step = 1,	max = 20,	check = true,	desc = '|cffC79C6EWorld Spell usable on Argus.|r'},
+	{type = 'checkbox', text = 'Use Trinket #1', 											key = 'trinket1',			default = true},
+	{type = 'checkbox', text = 'Use Trinket #2', 											key = 'trinket2', 		default = true,		desc = '|cffC79C6ETrinkets will be used whenever possible!|r'},
+	{type = 'spinner', 	text = 'Ravager - Units', 										key = 'ravager', 			default = 2, max =20, step = 1, desc = '|cffC79C6EHow many units to strike with Ravager!|r'},
+	unpack(Mythic_GUI)
 }
 
 local exeOnLoad = function()
@@ -49,15 +52,15 @@ end
 local PreCombat = {}
 
 local Keybinds = {
-	-- Pause
 	{'%pause', 'keybind(lshift)&UI(kPause)'},
 	{'!Heroic Leap', 'keybind(lcontrol)' , 'cursor.ground'}
 }
 
 local Etc = {
-	{'Impending Victory', 'inMelee&{{!player.buff(Victorious)&player.rage>10&player.health<95}||{player.buff(Victorious)&player.health<80}}', 'target'},
+	{'Victory Rush', 'inMelee&inFront&player.buff(Victorious)&player.health<=70', 'target'},
+	{'Impending Victory', 'inMelee&inFront&{{!player.buff(Victorious)&player.rage>10&player.health<95}||{player.buff(Victorious)&player.health<80}}', 'target'},
 	{'Heroic Throw', 'range>10&range<40&inFront', 'target'},
-	{'Shockwave', '!target.immune(stun)&player.area(6).enemies>2&target.inMelee&target.inFront'},
+	{'Shockwave', '!immune(stun)&player.area(6).enemies.inFront>2&inMelee&inFront', 'target'},
 	{'Intercept', 'range>10&range<25&enemy&alive&combat&!player.lastgcd(Heroic Leap)&UI(kIntercept)', 'target'},
 	{'Heroic Throw', 'range>10&range<41&inFront&alive&enemy&!UI(kIntercept', 'target'}
 }
@@ -72,30 +75,35 @@ local Interrupts = {
 local Interrupts_Random = {
 	{'!Pummel', 'interruptAt(70)&toggle(xIntRandom)&toggle(Interrupts)&inFront&inMelee', 'enemies'},
 	{'!Shockwave', 'interruptAt(70)&&!target.immune(stun)&toggle(xIntRandom)&toggle(Interrupts)&player.spell(Pummel).cooldown>gcd&!player.lastgcd(Pummel)&inFront&inMelee', 'enemies'},
-	{'!Spell Reflection', 'interruptAt(70)&toggle(xIntRandom)&toggle(Interrupts)&player.spell(Shockwave).cooldown>gcd&player.spell(Pummel).cooldown>gcd&range<51', 'enemies.ground'},
+	{'!Spell Reflection', 'interruptAt(70)&toggle(xIntRandom)&toggle(Interrupts)&player.spell(Shockwave).cooldown>gcd&player.spell(Pummel).cooldown>gcd&range<41', 'enemies.ground'},
 }
 
 local Cooldowns = {
 	{'Demoralizing Shout', 'talent(6,3)&player.buff(Battle Cry)'},
-	{'Shield Wall', 'player.incdmg(2.5)>player.health.max*0.50'},
-	{'Last Stand', 'player.incdmg(2.5)>player.health.max*0.50&!player.spell(Shield Wall).cooldown'},
-	{'Battle Cry', '{talent(6,1)&talent(3,2)&player.spell(Shield Slam).cooldown<5.5-gcd}||!talent(6,1)'},
+	{'Shield Wall', 'player.incdmg(2.5)>player.health.max*0.50', 'player'},
+	{'Last Stand', 'player.incdmg(2.5)>player.health.max*0.50', 'player'},
+	{'Battle Cry', '{talent(6,1)&talent(3,2)&spell(Shield Slam).cooldown<5.5-gcd}||!talent(6,1)', 'player'},
 	{'Ravager', 'talent(7,3)&player.buff(Battle Cry)', 'target.ground'},
 	{'#144249', 'equipped(144249)&{player.area(8).enemies>4||player.incdmg(2.5)>player.health.max*0.20}'}, -- Archimonde's Hatred Reborn (Trinket)
+	{'Avatar', 'target.inMelee'},
+	{'Ravager', 'combat&alive&range<41&area(8).enemies>=UI(ravager)', 'enemies'},
+	{'#Trinket1', 'UI(trinket1)'},
+	{'#Trinket2', 'UI(trinket2)'},
+	{'Light\'s Judgment', 'UI(LJ_check)&range<61&area(15).enemies>=UI(LJ_spin)', 'enemies.ground'}
 }
 
 local AoE = {
-	{'Neltharion\'s Fury', '{player.buff(Battle Cry)&!player.moving&player.area(8).enemies>2}||player.incdmg(2.5)>player.health.max*0.20'},
+	{'Neltharion\'s Fury', '{player.buff(Battle Cry)&player.movingfor<0.75&player.area(8).enemies>2}||player.incdmg(2.5)>player.health.max*0.20', 'target'},
 	{'Shield Slam', 'player.spell(Shield Block).cooldown<gcd*2&!player.buff(Shield Block)&talent(7,2)', 'target'},
 	{'Revenge', nil, 'target'},
-	{'Thunder Clap', 'player.area(6).enemies>2'},
+	{'Thunder Clap'},
 	{'Devastate', '!talent(5,1)', 'target'}
 }
 
 local ST = {
 	{'Shield Block', '!player.buff(Neltharion\'s Fury)&{{spell(Shield Slam).cooldown<6&!player.buff(Shield Block)}||{spell(Shield Slam).cooldown<6+player.buff(Shield Block).duration&player.buff(Shield Block)}}'},
 	{'!Ignore Pain','{player.buff(Vengeance: Ignore Pain)&player.buff(Ignore Pain).duration<=gcd*2&player.rage>30}||{!player.buff(Vengeance: Ignore Pain)&player.buff(Ignore Pain).duration<=gcd*2&player.rage>10}||{player.rage>50&!talent(6,1)}||{player.buff(Vengeance: Ignore Pain)&player.buff(Ultimatum)}||{player.buff(Vengeance: Ignore Pain)&player.rage>20}||{talent(6,1)&!player.buff(Ultimatum)&!player.buff(Vengeance: Ignore Pain)&!player.buff(Vengeance: Focused Rage)&player.rage<30}', 'target'},
-	{'Neltharion\'s Fury', 'player.incdmg(2.5)>player.health.max*0.20&!player.buff(Shield Block)&!player.moving'},
+	{'Neltharion\'s Fury', 'player.incdmg(2.5)>player.health.max*0.20&!player.buff(Shield Block)&player.movingfor<0.75', 'target'},
 	{'Shield Slam', '{player.spell(Shield Block).cooldown<gcd&!player.buff(Shield Block)&talent(7,2)}||{player.buff(Vengeance: Ignore Pain)&player.buff(Ignore Pain).duration<gcd*2&player.rage<13}||{!player.buff(Vengeance: Ignore Pain)&player.buff(Ignore Pain).duration<gcd*2&player.rage<20}', 'target'},
 	{'Shield Slam', '!talent(7,2)', 'target'},
 	{'Revenge', 'player.spell(Shield Slam).cooldown<gcd*2||player.rage<6', 'target'},
@@ -106,10 +114,10 @@ local inCombat = {
 	{Etc},
 	{Keybinds},
 	{Interrupts_Random},
-	{Interrupts, 'target.interruptAt(70)&toggle(interrupts)'},
+	{Interrupts, 'interruptAt(70)&toggle(interrupts)'},
 	{Cooldowns, 'toggle(cooldowns)'},
-	{ST, 'target.inMelee&target.inFront&player.area(8).enemies<2'},
-	{AoE, 'toggle(aoe)&target.inMelee&target.inFront&player.area(8).enemies>1'},
+	{ST, 'inMelee&inFront&player.area(8).enemies<2'},
+	{AoE, 'toggle(aoe)&inMelee&inFront&player.area(8).enemies>=2'},
 	{'Taunt', 'toggle(super_taunt)&combat&alive&threat<100', 'enemies'},
 	{Fel_Explosives, 'range<=5'}
 }
@@ -118,7 +126,7 @@ local outCombat = {
 	{Keybinds},
 	{PreCombat},
 	{Interrupts_Random},
-	{Interrupts, 'target.interruptAt(70)&toggle(Interrupts)'},
+	{Interrupts, 'interruptAt(70)&toggle(Interrupts)'},
 }
 
 NeP.CR:Add(73, {
