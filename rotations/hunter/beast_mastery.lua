@@ -8,7 +8,7 @@ local unpack = _G.unpack
 local GUI = {
 	unpack(Logo_GUI),
 	-- Keybinds
-	{type = 'header',  size = 16, text = 'Keybinds',	 		align = 'center'},
+	{type = 'header',  size = 16, text = 'Keybinds',	 								align = 'center'},
 	{type = 'text', 	 text = 'Left Shift: |cffABD473Pause|r',				align = 'center'},
 	{type = 'text', 	 text = 'Left Ctrl: |cffABD473Tar Trap|r',			align = 'center'},
 	{type = 'text', 	 text = 'Left Alt: |cffABD473Binding Shot|r',		align = 'center'},
