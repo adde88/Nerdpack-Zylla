@@ -78,7 +78,7 @@ local Interrupts = {
 
 local Interrupts_Random = {
 	{'!Counterspell', 'interruptAt(70)&toggle(xIntRandom)&toggle(Interrupts)&inFront&range<41', 'enemies'},
-  {'!Dragon\'s Breath', 'interruptAt(70)&toggle(xIntRandom)&toggle(Interrupts)&player.spell(Counterspell).cooldown>gcd&!prev_gcd(Counterspell)&player.area(12).enemies.inFront>0&range<13', 'enemies'},
+  {'!Dragon\'s Breath', 'interruptAt(70)&toggle(xIntRandom)&toggle(Interrupts)&player.spell(Counterspell).cooldown>gcd&!prev_gcd(Counterspell)&player.area(12).enemies.inFront>0', 'enemies'},
 	{'!Ring of Frost', 'advanced&!player.moving&UI(RoF_Int)&interruptAt(5)&toggle(xIntRandom)&toggle(Interrupts)&player.spell(Counterspell).cooldown>gcd&!prev_gcd(Counterspell)&range<31', 'enemies.ground'},
 	{'!Polymorph', '!player.moving&UI(Pol_Int)&interruptAt(5)&toggle(xIntRandom)&toggle(Interrupts)&player.spell(Counterspell).cooldown>gcd&!prev_gcd(Counterspell)&range<31', 'enemies'},
 }
