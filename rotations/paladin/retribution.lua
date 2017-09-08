@@ -197,7 +197,7 @@ local inCombat = {
 	{Opener, 'range<=5&inFront&xtime<2&{player.spell(Judgment).cooldown<gcd||player.spell(Blade of Justice).cooldown<gcd||player.spell(Wake of Ashes).cooldown<gcd}'},
 	{Fel_Explosives, 'range<=5'},
 	{Combat, 'enemy&range<=5&inFront'},
-	{Group, '!player.moving&inGroup&toggle(groupAssist)'},
+	{Group, 'player.movingfor<0.75&inGroup&toggle(groupAssist)'},
 	{Interrupts_Random},
 	{Interrupts, 'toggle(interrupts)&inFront&interruptAt(70)'},
 	{Cooldowns, 'toggle(cooldowns)&range<=5'}
@@ -209,8 +209,8 @@ local outCombat = {
 	{Interrupts_Random},
 	{Interrupts, 'toggle(interrupts)&inFront&interruptAt(70)'},
 	{Blessings},
-	{Group, '!player.moving&inGroup&toggle(groupAssist)'},
-	{'Flash of Light', '!player.moving&player.health<90&UI(FoL_check)', 'player'}
+	{Group, 'player.movingfor<0.75&inGroup&toggle(groupAssist)'},
+	{'Flash of Light', 'player.movingfor<0.75&player.health<90&UI(FoL_check)', 'player'}
 }
 
 NeP.CR:Add(70, {
