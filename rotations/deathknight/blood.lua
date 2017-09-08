@@ -84,17 +84,17 @@ local Cooldowns = {
 }
 
 local Interrupts = {
-	{'!Mind Freeze', 'inFront&range<=5', 'target'},
+	{'!Mind Freeze', 'inFront&range<=15', 'target'},
 	{'!Asphyxiate', 'range<31&inFront&player.spell(Mind Freeze).cooldown>gcd&!player.lastgcd(Mind Freeze)', 'target'},
 	{'!Death Grip', 'UI(DGInt)&range<31&inFront&player.spell(Mind Freeze).cooldown>gcd&player.spell(Asphyxiate).cooldown>gcd', 'target'},
 	{'!Arcane Torrent', 'range<=5&player.spell(Mind Freeze).cooldown>gcd&!player.lastgcd(Mind Freeze)', 'target'},
 }
 
 local Interrupts_Random = {
-	{'!Mind Freeze', 'inFront&range<=5', 'enemies'},
-	{'!Asphyxiate', 'player.spell(Mind Freeze).cooldown>gcd&!player.lastgcd(Mind Freeze)&inFront&range<21&combat&alive&', 'enemies'},
-	{'!Death Grip', 'UI(DGInt)&range<31&player.spell(Mind Freeze).cooldown>gcd&player.spell(Asphyxiate).cooldown>gcd&combat&alive&', 'enemies'},
-	{'!Arcane Torrent', 'player.spell(Mind Freeze).cooldown>gcd&player.spell(Asphyxiate).cooldown>gcd&range<=5', 'enemies'},
+	{'!Mind Freeze', 'inFront&range<=15&combat&alive', 'enemies'},
+	{'!Asphyxiate', 'player.spell(Mind Freeze).cooldown>gcd&!player.lastgcd(Mind Freeze)&inFront&range<21&combat&alive', 'enemies'},
+	{'!Death Grip', 'UI(DGInt)&range<31&player.spell(Mind Freeze).cooldown>gcd&player.spell(Asphyxiate).cooldown>gcd&combat&alive', 'enemies'},
+	{'!Arcane Torrent', 'player.spell(Mind Freeze).cooldown>gcd&player.spell(Asphyxiate).cooldown>gcd&range<=5&combat&alive', 'enemies'},
 }
 
 local xTaunts = {
@@ -118,8 +118,8 @@ local xCombat = {
 
 local inCombat = {
 	{Keybinds},
-	{Interrupts, 'toggle(Interrupts)&{channeling.percent(5)||interruptAt(70)}'},
-	{Interrupts_Random, 'toggle(xIntRandom)&toggle(Interrupts)&{channeling.percent(5)||interruptAt(70)}'},
+	{Interrupts, 'toggle(Interrupts)&interruptAt(70)'},
+	{Interrupts_Random, 'toggle(xIntRandom)&interruptAt(70)'},
 	{Survival},
 	{Cooldowns, 'toggle(Cooldowns)'},
 	{Fel_Explosives, 'range<=5'},
@@ -129,8 +129,8 @@ local inCombat = {
 
 local outCombat = {
 	{Keybinds},
-	{Interrupts, 'toggle(Interrupts)&{channeling.percent(5)||interruptAt(70)}'},
-	{Interrupts_Random, 'toggle(xIntRandom)&toggle(Interrupts)&{channeling.percent(5)||interruptAt(70)}'},
+	{Interrupts, 'toggle(Interrupts)&interruptAt(70)'},
+	{Interrupts_Random, 'toggle(xIntRandom)&interruptAt(70)'},
 }
 
 NeP.CR:Add(250, {
