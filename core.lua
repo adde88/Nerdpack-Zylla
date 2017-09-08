@@ -127,15 +127,21 @@ _G.PauseCR = {
 
 _G.Logo_GUI = {
 	--  Zylla's Combat Routine Logo
-	{type = 'texture',  texture = 'Interface\\AddOns\\Nerdpack-Zylla\\media\\logo.blp', width = 128, height = 128, offset = 90, y = -60, align = 'center'},
-	{type = 'spacer'},{type = 'spacer'},{type = 'spacer'},{type = 'spacer'},
+	{type = 'texture', texture = 'Interface\\AddOns\\Nerdpack-Zylla\\media\\logo.blp', width = 128, height = 128, offset = 90, y = -60, align = 'center'},
+	{type = 'spacer'}, {type = 'spacer'}, {type = 'spacer'}, {type = 'ruler'},
+}
+
+_G.PayPal_GUI = {
+	--  Donation logo
+	{type = 'texture',  texture = 'Interface\\AddOns\\Nerdpack-Zylla\\media\\paypal.blp', width = 69, height = 35, offset = 90, y = -60, align = 'center'},
+	{type = 'ruler'},
 }
 
 _G.Mythic_GUI = {
 	-- Mythic + / Raiding
-	{type = 'header', 	text = 'Mythic+ Raid Settings',							align = 'center'},
-	{type = 'checkbox', text = 'Attack Fel Explosives', 						key = 'mythic_fel', width = 55, default = true, desc = '|cffC41F3BThis will automatically target the \'Fel Explosives\' in Mythic+ dungeons!'},
-	{type = 'ruler'},	 {type = 'spacer'},
+	{type = 'header', text = 'Mythic+ Raid Settings', align = 'center'},
+	{type = 'checkbox', text = 'Attack Fel Explosives', key = 'mythic_fel', width = 55, default = true, desc = '|cffC41F3BThis will automatically target the \'Fel Explosives\' in Mythic+ dungeons!'},
+	{type = 'ruler'},
 }
 
 _G.Fel_Explosives = {
