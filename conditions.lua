@@ -30,6 +30,9 @@ local IsFlyableArea = _G.IsFlyableArea
 local IsSpellKnown = _G.IsSpellKnown
 local IsOnGarrisonMap = _G.C_Garrison.IsOnGarrisonMap
 local IsOnShipyardMap = _G.C_Garrison.IsOnShipyardMap
+local GetSpecialization = _G.GetSpecialization
+local GetHaste = _G.GetHaste
+local UnitGUID = _G.UnitGUID
 
 --------------------------------------------------------------------------------
 -----------------------------------MISC CONDITIONS------------------------------
@@ -414,7 +417,7 @@ end)
 
 --/dump NeP.DSL:Get('combo_points.deficit')()
 NeP.DSL:Register('combo_points.deficit', function(target)
-    return (UnitPowerMax(target, SPELL_POWER_COMBO_POINTS)) - (UnitPower(target, SPELL_POWER_COMBO_POINTS))
+    return (UnitPowerMax(target, _G.SPELL_POWER_COMBO_POINTS)) - (UnitPower(target, _G.SPELL_POWER_COMBO_POINTS))
 end)
 
 --/dump NeP.DSL:Get('combo_points')()
@@ -1220,19 +1223,19 @@ end)
 
 
 NeP.DSL:Register('chainheal.heals', function()
-    return math.sqrt((UnitStat("player", 4)*GetCombatRatingBonus(CR_VERSATILITY_DAMAGE_DONE)*GetCombatRatingBonus(CR_CRIT_SPELL)*1.2)^2/NeP.DSL:Get('mana')('player'))
+    return math.sqrt((UnitStat("player", 4)*GetCombatRatingBonus(_G.CR_VERSATILITY_DAMAGE_DONE)*GetCombatRatingBonus(_G.CR_CRIT_SPELL)*1.2)^2/NeP.DSL:Get('mana')('player'))
 end)
 
 NeP.DSL:Register('healingsurge.heals', function()
-    return math.sqrt((UnitStat("player", 4)*GetCombatRatingBonus(CR_VERSATILITY_DAMAGE_DONE)*GetCombatRatingBonus(CR_CRIT_SPELL)*1.44)^2/NeP.DSL:Get('mana')('player'))
+    return math.sqrt((UnitStat("player", 4)*GetCombatRatingBonus(_G.CR_VERSATILITY_DAMAGE_DONE)*GetCombatRatingBonus(_G.CR_CRIT_SPELL)*1.44)^2/NeP.DSL:Get('mana')('player'))
 end)
 
 NeP.DSL:Register('healingwave.heals', function()
-    return math.sqrt((UnitStat("player", 4)*GetCombatRatingBonus(CR_VERSATILITY_DAMAGE_DONE)*GetCombatRatingBonus(CR_CRIT_SPELL)*1.44)^2/NeP.DSL:Get('mana')('player'))
+    return math.sqrt((UnitStat("player", 4)*GetCombatRatingBonus(_G.CR_VERSATILITY_DAMAGE_DONE)*GetCombatRatingBonus(_G.CR_CRIT_SPELL)*1.44)^2/NeP.DSL:Get('mana')('player'))
 end)
 
 NeP.DSL:Register('riptide.heals', function()
-    return math.sqrt((UnitStat("player", 4)*GetCombatRatingBonus(CR_VERSATILITY_DAMAGE_DONE)*GetCombatRatingBonus(CR_CRIT_SPELL)*1.6)^2/NeP.DSL:Get('mana')('player'))
+    return math.sqrt((UnitStat("player", 4)*GetCombatRatingBonus(_G.CR_VERSATILITY_DAMAGE_DONE)*GetCombatRatingBonus(_G.CR_CRIT_SPELL)*1.6)^2/NeP.DSL:Get('mana')('player'))
 end)
 
 NeP.DSL:Register('holyshockraid.heals', function()
