@@ -1228,14 +1228,14 @@ NeP.Library:Add('Zylla', {
   end,
 
 	face = function(target)
-		local ax, ay = ObjectPosition('player')
-		local bx, by = ObjectPosition(target)
+		local ax, ay = _G.ObjectPosition('player')
+		local bx, by = _G.ObjectPosition(target)
 		if not ax or not bx then return end
 		local angle = rad(atan2(by - ay, bx - ax))
 		if angle < 0 then
-			FaceDirection(angle + 360)
+			_G.FaceDirection(angle + 360)
 		else
-			FaceDirection(angle + 360)
+			_G.FaceDirection(angle + 360)
 		end
 	end,
 --[[
