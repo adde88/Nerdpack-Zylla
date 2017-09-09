@@ -1,7 +1,7 @@
 local _, Zylla = ...
 
 local Mythic_GUI = _G.Mythic_GUI
-local Fel_Explosives = _G.Fel_Explosives
+local Mythic_Plus = _G.Mythic_Plus
 local Logo_GUI = _G.Logo_GUI
 local unpack = _G.unpack
 
@@ -155,7 +155,7 @@ local inCombat = {
 	{AoE, 'toggle(aoe)&player.area(8).enemies>4&!talent(1,3)'},
 	{Execute, 'target.inMelee&target.inFront&target.health<30&player.area(8).enemies<5'},
 	{ST, 'target.inMelee&target.inFront&target.health>20'},
-	{Fel_Explosives, 'inMelee'}
+	{Mythic_Plus, 'inMelee'}
 }
 
 local outCombat = {

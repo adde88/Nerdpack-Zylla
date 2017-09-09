@@ -120,7 +120,7 @@ debuff = {####, ####, ####}
 --]]
 
 _G.PauseCR = {
-  {'%pause' , 'player.debuff(200904)||player.debuff(Sapped Soul)'}, -- Vault of the Wardens, Sapped Soul
+   -- Vault of the Wardens, Sapped Soul
 }
 
 _G.Logo_GUI = {
@@ -132,20 +132,23 @@ _G.Logo_GUI = {
 _G.PayPal_GUI = {
 	--  Donation logo
 	{type = 'texture',  texture = 'Interface\\AddOns\\Nerdpack-Zylla\\media\\paypal.blp', width = 69, height = 35, offset = 90, y = -60, align = 'center'},
-	{type = 'ruler'},
+	{type = 'ruler'},	--TODO: To be added in Settings.
 }
 
 _G.Mythic_GUI = {
 	-- Mythic + / Raiding
-	{type = 'header', text = 'Mythic+ Raid Settings', align = 'center'},
-	{type = 'checkbox', text = 'Attack Fel Explosives', key = 'mythic_fel', width = 55, default = true, desc = '|cffC41F3BThis will automatically target the \'Fel Explosives\' in Mythic+ dungeons!'},
-	{type = 'ruler'},
+	{type = 'header', text = 'Mythic+ Raid Settings', 		align = 'center'},
+	{type = 'checkbox', text = 'Fel Explosives [Affix]', 	key = 'mythic_fel', width = 55, default = true, desc = '|cffC41F3BThis will automatically target the \'Fel Explosives\' in Mythic+ dungeons!'},
+	{type = 'checkbox', text = 'Quaking [Affix]', 				key = 'mythic_fel', width = 55, default = true, desc = '|cffC41F3BThis will automatically interrupt your casts at the end of your Quaking Debuff from Mythic+ dungeons!'},
+	{type = 'ruler'},	--XXX: Global GUI-part to be used on all combat routines.
 }
 
-_G.Fel_Explosives = {
+_G.Mythic_Plus = {
 	{{
 			{"/target 'Fel Explosives'", 'id(120651)&inFront', 'enemies'}
-	},	'UI(mythic_fel)'}
+	},	'UI(mythic_fel)'}, 																															--XXX: Fel Explosives Mythic+ Affix
+	{'!/stopcasting','debuff(240447).duration<=2&debuff(240447)&UI(quaking)','player'}, --XXX: Quaking Mythic+ Affix
+	{'%pause' , 'player.debuff(200904)||player.debuff(Sapped Soul)'},										--XXX: Vault of the Wardens - Sapped Soul Encounter
 }
 
 function Zylla.Taunt(eval, args)

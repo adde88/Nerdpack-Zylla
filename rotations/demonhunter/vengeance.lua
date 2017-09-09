@@ -1,7 +1,7 @@
 local _, Zylla = ...
 
 local Mythic_GUI = _G.Mythic_GUI
-local Fel_Explosives = _G.Fel_Explosives
+local Mythic_Plus = _G.Mythic_Plus
 local Logo_GUI = _G.Logo_GUI
 local unpack = _G.unpack
 
@@ -124,7 +124,7 @@ local inCombat = {
 	{Ranged},
 	{Mitigations},
   {Survival},
-	{Fel_Explosives, 'inMelee'},
+	{Mythic_Plus, 'inMelee'},
 	{xCombat, 'target.inFront&target.inMelee'}
 }
 

@@ -1,7 +1,7 @@
 local _, Zylla = ...
 
 local Mythic_GUI = _G.Mythic_GUI
-local Fel_Explosives = _G.Fel_Explosives
+local Mythic_Plus = _G.Mythic_Plus
 local Logo_GUI = _G.Logo_GUI
 local unpack = _G.unpack
 
@@ -300,7 +300,7 @@ local Zek_Support = {
 
 local inCombat = {
 	{SWP_MASS, 'toggle(xSWP)'},
-	{Fel_Explosives, 'range<=40'},
+	{Mythic_Plus, 'range<=40'},
 	{'Shadowform', '!player.buff(Voidform)&!player.buff(Shadowform)'},
 	{Movement, '!player.buff(Voidform)||{player.buff(Voidform)&player.spell(Void Eruption).cooldown>gcd}'},
 	{Surrender},

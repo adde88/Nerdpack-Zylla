@@ -1,7 +1,7 @@
 local _, Zylla = ...
 
 local Mythic_GUI = _G.Mythic_GUI
-local Fel_Explosives = _G.Fel_Explosives
+local Mythic_Plus = _G.Mythic_Plus
 local Logo_GUI = _G.Logo_GUI
 local unpack = _G.unpack
 
@@ -214,7 +214,7 @@ local inCombat = {
 	{Moving, 'player.moving'},
 	{Mana_Restore, 'player.mana<=UI(P_MR)'},
 	{Healing, '!player.moving&player.mana>=UI(P_MR)'},
-	{Fel_Explosives, 'range<=8'}
+	{Mythic_Plus, 'range<=8'}
 }
 
 local outCombat = {

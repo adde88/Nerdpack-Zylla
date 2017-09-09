@@ -1,7 +1,7 @@
 local _, Zylla = ...
 
 local Mythic_GUI = _G.Mythic_GUI
-local Fel_Explosives = _G.Fel_Explosives
+local Mythic_Plus = _G.Mythic_Plus
 local Logo_GUI = _G.Logo_GUI
 local unpack = _G.unpack
 
@@ -138,7 +138,7 @@ local inCombat = {
 	{Interrupts, 'target.interruptAt(70)'},
 	{Interrupts_Random},
 	{Burst, 'UI(burst)&xtime<4&target.inMelee&target.inFront'},
-	{Fel_Explosives, 'inMelee'},
+	{Mythic_Plus, 'inMelee'},
 	{xSTCombat, 'player.area(15).enemies<3&target.inMelee&target.inFront&{{UI(burst)&xtime>4}||{!UI(burst)}}'},
 	{xAoECombat, 'player.area(15).enemies>2&target.inMelee&target.inFront&{{UI(burst)&xtime>4}||{!UI(burst)}}'},
 	{'Fel Rush', 'UI(felrush)&target.range>12&target.range<41&target.inFront', 'player'}

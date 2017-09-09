@@ -1,7 +1,7 @@
 local _, Zylla = ...
 
 local Mythic_GUI = _G.Mythic_GUI
-local Fel_Explosives = _G.Fel_Explosives
+local Mythic_Plus = _G.Mythic_Plus
 local Logo_GUI = _G.Logo_GUI
 local unpack = _G.unpack
 
@@ -162,7 +162,7 @@ local inCombat = {
 	{Mitigations, 'target.inMelee&{!talent(7,2)||!player.buff(Blackout Combo)||player.spell(Keg Smash).cooldown>gcd}'},
 	{Cooldowns, 'toggle(Cooldowns)'},
 	{xCombat},
-	{Fel_Explosives, 'inMelee'},
+	{Mythic_Plus, 'inMelee'},
 	{Crackle, '!target.inMelee&target.range<41&target.inFront'},
 	{'Provoke', 'target.range<45&target.combat&target.threat<100&toggle(xTaunt)'},
 }

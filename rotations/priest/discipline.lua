@@ -1,7 +1,7 @@
 local _, Zylla = ...
 
 local Mythic_GUI = _G.Mythic_GUI
-local Fel_Explosives = _G.Fel_Explosives
+local Mythic_Plus = _G.Mythic_Plus
 local Logo_GUI = _G.Logo_GUI
 local unpack = _G.unpack
 
@@ -76,7 +76,7 @@ local inCombat = {
 	{Cooldowns, 'toggle(Cooldowns)'},
 	{Tank, 'tank.health<100'},
 	{Lowest, 'lowest.health<100'},
-	{Fel_Explosives, 'range<=40'},
+	{Mythic_Plus, 'range<=40'},
 	{Atonement}
 }
 

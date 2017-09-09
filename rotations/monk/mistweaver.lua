@@ -1,7 +1,7 @@
 local _, Zylla = ...
 
 local Mythic_GUI = _G.Mythic_GUI
-local Fel_Explosives = _G.Fel_Explosives
+local Mythic_Plus = _G.Mythic_Plus
 local Logo_GUI = _G.Logo_GUI
 local unpack = _G.unpack
 
@@ -61,7 +61,7 @@ local xCombat = {
 	{'&Renewing Mist', 'health<100&ingroup', 'friendly'},
 	{'&Effuse', 'health<UI(L_EFF)', 'lowest'},
 	{AoE, 'ingroup&area(40, 100).heal>=3', 'friendly'},
-	{Fel_Explosives, 'range<=10'}
+	{Mythic_Plus, 'range<=10'}
 }
 
 local inCombat = {

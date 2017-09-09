@@ -1,7 +1,7 @@
 local _, Zylla = ...
 
 local Mythic_GUI = _G.Mythic_GUI
-local Fel_Explosives = _G.Fel_Explosives
+local Mythic_Plus = _G.Mythic_Plus
 local Logo_GUI = _G.Logo_GUI
 local unpack = _G.unpack
 
@@ -209,7 +209,7 @@ local inCombat = {
 	{Survival},
 	{Emergency, 'range<41'},
 	{Totems},
-	{Fel_Explosives, 'range<41'},
+	{Mythic_Plus, 'range<41'},
 	{Tank, 'range<41&tank.exists&tank.health<100'},
 	{Lowest, 'range<41&&lowest.health<100'},
 	{Player, 'range<41&player.health<100'},

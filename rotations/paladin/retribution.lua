@@ -1,7 +1,7 @@
 local _, Zylla = ...
 
 local Mythic_GUI = _G.Mythic_GUI
-local Fel_Explosives = _G.Fel_Explosives
+local Mythic_Plus = _G.Mythic_Plus
 local Logo_GUI = _G.Logo_GUI
 local unpack = _G.unpack
 
@@ -195,7 +195,7 @@ local inCombat = {
 	{Survival},
 	{Blessings},
 	{Opener, 'inMelee&inFront&xtime<2&{player.spell(Judgment).cooldown<gcd||player.spell(Blade of Justice).cooldown<gcd||player.spell(Wake of Ashes).cooldown<gcd}'},
-	{Fel_Explosives, 'inMelee'},
+	{Mythic_Plus, 'inMelee'},
 	{Combat, 'enemy&inMelee&inFront'},
 	{Group, 'player.movingfor<0.75&inGroup&toggle(groupAssist)'},
 	{Interrupts_Random, 'toggle(xIntRandom)&toggle(interrupts)&interruptAt(70)'},

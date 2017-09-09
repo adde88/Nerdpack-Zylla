@@ -1,7 +1,7 @@
 local _, Zylla = ...
 
 local Mythic_GUI = _G.Mythic_GUI
-local Fel_Explosives = _G.Fel_Explosives
+local Mythic_Plus = _G.Mythic_Plus
 local Logo_GUI = _G.Logo_GUI
 local unpack = _G.unpack
 
@@ -200,7 +200,7 @@ local inCombat = {
 	{Cooldowns, 'toggle(cooldowns)&target.inMelee'},
 	{Serenity, 'player.buff(Serenity)&target.inMelee'},
 	{SEF, 'target.inMelee&UI(sef_toggle)&!talent(7,3)&player.spell(Strike of the Windlord).cooldown<24&player.spell(Fists of Fury).cooldown<7&player.spell(Rising Sun Kick).cooldown<7'},
-	{Fel_Explosives, 'inMelee'},
+	{Mythic_Plus, 'inMelee'},
 	{Melee, 'target.inMelee&target.inFront'},
 	{Ranged, '!target.inMelee&target.range<41'}
 }

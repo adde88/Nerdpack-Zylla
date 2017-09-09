@@ -1,7 +1,7 @@
 local _, Zylla = ...
 
 local Mythic_GUI = _G.Mythic_GUI
-local Fel_Explosives = _G.Fel_Explosives
+local Mythic_Plus = _G.Mythic_Plus
 local Logo_GUI = _G.Logo_GUI
 local unpack = _G.unpack
 
@@ -112,7 +112,7 @@ local inCombat = {
   {'%taunt(Hand of Reckoning)', 'toggle(aoe)'},
   {'Shield of the Righteous', '!player.buff&{player.health<60||spell.count>1}', 'target'},
   {AoE, 'toggle(AoE)&player.area(8).enemies>2'},
-	{Fel_Explosives, 'inMelee'},
+	{Mythic_Plus, 'inMelee'},
   {ST, 'target.inFront&target.inMelee'}
 }
 

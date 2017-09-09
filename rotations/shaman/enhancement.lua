@@ -1,7 +1,7 @@
 local _, Zylla = ...
 
 local Mythic_GUI = _G.Mythic_GUI
-local Fel_Explosives = _G.Fel_Explosives
+local Mythic_Plus = _G.Mythic_Plus
 local Logo_GUI = _G.Logo_GUI
 local unpack = _G.unpack
 
@@ -139,8 +139,8 @@ local inCombat = {
 	{Party, '!player.lastgcd(Feral Spirit)'},
 	{Cooldowns, 'toggle(Cooldowns)&!player.lastgcd(Feral Spirit)'},
 	{'Crash Lightning', 'target.inMelee&target.inFront&player.lastgcd(Feral Spirit)'},
-	{Fel_Explosives, 'ui(mythic_fel)&inMelee'},
-	{Fel_Explosives, 'inMelee'},
+	{Mythic_Plus, 'ui(mythic_fel)&inMelee'},
+	{Mythic_Plus, 'inMelee'},
 	{xCombat, 'target.inMelee&target.inFront&!player.lastgcd(Feral Spirit)'},
 	{Ranged, '!player.lastgcd(Feral Spirit)'},
 	{'Ghost Wolf', 'player.movingfor>0.75&target.range>12'}

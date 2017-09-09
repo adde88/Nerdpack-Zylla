@@ -1,7 +1,7 @@
 local _, Zylla = ...
 
 local Mythic_GUI = _G.Mythic_GUI
-local Fel_Explosives = _G.Fel_Explosives
+local Mythic_Plus = _G.Mythic_Plus
 local Logo_GUI = _G.Logo_GUI
 local unpack = _G.unpack
 
@@ -122,7 +122,7 @@ local inCombat = {
 	{Interrupts_Random, 'toggle(xIntRandom)&interruptAt(70)'},
 	{Survival},
 	{Cooldowns, 'toggle(Cooldowns)'},
-	{Fel_Explosives, 'inMelee'},
+	{Mythic_Plus, 'inMelee'},
 	{xCombat},
 	{xTaunts, 'toggle(super_taunt)'},
 }
