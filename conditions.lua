@@ -580,7 +580,7 @@ NeP.DSL:Register('dot.tick_time', function(_, spell)
     if not spell then return end
     local class = select(3,UnitClass('player'))
     if class == 11 and GetSpecialization() == 2 then
-        if NeP.DSL:Get('talent')(nil, '6,2') and DotTicks[1][spell] then
+        if NeP.DSL:Get('talent')(nil, '5,3') and DotTicks[1][spell] then
             return DotTicks[1][spell] * 0.67
         else
             if DotTicks[1][spell] then
