@@ -27,7 +27,7 @@ local GetTime = _G.GetTime
 local UnitGUID = _G.UnitGUID
 local UnitIsDeadOrGhost = _G.UnitIsDeadOrGhost
 local UnitAffectingCombat = _G.UnitAffectingCombat
-local InCombatLockdown = _G.InCombatLockdown
+--local InCombatLockdown = _G.InCombatLockdown
 local TravelSpeed = _G.TravelSpeed
 local UnitGetIncomingHeals = _G.UnitGetIncomingHeals
 local UnitGetTotalHealAbsorbs = _G.UnitGetTotalHealAbsorbs
@@ -613,7 +613,7 @@ NeP.Listener:Add('Zylla.SA', 'COMBAT_LOG_EVENT_UNFILTERED', function(_,combateve
       Zylla.SA_Cleanup(destGUID)
     end
 
-    if UnitIsDeadOrGhost("player") or not UnitAffectingCombat("player") or not InCombatLockdown() then -- We died, or, exited combat, go ahead and purge the list
+    if UnitIsDeadOrGhost("player") or not UnitAffectingCombat("player") then -- We died, or, exited combat, go ahead and purge the list
       for guid,_ in pairs(Zylla.SA_STATS) do
         Zylla.SA_Cleanup(guid)
     end
@@ -915,7 +915,7 @@ function Zylla.f_cleanUp()
   --Cancel existing scheduled cleanup first if there is one
   if Zylla.f_cleanUpTimer then Zylla.f_cancelCleanUp() end
   Zylla.f_cleanUpTimer = C_Timer.NewTimer(30,function()
-    if UnitIsDeadOrGhost("player") or not UnitAffectingCombat("player") or not InCombatLockdown() then
+    if UnitIsDeadOrGhost("player") or not UnitAffectingCombat("player") then
       --if not UnitAffectingCombat("player") then
       Zylla.f_Snapshots = {
         ["rake"]     = {},
@@ -1059,7 +1059,7 @@ NeP.Listener:Add('Zylla_InCombat', 'PLAYER_REGEN_DISABLED', function()
     C_Timer.NewTicker(1.5, (function()
       --This trigger runs the update function if there have been no updates recently
       --due to a lack of relevant combat events.
-      if not UnitIsDeadOrGhost("player") and (UnitAffectingCombat("player") or InCombatLockdown()) then
+      if not UnitIsDeadOrGhost("player") and (UnitAffectingCombat("player")) then
         if GetTime() - Zylla.f_lastUpdate >= 3 then Zylla.f_update() end
         --if GetTime() - Zylla.lastDmgUpdate >= 0.045 then Zylla.f_updateDmg() end
         if Zylla.f_nextUpdateDmg and GetTime() > Zylla.f_nextUpdateDmg then
