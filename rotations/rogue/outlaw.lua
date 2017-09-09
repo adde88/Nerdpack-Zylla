@@ -1,29 +1,31 @@
 local _, Zylla = ...
 
 local Mythic_GUI = _G.Mythic_GUI
-local Mythic_Plus = _G.Mythic_Plus
+local Fel_Explosives = _G.Fel_Explosives
 local Logo_GUI = _G.Logo_GUI
 local unpack = _G.unpack
 
 local GUI = {
 	unpack(Logo_GUI),
 	-- Keybinds
-	{type = 'header', text = 'Keybinds',	 					 												align = 'center'},
-	{type = 'text', 	 text = 'Left Shift: Pause',													align = 'left'},
-	{type = 'text', 	 text = 'Left Ctrl: Cannonball Barrage',							align = 'left'},
-	{type = 'text', 	 text = 'Left Alt: Grappling Hook',										align = 'left'},
-	{type = 'text', 	 text = 'Right Alt: ',																align = 'left'},
+	{type = 'header',  text = 'Keybinds',	 					 												align = 'center'},
+	{type = 'text', 	 text = 'Left Shift: |cffFFF569Pause|r',							align = 'left'},
+	{type = 'text', 	 text = 'Left Ctrl: |cffFFF569Cannonball Barrage|r',	align = 'left'},
+	{type = 'text', 	 text = 'Left Alt: |cffFFF569Grappling Hook|r',				align = 'left'},
 	-- Settings
-	{type = 'header', 	text = 'Class Settings',							 					align = 'center'},
-	{type = 'checkbox', text = 'Pause Enabled', 												key = 'kPause', default = true},
-	{type = 'checkbox', text = 'Use Tricks of the Trade on focus/tank', key = 'tot', default = true},
+	{type = 'header', 	text = 'Class Settings',							 							align = 'center'},
+	{type = 'checkbox', text = 'Pause Enabled', 														key = 'kPause', 			default = true},
+	{type = 'checkspin',text = 'Light\'s Judgment - Units', 								key = 'LJ',						spin = 4,	step = 1,	max = 20,	check = true,	desc = '|cffFFF569World Spell usable on Argus.|r'},
+	{type = 'checkbox', text = 'Use Tricks of the Trade on focus/tank',		 	key = 'tot', 					default = true},
+	{type = 'checkbox', text = 'Use Trinket #1', 														key = 'trinket1',			default = true},
+	{type = 'checkbox', text = 'Use Trinket #2', 														key = 'trinket2', 		default = true,		desc = '|cffFFF569Trinkets will be used whenever possible!|r'},
 	{type='ruler'},			{type='spacer'},
   -- Survival
-	{type = 'header', 	text = 'Survival',														align = 'center'},
-	{type = 'checkspin',	text = 'Use Crisom Vial when below %',			key = 'h_CV',					spin = 75, check = true},
-	{type = 'checkspin',	text = 'Use Riposte when below %',					key = 'h_RIP',				spin = 25, check = true},
-	{type = 'checkspin',	text = 'Healthstone',												key = 'HS',						spin = 45, check = true},
-	{type = 'checkspin',	text = 'Healing Potion',										key = 'AHP',					spin = 45, check = true},
+	{type = 'header', 	text = 'Survival',																	align = 'center'},
+	{type = 'checkspin',text = 'Use Crisom Vial when below %',							key = 'h_CV',					spin = 75, check = true},
+	{type = 'checkspin',text = 'Use Riposte when below %',									key = 'h_RIP',				spin = 25, check = true},
+	{type = 'checkspin',text = 'Healthstone',																key = 'HS',						spin = 45, check = true},
+	{type = 'checkspin',text = 'Healing Potion',														key = 'AHP',					spin = 45, check = true},
 	{type = 'ruler'},	  {type = 'spacer'},
 	unpack(Mythic_GUI),
 }
@@ -115,13 +117,14 @@ local Cooldowns = {
 	{'Cannonball Barrage', 'area(10).enemies<4', 'target.ground'},
 	{'Adrenaline Rush', 'target.inMelee&energy.deficit>0', 'player'},
 	{'Marked for Death', 'talent(7,2)&{player.combopoints<6&player.energy>16}||xtime<20', 'target'},
-	{'Curse of the Dreadblades', 'combo_points.deficit>3&{!talent(1,1)||debuff(Ghostly Strike)}', 'target'},
+	{'Curse of the Dreadblades', 'combo_points.deficit>3&{target.debuff(Ghostly Strike)||!talent(1,1)}', 'player'},
 	{'Killing Spree', 'talent(6,3)&energy.time_to_max>5||player.energy<15', 'target'},
+	{'#Trinket1', 'UI(trinket1)'},
+	{'#Trinket2', 'UI(trinket2)'},
+	{'Light\'s Judgment', 'UI(LJ_check)&range<61&area(15).enemies>=UI(LJ_spin)', 'enemies.ground'}
 }
 
 local RollingBones ={
-	--[[{'Roll the Bones', '{!talent(7,1)&!buff(Broadsides)&!buff(Jolly Roger)&!buff(Grand Melee)&!buff(Shark Infested Waters)&!buff(True Bearing)&!buff(Buried Treasure)}||{!buff(Adrenaline Rush)&!buff(Curse of the Dreadblades)&!talent(7,1)&buff(Broadsides)&!buff(Jolly Roger)&!buff(Grand Melee)&!buff(Shark Infested Waters)&!buff(True Bearing)&!buff(Buried Treasure)}||{!buff(Adrenaline Rush)&!buff(Curse of the Dreadblades)&!talent(7,1)&!buff(Broadsides)&buff(Jolly Roger)&!buff(Grand Melee)&!buff(Shark Infested Waters)&!buff(True Bearing)&!buff(Buried Treasure)}||{!buff(Adrenaline Rush)&!buff(Curse of the Dreadblades)&!talent(7,1)&!buff(Broadsides)&!buff(Jolly Roger)&buff(Grand Melee)&!buff(Shark Infested Waters)&!buff(True Bearing)&!buff(Buried Treasure)}||{!buff(Adrenaline Rush)&!buff(Curse of the Dreadblades)&!talent(7,1)&!buff(Broadsides)&!buff(Jolly Roger)&!buff(Grand Melee)&buff(Shark Infested Waters)&!buff(True Bearing)&!buff(Buried Treasure)}||{!buff(Adrenaline Rush)&!buff(Curse of the Dreadblades)&!talent(7,1)&!buff(Broadsides)&!buff(Jolly Roger)&!buff(Grand Melee)&!buff(Shark Infested Waters)&buff(True Bearing)&!buff(Buried Treasure)}||{!buff(Adrenaline Rush)&!buff(Curse of the Dreadblades)&!talent(7,1)&!buff(Broadsides)&!buff(Jolly Roger)&!buff(Grand Melee)&!buff(Shark Infested Waters)&!buff(True Bearing)&buff(Buried Treasure)}', 'player'},]]
-	--[[{'Roll the Bones', '!player.talent(7,1)&!player.buff(Broadsides)&!player.buff(Jolly Roger)&!player.buff(Grand Melee)&!player.buff(Shark Infested Waters)&!player.buff(True Bearing)&!player.buff(Buried Treasure)||!player.buff(Adrenaline Rush)&!player.buff(Curse of the Dreadblades)&!player.talent(7,1)&player.buff(Broadsides)&!player.buff(Jolly Roger)&!player.buff(Grand Melee)&!player.buff(Shark Infested Waters)&!player.buff(True Bearing)&!player.buff(Buried Treasure)||!player.buff(Adrenaline Rush)&!player.buff(Curse of the Dreadblades)&!player.talent(7,1)&!player.buff(Broadsides)&player.buff(Jolly Roger)&!player.buff(Grand Melee)&!player.buff(Shark Infested Waters)&!player.buff(True Bearing)&!player.buff(Buried Treasure)||!player.buff(Adrenaline Rush)&!player.buff(Curse of the Dreadblades)&!player.talent(7,1)&!player.buff(Broadsides)&!player.buff(Jolly Roger)&player.buff(Grand Melee)&!player.buff(Shark Infested Waters)&!player.buff(True Bearing)&!player.buff(Buried Treasure)||!player.buff(Adrenaline Rush)&!player.buff(Curse of the Dreadblades)&!player.talent(7,1)&!player.buff(Broadsides)&!player.buff(Jolly Roger)&!player.buff(Grand Melee)&player.buff(Shark Infested Waters)&!player.buff(True Bearing)&!player.buff(Buried Treasure)||!player.buff(Adrenaline Rush)&!player.buff(Curse of the Dreadblades)&!player.talent(7,1)&!player.buff(Broadsides)&!player.buff(Jolly Roger)&!player.buff(Grand Melee)&!player.buff(Shark Infested Waters)&player.buff(True Bearing)&!player.buff(Buried Treasure)||!player.buff(Adrenaline Rush)&!player.buff(Curse of the Dreadblades)&!player.talent(7,1)&!player.buff(Broadsides)&!player.buff(Jolly Roger)&!player.buff(Grand Melee)&!player.buff(Shark Infested Waters)&!player.buff(True Bearing)&player.buff(Buried Treasure)'},]]
 	{'Roll the Bones', 'combopoints>=5&!talent(7,1)&!buff(Broadsides)&!buff(Jolly Roger)&!buff(Grand Melee)&!buff(Shark Infested Waters)&!buff(True Bearing)&!buff(Buried Treasure)', 'player'},
 	{'Roll the Bones', 'combopoints>=5&!talent(7,1)&spell(Adrenaline Rush).cooldown>15&spell(Curse of the Dreadblades).cooldown>15&!talent(7,1)&buff(Broadsides)&!buff(Jolly Roger)&!buff(Grand Melee)&!buff(Shark Infested Waters)&!buff(True Bearing)&!buff(Buried Treasure)||combopoints>=5&!talent(7,1)&spell(Adrenaline Rush).cooldown>15&spell(Curse of the Dreadblades).cooldown>15&!buff(Broadsides)&buff(Jolly Roger)&!buff(Grand Melee)&!buff(Shark Infested Waters)&!buff(True Bearing)&!buff(Buried Treasure)||combopoints>=5&!talent(7,1)&spell(Adrenaline Rush).cooldown>15&spell(Curse of the Dreadblades).cooldown>15&!buff(Broadsides)&!buff(Jolly Roger)&buff(Grand Melee)&!buff(Shark Infested Waters)&!buff(True Bearing)&!buff(Buried Treasure)||combopoints>=5&!talent(7,1)&spell(Adrenaline Rush).cooldown>15&spell(Curse of the Dreadblades).cooldown>15&!buff(Broadsides)&!buff(Jolly Roger)&!buff(Grand Melee)&buff(Shark Infested Waters)&!buff(True Bearing)&!buff(Buried Treasure)||combopoints>=5&!talent(7,1)&spell(Adrenaline Rush).cooldown>15&spell(Curse of the Dreadblades).cooldown>15&!buff(Broadsides)&!buff(Jolly Roger)&!buff(Grand Melee)&!buff(Shark Infested Waters)&!buff(True Bearing)&buff(Buried Treasure)', 'player'},
 	{'Roll the Bones', 'combopoints>4&!talent(7,1)&!RtB', 'player'},
@@ -132,8 +135,8 @@ local TricksofTrade = {
 }
 
 local Stealth_Opener = {
-	{'Ambush', 'enemy&inMelee&inFront&player.buff(Stealth)&toggle(opener)', 'target'},
-	{'Cheap Shot', 'enemy&inMelee&inFront&player.buff(Stealth)&!toggle(opener)', 'target'}
+	{'Ambush', 'alive&enemy&inMelee&inFront&player.buff(Stealth)&toggle(opener)', 'target'},
+	{'Cheap Shot', 'alive&enemy&inMelee&inFront&player.buff(Stealth)&!toggle(opener)', 'target'}
 }
 
 local xCombat = {
@@ -150,7 +153,7 @@ local inCombat = {
 	{Interrupts, 'target.interruptAt(70)&toggle(Interrupts)'},
 	{Survival, 'player.health<100'},
 	{Blade_Flurry},
-	{Mythic_Plus, 'inMelee'},
+	{Fel_Explosives, 'inMelee'},
 	{xCombat, 'target.inFront&target.inMelee'},
 	{TricksofTrade},
 }
@@ -163,7 +166,7 @@ local outCombat = {
 	{TricksofTrade},
   {Interrupts_Random, 'toggle(xIntRandom)&toggle(Interrupts)'},
 	{Interrupts, 'target.interruptAt(70)&toggle(Interrupts)'},
-	{'Pick Pocket', 'toggle(xPickPock)&enemy&alive&range<11&player.buff(Stealth)', 'enemies'},
+	{'Pick Pocket', 'toggle(xPickPock)&enemy&alive&!combat&range<11&player.buff(Stealth)', 'enemies'},
 }
 
 NeP.CR:Add(260, {
