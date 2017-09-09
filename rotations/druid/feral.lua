@@ -149,7 +149,7 @@ local Cooldowns = {
 	{'Tiger\'s Fury', '{!player.buff(Clearcasting)&energy.deficit>50}||energy.deficit>70'},
 	{'Incarnation: King of the Jungle', 'energy.time_to_max>1&player.energy>25'},
 	{Ferocious_Bite_Pool, 'target.dot(Rip).ticking&target.dot(Rip)remains<3&target.time_to_die>3&{target.health<25||talent(6,1)}'},
-	{Regrowth_Pool, 'talent(7,2)&player.buff(Predatory Swiftness)&{player.combopoints>4||player.buff(Predatory Swiftness).remains<1.5||{talent(7,2)&player.combopoints=2&!player.buff(Bloodtalons)&player.spell(Ashamane\'s Frenzy).cooldown<gcd}}'},
+	{Regrowth_Pool, 'talent(7,2)&player.buff(Predatory Swiftness)&{player.combopoints>4||player.buff(Predatory Swiftness).remains<1.5||{talent(7,2)&player.combopoints==2&!player.buff(Bloodtalons)&player.spell(Ashamane\'s Frenzy).cooldown<gcd}}'},
 	{SBT_Opener, 'talent(6,1)&xtime<20'},
 	--# Special logic for Ailuro Pouncers legendary.
 	{Regrowth_Pool, 'equipped(137024)&talent(7,2)&player.buff(Predatory Swiftness).stack>1&!player.buff(Bloodtalons)'},
