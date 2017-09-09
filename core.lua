@@ -137,9 +137,11 @@ _G.PayPal_GUI = {
 
 _G.Mythic_GUI = {
 	-- Mythic + / Raiding
-	{type = 'header', text = 'Mythic+ Raid Settings', 		align = 'center'},
-	{type = 'checkbox', text = 'Fel Explosives [Affix]', 	key = 'mythic_fel', width = 55, default = true, desc = '|cffC41F3BThis will automatically target the \'Fel Explosives\' in Mythic+ dungeons!'},
-	{type = 'checkbox', text = 'Quaking [Affix]', 				key = 'mythic_fel', width = 55, default = true, desc = '|cffC41F3BThis will automatically interrupt your casts at the end of your Quaking Debuff from Mythic+ dungeons!'},
+	{type = 'header', 	size = 14, text = 'Mythic+ Raid Settings', 		align = 'center'},
+	{type = 'text',  		size = 10, text = 'Fel Explosives',	 					align = 'left'},
+	{type = 'checkbox', text = 'Fel Explosives [Affix]', 							key = 'mythic_fel', width = 55, default = true, desc = '|cffC41F3BThis will automatically target the \'Fel Explosives\' in Mythic+ dungeons!'},
+	{type = 'text',  		size = 10, text = 'Quaking',	 								align = 'left'},
+	{type = 'checkbox', text = 'Quaking [Affix]', 										key = 'quaking', width = 55, default = true, desc = '|cffC41F3BThis will automatically interrupt your casts at the end of your Quaking Debuff from Mythic+ dungeons!'},
 	{type = 'ruler'},	--XXX: Global GUI-part to be used on all combat routines.
 }
 
