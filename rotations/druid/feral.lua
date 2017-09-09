@@ -77,7 +77,7 @@ local Interrupts_Random = {
 	{'!Skull Bash', 'interruptAt(70)&player.form>0&toggle(xIntRandom)&toggle(Interrupts)&inFront&range<14', 'enemies'},
 	{'!Maim', 'player.combopoints>0&player.spell(Skull Bash).cooldown>gcd&!player.lastcast(Skull Bash)&infront&inmelee&combat&alive', 'enemies'},
 	{'!Typhoon', 'interruptAt(60)&toggle(xIntRandom)&toggle(Interrupts)&player.area(15).enemies.infront.inFront>=1', 'enemies'},
-	{'!Mighty Bash', 'interruptAt(75)&toggle(xIntRandom)&toggle(Interrupts)&range<=5&inFront', 'enemies'},
+	{'!Mighty Bash', 'interruptAt(75)&toggle(xIntRandom)&toggle(Interrupts)&inMelee&inFront', 'enemies'},
 }
 
 -- Pooling START
@@ -194,7 +194,7 @@ local Survival = {
 }
 
 local inCombat = {
-	{Fel_Explosives, 'range<=5'},
+	{Fel_Explosives, 'inMelee'},
 	{Keybinds},
 	{Interrupts, 'target.interruptAt(70)&toggle(Interrupts)&target.inFront&target.inMelee'},
 	{Interrupts_Random},

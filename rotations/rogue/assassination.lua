@@ -69,9 +69,9 @@ local Keybinds = {
 }
 
 local Interrupts = {
-	{'!Kick', 'target.range<=5&target.inFront'},
-	{'!Kidney Shot', 'target.range<=5&&target.inFront&cooldown(Kick).remains>gcd&!player.lastcast(Kick)&player.combopoints>0'},
-	{'!Arcane Torrent', 'target.range<=5&spell(Kick).cooldown>gcd&!prev_gcd(Kick)'},
+	{'!Kick', 'target.inMelee&target.inFront'},
+	{'!Kidney Shot', 'target.inMelee&&target.inFront&cooldown(Kick).remains>gcd&!player.lastcast(Kick)&player.combopoints>0'},
+	{'!Arcane Torrent', 'target.inMelee&spell(Kick).cooldown>gcd&!prev_gcd(Kick)'},
 }
 
 local preCombat = {
@@ -123,12 +123,12 @@ local xCombat = {
 	{'Rupture', 'player.buff(Vanish)&toggle(cooldowns)'},
 	{'Rupture', 'target.debuff.duration<8.2&player.combopoints>3&player.spell(Vanish).cooldown&target.ttd>5'},
 	-- Multi DoT Rupture
-	{'Rupture', 'target.enemy&target.range<=5&target.debuff.duration<8.2&player.combopoints>3', 'target'},
-	{'Rupture', 'focus.enemy&focus.range<=5&focus.debuff.duration<8.2&player.combopoints>3&focus.enemy&UI(multi)', 'focus'},
-	{'Rupture', 'mouseover.enemy&mouseover.range<=5&mouseover.debuff.duration<8.2&player.combopoints>3&UI(multi)', 'mouseover'},
-	{'Garrote', 'target.debuff.duration<6.4&player.combopoints<5&target.range<=5'},
+	{'Rupture', 'target.enemy&target.inMelee&target.debuff.duration<8.2&player.combopoints>3', 'target'},
+	{'Rupture', 'focus.enemy&focus.inMelee&focus.debuff.duration<8.2&player.combopoints>3&focus.enemy&UI(multi)', 'focus'},
+	{'Rupture', 'mouseover.enemy&mouseover.inMelee&mouseover.debuff.duration<8.2&player.combopoints>3&UI(multi)', 'mouseover'},
+	{'Garrote', 'target.debuff.duration<6.4&player.combopoints<5&target.inMelee'},
 	-- Use Mutilate till 4/5 combopoints for rupture
-	{'Mutilate', '!target.debuff(Rupture)&player.combopoints<4&target.range<=5'},
+	{'Mutilate', '!target.debuff(Rupture)&player.combopoints<4&target.inMelee'},
 	{'Kingsbane', '!talent(6,3)&player.buff(Envenom)&target.debuff(Vendetta)&target.debuff(Surge of Toxins)&target.ttd>00'},
 	{'Kingsbane', '!talent(6,3)&player.buff(Envenom)&player.spell(Vendetta).cooldown<6.8&target.ttd>00'},
 	{'Kingsbane', '!talent(6,3)&player.buff(Envenom)&player.spell(Vendetta).cooldown>00&target.ttd>00'},
@@ -137,9 +137,9 @@ local xCombat = {
 	{'Envenom', 'player.combopoints>3&target.debuff(Surge of Toxins).duration<=0.5'},
 	{'Envenom', 'player.combopoints>3&player.energy>060'},
 	{'Fan of Knives', 'player.area(10).enemies>2&player.combopoints<5'},
-	{'Mutilate', 'player.combopoints<4&player.buff(Envenom)&target.range<=5'},
-	{'Mutilate', 'player.spell(Vendetta).cooldown<6&player.combopoints<4&target.range<=5'},
-	{'Mutilate', 'player.combopoints<4&target.range<=5'},
+	{'Mutilate', 'player.combopoints<4&player.buff(Envenom)&target.inMelee'},
+	{'Mutilate', 'player.spell(Vendetta).cooldown<6&player.combopoints<4&target.inMelee'},
+	{'Mutilate', 'player.combopoints<4&target.inMelee'},
 }
 
 local inCombat = {
@@ -147,17 +147,17 @@ local inCombat = {
 	{Interrupts, 'target.interruptAt(70)&toggle(Interrupts)'},
 	{TricksofTrade},
 	{Cooldowns, 'toggle(cooldowns)'},
-	{Fel_Explosives, 'range<=5'},
-	{xCombat, 'target.range<=5&!player.buff(Stealth)'},
+	{Fel_Explosives, 'inMelee'},
+	{xCombat, 'target.inMelee&!player.buff(Stealth)'},
 	{inStealth},
-	{Ranged, '!target.range<=5&target.inRanged'},
+	{Ranged, '!target.inMelee&target.inRanged'},
 }
 
 local outCombat= {
 	-- Poisons
 	{Poisons},
-	{'Rupture', 'target.range<=5&target.enemy&player.buff(Vanish)'},
-	{'Garrote', 'target.range<=5&target.enemy&player.buff(Stealth)&player.combopoints<5&target.debuff.duration<6.4'},
+	{'Rupture', 'target.inMelee&target.enemy&player.buff(Vanish)'},
+	{'Garrote', 'target.inMelee&target.enemy&player.buff(Stealth)&player.combopoints<5&target.debuff.duration<6.4'},
 	{'Stealth', 'toggle(xStealth)&!player.buff&!player.buff(Vanish)&!nfly'},
 	{Keybinds},
 	{preCombat},

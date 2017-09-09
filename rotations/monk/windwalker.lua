@@ -84,14 +84,14 @@ local Keybinds = {
 	{'!/cancelaura Transcendence', 'keybind(lcontrol)&player.buff(Transcendence)&lastcast(Transcendence: Transfer)'},
 	{'!Tiger\'s Lust', 'player.state(disorient)||player.state(stun)||player.state(root)||player.state(snare)'},
 	{'&/stopcasting\n/stopattack\n/cleartarget\n/stopattack\n/cleartarget\n/nep mt', 'player.combat.time>200&UI(dpstest)'},
-	{'&/stopcasting', 'target.range<=5&player.casting(Crackling Jade Lightning)'}
+	{'&/stopcasting', 'target.inMelee&player.casting(Crackling Jade Lightning)'}
 }
 
 local Cooldowns = {
 	-- No Serenity
-	{'Touch of Death', 'target.range<=5&target.ttd>11&!talent(7,3)&player.spell(Strike of the Windlord).cooldown<8&player.spell(Fists of Fury).cooldown<5&player.spell(Rising Sun Kick).cooldown<7&player.chi>1', 'target'},
+	{'Touch of Death', 'target.inMelee&target.ttd>11&!talent(7,3)&player.spell(Strike of the Windlord).cooldown<8&player.spell(Fists of Fury).cooldown<5&player.spell(Rising Sun Kick).cooldown<7&player.chi>1', 'target'},
 	-- Serenity
-	{'Touch of Death', 'target.range<=5&target.ttd>11&talent(7,3)&player.spell(Strike of the Windlord).cooldown<8&player.spell(Fists of Fury).cooldown<5&player.spell(Rising Sun Kick).cooldown<7', 'target'},
+	{'Touch of Death', 'target.inMelee&target.ttd>11&talent(7,3)&player.spell(Strike of the Windlord).cooldown<8&player.spell(Fists of Fury).cooldown<5&player.spell(Rising Sun Kick).cooldown<7', 'target'},
 	{'Lifeblood'},
 	{'Berserking'},
 	{'Blood Fury'},
@@ -118,19 +118,19 @@ local Survival = {
 }
 
 local Interrupts = {
-	{'!Spear Hand Strike', 'interruptAt(70)&range<=5&inFront', 'target'},
+	{'!Spear Hand Strike', 'interruptAt(70)&inMelee&inFront', 'target'},
 	{'!Paralysis', 'UI(para)&interruptAt(60)&!immune(incapacitate)&range<21&inFront&player.spell(Spear Hand Strike).cooldown>gcd&!player.lastcast(Spear Hand Strike)', 'target'},
 	{'!Ring of Peace', 'interruptAt(5)&advanced&range<40&player.spell(Spear Hand Strike).cooldown>gcd&!player.lastgcd(Spear Hand Strike)', 'target.ground'},
-	{'!Leg Sweep', 'interruptAt(70)&!immune(stun)&range<=5&player.spell(Spear Hand Strike).cooldown>gcd&!player.lastcast(Spear Hand Strike)', 'target'},
-	{'!Quaking Palm', 'interruptAt(70)&!immune(incapacitate)&range<=5&inFront&player.spell(Spear Hand Strike).cooldown>gcd&!player.lastcast(Spear Hand Strike)', 'target'}
+	{'!Leg Sweep', 'interruptAt(70)&!immune(stun)&inMelee&player.spell(Spear Hand Strike).cooldown>gcd&!player.lastcast(Spear Hand Strike)', 'target'},
+	{'!Quaking Palm', 'interruptAt(70)&!immune(incapacitate)&inMelee&inFront&player.spell(Spear Hand Strike).cooldown>gcd&!player.lastcast(Spear Hand Strike)', 'target'}
 }
 
 local Interrupts_Random = {
-	{'!Spear Hand Strike', 'interruptAt(70)&toggle(xIntRandom)&toggle(Interrupts)&inFront&range<=5', 'enemies'},
+	{'!Spear Hand Strike', 'interruptAt(70)&toggle(xIntRandom)&toggle(Interrupts)&inFront&inMelee', 'enemies'},
 	{'!Paralysis', 'UI(para)&interruptAt(60)&!immune(incapacitate)&range<21&inFront&player.spell(Spear Hand Strike).cooldown>gcd&!player.lastcast(Spear Hand Strike)', 'enemies'},
 	{'!Ring of Peace', 'interruptAt(5)&advanced&range<40&player.spell(Spear Hand Strike).cooldown>gcd&!player.lastcast(Spear Hand Strike)', 'enemies.ground'},
-	{'!Leg Sweep', 'interruptAt(70)&!immune(stun)&range<=5&player.spell(Spear Hand Strike).cooldown>gcd&!player.lastgcd(Spear Hand Strike)', 'enemies'},
-	{'!Quaking Palm', 'interruptAt(70)&!immune(incapacitate)&range<=5&inFront&player.spell(Spear Hand Strike).cooldown>gcd&!player.lastcast(Spear Hand Strike)', 'enemies'}
+	{'!Leg Sweep', 'interruptAt(70)&!immune(stun)&inMelee&player.spell(Spear Hand Strike).cooldown>gcd&!player.lastgcd(Spear Hand Strike)', 'enemies'},
+	{'!Quaking Palm', 'interruptAt(70)&!immune(incapacitate)&inMelee&inFront&player.spell(Spear Hand Strike).cooldown>gcd&!player.lastcast(Spear Hand Strike)', 'enemies'}
 }
 
 local SEF = {
@@ -161,7 +161,7 @@ local Serenity = {
 	{'Rising Sun Kick', 'UI(auto_dot)&player.area(5).enemies>2&inFront', 'Zylla_sck(Mark of the Crane)'},
 	{'Fists of Fury', 'inFront', 'target'},
 	{'Blackout Kick', 'UI(auto_dot)&!player.lastgcd(Blackout Kick)&@Zylla.hitcombo(Blackout Kick)', 'Zylla_sck(Mark of the Crane)'},
-	{'Blackout Kick', '!player.lastgcd(Blackout Kick)&@Zylla.hitcombo(Blackout Kick)&target.range<=5', 'target'},
+	{'Blackout Kick', '!player.lastgcd(Blackout Kick)&@Zylla.hitcombo(Blackout Kick)&target.inMelee', 'target'},
 	{'Rushing Jade Wind', '!player.lastgcd(Rushing Jade Wind)&@Zylla.hitcombo(Rushing Jade Wind)'}
 }
 
@@ -187,7 +187,7 @@ local Melee = {
 			{'Tiger Palm'},
 	}, 'player.energy>50&!player.lastgcd(Tiger Palm)&@Zylla.hitcombo(Tiger Palm)'},
 	{'Blackout Kick', 'player.chi==1&!player.buff(Hit Combo)'},	-- Last resort BoK when we only have 1 chi and no hit combo
-	{'Tiger Palm', 'player.combat.time<4&player.energydiff==0&player.chi<2&!player.lastgcd(Tiger Palm)&@Zylla.hitcombo(Tiger Palm)&target.range<=5'},
+	{'Tiger Palm', 'player.combat.time<4&player.energydiff==0&player.chi<2&!player.lastgcd(Tiger Palm)&@Zylla.hitcombo(Tiger Palm)&target.inMelee'},
 	{'Tiger Palm', '!player.buff(Hit Combo)', 'target'},	-- Last resort TP when we don't have hit combo up
 	{'Tiger Palm', 'player.energy>100', 'target'}
 }
@@ -197,12 +197,12 @@ local inCombat = {
 	{Survival, 'player.health<100'},
 	{Interrupts, 'toggle(Interrupts)'},
 	{Interrupts_Random, 'toggle(xIntRandom)&toggle(Interrupts)'},
-	{Cooldowns, 'toggle(cooldowns)&target.range<=5'},
-	{Serenity, 'player.buff(Serenity)&target.range<=5'},
-	{SEF, 'target.range<=5&UI(sef_toggle)&!talent(7,3)&player.spell(Strike of the Windlord).cooldown<24&player.spell(Fists of Fury).cooldown<7&player.spell(Rising Sun Kick).cooldown<7'},
-	{Fel_Explosives, 'range<=5'},
-	{Melee, 'target.range<=5&target.inFront'},
-	{Ranged, 'target.range>5&target.range<41'}
+	{Cooldowns, 'toggle(cooldowns)&target.inMelee'},
+	{Serenity, 'player.buff(Serenity)&target.inMelee'},
+	{SEF, 'target.inMelee&UI(sef_toggle)&!talent(7,3)&player.spell(Strike of the Windlord).cooldown<24&player.spell(Fists of Fury).cooldown<7&player.spell(Rising Sun Kick).cooldown<7'},
+	{Fel_Explosives, 'inMelee'},
+	{Melee, 'target.inMelee&target.inFront'},
+	{Ranged, '!target.inMelee&target.range<41'}
 }
 
 local outCombat = {

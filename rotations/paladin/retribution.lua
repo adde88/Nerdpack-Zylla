@@ -105,19 +105,19 @@ local Group = {
 }
 
 local Interrupts = {
-	{'!Rebuke', 'inFront&range<=5', 'target'},
+	{'!Rebuke', 'inFront&inMelee', 'target'},
 	{'!Hammer of Justice', '!equipped(137065)&range<20&player.spell(Rebuke).cooldown>gcd&!player.lastgcd(Rebuke)', 'target'},
 	{'!Hammer of Justice', 'equipped(137065)&health>74&range<20&player.spell(Rebuke).cooldown>gcd&!player.lastgcd(Rebuke)', 'target'},
 	{'!Blinding Light', 'range<20&spell(Rebuke).cooldown>gcd&!player.lastgcd(Rebuke)', 'target'},
-	{'!Arcane Torrent', 'range<=5&spell(Rebuke).cooldown>gcd&!player.lastgcd(Rebuke)', 'target'}
+	{'!Arcane Torrent', 'inMelee&spell(Rebuke).cooldown>gcd&!player.lastgcd(Rebuke)', 'target'}
 }
 
 local Interrupts_Random = {
-	{'!Rebuke', 'inFront&range<=5', 'enemies'},
+	{'!Rebuke', 'inFront&inMelee', 'enemies'},
 	{'!Hammer of Justice', '!equipped(137065)&range<20&player.spell(Rebuke).cooldown>gcd&!player.lastgcd(Rebuke)', 'enemies'},
 	{'!Hammer of Justice', 'equipped(137065)&health>74&range<20&player.spell(Rebuke).cooldown>gcd&!player.lastgcd(Rebuke)', 'enemies'},
 	{'!Blinding Light', 'player.spell(Rebuke).cooldown>gcd&!prev_gcd(Rebuke)&!immune(Stun)&inFront&range<20', 'enemies'},
-	{'!Arcane Torrent', 'player.spell(Rebuke).cooldown>gcd&!prev_gcd(Rebuke)&!immune(Stun)&inFront&range<=5', 'enemies'}
+	{'!Arcane Torrent', 'player.spell(Rebuke).cooldown>gcd&!prev_gcd(Rebuke)&!immune(Stun)&inFront&inMelee', 'enemies'}
 }
 
 local Dispel = {
@@ -185,8 +185,8 @@ local Combat = {
 local Opener = {
 	{'Judgment', 'enemy&range<=30&inFront', 'target'},
 	{'Blade of Justice', 'enemy&range<=12&inFront&{equipped(137048)||player.race(Blood Elf)||player.spell(Wake of Ashes).cooldown}' ,'target'},
-	{'Divine Hammer', 'toggle(aoe)&range<=5&inFront&enemy&{equipped(137048)||player.race(Blood Elf)||player.spell(Wake of Ashes).cooldown}', 'target'},
-	{'Wake of Ashes', 'toggle(aoe)&range<=5&inFront', 'target'}
+	{'Divine Hammer', 'toggle(aoe)&inMelee&inFront&enemy&{equipped(137048)||player.race(Blood Elf)||player.spell(Wake of Ashes).cooldown}', 'target'},
+	{'Wake of Ashes', 'toggle(aoe)&inMelee&inFront', 'target'}
 }
 
 local inCombat = {
@@ -194,13 +194,13 @@ local inCombat = {
 	{Dispel, 'toggle(dispels)&!player.spell(Cleanse Toxins).cooldown'},
 	{Survival},
 	{Blessings},
-	{Opener, 'range<=5&inFront&xtime<2&{player.spell(Judgment).cooldown<gcd||player.spell(Blade of Justice).cooldown<gcd||player.spell(Wake of Ashes).cooldown<gcd}'},
-	{Fel_Explosives, 'range<=5'},
-	{Combat, 'enemy&range<=5&inFront'},
+	{Opener, 'inMelee&inFront&xtime<2&{player.spell(Judgment).cooldown<gcd||player.spell(Blade of Justice).cooldown<gcd||player.spell(Wake of Ashes).cooldown<gcd}'},
+	{Fel_Explosives, 'inMelee'},
+	{Combat, 'enemy&inMelee&inFront'},
 	{Group, 'player.movingfor<0.75&inGroup&toggle(groupAssist)'},
 	{Interrupts_Random, 'toggle(xIntRandom)&toggle(interrupts)&interruptAt(70)'},
 	{Interrupts, 'toggle(interrupts)&interruptAt(70)'},
-	{Cooldowns, 'toggle(cooldowns)&range<=5'}
+	{Cooldowns, 'toggle(cooldowns)&inMelee'}
 }
 
 local outCombat = {

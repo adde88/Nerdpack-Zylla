@@ -62,17 +62,17 @@ local Keybinds = {
 }
 
 local Interrupts = {
-	{'!Consume Magic', 'target.interruptAt(70)&target.inFront&target.range<=5'},
+	{'!Consume Magic', 'target.interruptAt(70)&target.inFront&target.inMelee'},
 	{'!Sigil of Misery', 'advanced&target.interruptAt(1)&target.range<31&spell(Consume Magic).cooldown>gcd&!prev_gcd(Consume Magic)', 'target.ground'},
 	{'!Sigil of Silence', 'advanced&target.interruptAt(5)&target.range<31&spell(Sigil of Misery).cooldown>gcd&spell(Consume Magic).cooldown>gcd&!prev_gcd(Consume Magic)', 'target.ground'},
-	{'!Arcane Torrent', 'target.interruptAt(70)&target.inFront&target.range<=5&spell(Consume Magic).cooldown>gcd&!prev_gcd(Consume Magic)'},
+	{'!Arcane Torrent', 'target.interruptAt(70)&target.inFront&target.inMelee&spell(Consume Magic).cooldown>gcd&!prev_gcd(Consume Magic)'},
 }
 
 local Interrupts_Random = {
-	{'!Consume Magic', 'interruptAt(70)&toggle(xIntRandom)&toggle(Interrupts)&inFront&range<=5', 'enemies'},
+	{'!Consume Magic', 'interruptAt(70)&toggle(xIntRandom)&toggle(Interrupts)&inFront&inMelee', 'enemies'},
 	{'!Sigil of Misery', 'advanced&interruptAt(1)&toggle(xIntRandom)&toggle(Interrupts)&player.spell(Consume Magic).cooldown>gcd&!prev_gcd(Consume Magic)&range<31', 'enemies.ground'},
 	{'!Sigil of Silence', 'advanced&interruptAt(5)&toggle(xIntRandom)&toggle(Interrupts)&player.spell(Sigil of Misery).cooldown>gcd&player.spell(Consume Magic).cooldown>gcd&!prev_gcd(Consume Magic)&range<31', 'enemies.ground'},
-	{'!Arcane Torrent', 'interruptAt(70)&toggle(xIntRandom)&toggle(Interrupts)&player.spell(Consume Magic).cooldown>gcd&!prev_gcd(Consume Magic)&range<=5'},
+	{'!Arcane Torrent', 'interruptAt(70)&toggle(xIntRandom)&toggle(Interrupts)&player.spell(Consume Magic).cooldown>gcd&!prev_gcd(Consume Magic)&inMelee'},
 }
 
 local Survival ={
@@ -110,7 +110,7 @@ local xCombat = {
 }
 
 local Ranged = {
-	{'Throw Glaive', 'toggle(aoe)&range>8&range<31&inFront', 'target'},
+	{'Throw Glaive', 'toggle(aoe)&!inMelee&range<31&inFront', 'target'},
 	{'Sigil of Chains', 'advanced&range<31&area(8).enemies>2&combat', 'enemies.ground'},
 	{'Sigil of Flame', 'toggle(aoe)&advanced&range<31&!target.debuff(Sigil of Flame)', 'target.ground'},
 	{'Sigil of Flame', '!advanced&range<31&!target.debuff(Sigil of Flame)', 'player.ground'},
@@ -124,8 +124,8 @@ local inCombat = {
 	{Ranged},
 	{Mitigations},
   {Survival},
-	{Fel_Explosives, 'range<=5'},
-	{xCombat, 'target.inFront&target.range<=5'}
+	{Fel_Explosives, 'inMelee'},
+	{xCombat, 'target.inFront&target.inMelee'}
 }
 
 local outCombat = {

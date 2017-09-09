@@ -83,25 +83,25 @@ local Keybinds = {
 }
 
 local Interrupts = {
-	{'!Kick', 'range<=5&inFront', 'target'},
+	{'!Kick', 'inMelee&inFront', 'target'},
 	{'!Between the Eyes', 'range<21&inFront&player.spell(Kick).cooldown>gcd&player.combopoints>0&!player.lastgcd(Kick)', 'target'},
 	{'!Cloak of Shadows', 'spell(Kick).cooldown>gcd&spell(Between the Eyes).cooldown>gcd', 'player'},
 }
 
 local Interrupts_Random = {
-	{'!Kick', 'interruptAt(70)&inFront&range<=5', 'enemies'},
+	{'!Kick', 'interruptAt(70)&inFront&inMelee', 'enemies'},
   {'!Between the Eyes', 'interruptAt(70)&player.spell(Kick).cooldown>gcd&!player.lastgcd(Kick)&inFront&range<21', 'enemies'},
 }
 
 local Build = {
-	{'Ghostly Strike', 'range<=5&combo_points.deficit>0&debuff(Ghostly Strike).duration<2', 'target'},
+	{'Ghostly Strike', 'inMelee&combo_points.deficit>0&debuff(Ghostly Strike).duration<2', 'target'},
 	{'Pistol Shot', 'range<31&player.buff(Opportunity)&player.combopoints<5', 'target'},
-	{'Saber Slash', 'range<=5&{player.combopoints<5||{player.combopoints<6&buff(Broadsides)}}', 'target'},
+	{'Saber Slash', 'inMelee&{player.combopoints<5||{player.combopoints<6&buff(Broadsides)}}', 'target'},
 }
 
 local Finishers = {
 	{'Between the Eyes', 'range<30&player.combopoints>4&buff(Shark Infested Waters)', 'target'},
-	{'Run Through', 'range<=5&player.combopoints>4', 'target'},
+	{'Run Through', 'inMelee&player.combopoints>4', 'target'},
 	{'Death from Above', 'talent(7,3)&area(8).enemies>4&player.combopoints>4', 'target'},
 	{'Slice and Dice', 'talent(7,1)&combopoints>4&buff(Slice and Dice).remains<3', 'player'},
 }
@@ -113,7 +113,7 @@ local Blade_Flurry = {
 
 local Cooldowns = {
 	{'Cannonball Barrage', 'area(10).enemies<4', 'target.ground'},
-	{'Adrenaline Rush', 'target.range<=5&energy.deficit>0', 'player'},
+	{'Adrenaline Rush', 'target.inMelee&energy.deficit>0', 'player'},
 	{'Marked for Death', 'talent(7,2)&{player.combopoints<6&player.energy>16}||xtime<20', 'target'},
 	{'Curse of the Dreadblades', 'combo_points.deficit>3&{!talent(1,1)||debuff(Ghostly Strike)}', 'target'},
 	{'Killing Spree', 'talent(6,3)&energy.time_to_max>5||player.energy<15', 'target'},
@@ -132,8 +132,8 @@ local TricksofTrade = {
 }
 
 local Stealth_Opener = {
-	{'Ambush', 'enemy&range<=5&inFront&player.buff(Stealth)&toggle(opener)', 'target'},
-	{'Cheap Shot', 'enemy&range<=5&inFront&player.buff(Stealth)&!toggle(opener)', 'target'}
+	{'Ambush', 'enemy&inMelee&inFront&player.buff(Stealth)&toggle(opener)', 'target'},
+	{'Cheap Shot', 'enemy&inMelee&inFront&player.buff(Stealth)&!toggle(opener)', 'target'}
 }
 
 local xCombat = {
@@ -150,8 +150,8 @@ local inCombat = {
 	{Interrupts, 'target.interruptAt(70)&toggle(Interrupts)'},
 	{Survival, 'player.health<100'},
 	{Blade_Flurry},
-	{Fel_Explosives, 'range<=5'},
-	{xCombat, 'target.inFront&target.range<=5'},
+	{Fel_Explosives, 'inMelee'},
+	{xCombat, 'target.inFront&target.inMelee'},
 	{TricksofTrade},
 }
 

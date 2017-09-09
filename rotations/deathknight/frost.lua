@@ -151,7 +151,7 @@ local inCombat = {
 	{Cooldowns, 'toggle(Cooldowns)&target.inMelee'},
 	{MACHINEGUN, 'toggle(xMACHINEGUN)&target.inMelee&target.inFront'},
 	{xCombat, '!toggle(xMACHINEGUN)&target.inMelee&target.inFront'},
-	{Fel_Explosives, 'range<=5'}
+	{Fel_Explosives, 'inMelee'}
 }
 
 local outCombat = {

@@ -68,7 +68,7 @@ local Interrupts = {
 local Interrupts_Random = {
 	{'!Skull Bash', 'interruptAt(70)&player.form>0&toggle(xIntRandom)&toggle(Interrupts)&inFront&range<14', 'enemies'},
 	{'!Typhoon', 'interruptAt(60)&toggle(xIntRandom)&toggle(Interrupts)&player.area(15).enemies.inFront>=1', 'enemies'},
-	{'!Mighty Bash', 'interruptAt(75)&toggle(xIntRandom)&toggle(Interrupts)&range<=5&inFront', 'enemies'},
+	{'!Mighty Bash', 'interruptAt(75)&toggle(xIntRandom)&toggle(Interrupts)&inMelee&inFront', 'enemies'},
 }
 
 -- Pooling START
@@ -185,21 +185,21 @@ local Survival = {
 }
 
 local inCombat = {
-	{Fel_Explosives, 'range<=5'},
+	{Fel_Explosives, 'inMelee'},
 	{Keybinds},
-	{Interrupts, 'target.interruptAt(70)&toggle(Interrupts)&target.inFront&target.range<=5'},
+	{Interrupts, 'target.interruptAt(70)&toggle(Interrupts)&target.inFront&target.inMelee'},
 	{Interrupts_Random},
 	{Survival, 'player.health<100'},
 	{'Cat Form', '!player.buff(Frenzied Regeneration)&{!player.buff(Cat Form)&{!player.buff(Travel Form)||player.area(8).enemies>0}}'},
 	{Cooldowns, '!player.buff(Frenzied Regeneration)&toggle(Cooldowns)'},
-	{Moonfire_Pool, 'talent(1,2)&!target.range<=5&target.range<50&target.inFront&!player.buff(Prowl)&!target.debuff(Moonfire)'},
-	{xCombat, '!player.buff(Frenzied Regeneration)&target.range<=5&target.inFront'},
+	{Moonfire_Pool, 'talent(1,2)&!target.inMelee&target.range<50&target.inFront&!player.buff(Prowl)&!target.debuff(Moonfire)'},
+	{xCombat, '!player.buff(Frenzied Regeneration)&target.inMelee&target.inFront'},
 }
 
 local outCombat = {
 	{Keybinds},
 	{PreCombat},
-	{Interrupts, 'target.interruptAt(70)&toggle(Interrupts)&target.inFront&target.range<=5'},
+	{Interrupts, 'target.interruptAt(70)&toggle(Interrupts)&target.inFront&target.inMelee'},
 	{Interrupts_Random},
 }
 

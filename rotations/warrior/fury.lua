@@ -59,16 +59,16 @@ local Keybinds = {
 }
 
 local Interrupts = {
-	{'!Pummel', 'interruptAt(70)&range<=5&inFront', 'target'},
+	{'!Pummel', 'interruptAt(70)&inMelee&inFront', 'target'},
 	{'!Storm Bolt', 'interruptAt(70)&inFront&range<30&talent(2,2)&!immune(stun)&spell(Pummel).cooldown>gcd&!prev_gcd(Pummel)', 'target'},
-	{'!Arcane Torrent', 'interruptAt(70)&range<=5&spell(Pummel).cooldown>gcd&!prev_gcd(Pummel)', 'target'},
-	{'!Shockwave', 'interruptAt(70)&inFront&range<=5&talent(2,1)&!immune(stun)&spell(Pummel).cooldown>gcd&!prev_gcd(Pummel)', 'target'},
+	{'!Arcane Torrent', 'interruptAt(70)&inMelee&spell(Pummel).cooldown>gcd&!prev_gcd(Pummel)', 'target'},
+	{'!Shockwave', 'interruptAt(70)&inFront&inMelee&talent(2,1)&!immune(stun)&spell(Pummel).cooldown>gcd&!prev_gcd(Pummel)', 'target'},
 }
 
 local Interrupts_Random = {
-	{'!Pummel', 'interruptAt(70)&toggle(xIntRandom)&toggle(Interrupts)&inFront&range<=5', 'enemies'},
+	{'!Pummel', 'interruptAt(70)&toggle(xIntRandom)&toggle(Interrupts)&inFront&inMelee', 'enemies'},
 	{'!Storm Bolt', 'interruptAt(70)&toggle(xIntRandom)&toggle(Interrupts)&player.spell(Pummel).cooldown>gcd&!prev_gcd(Pummel)&inFront&range<21', 'enemies'},
-	{'!Arcane Torrent', 'interruptAt(70)&toggle(xIntRandom)&toggle(Interrupts)&player.spell(Pummel).cooldown>gcd&!prev_gcd(Pummel)&inFront&range<=5', 'enemies'},
+	{'!Arcane Torrent', 'interruptAt(70)&toggle(xIntRandom)&toggle(Interrupts)&player.spell(Pummel).cooldown>gcd&!prev_gcd(Pummel)&inFront&inMelee', 'enemies'},
 	{'!Shockwave', 'interruptAt(75)&toggle(xIntRandom)&toggle(Interrupts)&player.spell(Pummel).cooldown>gcd&!prev_gcd(Pummel)&inFront&range<11', 'enemies'},
 }
 
@@ -148,7 +148,7 @@ local TwoTargets = {
 local xPvP = {
 	{'Gladiator\'s Medallion', 'state(incapacitate)||state(stun)||state(fear)||state(horror)||state(sleep)||state(charm)', 'player'},
 	{'Adaptation', 'state(incapacitate)||state(stun)||state(fear)||state(horror)||state(sleep)||state(charm)', 'player'},
-	{'Disarm', 'range<=5&inFront', 'target'},
+	{'Disarm', 'inMelee&inFront', 'target'},
 	{'Spell Reflection', 'range<41&combat&alive&interruptAt(80)', 'enemies'},
 	{'Death Wish', 'player.buff(Death Wish).count<UI(DWS)&player.health>=UI(DWH)', 'player'}
 }
@@ -158,13 +158,13 @@ local inCombat = {
 	{Interrupts, 'toggle(Interrupts)'},
 	{Interrupts_Random},
 	{Survival, 'player.health<100'},
-	{Cooldowns, 'toggle(Cooldowns)&range<=5'},
+	{Cooldowns, 'toggle(Cooldowns)&inMelee'},
 	{TwoTargets, 'player.area(8).enemies==2||player.area(8).enemies==3'},
 	{AoE, 'player.area(8).enemies>3'},
-	{ST, 'player.area(8).enemies<=3&range<=5&inFront'},
+	{ST, 'player.area(8).enemies<=3&inMelee&inFront'},
 	{Ranged, '!inMelee&inFront'},
 	{xPvP},
-	{Fel_Explosives, 'range<=5'}
+	{Fel_Explosives, 'inMelee'}
 }
 
 local outCombat = {

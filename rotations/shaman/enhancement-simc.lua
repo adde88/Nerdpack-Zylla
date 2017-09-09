@@ -135,7 +135,7 @@ local xCombat = {
 }
 
 local Ranged = {
-	{'Lightning Bolt', 'range>8&range<41&InFront', 'target'},
+	{'Lightning Bolt', '!target.inMelee&range<41&InFront', 'target'},
 	{'Feral Lunge', 'range>10&range<25&InFront', 'target'}
 }
 
@@ -146,8 +146,8 @@ local inCombat = {
 	{Survival},
 	{Party},
 	{Cooldowns, 'toggle(Cooldowns)'},
-	{Fel_Explosives, 'range<=5'},
-	{xCombat, 'target.range<=5&target.inFront'},
+	{Fel_Explosives, 'inMelee'},
+	{xCombat, 'target.inMelee&target.inFront'},
 	{Ranged},
 	{'Ghost Wolf', 'player.movingfor>0.75&target.range>12'}
 }

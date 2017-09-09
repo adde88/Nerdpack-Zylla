@@ -76,7 +76,7 @@ local Keybinds = {
 }
 
 local Cooldowns = {
-	{'Dancing Rune Weapon', 'inFront&range<=5&{{player.incdmg(2.5)>player.health.max*0.50}||{player.health<30}}', 'target'},
+	{'Dancing Rune Weapon', 'inFront&inMelee&{{player.incdmg(2.5)>player.health.max*0.50}||{player.health<30}}', 'target'},
 	{'Vampiric Blood', 'UI(VB_check)&{incdmg(2.5)>health.max*0.50||health<=UI(VB_spin)}', 'player'},
 	{'#Trinket1', 'UI(trinket1)'},
 	{'#Trinket2', 'UI(trinket2)'},
@@ -87,14 +87,14 @@ local Interrupts = {
 	{'!Mind Freeze', 'inFront&range<=15', 'target'},
 	{'!Asphyxiate', 'range<31&inFront&player.spell(Mind Freeze).cooldown>gcd&!player.lastgcd(Mind Freeze)', 'target'},
 	{'!Death Grip', 'UI(DGInt)&range<31&inFront&player.spell(Mind Freeze).cooldown>gcd&player.spell(Asphyxiate).cooldown>gcd', 'target'},
-	{'!Arcane Torrent', 'range<=5&player.spell(Mind Freeze).cooldown>gcd&!player.lastgcd(Mind Freeze)', 'target'},
+	{'!Arcane Torrent', 'inMelee&player.spell(Mind Freeze).cooldown>gcd&!player.lastgcd(Mind Freeze)', 'target'},
 }
 
 local Interrupts_Random = {
 	{'!Mind Freeze', 'inFront&range<=15&combat&alive', 'enemies'},
 	{'!Asphyxiate', 'player.spell(Mind Freeze).cooldown>gcd&!player.lastgcd(Mind Freeze)&inFront&range<21&combat&alive', 'enemies'},
 	{'!Death Grip', 'UI(DGInt)&range<31&player.spell(Mind Freeze).cooldown>gcd&player.spell(Asphyxiate).cooldown>gcd&combat&alive', 'enemies'},
-	{'!Arcane Torrent', 'player.spell(Mind Freeze).cooldown>gcd&player.spell(Asphyxiate).cooldown>gcd&range<=5&combat&alive', 'enemies'},
+	{'!Arcane Torrent', 'player.spell(Mind Freeze).cooldown>gcd&player.spell(Asphyxiate).cooldown>gcd&inMelee&combat&alive', 'enemies'},
 }
 
 local xTaunts = {
@@ -103,17 +103,17 @@ local xTaunts = {
 }
 
 local xCombat = {
-	{'Death Strike', 'inFront&range<=5&player.runicpower>65&player.health<=UI(DSA_spin)&UI(DSA_check)', 'target'},
-	{'Death Strike', 'inFront&range<=5&player.runicpower>=UI(DSb_spin)&UI(DSb_check)', 'target'},
+	{'Death Strike', 'inFront&inMelee&player.runicpower>65&player.health<=UI(DSA_spin)&UI(DSA_check)', 'target'},
+	{'Death Strike', 'inFront&inMelee&player.runicpower>=UI(DSb_spin)&UI(DSb_check)', 'target'},
 	{'Death\'s Caress', 'range<41&debuff(Blood Plague).remains<3', 'target'},
-	{'Marrowrend', 'player.buff(Bone Shield).duration<4&inFront&range<=5', 'target'},
-	{'Marrowrend', 'player.buff(Bone Shield).count<7&talent(3,1)&inFront&range<=5', 'target'},
+	{'Marrowrend', 'player.buff(Bone Shield).duration<4&inFront&inMelee', 'target'},
+	{'Marrowrend', 'player.buff(Bone Shield).count<7&talent(3,1)&inFront&inMelee', 'target'},
 	{'Blood Boil', 'target.range<11'},
 	{'Death and Decay', 'range<31&{{talent(2,1)&player.buff(Crimson Scourge)}||{player.area(10).enemies>1&player.buff(Crimson Scourge}}', 'target.ground'},
 	{'Death and Decay', 'range<31&{{talent(2,1)&player.runes>2}||{player.area(10).enemies>2}}', 'target.ground'},
 	{'Death and Decay', '!talent(2,1)&range<31&target.area(10).enemies==1&player.buff(Crimson Scourge)', 'target.ground'},
-	{'Heart Strike', 'inFront&range<=5&{player.runes>2||player.buff(Death and Decay)}', 'target'},
-	{'Consumption', 'inFront&range<=5', 'target'},
+	{'Heart Strike', 'inFront&inMelee&{player.runes>2||player.buff(Death and Decay)}', 'target'},
+	{'Consumption', 'inFront&inMelee', 'target'},
 }
 
 local inCombat = {
@@ -122,7 +122,7 @@ local inCombat = {
 	{Interrupts_Random, 'toggle(xIntRandom)&interruptAt(70)'},
 	{Survival},
 	{Cooldowns, 'toggle(Cooldowns)'},
-	{Fel_Explosives, 'range<=5'},
+	{Fel_Explosives, 'inMelee'},
 	{xCombat},
 	{xTaunts, 'toggle(super_taunt)'},
 }

@@ -84,12 +84,12 @@ local xCombat = {
 
 local inCombat = {
 	{Keybinds},
-	{Interrupts, 'target.interruptAt(70)&toggle(Interrupts)&target.inFront&target.range<=5'},
+	{Interrupts, 'target.interruptAt(70)&toggle(Interrupts)&target.inFront&target.inMelee'},
 	{Survival, 'player.health<100'},
 	{Cooldowns, 'toggle(Cooldowns)'},
 	{'Bear Form', 'form~=1'},
-	{Fel_Explosives, 'range<=5'},
-	{xCombat, 'target.range<=5&target.inFront'}
+	{Fel_Explosives, 'inMelee'},
+	{xCombat, 'target.inMelee&target.inFront'}
 }
 
 local outCombat = {

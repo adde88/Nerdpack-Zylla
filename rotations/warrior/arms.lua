@@ -38,7 +38,7 @@ local Keybinds = {
 
 local Interrupts = {
 	{'!Pummel'},
-	{'!Arcane Torrent', 'target.range<=5&cooldown(Pummel).remains>gcd&!prev_gcd(Pummel)'},
+	{'!Arcane Torrent', 'target.inMelee&cooldown(Pummel).remains>gcd&!prev_gcd(Pummel)'},
 }
 
 local Survival = {
@@ -147,21 +147,21 @@ local ST = {
 
 local inCombat = {
 	{Keybinds},
-	{Interrupts, 'target.interruptAt(70)&toggle(Interrupts)&target.inFront&target.range<=5'},
+	{Interrupts, 'target.interruptAt(70)&toggle(Interrupts)&target.inFront&target.inMelee'},
 	{Survival, 'player.health<100'},
-	{Cooldowns, 'toggle(Cooldowns)&target.range<=5'},
-	{Etc, 'target.range<=5&target.inFront'},
+	{Cooldowns, 'toggle(Cooldowns)&target.inMelee'},
+	{Etc, 'target.inMelee&target.inFront'},
 	{Cleave, 'toggle(aoe)&player.area(8).enemies>1&talent(1,3)'},
 	{AoE, 'toggle(aoe)&player.area(8).enemies>4&!talent(1,3)'},
-	{Execute, 'target.range<=5&target.inFront&target.health<30&player.area(8).enemies<5'},
-	{ST, 'target.range<=5&target.inFront&target.health>20'},
-	{Fel_Explosives, 'range<=5'}
+	{Execute, 'target.inMelee&target.inFront&target.health<30&player.area(8).enemies<5'},
+	{ST, 'target.inMelee&target.inFront&target.health>20'},
+	{Fel_Explosives, 'inMelee'}
 }
 
 local outCombat = {
 	{Keybinds},
 	{PreCombat},
-	{Interrupts, 'target.interruptAt(70)&toggle(Interrupts)&target.inFront&target.range<=5'},
+	{Interrupts, 'target.interruptAt(70)&toggle(Interrupts)&target.inFront&target.inMelee'},
 }
 
 NeP.CR:Add(71, {

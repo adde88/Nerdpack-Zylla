@@ -119,7 +119,7 @@ local inCombat = {
 	{ST, 'inMelee&inFront&player.area(8).enemies<2'},
 	{AoE, 'toggle(aoe)&inMelee&inFront&player.area(8).enemies>=2'},
 	{'Taunt', 'toggle(super_taunt)&combat&alive&threat<100', 'enemies'},
-	{Fel_Explosives, 'range<=5'}
+	{Fel_Explosives, 'inMelee'}
 }
 
 local outCombat = {

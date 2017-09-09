@@ -53,7 +53,7 @@ local Keybinds = {
 local Interrupts = {
   {'!Rebuke'},
   {'!Hammer of Justice', 'cooldown(Rebuke).remains>gcd'},
-  {'!Arcane Torrent', 'target.range<=5&spell(Rebuke).cooldown>gcd&!prev_gcd(Rebuke)'},
+  {'!Arcane Torrent', 'target.inMelee&spell(Rebuke).cooldown>gcd&!prev_gcd(Rebuke)'},
 }
 
 local Survival ={
@@ -74,7 +74,7 @@ local EyeofTyr = {
 }
 local Cooldowns = {
   {'Seraphim', 'talent(7,2)&spell(Shield of the Righteous).charges>1', 'player'},
-  {'Shield of the Righteous', 'range<=5&inFront&{!talent(7,2)||spell(Shield of the Righteous).charges>2}&!{player.buff(Eye of Tyr)&player.buff(Aegis of Light)&player.buff(Ardent Defender)&player.buff(Guardian of Ancient Kings)&player.buff(Divine Shield)}', 'target'},
+  {'Shield of the Righteous', 'inMelee&inFront&{!talent(7,2)||spell(Shield of the Righteous).charges>2}&!{player.buff(Eye of Tyr)&player.buff(Aegis of Light)&player.buff(Ardent Defender)&player.buff(Guardian of Ancient Kings)&player.buff(Divine Shield)}', 'target'},
   {'Bastion of Light', 'talent(2,2)&spell(Shield of the Righteous).charges<1', 'player'},
   {'Light of the Protector', 'player.health<40', 'player'},
   {'Hand of the Protector', 'talent(5,1)&health<40', 'player'},
@@ -107,13 +107,13 @@ local ST = {
 local inCombat = {
   {Keybinds},
   {Survival, 'player.health<100'},
-  {Interrupts, 'target.interruptAt(70)&toggle(Interrupts)&target.inFront&target.range<=5'},
+  {Interrupts, 'target.interruptAt(70)&toggle(Interrupts)&target.inFront&target.inMelee'},
   {Cooldowns, 'toggle(Cooldowns)'},
   {'%taunt(Hand of Reckoning)', 'toggle(aoe)'},
   {'Shield of the Righteous', '!player.buff&{player.health<60||spell.count>1}', 'target'},
   {AoE, 'toggle(AoE)&player.area(8).enemies>2'},
-	{Fel_Explosives, 'range<=5'},
-  {ST, 'target.inFront&target.range<=5'}
+	{Fel_Explosives, 'inMelee'},
+  {ST, 'target.inFront&target.inMelee'}
 }
 
 local outCombat = {
