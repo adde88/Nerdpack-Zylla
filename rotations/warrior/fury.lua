@@ -77,7 +77,7 @@ local Survival = {
 	{'Enraged Regeneration', 'player.health<=UI(en_rege)', 'player'},
 	{'#127834', 'item(127834).usable&item(127834).count>0&health<=UI(AHP_spin)&UI(AHP_check)', 'player'}, 		-- Ancient Healing Potion
 	{'#5512', 'item(5512).usable&item(5512).count>0&player.health<=UI(HS_spin)&UI(HS_check)', 'player'}, 			--Health Stone
-	{'Piercing Howl', 'player.area(15).enemies>4'},
+	{'Piercing Howl', 'player.area(15).enemies>4&count(Piercing Howl).enemies.debuffs==0'},
 }
 
 local Cooldowns = {
