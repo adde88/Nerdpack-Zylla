@@ -66,13 +66,15 @@ local Keybinds = {
 }
 
 local Interrupts = {
-	{'Skull Bash', 'player.form>0', 'target'},
+	{'!Skull Bash', 'player.form>0', 'target'},
+	{'!Maim', 'player.combopoints>0&player.spell(Skull Bash).cooldown>gcd&!player.lastcast(Skull Bash)', 'target'},
 	{'!Typhoon', 'player.spell(Skull Bash).cooldown>gcd'},
 	{'!Mighty Bash', 'player.spell(Skull Bash).cooldown>gcd'},
 }
 
 local Interrupts_Random = {
 	{'!Skull Bash', 'interruptAt(70)&player.form>0&toggle(xIntRandom)&toggle(Interrupts)&inFront&range<14', 'enemies'},
+	{'!Maim', 'player.combopoints>0&player.spell(Skull Bash).cooldown>gcd&!player.lastcast(Skull Bash)&infront&inmelee&combat&alive', 'enemies'},
 	{'!Typhoon', 'interruptAt(60)&toggle(xIntRandom)&toggle(Interrupts)&player.area(15).enemies.infront.inFront>=1', 'enemies'},
 	{'!Mighty Bash', 'interruptAt(75)&toggle(xIntRandom)&toggle(Interrupts)&range<=5&inFront', 'enemies'},
 }
@@ -126,9 +128,9 @@ local Swipe_Pool = {
 -- Pool END
 
 local PreCombat = {
-	{'Travel Form', 'toggle(xFORM)&player.movingfor>1&!indoors&!player.buff(Travel Form)&!player.buff(Prowl)'},
+	{'Travel Form', 'toggle(xFORM)&player.movingfor>0.75&!indoors&!player.buff(Travel Form)&!player.buff(Prowl)'},
 	{Regrowth_Pool, 'talent(7,2)&target.enemy&target.alive&!player.buff(Prowl)&!prev(Regrowth)&player.buff(Bloodtalons).stack<2'},
-	{'Cat Form', 'toggle(xFORM)&player.movingfor>1&indoors&!player.buff(Cat Form)&!player.buff(Travel Form)&!player.buff(Prowl)'},
+	{'Cat Form', 'toggle(xFORM)&player.movingfor>0.75&indoors&!player.buff(Cat Form)&!player.buff(Travel Form)&!player.buff(Prowl)'},
 	{'Prowl', 'toggle(xFORM)&toggle(xStealth)&!buff', 'player'},
 	{'Rake', 'player.buff(Prowl)&target.range<5&target.inFront'},
 }
