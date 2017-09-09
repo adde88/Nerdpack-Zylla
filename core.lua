@@ -50,8 +50,6 @@ Zylla.spell_timers = {}
 Zylla.isAFK = false;
 
 local Parse = NeP.DSL.Parse
---local Fetch = NeP.Interface.fetchKey
-
 local Zframe = CreateFrame('GameTooltip', 'Zylla_ScanningTooltip', UIParent, 'GameTooltipTemplate')
 
 Zylla.Class = select(3,UnitClass("player"))
@@ -314,35 +312,33 @@ local function oFilter(owner, spell, spellID, caster)
 end
 
 function Zylla.UnitHot(target, spell, owner)
-  local name, count, caster, expires, spellID
-  if tonumber(spell) then
-    local go, i = true, 0
-    while i <= 40 and go do
-      i = i + 1
-      name,_,_,count,_,_G.duration,expires,caster,_,_,spellID = _G['UnitBuff'](target, i)
-      go = oFilter(owner, spell, spellID, caster)
-    end
-  else
-    name,_,_,count,_,_G.duration,expires,caster = _G['UnitBuff'](target, spell)
+local name, count, caster, expires, spellID
+if tonumber(spell) then
+  local go, i = true, 0
+  while i <= 40 and go do
+    i = i + 1
+    name,_,_,count,_,duration,expires,caster,_,_,spellID = _G['UnitBuff'](target, i)
+    go = oFilter(owner, spell, spellID, caster)
   end
-  -- This adds some random factor
-  return name, count, expires, caster
+else
+  name,_,_,count,_,duration,expires,caster = _G['UnitBuff'](target, spell)
+end
+return name, count, expires, caster	-- This adds some random factor
 end
 
 function Zylla.UnitDot(target, spell, owner)
-  local name, count, caster, expires, spellID, power
-  if tonumber(spell) then
-    local go, i = true, 0
-    while i <= 40 and go do
-      i = i + 1
-      name,_,_,count,_,_G.duration,expires,caster,_,_,spellID,_,_,_,power = _G['UnitDebuff'](target, i)
-      go = oFilter(owner, spell, spellID, caster)
-    end
-  else
-    name,_,_,count,_,_G.duration,expires,caster = _G['UnitDebuff'](target, spell)
+local name, count, caster, expires, spellID, power
+if tonumber(spell) then
+  local go, i = true, 0
+  while i <= 40 and go do
+    i = i + 1
+    name,_,_,count,_,duration,expires,caster,_,_,spellID,_,_,_,power = _G['UnitDebuff'](target, i)
+    go = oFilter(owner, spell, spellID, caster)
   end
-  -- This adds some random factor
-  return name, count, _, expires, caster, power
+else
+  name,_,_,count,_,duration,expires,caster = _G['UnitDebuff'](target, spell)
+end
+return name, count, duration, expires, caster, power	-- This adds some random factor
 end
 
 --------------------------------------------------------------------------------
@@ -916,7 +912,7 @@ function Zylla.f_cleanUp()
   if Zylla.f_cleanUpTimer then Zylla.f_cancelCleanUp() end
   Zylla.f_cleanUpTimer = C_Timer.NewTimer(30,function()
     if UnitIsDeadOrGhost("player") or not UnitAffectingCombat("player") then
-      --if not UnitAffectingCombat("player") then
+    --if not UnitAffectingCombat("player") then
       Zylla.f_Snapshots = {
         ["rake"]     = {},
         ["rip"]      = {},
@@ -955,7 +951,7 @@ NeP.Listener:Add('Zylla_f_updateDmg', 'UNIT_POWER', function(unit, type)
   end
 end)
 
-NeP.Listener:Add('Zylla_f_Snapshot', 'COMBAT_LOG_EVENT_UNFILTERED', function(_, combatevent, _, sourceGUID, _,_,_, destGUID, _,_,_, spellID)
+NeP.Listener:Add('Zylla_f_Snapshot', 'COMBAT_LOG_EVENT_UNFILTERED', function(timestamp, combatevent, _, sourceGUID, _,_,_, destGUID, _,_,_, spellID)
   if Zylla.class == 11 then
     --This trigger listens for bleed events to record snapshots.
     --This trigger also listens for changes in buffs to recalculate bleed damage.
@@ -978,7 +974,7 @@ NeP.Listener:Add('Zylla_f_Snapshot', 'COMBAT_LOG_EVENT_UNFILTERED', function(_, 
     if destGUID == Zylla.f_pguid then
       if combatevent == "SPELL_AURA_APPLIED" then Zylla.f_update() return
       elseif combatevent == "SPELL_AURA_REMOVED" then
-        local spellName = Zylla.f_buffID[spellID]
+      	local spellName = Zylla.f_buffID[spellID]
         local dur = 0
         --Add small timing window for buffs that can expire before cast
         if spellName == "bloodtalons" then dur    = 0.1
@@ -1047,19 +1043,19 @@ NeP.Listener:Add('Zylla_OutOfCombat', 'PLAYER_REGEN_ENABLED', function()
   if Zylla.class == 9 then
     --This trigger manages clean up of snapshots when it is safe to do so
     --1. Schedule cleanup of snapshots when combat ends
-    Zylla.f_cleanUp()
+  	Zylla.f_cleanUp()
   end
 end)
 
 NeP.Listener:Add('Zylla_InCombat', 'PLAYER_REGEN_DISABLED', function()
   if Zylla.class == 9 then
     --2. Check for and cancel scheduled cleanup when combat starts
-    Zylla.f_cancelCleanUp()
+  	Zylla.f_cancelCleanUp()
 
     C_Timer.NewTicker(1.5, (function()
       --This trigger runs the update function if there have been no updates recently
       --due to a lack of relevant combat events.
-      if not UnitIsDeadOrGhost("player") and (UnitAffectingCombat("player")) then
+    	if not UnitIsDeadOrGhost("player") and (UnitAffectingCombat("player")) then
         if GetTime() - Zylla.f_lastUpdate >= 3 then Zylla.f_update() end
         --if GetTime() - Zylla.lastDmgUpdate >= 0.045 then Zylla.f_updateDmg() end
         if Zylla.f_nextUpdateDmg and GetTime() > Zylla.f_nextUpdateDmg then
