@@ -90,7 +90,7 @@ local Survival = {
 
 local Cooldowns = {
 	{'#147017', 'UI(e_TSM)&equipped(147017)'},	-- Tarnished Sentinel Medallion
-	{'Bestial Wrath'},
+	{'!Bestial Wrath', '{equipped(137367)&player.buff(Focused Lightning).count>=5}||{!equipped(137367)}'},
 	{'Titan\'s Thunder', '{player.buff(Bestial Wrath)||player.spell(Dire Beast).cooldown>35}||{player.spell(Dire Beast).cooldown>2||{player.buff(Bestial Wrath)&player.buff(Dire Beast)}}'},
 	{'Aspect of the Wild', 'player.buff(Bestial Wrath)||target.time_to_die<12'},
 	{'Blood Fury'},
