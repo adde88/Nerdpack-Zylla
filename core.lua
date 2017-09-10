@@ -148,9 +148,9 @@ _G.Mythic_GUI = {
 _G.Mythic_Plus = {
 	{{
 			{"/target 'Fel Explosives'", 'id(120651)&inFront', 'enemies'}
-	},	'UI(mythic_fel)'}, 																															--XXX: Fel Explosives Mythic+ Affix
-	{'!/stopcasting','debuff(240447).duration<=2&debuff(240447)&UI(quaking)','player'}, --XXX: Quaking Mythic+ Affix
-	{'%pause' , 'player.debuff(200904)||player.debuff(Sapped Soul)'},										--XXX: Vault of the Wardens - Sapped Soul Encounter
+	},	'UI(mythic_fel)'}, 																																				--XXX: Fel Explosives Mythic+ Affix
+	{'!/stopcasting','debuff(Quake).any.duration<gcd&debuff(Quake).any&UI(quaking)', 'player'},		--XXX: Quaking Mythic+ Affix
+	{'%pause' , 'player.debuff(200904)||player.debuff(Sapped Soul)'},															--XXX: Vault of the Wardens - Sapped Soul Encounter
 }
 
 function Zylla.Taunt(eval, args)
