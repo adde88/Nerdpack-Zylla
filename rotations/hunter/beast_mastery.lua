@@ -67,8 +67,8 @@ local exeOnLoad = function()
 end
 
 local PreCombat = {
-	{'Call Pet 1', '!pet.exists&UI(kPet)'},
-	{'Volley', '{UI(kVolley)&toggle(aoe)&!player.buff(Volley)}||{{player.buff(Volley)&{!toggle(aoe)||!UI(kVolley)}}}'},
+	{'Call Pet 1', '!pet.exists&UI(kPet)', 'player'},
+	{'Volley', '{UI(kVolley)&toggle(aoe)&!buff}||{{buff&{!toggle(aoe)||!UI(kVolley)}}}', 'player'},
 	{'%pause', 'player.buff(Feign Death)'},
 }
 
@@ -83,16 +83,16 @@ local Survival = {
 	{'Exhilaration', 'player.health<=UI(E_HP_spin)&UI(E_HP_check)'},
 	{'#127834', 'item(127834).usable&item(127834).count>0&health<=UI(AHP_spin)&UI(AHP_check)', 'player'}, 		-- Ancient Healing Potion
 	{'#5512', 'item(5512).usable&item(5512).count>0&health<=UI(HS_spin)&UI(HS_check)', 'player'}, 						--Health Stone
-	{'Aspect of the Turtle', 'player.health<=UI(AotT_spin)&UI(AotT_check)'},
-	{'Feign Death', 'player.health<=UI(FD_spin)&UI(FD_check)&equipped(137064)'},
+	{'Aspect of the Turtle', 'health<=UI(AotT_spin)&UI(AotT_check)', 'player'},
+	{'Feign Death', 'health<=UI(FD_spin)&UI(FD_check)&equipped(137064)', 'player'},
 	{'%pause', 'player.buff(Feign Death)'},
 }
 
 local Cooldowns = {
 	{'#147017', 'UI(e_TSM)&equipped(147017)'},	-- Tarnished Sentinel Medallion
-	{'!Bestial Wrath', 'xtime>3&{{player.buff(Focused Lightning)&player.buff(Focused Lightning).count>=5}||{!player.buff(Focused Lightning))}}'},
-	{'Titan\'s Thunder', '{player.buff(Bestial Wrath)||player.spell(Dire Beast).cooldown>35}||{player.spell(Dire Beast).cooldown>2||{player.buff(Bestial Wrath)&player.buff(Dire Beast)}}'},
-	{'Aspect of the Wild', 'player.buff(Bestial Wrath)||target.time_to_die<12'},
+	{'!Bestial Wrath', 'xtime>3&{{buff(Focused Lightning)&buff(Focused Lightning).count>=5}||{!buff(Focused Lightning))}}', 'player'},
+	{'Titan\'s Thunder', '{buff(Bestial Wrath)||spell(Dire Beast).cooldown>35}||{spell(Dire Beast).cooldown>2||{buff(Bestial Wrath)&buff(Dire Beast)}}', 'player'},
+	{'Aspect of the Wild', 'buff(Bestial Wrath)||target.ttd<12', 'player'},
 	{'Blood Fury'},
 	{'Berserking'},
 	{'#Trinket1', 'UI(trinket1)'},
@@ -113,16 +113,15 @@ local Interrupts_Random = {
 }
 
 local xCombat = {
-	{'A Murder of Crows'},
-	{'Stampede', '{player.buff(Bloodlust)||player.buff(Bestial Wrath)||player.spell(Bestial Wrath).cooldown<3}||target.time_to_die<24'},
+	{'A Murder of Crows', 'inFront', 'target'},
+	{'Stampede', 'inFront&{{player.buff(Bloodlust)||player.buff(Bestial Wrath)||player.spell(Bestial Wrath).cooldown<3}||ttd<24}', 'target'},
 	{'Dire Beast', 'player.spell(Bestial Wrath).cooldown>3', 'target'},
 	{'Dire Frenzy', '{pet.buff(Dire Frenzy).duration<=gcd.max*1.2}||player.spell(Dire Frenzy).charges>0.8||target.ttd<9'},
-	{'Barrage', 'toggle(aoe)&UI(kBarrage)&{target.area(15).enemies>1||{target.area(15).enemies==1&player.focus>90}}'},
-	{'Multi-Shot', 'toggle(aoe)&target.area(10).enemies>4&{pet.buff(Beast Cleave).duration<gcd.max||!pet.buff(Beast Cleave)}'},
-	{'Multi-Shot', 'toggle(aoe)&target.area(10).enemies>1&{pet.buff(Beast Cleave).duration<gcd.max*2||!pet.buff(Beast Cleave)}'},
-	{'Chimaera Shot', 'player.focus<90'},
-	{'Cobra Shot', '{player.spell(Kill Command).cooldown>focus.time_to_max&player.spell(Bestial Wrath).cooldown>focus.time_to_max}||{player.buff(Bestial Wrath)&focus.regen*player.spell(Kill Command).cooldown>action(Kill Command).cost}||target.time_to_die<player.spell(Kill Command).cooldown||{equipped(Parsel\'s Tongue)&player.buff(Parsel\'s Tongue).duration<=gcd.max*2}'},
-	{'Volley', '{toggle(aoe)&!player.buff(Volley)}||{player.buff(Volley)&!toggle(aoe)}'},
+	{'Barrage', 'toggle(aoe)&UI(kBarrage)&{area(15).enemies.infront>1||{area(15).enemies.infront==1&player.focus>90}}', 'target'},
+	{'Multi-Shot', 'inFront&toggle(aoe)&area(10).enemies>4&{pet.buff(Beast Cleave).duration<gcd.max||!pet.buff(Beast Cleave)}', 'target'},
+	{'Multi-Shot', 'inFront&toggle(aoe)&area(10).enemies>1&{pet.buff(Beast Cleave).duration<gcd.max*2||!pet.buff(Beast Cleave)}', 'target'},
+	{'Chimaera Shot', 'inFront&player.focus<90'},
+	{'Cobra Shot', 'inFront&{{player.spell(Kill Command).cooldown>focus.time_to_max&player.spell(Bestial Wrath).cooldown>focus.time_to_max}||{player.buff(Bestial Wrath)&focus.regen*player.spell(Kill Command).cooldown>action(Kill Command).cost}||ttd<player.spell(Kill Command).cooldown||{equipped(Parsel\'s Tongue)&player.buff(Parsel\'s Tongue).duration<=gcd.max*2}}', 'target'}
 }
 
 local xPet = {
@@ -149,13 +148,14 @@ local xPvP = {
 }
 
 local inCombat = {
+	{'Volley', '{UI(kVolley)&toggle(aoe)&!buff}||{{buff&{!toggle(aoe)||!UI(kVolley)}}}', 'player'},
 	{Keybinds},
 	{Survival},
 	{Interrupts_Random},
 	{Interrupts, 'interruptAt(70)&toggle(Interrupts)&inFront&range<41'},
 	{Cooldowns, 'toggle(Cooldowns)'},
 	{Mythic_Plus, 'range<41'},
-	{xCombat, 'target.range<41&target.inFront'},
+	{xCombat, 'range<41'},
 	{xPet},
 	{xPvP},
 }
