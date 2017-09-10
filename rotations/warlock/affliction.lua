@@ -70,9 +70,9 @@ local exeOnLoad = function()
 end
 
 local Pets = {
-	{'Summon Felhunter', 'xtime>0.5&UI(pet)&!UI(kDG)&!UI(kINF)&!talent(6,1)&{!pet.exists||pet.dead}'},
-	{'Summon Doomguard', 'xtime>0.5&UI(pet)&UI(kDG)&!UI(kINF)&talent(6,1)&{!pet.exists||pet.dead}'},
-	{'Summon Infernal', 'xtime>0.5&UI(pet)&!UI(kDG)&UI(kINF)&talent(6,1)&{!pet.exists||pet.dead}'},
+	{'Summon Felhunter', 'UI(pet)&!UI(kDG)&!UI(kINF)&!talent(6,1)&{!pet.exists||pet.dead}'},
+	{'Summon Doomguard', 'UI(pet)&UI(kDG)&!UI(kINF)&talent(6,1)&{!pet.exists||pet.dead}'},
+	{'Summon Infernal', 'UI(pet)&!UI(kDG)&UI(kINF)&talent(6,1)&{!pet.exists||pet.dead}'},
 	{'Grimoire: Felhunter', 'talent(6,2)'}
 }
 
@@ -104,32 +104,32 @@ local Survival = {
 local Cooldowns = {
 	{'Summon Infernal', '!player.moving&toggle(aoe)&UI(kPet)&!talent(6,1)&target.area(10).enemies>2'},
 	{'Summon Doomguard', '!player.moving&UI(kPet)&!talent(6,1)&target.area(10).enemies<3'},
-	{'Soul Harvest', 'enemies.debuff(Agony).count.any>=UI(SH_units)'},
+	{'Soul Harvest', '{count(Agony).enemies.debuffs>UI(SH_units)||target.area(20).enemies==1&target.debuff(Agony).count==15	}'},
 	{'Grimoire: Felhunter', 'talent(6,2)'},
 	{'#Trinket1', 'UI(trinket1)'},
 	{'#Trinket2', 'UI(trinket2)'}
 }
 
 local Corruption = {
-	{'!Corruption', 'combat&alive&count.enemies.debuffs<UI(corr_u)&debuff.duration<=4.2&!talent(2,2)', 'enemies'},
-	{'!Corruption', 'combat&alive&count.enemies.debuffs<UI(corr_u)&!debuff&talent(2,2)', 'enemies'}
+	{'!Corruption', 'range<41&combat&alive&count.enemies.debuffs<UI(corr_u)&debuff.duration<=4.2&!talent(2,2)', 'enemies'},
+	{'!Corruption', 'range<41&combat&alive&count.enemies.debuffs<UI(corr_u)&!debuff&talent(2,2)', 'enemies'}
 }
 
 local xCombat = {
 	{Pets},
 	{Corruption},
 	{'Life Tap', 'player.mana<30&player.health>=UI(lt)'},
-	{'!Agony', 'combat&alive&count.enemies.debuffs<UI(agony_u)&debuff.duration<5.4', 'enemies'},
+	{'!Agony', 'range<41&combat&alive&count.enemies.debuffs<UI(agony_u)&debuff.duration<5.4', 'enemies'},
 	{'Siphon Life', '!player.moving&debuff.duration<=4.5&ttd>9&count(Agony).enemies.debuffs>0&count(Corruption).enemies.debuffs>0', 'target'},
-	{'Siphon Life', '!player.moving&combat&alive&debuff.duration<=4.5&ttd>9&count(Agony).enemies.debuffs>0&count(Corruption).enemies.debuffs>0', 'enemies'},
-	{'Unstable Affliction', '!player.moving&combat&alive&{{debuff.count<2}||{debuff.count<4&player.soulshards<=3}||{debuff.count<4&count(Agony).enemies.debuffs>10}}', 'enemies'},
-	{'Unstable Affliction', '!player.moving&combat&alive&debuff(Haunt).duration>5&debuff.count<4', 'enemies'},
-	{'!Drain Soul', '!player.moving&combat&alive&{{debuff(Agony).duration<=5.4||debuff(Unstable Affliction).duration<=5||ttd<5}}', 'enemies'},
-	{'Drain Soul', '!player.moving&combat&alive&debuff(Haunt)&debuff(Unstable Affliction).count>=3', 'enemies'},
-	{'Haunt', '!player.moving&combat&alive&{ttd<=10||ttd>=45}', 'enemies'},
-	{'Seed of Corruption', 'player.soulshards>=1&!player.moving&toggle(AoE)&area(8).enemies>2&ttd>8&combat&alive', 'enemies'},
+	{'Siphon Life', 'range<41&!player.moving&combat&alive&debuff.duration<=4.5&ttd>9&count(Agony).enemies.debuffs>0&count(Corruption).enemies.debuffs>0', 'enemies'},
+	{'Unstable Affliction', 'range<41&!player.moving&combat&alive&{{debuff.count<2}||{debuff.count<4&player.soulshards<=3}||{debuff.count<4&count(Agony).enemies.debuffs>10}}', 'enemies'},
+	{'Unstable Affliction', 'range<41&!player.moving&combat&alive&debuff(Haunt).duration>5&debuff.count<4', 'enemies'},
+	{'!Drain Soul', 'range<41&!player.moving&combat&alive&{{debuff(Agony).duration<=5.4||debuff(Unstable Affliction).duration<=5||ttd<5}}', 'enemies'},
+	{'Drain Soul', 'range<41&!player.moving&combat&alive&debuff(Haunt)&debuff(Unstable Affliction).count>=3', 'enemies'},
+	{'Haunt', 'range<41&!player.moving&combat&alive&{ttd<=10||ttd>=45}', 'enemies'},
+	{'Seed of Corruption', 'range<41&player.soulshards>=1&!player.moving&toggle(AoE)&area(8).enemies>2&ttd>8&combat&alive', 'enemies'},
 	{'Siphon Life', 'count(Agony).enemies.debuffs>0&count(Corruption).enemies.debuffs>0&count(Unstable Affliction).enemies.debuffs>0', 'target'},
-	{'Reap Souls', 'combat&alive&player.soulshards>=3&{player.buff(Tormented Souls).count>UI(rs_ts)&debuff(Agony).count>UI(rs)}', 'enemies'},
+	{'Reap Souls', 'player.soulshards>=3&{player.buff(Tormented Souls).count>UI(rs_ts)&target.debuff(Agony).count>UI(rs)}', 'player'},
 }
 
 local inCombat = {
@@ -144,6 +144,7 @@ local inCombat = {
 }
 
 local outCombat = {
+	{Pets},
 	{Keybinds},
 	{Interrupts, 'toggle(Interrupts)&target.inFront&target.range<41'},
 	{Interrupts_Random, 'toggle(Interrupts)&toggle(xIntRandom)'},
@@ -153,7 +154,7 @@ local outCombat = {
 
 NeP.CR:Add(265, {
 	name = '[|cff'..Zylla.addonColor..'Zylla\'s|r] Warlock - Affliction',
-	ic =  {{inCombat, '!player.casting(Unstable Affliction)||!player.channeling(Drain Soul)'}},
+	ic =  {{inCombat, '!player.casting(Summon Succubus)||!player.casting(Summon Voidwalker)||!player.casting(Summon Felhunter)||!player.casting(Summon Imp)||!player.casting(Summon Infernal)||!player.casting(Summon Doomguard)||!player.casting(Unstable Affliction)||!player.channeling(Drain Soul)'}},
 	ooc = outCombat,
 	gui = GUI,
 	gui_st = {title='Zylla\'s Combat Routines', width='256', height='690', color='A330C9'},
