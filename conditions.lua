@@ -174,6 +174,17 @@ NeP.DSL:Register('dot.active_dot', function(target, spell)
     end)
 ]]--
 
+NeP.DSL:Register('buff.down', function(target, spell)
+    local x = NeP.DSL:Get('buff.count')(target, spell)
+    if x == 0 then
+        return true
+    elseif x ~= 0 then
+        return false
+    else
+        return x
+    end
+end)
+
 NeP.DSL:Register('buff.up', function(target, spell)
     local x = NeP.DSL:Get('buff.count')(target, spell)
     if x == 1 then
