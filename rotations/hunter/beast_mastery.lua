@@ -90,7 +90,7 @@ local Survival = {
 
 local Cooldowns = {
 	{'#147017', 'UI(e_TSM)&equipped(147017)'},	-- Tarnished Sentinel Medallion
-	{'!Bestial Wrath', '{player.buff(Focused Lightning)&player.buff(Focused Lightning).count>=5}||{!player.buff(Focused Lightning))}'},
+	{'!Bestial Wrath', 'xtime>3&{{player.buff(Focused Lightning)&player.buff(Focused Lightning).count>=5}||{!player.buff(Focused Lightning))}}'},
 	{'Titan\'s Thunder', '{player.buff(Bestial Wrath)||player.spell(Dire Beast).cooldown>35}||{player.spell(Dire Beast).cooldown>2||{player.buff(Bestial Wrath)&player.buff(Dire Beast)}}'},
 	{'Aspect of the Wild', 'player.buff(Bestial Wrath)||target.time_to_die<12'},
 	{'Blood Fury'},
@@ -132,7 +132,7 @@ local xPet = {
 			{'Heart of the Phoenix', '!player.debuff(Weakened Heart)&player.combat'}, 	-- Heart of the Phoenix
 			{'Revive Pet'} 																															-- Revive Pet
 	}, {'pet.dead', 'UI(kPet)'}},
-	{'&Kill Command', 'alive&combat&pet.exists&pet.alive&{{talent(4,3)&petrange<31}||!talent(4,3)&petrange<10}', 'target'},
+	{'&Kill Command', 'alive&combat&pet.exists&pet.alive', 'target'},
 	{'/cast [@focus, help] [@pet, nodead, exists] Misdirection', 'player.spell(Misdirection).cooldown<gcd&UI(kDBM)&toggle(xMisdirect)&{player.combat||{!player.combat&dbm(pull in)<3}}'},
 	{'/cast [@focus, help] [@pet, nodead, exists] Misdirection', 'player.spell(Misdirection).cooldown<gcd&!UI(kDBM)&toggle(xMisdirect)&player.combat'},
 }
