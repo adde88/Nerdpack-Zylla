@@ -8,15 +8,15 @@ local unpack = _G.unpack
 local GUI = {
 	unpack(Logo_GUI),
 	{type = 'header', 		text = 'Keybinds', 																		align = 'center'},
-	{type = 'text', 			text = 'Left Shift: Pause',			 											align = 'left'},
-	{type = 'text', 			text = 'Left Ctrl: Metamorphosis', 										align = 'left'},
-	{type = 'text', 			text = 'Left Alt: Netherwalk',												align = 'left'},
-	{type = 'text', 			text = 'Right Alt: Darkness',	 												align = 'left'},
+	{type = 'text', 			text = 'Left Shift: |cffA330C9Pause|r',			 					align = 'left'},
+	{type = 'text', 			text = 'Left Ctrl: |cffA330C9Metamorphosis|r', 				align = 'left'},
+	{type = 'text', 			text = 'Left Alt: |cffA330C9Netherwalk|r',						align = 'left'},
+	{type = 'text', 			text = 'Right Alt: |cffA330C9Darkness|r',	 						align = 'left'},
 	{type = 'ruler'},			{type = 'spacer'},
 	-- Settings
 	{type = 'header', 		text = 'Class Settings',							 								align = 'center'},
 	{type = 'checkbox', 	text = 'Pause Enabled',								 								key = 'kPause', 		default = true},
-	{type = 'checkspin',	text = 'Light\'s Judgment - Units', 									key = 'LJ',					spin = 4, step = 1, max = 20, check = true,	desc = '|cffABD473World Spell usable on Argus.|r'},
+	{type = 'checkspin',	text = 'Light\'s Judgment - Units', 									key = 'LJ',					width = 55, step = 1, spin = 4, max = 20, check = true,	desc = '|cffA330C9World Spell usable on Argus.|r'},
 	{type = 'checkbox', 	text = 'Enable Bursting',								 							key = 'burst', 			default = true},
 --{type = 'checkbox', 	text = 'Auto-target enemy during Eye Beam',						key = 'eyeface', 		default = false},	-- Will be implemented soon...
 --{type = 'checkbox', 	text = 'Cancel Movement/Action Animations',						key = 'kanime', 		default = false},	-- Will be implemented soon...
@@ -25,14 +25,16 @@ local GUI = {
 	{type = 'checkspin', 	text = 'Use \'Metamorphosis + Units to strike\'',			key = 'meta',       spin = 4, step = 1, max = 20, check = true },
 	{type = 'checkspin', 	text = 'Use \'Chaos Nova + Units to strike\'',				key = 'chaos',      spin = 4, step = 1, max = 20, check = true },
 	{type = 'checkbox', 	text = 'Use Trinket #1', 															key = 'trinket1',		default = true},
-	{type = 'checkbox', 	text = 'Use Trinket #2', 															key = 'trinket2', 	default = true,	desc = '|cffABD473Trinkets will be used whenever possible!|r'},
+	{type = 'checkbox', 	text = 'Use Trinket #2', 															key = 'trinket2', 	width = 55, default = true,	desc = '|cffA330C9Trinkets will be used whenever possible!|r'},
+	{type = 'spacer'},
+	{type = 'checkspin', 	text = 'Kil\'Jaeden\'s Burning Wish - Units', 				key = 'kj', 				width = 55, step = 1, spin = 4, max = 20, check = true, desc = '|cffA330C9Legendary will be used only on selected amount of units!|r'},
 	{type = 'ruler'},			{type = 'spacer'},
 	-- Survival
 	{type = 'header', 		text = 'Survival',									  	    					align = 'center'},
-	{type = 'checkspin', 	text = 'Blur below HP%',               								key = 'blur',         spin = 60, check = true},
-	{type = 'checkspin', 	text = 'Netherwalk below HP%',              					key = 'nether',       spin = 25, check = true},
-  {type = 'checkspin',	text = 'Healthstone',																	key = 'HS',						spin = 45, check = true},
-  {type = 'checkspin',	text = 'Healing Potion',															key = 'AHP',					spin = 45, check = true},
+	{type = 'checkspin', 	text = 'Blur below HP%',               								key = 'blur',       spin = 60, check = true},
+	{type = 'checkspin', 	text = 'Netherwalk below HP%',              					key = 'nether',     spin = 25, check = true},
+  {type = 'checkspin',	text = 'Healthstone',																	key = 'HS',					spin = 45, check = true},
+  {type = 'checkspin',	text = 'Healing Potion',															key = 'AHP',				spin = 45, check = true},
 	{type = 'ruler'},	  	{type = 'spacer'},
 	unpack(Mythic_GUI),
 }
@@ -66,8 +68,9 @@ local Keybinds = {
 local Survival = {
 	{'Blur', 'health<=UI(blur_spin)&UI(blur_check)', 'player'},
 	{'Netherwalk', 'health<=UI(nether_spin)&UI(nether_check)', 'player'},
-	{'#127834', 'item(127834).usable&item(127834).count>0&health<=UI(AHP_spin)&UI(AHP_check)', 'player'}, 		-- Ancient Healing Potion
-	{'#5512', 'item(5512).usable&item(5512).count>0&health<=UI(HS_spin)&UI(HS_check)', 'player'}	 						--Health Stone
+	{'#152615', 'item(152615).usable&item(152615).count>0&health<=UI(AHP_spin)&UI(AHP_check)', 'player'}, 													-- Astral Healing Potion
+	{'#127834', 'item(152615).count==0&item(127834).usable&item(127834).count>0&health<=UI(AHP_spin)&UI(AHP_check)', 'player'}, 		-- Ancient Healing Potion
+	{'#5512', 'item(5512).usable&item(5512).count>0&health<=UI(HS_spin)&UI(HS_check)', 'player'}, 																	-- Health Stone
 }
 
 local Interrupts = {
@@ -84,9 +87,10 @@ local Cooldowns = {
 	{'Metamorphosis', 'range<41&combat&alive&area(8).enemies>UI(meta_spin)&UI(meta_check)', 'enemies.ground'},
 	{'Nemesis', 'player.spell(Chaos Blades).cooldown<gcd', 'target'},
 	{'Chaos Blades', nil, 'player'},
-	{'Chaos Nova', 'player.area(8).enemies>UI(chaos_spin)&UI(chaos_check)'},
+	{'Chaos Nova', 'player.area(8).enemies>UI(chaos_spin)&UI(chaos_check)', 'target'},
 	{'#Trinket1', 'UI(trinket1)'},
 	{'#Trinket2', 'UI(trinket2)'},
+	{'#144259', 'UI(kj_check)&target.range<41&target.area(10).enemies>UI(kj_spin)&equipped(144259)'},		--XXX: Kil'jaeden's Burning Wish / AoE Trinket
 	{'Light\'s Judgment', 'UI(LJ_check)&range<61&area(15).enemies>UI(LJ_spin)', 'enemies.ground'}
 }
 
@@ -97,7 +101,6 @@ local Burst = {
 }
 
 local xAoECombat = {
-	{Cooldowns, 'toggle(cooldowns)'},
 	{'Fel Rush', 'UI(felrush)&{{talent(1,1)&player.fury.diff<30}||{spell.charges==1&spell.recharge<=2&player.area(8).enemies>3}||{talent(5,1)&!player.buff(Momentum)}}', 'player'},
 	{'Vengeful Retreat', 'UI(vengeful)&{{talent(2,1)&player.fury<85}||{talent(5,1)&!player.buff(Momentum)}}', 'player'},
 	{'Fel Barrage', '{talent(5,1)&player.buff(Momentum)}||{!talent(5,1)}', 'target'},
@@ -115,7 +118,6 @@ local xAoECombat = {
 }
 
 local xSTCombat = {
-	{Cooldowns, 'toggle(cooldowns)'},
 	{'Vengeful Retreat', 'UI(vengeful)&{{player.state(snare)}||{target.range<7&player.spell(Fel Rush).charges>1&player.fury<95}}', 'player'},
 	{'Fel Rush', 'UI(felrush)&spell.charges==1&spell.recharge<=2', 'player'},
 	{'Fel Barrage', nil, 'target'},
@@ -138,6 +140,7 @@ local inCombat = {
 	{Interrupts, 'target.interruptAt(70)'},
 	{Interrupts_Random},
 	{Burst, 'UI(burst)&xtime<4&target.inMelee&target.inFront'},
+	{Cooldowns, 'toggle(cooldowns)'},
 	{Mythic_Plus, 'inMelee'},
 	{xSTCombat, 'player.area(15).enemies<3&target.inMelee&target.inFront&{{UI(burst)&xtime>4}||{!UI(burst)}}'},
 	{xAoECombat, 'player.area(15).enemies>2&target.inMelee&target.inFront&{{UI(burst)&xtime>4}||{!UI(burst)}}'},
@@ -156,7 +159,7 @@ NeP.CR:Add(577, {
 	},
 	ooc = outCombat,
 	gui = GUI,
-	gui_st = {title='Zylla\'s Combat Routines', width='256', height='520', color='A330C9'},
+	gui_st = {title='Zylla\'s Combat Routines', width='256', height='760', color='A330C9'},
 	ids = Zylla.SpellIDs[Zylla.Class],
 	wow_ver = Zylla.wow_ver,
 	nep_ver = Zylla.nep_ver,
