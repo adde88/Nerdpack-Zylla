@@ -1,4 +1,5 @@
 local _, Zylla = ...
+local _G = _G
 
 local strmatch = _G.strmatch
 local gsub = _G.gsub
@@ -532,26 +533,21 @@ end)
 NeP.DSL:Register('dot.pmultiplier', function(_, spell)
     local GUID = UnitGUID('target')
     local name = string.lower(spell)
-    if Zylla.f_Snapshots[name][GUID] then
-	  print("Snapshot found!")
       return Zylla.f_Snapshots[name][GUID]
     else
-	print("No snapshot?")
       return 0
     end
 end)
 
 NeP.DSL:Register('persistent_multiplier', function(_, spell)
   local name = string.lower(spell)
-  if Zylla.f_Snapshots[name].current then
-    return Zylla.f_Snapshots[name].current
+    return Zylla.f_snapshots[name].current
   else
     return 1
   end
 end)
 
 NeP.DSL:Register('f_test', function()
-  return Zylla.f_Snapshots
 end)
 
 --------------------------------------------------------------------------------
@@ -1172,4 +1168,12 @@ NeP.DSL:Register('partycheck', function()
         else
             return 1
         end
+end)
+
+NeP.DSL:Register('artifact.zenabled', function(_, spell)
+    if select(10,NeP.Artifact:TraitInfo(spell)) then
+        return 1
+    else
+        return 0
+    end
 end)
