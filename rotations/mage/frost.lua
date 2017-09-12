@@ -65,7 +65,7 @@ local exeOnLoad = function()
 end
 
 local PreCombat = {
-	{'Summon Water Elemental', '!pet.exists||!pet.alive', 'player'}
+	{'Summon Water Elemental', '!talent(1,2)&{!pet.exists||!pet.alive}', 'player'}
 }
 
 local Keybinds = {
@@ -76,8 +76,9 @@ local Keybinds = {
 }
 
 local Interrupts = {
-	{'!Counterspell', nil, 'target'},
-	{'!Arcane Torrent', 'inMelee&player.spell(Counterspell).cooldown>gcd&!player.lastgcd(Counterspell)', 'target'},
+	{'!Counterspell', 'interruptAt(70)', 'target'},
+	{'!Ring of Frost', 'advanced&!player.moving&UI(RoF_Int)&interruptAt(5)&toggle(xIntRandom)&toggle(Interrupts)&player.spell(Counterspell).cooldown>gcd&!lastgcd(Counterspell)&range<31', 'target.ground'},
+	{'!Arcane Torrent', 'interruptAt(70)&inMelee&player.spell(Counterspell).cooldown>gcd&!player.lastgcd(Counterspell)', 'target'},
 	{'!Polymorph', '!player.moving&UI(Pol_Int)&interruptAt(5)&player.spell(Counterspell).cooldown>gcd&!player.lastgcd(Counterspell)&range<31', 'target'},
 }
 
@@ -100,7 +101,7 @@ local Hero = {
 }
 
 local RoF = {
-	{'/stopcasting', 'UI(RoFstop)&target.movingfor>0.75&target.inMelee'},	--XXX: Interrupt Ray of Frost Channeling
+	{'!/stopcasting', 'UI(RoFstop)&target.movingfor>0.75&target.inMelee'},	--XXX: Interrupt Ray of Frost Channeling
 }
 
 local xPvP = {
@@ -122,7 +123,7 @@ local Cooldowns = {
 }
 
 local xCombat = {
-	{'Summon Water Elemental', '!pet.exists||!pet.alive', 'player'},
+	{'Summon Water Elemental', '!talent(1,2)&{!pet.exists||!pet.alive}', 'player'},
 	{'Blizzard', '!player.moving&{{UI(blizze_check)&talent(6,3)&area(10).enemies>=UI(blizze_spin})||{UI(blizz_check)!talent(6,3)&area(8).enemies>=UI(blizz)}}', 'target.ground'},
 	{'Blizzard', '!player.moving&{{UI(blizze_check)||UI(blizz_check)}&player.buff(Potion of Deadly Grace)&!target.debuff(Water Jet)}', 'target.ground'}, --TODO: Remove??
 	{'Ice Lance', '!player.buff(Fingers of Frost)&lastgcd(Flurry)'},
@@ -136,7 +137,7 @@ local xCombat = {
 	{'Glacial Spike', '!player.moving||player.buff(Ice Floes)', 'target'},
 	{'Frost Bomb', '!player.moving&target.debuff(Frost Bomb).remains<player.travel_time(Ice Lance)&player.buff(Fingers of Frost).stack>0', 'target'},
 	{'Frozen Orb', nil, 'target'},
-	{'Ice Nova', '', 'debuff(Winter\'s Chill).duration>gcd', 'target'},
+	{'Ice Nova', 'debuff(Winter\'s Chill).duration>gcd', 'target'},
 	{'Comet Storm', 'UI(cstorm_check)&area(6).enemies>=UI(cstorm_spin)', 'target'},
 	{'Ebonbolt', '{!player.moving||player.buff(Ice Floes)}&player.buff(Fingers of Frost).stack<={0+artifact(Icy Hand).enabled}', 'target'},
 	{'Ice Barrier', '!buff&!buff(Rune of Power)', 'player'},
@@ -145,7 +146,7 @@ local xCombat = {
 
 local inCombat = {
 	{Keybinds},
-	{Interrupts, 'target.interruptAt(70)&toggle(Interrupts)&target.inFront&target.range<41'},
+	{Interrupts, 'toggle(Interrupts)&target.inFront&target.range<41'},
 	{Interrupts_Random},
 	{Survival},
 	{xCombat, 'target.range<41&target.inFront'},
@@ -157,7 +158,7 @@ local inCombat = {
 local outCombat = {
 	{Keybinds},
 	{PreCombat},
-	{Interrupts, 'target.interruptAt(70)&toggle(Interrupts)&target.inFront&target.range<41'},
+	{Interrupts, 'toggle(Interrupts)&target.inFront&target.range<41'},
 	{Interrupts_Random}
 }
 
