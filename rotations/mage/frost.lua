@@ -133,7 +133,7 @@ local xCombat = {
 	{'Frostbolt', '!player.moving||player.buff(Ice Floes)', 'target'},
 	{'&135029', 'pet.exists&player.lastgcd(Frostbolt)&player.buff(Fingers of Frost).stack<{2+artifact(Icy Hand).zenabled}&!player.buff(Brain Freeze)', 'target'},
 	{'Ray of Frost', '!player.moving&{player.buff(Icy Veins)||{player.spell(Icy Veins).cooldown>action(Ray of Frost).cooldown&!player.buff(Rune of Power)}}' ,'target'},
-	{'Flurry', '{!player.moving||player.buff(Ice Floes)}&&player.buff(Brain Freeze)&!player.buff(Fingers of Frost)&!player.lastgcd(Flurry)', 'target'},
+	{'Flurry', '{!player.moving||player.buff(Ice Floes)}&player.buff(Brain Freeze)&!player.buff(Fingers of Frost)&!player.lastgcd(Flurry)', 'target'},
 	{'Glacial Spike', '!player.moving||player.buff(Ice Floes)', 'target'},
 	{'Frost Bomb', '!player.moving&target.debuff(Frost Bomb).remains<player.travel_time(Ice Lance)&player.buff(Fingers of Frost).stack>0', 'target'},
 	{'Frozen Orb', nil, 'target'},
