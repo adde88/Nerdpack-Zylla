@@ -1,4 +1,5 @@
 local _, Zylla = ...
+local NeP = _G.NeP
 
 local strmatch = _G.strmatch
 local gsub = _G.gsub
@@ -530,24 +531,11 @@ NeP.DSL:Register('dot.tick_time', function(_, spell)
 end)
 
 NeP.DSL:Register('dot.pmultiplier', function(_, spell)
-    local GUID = UnitGUID('target')
-    local name = string.lower(spell)
-    if Zylla.f_Snapshots[name][GUID] then
-	  print("Snapshot found!")
-      return Zylla.f_Snapshots[name][GUID]
-    else
-	print("No snapshot?")
-      return 0
-    end
+  return Zylla.f_Snapshots[spell:lower()][UnitGUID('target')] or 0
 end)
 
 NeP.DSL:Register('persistent_multiplier', function(_, spell)
-  local name = string.lower(spell)
-  if Zylla.f_Snapshots[name].current then
-    return Zylla.f_Snapshots[name].current
-  else
-    return 1
-  end
+  return Zylla.f_Snapshots[spell:lower()].current or 1
 end)
 
 NeP.DSL:Register('f_test', function()
@@ -607,9 +595,8 @@ NeP.DSL:Register('variable.actors_fight_time_mod', function()
     elseif time + target_time_to_die<=450 then
         -- ((450-(time+target.time_to_die))%5)
         return ((450 - (time + target_time_to_die)) / 5)
-    else
-        return 0
     end
+    return 0
 end)
 
 NeP.DSL:Register('shadowy_apparitions_in_flight', function()
