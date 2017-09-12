@@ -1,6 +1,6 @@
 local _, Zylla = ...
 local NeP = _G.NeP
-
+local _G = _G
 local strmatch = _G.strmatch
 local gsub = _G.gsub
 local IsFlying = _G.IsFlying
@@ -539,7 +539,6 @@ NeP.DSL:Register('persistent_multiplier', function(_, spell)
 end)
 
 NeP.DSL:Register('f_test', function()
-  return Zylla.f_Snapshots
 end)
 
 --------------------------------------------------------------------------------
@@ -1159,4 +1158,12 @@ NeP.DSL:Register('partycheck', function()
         else
             return 1
         end
+end)
+
+NeP.DSL:Register('artifact.zenabled', function(_, spell)
+    if select(10,NeP.Artifact:TraitInfo(spell)) then
+        return 1
+    else
+        return 0
+    end
 end)
