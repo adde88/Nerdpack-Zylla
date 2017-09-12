@@ -1,5 +1,5 @@
 <Bindings>
-    <Binding name="Turn Routine ON/OFF" description="Toggle ON/OFF" header="NEP_ZYLLA" category="NerdPack-Zylla">
+    <Binding name="Turn Routine ON/OFF" description="Toggle ON/OFF" header="Zylla" category="NerdPack">
         NeP.Interface:toggleToggle('mastertoggle')
     </Binding>
 </Bindings>
