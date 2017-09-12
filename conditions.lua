@@ -533,6 +533,7 @@ end)
 NeP.DSL:Register('dot.pmultiplier', function(_, spell)
     local GUID = UnitGUID('target')
     local name = string.lower(spell)
+    if Zylla.f_Snapshots[name][GUID] then
       return Zylla.f_Snapshots[name][GUID]
     else
       return 0
@@ -541,7 +542,8 @@ end)
 
 NeP.DSL:Register('persistent_multiplier', function(_, spell)
   local name = string.lower(spell)
-    return Zylla.f_snapshots[name].current
+  if Zylla.f_Snapshots[name].current then
+    return Zylla.f_Snapshots[name].current
   else
     return 1
   end
