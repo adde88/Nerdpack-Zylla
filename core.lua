@@ -1,4 +1,5 @@
 local _, Zylla = ...
+local _G = _G
 
 local gsub = _G.gsub
 local UnitClass = _G.UnitClass
@@ -148,9 +149,9 @@ _G.Mythic_GUI = {
 _G.Mythic_Plus = {
 	{{
 			{"/target 'Fel Explosives'", 'id(120651)&inFront', 'enemies'}
-	},	'UI(mythic_fel)'}, 																																				--XXX: Fel Explosives Mythic+ Affix
-	{'!/stopcasting','debuff(Quake).any.duration<gcd&debuff(Quake).any&UI(quaking)', 'player'},		--XXX: Quaking Mythic+ Affix
-	{'%pause' , 'player.debuff(200904)||player.debuff(Sapped Soul)'},															--XXX: Vault of the Wardens - Sapped Soul Encounter
+	},	'UI(mythic_fel)'}, 																																																																							--XXX: Fel Explosives Mythic+ Affix
+	{'!/stopcasting','player.debuff(Quake).duration<=gcd&player.debuff(Quake)&UI(quaking)'},		--XXX: Quaking Mythic+ Affix
+	{'%pause' , 'player.debuff(Sapped Soul)'},																																																		--XXX: Vault of the Wardens - Sapped Soul Encounter
 }
 
 function Zylla.Taunt(eval, args)
@@ -979,7 +980,7 @@ NeP.Listener:Add('Zylla_f_Snapshot', 'COMBAT_LOG_EVENT_UNFILTERED', function(tim
     if destGUID == Zylla.f_pguid then
       if combatevent == "SPELL_AURA_APPLIED" then Zylla.f_update() return
       elseif combatevent == "SPELL_AURA_REMOVED" then
-      	local spellName = Zylla.f_buffID[spellID]
+				local spellName = Zylla.f_buffID[spellID]
         local dur = 0
         --Add small timing window for buffs that can expire before cast
         if spellName == "bloodtalons" then dur    = 0.1
@@ -1048,19 +1049,18 @@ NeP.Listener:Add('Zylla_OutOfCombat', 'PLAYER_REGEN_ENABLED', function()
   if Zylla.class == 9 then
     --This trigger manages clean up of snapshots when it is safe to do so
     --1. Schedule cleanup of snapshots when combat ends
-  	Zylla.f_cleanUp()
+		Zylla.f_cleanUp()
   end
 end)
 
 NeP.Listener:Add('Zylla_InCombat', 'PLAYER_REGEN_DISABLED', function()
   if Zylla.class == 9 then
     --2. Check for and cancel scheduled cleanup when combat starts
-  	Zylla.f_cancelCleanUp()
-
+		Zylla.f_cancelCleanUp()
     C_Timer.NewTicker(1.5, (function()
       --This trigger runs the update function if there have been no updates recently
       --due to a lack of relevant combat events.
-    	if not UnitIsDeadOrGhost("player") and (UnitAffectingCombat("player")) then
+			if not UnitIsDeadOrGhost("player") and (UnitAffectingCombat("player")) then
         if GetTime() - Zylla.f_lastUpdate >= 3 then Zylla.f_update() end
         --if GetTime() - Zylla.lastDmgUpdate >= 0.045 then Zylla.f_updateDmg() end
         if Zylla.f_nextUpdateDmg and GetTime() > Zylla.f_nextUpdateDmg then
