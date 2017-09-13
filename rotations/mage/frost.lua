@@ -65,7 +65,7 @@ local exeOnLoad = function()
 end
 
 local PreCombat = {
-	{'Summon Water Elemental', '!pet.exists||!pet.alive', 'player'}
+	{'Summon Water Elemental', '!talent(1,2)&{!pet.exists||!pet.alive}', 'player'}
 }
 
 local Keybinds = {
@@ -76,8 +76,9 @@ local Keybinds = {
 }
 
 local Interrupts = {
-	{'!Counterspell', nil, 'target'},
-	{'!Arcane Torrent', 'inMelee&player.spell(Counterspell).cooldown>gcd&!player.lastgcd(Counterspell)', 'target'},
+	{'!Counterspell', 'interruptAt(70)', 'target'},
+	{'!Ring of Frost', 'advanced&!player.moving&UI(RoF_Int)&interruptAt(5)&toggle(xIntRandom)&toggle(Interrupts)&player.spell(Counterspell).cooldown>gcd&!lastgcd(Counterspell)&range<31', 'target.ground'},
+	{'!Arcane Torrent', 'interruptAt(70)&inMelee&player.spell(Counterspell).cooldown>gcd&!player.lastgcd(Counterspell)', 'target'},
 	{'!Polymorph', '!player.moving&UI(Pol_Int)&interruptAt(5)&player.spell(Counterspell).cooldown>gcd&!player.lastgcd(Counterspell)&range<31', 'target'},
 }
 
@@ -100,7 +101,7 @@ local Hero = {
 }
 
 local RoF = {
-	{'/stopcasting', 'UI(RoFstop)&target.movingfor>0.75&target.inMelee'},	--XXX: Interrupt Ray of Frost Channeling
+	{'!/stopcasting', 'UI(RoFstop)&target.movingfor>0.75&target.inMelee'},	--XXX: Interrupt Ray of Frost Channeling
 }
 
 local xPvP = {
@@ -111,44 +112,47 @@ local xPvP = {
 }
 
 local Cooldowns = {
-	{'Rune of Power', '{!buff&{cooldown(Icy Veins).remains<cooldown(Rune of Power).cast_time}||{cooldown(Rune of Power).charges<1.9&cooldown(Icy Veins).remains>10}||player.buff(Icy Veins)||{target.time_to_die+5<cooldown(Rune of Power).charges*10}'},
+	{'Rune of Power', '{!buff&{cooldown(Icy Veins).remains<cooldown(Rune of Power).cast_time}||{cooldown.charges<1.9&cooldown(Icy Veins).remains>10}||buff(Icy Veins)||{target.ttd+5<cooldown.charges*10}', 'player'},
 	{'Icy Veins', '!player.buff(Icy Veins)'},
 	{'Mirror Image'},
 	{'Blood Fury'},
 	{'Berserking'},
 	{'#Trinket1', 'UI(trinket1)'},
 	{'#Trinket2', 'UI(trinket2)'},
-	{'Light\'s Judgment', 'UI(LJ_check)&range<61&area(15).enemies>=UI(LJ_spin)', 'enemies.ground'}
+	{'Light\'s Judgment', 'UI(LJ_check)&range<61&area(15).enemies>=UI(LJ_spin)', 'enemies.ground'},
+	{'#144259', 'UI(kj_check)&target.range<41&target.area(10).enemies>UI(kj_spin)&equipped(144259)'}, -- Kil'jaeden's Burning Wish / AoE Trinket
 }
 
 local xCombat = {
-	{'Summon Water Elemental', '!pet.exists||!pet.alive', 'player'},
-	{'Blizzard', '!player.moving&{{UI(blizze_check)&talent(6,3)&area(10).enemies>=UI(blizze_spin})||{UI(blizz_check)!talent(6,3)&area(8).enemies>=UI(blizz)}}', 'target.ground'},
-	{'Blizzard', '!player.moving&{{UI(blizze_check)||UI(blizz_check)}&player.buff(Potion of Deadly Grace)&!target.debuff(Water Jet)}', 'target.ground'}, --TODO: Remove??
-	{'Ice Lance', '!player.buff(Fingers of Frost)&lastgcd(Flurry)'},
-	{'Ice Lance', '{player.buff(Fingers of Frost).stack>0&player.spell(Icy Veins).cooldown>10}||player.buff(Fingers of Frost).stack>2', 'target'},
-	{'!Ice Nova', 'debuff(Winter\'s Chill)', 'target'},
-	{'Frostbolt', '{!player.moving||player.buff(Ice Floes)}&debuff(Water Jet).remains>action(Frostbolt).cast_time&player.buff(Fingers of Frost).stack<2', 'target'},
-	{'Frostbolt', '!player.moving||player.buff(Ice Floes)', 'target'},
-	{'&135029', 'pet.exists&player.lastgcd(Frostbolt)&player.buff(Fingers of Frost).stack<{2+artifact(Icy Hand).enabled}&!player.buff(Brain Freeze)', 'target'},
-	{'Ray of Frost', '!player.moving&player.buff(Icy Veins)||{player.spell(Icy Veins).cooldown>action(Ray of Frost).cooldown&!player.buff(Rune of Power)}' ,'target'},
-	{'Flurry', '{!player.moving||player.buff(Ice Floes)}&&player.buff(Brain Freeze)&!player.buff(Fingers of Frost)&!player.lastgcd(Flurry)', 'target'},
-	{'Glacial Spike', '!player.moving||player.buff(Ice Floes)', 'target'},
-	{'Frost Bomb', '!player.moving&target.debuff(Frost Bomb).remains<player.travel_time(Ice Lance)&player.buff(Fingers of Frost).stack>0', 'target'},
-	{'Frozen Orb', nil, 'target'},
-	{'Ice Nova', '', 'debuff(Winter\'s Chill).duration>gcd', 'target'},
-	{'Comet Storm', 'UI(cstorm_check)&area(6).enemies>=UI(cstorm_spin)', 'target'},
-	{'Ebonbolt', '{!player.moving||player.buff(Ice Floes)}&player.buff(Fingers of Frost).stack<={0+artifact(Icy Hand).enabled}', 'target'},
-	{'Ice Barrier', '!buff&!buff(Rune of Power)', 'player'},
-	{'Ice Floes', 'gcd.remains<0.2&player.movingfor>0.75&!lastgcd&!buff', 'player'},
+	{'Ice Lance', '!player.buff(Fingers of Frost)&prev_gcd(Flurry)'},
+	{'Blizzard', 'advanced&{{UI(blizze_check)||UI(blizz_check)}&player.buff(Potion of Deadly Grace)&!target.debuff(Water Jet)}', 'target.ground'},
+	{'!Ice Nova', 'target.debuff(Winter\'s Chill)'},
+	{'Frostbolt', 'target.debuff(Water Jet).remains>action(Frostbolt).cast_time&player.buff(Fingers of Frost).stack<2'},
+	{'&Water Jet', 'pet.exists&petrange<46&!talent(1,2)&prev_gcd(Frostbolt)&player.buff(Fingers of Frost).stack<{2+artifact(Icy Hand).zenabled}&!player.buff(Brain Freeze)'},
+	{'Ray of Frost', 'player.buff(Icy Veins)||{cooldown(Icy Veins).remains>action(Ray of Frost).cooldown&!player.buff(Rune of Power)}'},
+	{'Flurry', 'player.buff(Brain Freeze)&!player.buff(Fingers of Frost)&!prev_gcd(Flurry)'},
+	{'Glacial Spike'},
+	{'Frozen Touch', 'player.buff(Fingers of Frost).stack<={0+artifact(Icy Hand).zenabled}'},
+	{'Frost Bomb', 'target.debuff(Frost Bomb).remains<action(Ice Lance).travel_time&player.buff(Fingers of Frost).stack>0'},
+	{'Ice Lance', 'player.buff(Fingers of Frost).stack>0&cooldown(Icy Veins).remains>10||player.buff(Fingers of Frost).stack>2'},
+--{'Frozen Orb',  'advanced', 'target.ground'},	-- We need to check PvP Talents.
+	{'Frozen Orb'},
+	{'Ice Nova'},
+	{'Comet Storm', 'range<41&combat&alive&infront&advanced&UI(cstorm_check)&area(6).enemies>=UI(cstorm_spin)', 'enemies.ground'},
+	{'Blizzard', 'range<41&combat&alive&advanced&{{UI(blizze_check)&talent(6,3)&area(10).enemies>=UI(blizze_spin})||{UI(blizz_check)!talent(6,3)&area(8).enemies>=UI(blizz)}}', 'enemies.ground'},
+	{'Ebonbolt', 'player.buff(Fingers of Frost).stack<={0+artifact(Icy Hand).zenabled}'},
+	{'Ice Barrier', '!player.buff(Ice Barrier)&!player.buff(Rune of Power)'},
+	{'Ice Floes', 'gcd.remains<0.2&xmoving==1&!prev_gcd(Ice Floes)&!player.buff(Ice Floes)'},
+	{'Summon Water Elemental', '!talent(1,2)&{!pet.exists||!pet.alive}'},
+	{'Frostbolt', 'xmoving==0||player.buff(Ice Floes)'},
 }
 
 local inCombat = {
 	{Keybinds},
-	{Interrupts, 'target.interruptAt(70)&toggle(Interrupts)&target.inFront&target.range<41'},
+	{Interrupts, 'toggle(Interrupts)&target.inFront&target.range<41'},
 	{Interrupts_Random},
 	{Survival},
-	{xCombat, 'target.range<41&target.inFront'},
+	{xCombat, 'range<41&inFront'},
 	{Cooldowns, 'toggle(Cooldowns)'},
 	{Mythic_Plus, 'range<41'},
 	{Hero}
@@ -157,7 +161,7 @@ local inCombat = {
 local outCombat = {
 	{Keybinds},
 	{PreCombat},
-	{Interrupts, 'target.interruptAt(70)&toggle(Interrupts)&target.inFront&target.range<41'},
+	{Interrupts, 'toggle(Interrupts)&target.inFront&target.range<41'},
 	{Interrupts_Random}
 }
 
