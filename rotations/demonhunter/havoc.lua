@@ -101,7 +101,7 @@ local Burst = {
 }
 
 local xAoECombat = {
-	{'Fel Rush', 'UI(felrush)&{{talent(1,1)&player.fury.diff<30}||{spell.charges==1&spell.recharge<=2&player.area(8).enemies>3}||{talent(5,1)&!player.buff(Momentum)}}', 'player'},
+	{'Fel Rush', 'inFront&UI(felrush)&{{talent(1,1)&player.fury.diff<30}||{spell.charges==1&spell.recharge<=2&player.area(8).enemies>3}||{talent(5,1)&!player.buff(Momentum)}}', 'player'},
 	{'Vengeful Retreat', 'UI(vengeful)&{{talent(2,1)&player.fury<85}||{talent(5,1)&!player.buff(Momentum)}}', 'player'},
 	{'Fel Barrage', '{talent(5,1)&player.buff(Momentum)}||{!talent(5,1)}', 'target'},
 	{'Fury of the Illidari', '{talent(5,1)&player.buff(Momentum)}||{!talent(5,1)}', 'target'},
@@ -144,7 +144,8 @@ local inCombat = {
 	{Mythic_Plus, 'inMelee'},
 	{xSTCombat, 'player.area(15).enemies<3&target.inMelee&target.inFront&{{UI(burst)&xtime>4}||{!UI(burst)}}'},
 	{xAoECombat, 'player.area(15).enemies>2&target.inMelee&target.inFront&{{UI(burst)&xtime>4}||{!UI(burst)}}'},
-	{'Fel Rush', 'UI(felrush)&target.range>12&target.range<41&target.inFront', 'player'}
+	{'Fel Rush', 'UI(felrush)&target.range>12&target.range<41&target.inFront', 'player'},
+	{'Throw Glaive', '!inMelee&inFront', 'target'}
 }
 
 local outCombat = {
