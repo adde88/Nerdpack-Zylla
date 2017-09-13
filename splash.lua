@@ -1,4 +1,6 @@
 local _, Zylla = ...
+local NeP = _G.NeP
+local _G = _G
 
 local UIParent = _G.UIParent
 local CreateFrame = _G.CreateFrame
