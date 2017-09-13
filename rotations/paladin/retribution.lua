@@ -10,7 +10,7 @@ local GUI = {
 	-- Keybinds
 	{type = 'header', 	text = 'Keybinds', 														align = 'center'},
 	{type = 'text', 		text = 'Left Shift: |cffF58CBAPause|r', 			align = 'center'},
-	{type = 'text', 		text = 'Left Ctrl:|cffF58CBADivine Steed|r',	align = 'left'},
+	{type = 'text', 		text = 'Left Ctrl: |cffF58CBADivine Steed|r',	align = 'left'},
 	{type = 'text', 		text = 'Left Alt: ', 													align = 'left'},
 	{type = 'text', 		text = 'Right Alt: ', 												align = 'left'},
 	{type = 'ruler'},		{type = 'spacer'},
