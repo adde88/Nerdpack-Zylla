@@ -91,7 +91,7 @@ local Survival = {
 
 local Cooldowns = {
 	{'#147017', 'UI(e_TSM)&equipped(147017)'},	-- Tarnished Sentinel Medallion
-	{'!Bestial Wrath', 'xtime>3&{{buff(Focused Lightning)&buff(Focused Lightning).count>=5}||{!buff(Focused Lightning))}}', 'player'},
+	{'!Bestial Wrath', nil, 'player'},
 	{'Titan\'s Thunder', '{buff(Bestial Wrath)||spell(Dire Beast).cooldown>35}||{spell(Dire Beast).cooldown>2||{buff(Bestial Wrath)&buff(Dire Beast)}}', 'player'},
 	{'Aspect of the Wild', 'buff(Bestial Wrath)||target.ttd<12', 'player'},
 	{'Blood Fury'},
@@ -171,7 +171,7 @@ local outCombat = {
 
 NeP.CR:Add(253, {
 	name = '[|cff'..Zylla.addonColor..'Zylla\'s|r] Hunter - Beast Mastery',
-	waitfor = true,
+	pooling = true,
 	ic = inCombat,
 	ooc = outCombat,
 	gui = GUI,
