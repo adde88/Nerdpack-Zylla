@@ -538,7 +538,8 @@ NeP.DSL:Register('persistent_multiplier', function(_, spell)
   return Zylla.f_Snapshots[spell:lower()].current or 1
 end)
 
-NeP.DSL:Register('f_test', function()
+NeP.DSL:Register('f_test', function()	-- This is for debugging purposes.
+	return Zylla.f_Snapshots
 end)
 
 --------------------------------------------------------------------------------
