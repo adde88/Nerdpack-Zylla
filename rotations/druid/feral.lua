@@ -7,22 +7,23 @@ local unpack = _G.unpack
 
 local GUI = {
 	unpack(Logo_GUI),
-	{type = 'header', 	text = 'Keybinds', align = 'center'},
-	{type = 'text', 	text = 'Left Shift: Pause', align = 'center'},
-	{type = 'text', 	text = 'Left Ctrl: ', align = 'center'},
-	{type = 'text', 	text = 'Left Alt: ', align = 'center'},
-	{type = 'text', 	text = 'Right Alt: ', align = 'center'},
-	{type = 'ruler'},	{type = 'spacer'},
+	{type = 'header', 	size = 16, text = 'Keybinds', 								align = 'center'},
+	{type = 'checkbox',	text = 'Left Shift: |cffFF7D0APause|r', 			align = 'left', 		key = 'lshift'},
+	{type = 'checkbox',	text = 'Left Ctrl: |cffFF7D0A |r', 						align = 'left', 		key = 'lctrl'},
+	{type = 'checkbox',	text = 'Left Alt: |cffFF7D0A |r', 						align = 'left', 		key = 'lalt'},
+	{type = 'checkbox',	text = 'Right Alt: |cffFF7D0A |r', 						align = 'left', 		key = 'ralt'},
+	{type = 'ruler'},		{type = 'spacer'},
 	-- Settings
-	{type = 'header', 	text = 'Class Settings',				align = 'center'},
-	{type = 'checkbox', text = 'Pause Enabled',					key = 'kPause', 		default = true},
-	{type = 'checkbox', text = 'Use Trinket #1', 				key = 'trinket1',		default = true},
-	{type = 'checkbox', text = 'Use Trinket #2', 				key = 'trinket2', 		default = true},
-	{type = 'ruler'},	{type = 'spacer'},
+	{type = 'header', 	size = 16, text = 'Class Settings',						align = 'center'},
+	{type = 'checkbox', text = 'Pause Enabled',												key = 'kPause', 		default = true},
+	{type = 'checkspin',text = 'Light\'s Judgment - Units', 					key = 'LJ',					spin = 4,	step = 1,	max = 20,	check = true,	desc = '|cffFF7D0AWorld Spell usable on Argus.|r'},
+	{type = 'checkbox', text = 'Use Trinket #1', 											key = 'trinket1',		default = true},
+	{type = 'checkbox', text = 'Use Trinket #2', 											key = 'trinket2', 	default = true,		desc = '|cffFF7D0ATrinkets will be used whenever possible!|r'},
+	{type = 'ruler'},	 	{type = 'spacer'},
 	-- Survival
-	{type = 'header', 	text = 'Survival',						align = 'center'},
-	{type = 'checkspin',text = 'Swiftmend', 					key = 'swiftm', 		spin = 85, step = 5, max = 100, check = true},
-	{type = 'checkspin',text = 'Survival Instincts', 			key = 'sint', 			spin = 50, step = 5, max = 100, check = true},
+	{type = 'header', 	size = 16, text = 'Survival',									align = 'center'},
+	{type = 'checkspin',text = 'Swiftmend below HP%', 								key = 'swiftm', 		spin = 85, step = 5, max = 100, check = true},
+	{type = 'checkspin',text = 'Survival Instincts', 									key = 'sint', 			spin = 50, step = 5, max = 100, check = true},
 	{type = 'ruler'},		{type = 'spacer'},
 	unpack(Mythic_GUI),
 }
@@ -32,11 +33,10 @@ local exeOnLoad = function()
 	Zylla.AFKCheck()
 
 	print('|cffADFF2F ----------------------------------------------------------------------|r')
-	print('|cffADFF2F --- |rDRUID |cffADFF2FFeral |r')
+	print('|cffADFF2F --- |rDruid |cffADFF2FFeral |r')
 	print('|cffADFF2F --- |rRecommended Talents: 1/3 - 2/3 - 3/2 - 4/3 - 5/3 - 6/2 - 7/2')
 	print('|cffADFF2F ----------------------------------------------------------------------|r')
-	print('|cffFFFB2F Configuration: |rRight-click MasterToggle and go to Combat Routines Settings!|r')
-	print('| This routine is still in development. Please report any issues found!')
+  print('|cffFFFB2F Configuration: |rRight-click MasterToggle and go to Combat Routines Settings!|r')
 
 	NeP.Interface:AddToggle({
 		key='xStealth',
@@ -61,128 +61,85 @@ local exeOnLoad = function()
 
 end
 
+local PreCombat = {
+	{'Travel Form', 'toggle(xFORM)&movingfor>0.75&!indoors&!buff&!buff(Prowl)', 'player'},
+	{'!Regrowth', 'talent(7,2)&target.enemy&target.alive&!buff(Prowl)&!lastcast(Regrowth)&buff(Bloodtalons).stack<2', 'player'},
+	{'Cat Form', 'toggle(xFORM)&movingfor>0.75&indoors&!buff&!buff(Travel Form)&!buff(Prowl)', 'player'},
+	{'Prowl', 'toggle(xFORM)&toggle(xStealth)&!buff', 'player'},
+	{'Rake', 'player.buff(Prowl)&inMelee&inFront', 'target'}
+}
+
 local Keybinds = {
 	-- Pause
-	{'%pause', 'keybind(lshift)&UI(kPause)'},
+	{'%pause', 'keybind(lshift)&UI(kPause)'}
 }
 
 local Interrupts = {
-	{'!Skull Bash', 'player.form>0', 'target'},
-	{'!Maim', 'player.combopoints>0&player.spell(Skull Bash).cooldown>gcd&!player.lastcast(Skull Bash)', 'target'},
-	{'!Typhoon', 'player.spell(Skull Bash).cooldown>gcd', 'target'},
-	{'!Mighty Bash', 'player.spell(Skull Bash).cooldown>gcd', 'target'},
+	{'!Skull Bash', 'player.form~=0&range<14&inFront', 'target'},
+	{'!Typhoon', 'player.spell(Skull Bash).cooldown>gcd&range<16&inFront', 'target'},
+	{'!Mighty Bash', 'player.spell(Skull Bash).cooldown>gcd&inMelee&inFront', 'target'}
 }
 
 local Interrupts_Random = {
 	{'!Skull Bash', 'interruptAt(70)&player.form>0&toggle(xIntRandom)&toggle(Interrupts)&inFront&range<14', 'enemies'},
-	{'!Maim', 'player.combopoints>0&player.spell(Skull Bash).cooldown>gcd&!player.lastcast(Skull Bash)&infront&inmelee&combat&alive', 'enemies'},
-	{'!Typhoon', 'interruptAt(60)&toggle(xIntRandom)&toggle(Interrupts)&player.area(15).enemies.infront.inFront>=1', 'enemies'},
-	{'!Mighty Bash', 'interruptAt(75)&toggle(xIntRandom)&toggle(Interrupts)&inMelee&inFront', 'enemies'},
+	{'!Typhoon', 'interruptAt(60)&toggle(xIntRandom)&toggle(Interrupts)&player.area(15).enemies.inFront>=1&player.spell(Skull Bash).cooldown>gcd', 'enemies'},
+	{'!Mighty Bash', 'interruptAt(70)&toggle(xIntRandom)&toggle(Interrupts)&inMelee&inFront&player.spell(Skull Bash).cooldown>gcd', 'enemies'}
 }
-
--- Pooling START
 
 local Bear_Healing = {
-	{'Bear Form', 'form~=1', 'player'},
-	{'Frenzied Regeneration', nil, 'player'},
-}
-
-local Regrowth_Pool = {
-	{'!Regrowth', nil, 'player'},
-}
-
-local Moonfire_Pool = {
-	{'%pause', 'player.energy<30&!player.buff(Clearcasting)'},
-	{'Moonfire', nil, 'target'},
-}
-
-local Rake_Pool = {
-	{'%pause', 'player.energy<35&!player.buff(Clearcasting)'},
-	{'Rake', nil, 'target'},
-}
-
-local Rip_Pool = {
-	{'%pause', 'player.energy<30&!player.buff(Clearcasting)'},
-	{'Rip', nil, 'target'},
-}
-
-local Savage_Roar_Pool = {
-	{'%pause', 'player.energy<40&!player.buff(Clearcasting)'},
-	{'Savage Roar', nil, 'target'},
-}
-
-local Ferocious_Bite_Pool = {
-	{'%pause', 'player.energy<25&!player.buff(Clearcasting)'},
-	{'Ferocious Bite', nil, 'target'},
-}
-
-local Thrash_Pool = {
-	{'%pause', 'player.energy<50&!player.buff(Clearcasting)'},
-	{'Thrash', nil, 'target'},
-}
-
-local Swipe_Pool = {
-	{'%pause', 'player.energy<45&!player.buff(Clearcasting)'},
-	{'Swipe', nil, 'target'},
-}
-
--- Pool END
-
-local PreCombat = {
-	{'Travel Form', 'toggle(xFORM)&movingfor>0.75&!indoors&!buff&!buff(Prowl)', 'player'},
-	{Regrowth_Pool, 'talent(7,2)&target.enemy&target.alive&!player.buff(Prowl)&!player.lastcast(Regrowth)&player.buff(Bloodtalons).stack<2'},
-	{'Cat Form', 'toggle(xFORM)&movingfor>0.75&indoors&!buff&!buff(Travel Form)&!buff(Prowl)', 'player'},
-	{'Prowl', 'toggle(xFORM)&toggle(xStealth)&!buff', 'player'},
-	{'Rake', 'player.buff(Prowl)&inMelee&inFront', 'target'},
+	{'Bear Form', 'form~1', 'player'},
+	{'Frenzied Regeneration', nil, 'player'}
 }
 
 local SBT_Opener = {
 	--# Hard-cast a Regrowth for Bloodtalons buff. Use Dash to re-enter Cat Form.
-	{Regrowth_Pool, 'talent(7,2)&player.combopoints==5&!player.buff(Bloodtalons)&!target.dot(Rip).ticking'},
+	{'!Regrowth', 'talent(7,2)&combopoints==5&!buff(Bloodtalons)&!target.dot(Rip).ticking', 'player'},
 	--# Force use of Tiger's Fury before applying Rip.
-	{'Tiger\'s Fury', '!target.dot(Rip).ticking&combopoints==5', 'player'},
+	{'Tiger\'s Fury', '!target.dot(Rip).ticking&combopoints==5', 'player'}
 }
 
 local Cooldowns = {
 	{'Rake', 'player.buff(Prowl)||player.buff(Shadowmeld)', 'target'},
 	{'Berserk', 'buff(Tiger\'s Fury)', 'player'},
-	{'Incarnation: King of the Jungle', 'spell(Tiger\'s Fury).cooldown<gcd', 'player'},
-	{'Incarnation: King of the Jungle', 'energy.time_to_max>1&energy>25', 'player'},
+	{'Incarnation: King of the Jungle', '{spell(Tiger\'s Fury).cooldown<gcd||{energy.time_to_max>1&energy>25}}', 'player'},
 	{'Tiger\'s Fury', '{!buff(Clearcasting)&energy.deficit>50}||energy.deficit>70', 'player'},
-	{'Survival Instincts', 'player.health<=UI(sint_spin)&UI(sint_check)', 'player'},
-	{Ferocious_Bite_Pool, 'target.dot(Rip).ticking&target.dot(Rip)remains<3&target.time_to_die>3&{target.health<25||talent(6,1)}'},
-	{Regrowth_Pool, 'talent(7,2)&player.buff(Predatory Swiftness)&{player.combopoints>4||player.buff(Predatory Swiftness).remains<1.5||{talent(7,2)&player.combopoints==2&!player.buff(Bloodtalons)&player.spell(Ashamane\'s Frenzy).cooldown<gcd}}'},
+	{'Ferocious Bite', '!player.combopoints==0&dot(Rip).ticking&dot(Rip)remains<3&ttd>3&{health<25||talent(6,1)}', 'target'},
+	{'!Regrowth', 'talent(7,2)&buff(Predatory Swiftness)&{player.combopoints>4||buff(Predatory Swiftness).remains<1.5||{talent(7,2)&combopoints==2&!buff(Bloodtalons)&spell(Ashamane\'s Frenzy).cooldown<gcd}}', 'player'},
 	{SBT_Opener, 'talent(6,1)&xtime<20'},
-	{Regrowth_Pool, 'equipped(137024)&talent(7,2)&player.buff(Predatory Swiftness).stack>1&!player.buff(Bloodtalons)'},	-- Ailuro Pouncers Legendary.
+	--# Special logic for Ailuro Pouncers legendary.
+	{'!Regrowth', 'equipped(137024)&talent(7,2)&buff(Predatory Swiftness).stack>1&!buff(Bloodtalons)', 'player'},
+	{'#Trinket1', 'UI(trinket1)'},
+	{'#Trinket2', 'UI(trinket2)'},
+	{'Light\'s Judgment', 'UI(LJ_check)&range<61&area(15).enemies>=UI(LJ_spin)', 'enemies.ground'}
 }
 
 local Finisher = {
-	{Savage_Roar_Pool, 'talent(6,3)&!player.buff(Savage Roar)&player.combopoints==5}'},
-	{Thrash_Pool, 'target.dot(Thrash).remains<=target.dot(Thrash).duration*0.3&player.area(8).enemies.infront>4'},
-	{Swipe_Pool, 'player.area(8).enemies.infront>7'},
-	{Rip_Pool, '{!target.dot(Rip).ticking||{target.dot(Rip).remains<8&target.health>25&!talent(6,1)}&{target.dot(Rip).remains>dot(Rip).tick_time*4&player.combopoints==5}}&{energy.time_to_max<1||player.buff(Berserk)||player.buff(Incarnation: King of the Jungle)||player.spell(Tiger\'s Fury).cooldown<3||{talent(6,2)&player.buff(Clearcasting)}||talent(5,1)||!target.dot(Rip).ticking||{target.dot(Rake).remains<1.5&player.area(8).enemies.infront<6}}'},
-	{Savage_Roar_Pool, 'talent(6,3)&{{{player.buff(Savage Roar).duration<20.5&talent(5,3)}||{player.buff(Savage Roar).duration<8.2&!talent(5,3)}}&player.combopoints==5&{energy.time_to_max<1||player.buff(Berserk)||player.buff(Incarnation: King of the Jungle)||player.spell(Tiger\'s Fury).cooldown<3||player.buff(Clearcasting)||talent(5,1)||!target.debuff(Rip)||{target.debuff(Rake).duration<1.5&player.area(8).enemies.infront<6}}}'},
-	{'Swipe', 'player.combopoints==5&{player.area(8).enemies.infront>5||{player.area(8).enemies.infront>2&!talent(7,2)}}&player.combopoints==5&{energy.time_to_max<1||player.buff(Berserk)||player.buff(Incarnation: King of the Jungle)||player.spell(Tiger\'s Fury).cooldown<3||{talent(6,2)&player.buff(Clearcasting)}}'},
-	{'Ferocious Bite', 'energy.deficit==0&player.combopoints==5&{energy.time_to_max<1||player.buff(Berserk)||player.buff(Incarnation: King of the Jungle)||player.spell(Tiger\'s Fury).cooldown<3||{talent(6,2)&player.buff(Clearcasting)}}', 'target'},
+	{'Savage Roar', 'talent(6,3)&{!buff(Savage Roar)&{combopoints==5||talent(6,2)&action(Brutal Slash).charges>0}}', 'player'},
+	{'Savage Roar', 'talent(6,3)&{{{buff(Savage Roar).duration<20.5&talent(5,3)}||{buff(Savage Roar).duration<8.2&!talent(5,3)}}&combopoints==5&{energy.time_to_max<1||buff(Berserk)||buff(Incarnation: King of the Jungle)||spell(Tiger\'s Fury).cooldown<3||buff(Clearcasting)||talent(5,1)||!target.debuff(Rip)||{target.debuff(Rake).duration<1.5&area(8).enemies.inFront<6}}}', 'player'},
+	{'Thrash', 'dot.remains<=dot.duration*0.3&player.area(8).enemies.inFront>4', 'target'},
+	{'Swipe', 'player.combopoints==5&{player.area(8).enemies.inFront>5||{player.area(8).enemies.inFront>2&!talent(7,2)}}&player.combopoints==5&{energy.time_to_max<1||player.buff(Berserk)||player.buff(Incarnation: King of the Jungle)||player.spell(Tiger\'s Fury).cooldown<3||{talent(7,3)&player.buff(Clearcasting)}}', 'target'},
+	{'Swipe', 'player.area(8).enemies.inFront>7', 'target'},
+	{'Rip', '{!dot.ticking||{dot.remains<8&health>25&!talent(6,1)}||persistent_multiplier>dot.pmultiplier}&{dot.remains>dot.tick_time*4&player.combopoints==5}&{energy.time_to_max<1||player.buff(Berserk)||player.buff(Incarnation: King of the Jungle)||player.spell(Tiger\'s Fury).cooldown<3||{talent(6,2)&player.buff(Clearcasting)}||talent(5,1)||!dot.ticking||{dot(Rake).remains<1.5&player.area(8).enemies.inFront<6}}', 'target'},
+	{'Ferocious Bite', 'energy.deficit==0&player.combopoints==5&{energy.time_to_max<1||player.buff(Berserk)||player.buff(Incarnation: King of the Jungle)||player.spell(Tiger\'s Fury).cooldown<3||{talent(7,3)&player.buff(Clearcasting)}}', 'target'}
 }
 
 local Generator = {
-	{'Brutal Slash', 'player.combopoints<5', 'target'},
-	{'!Ashamane\'s Frenzy', 'player.combopoints<3&toggle(Cooldowns)&{talent(7,2&player.buff(Bloodtalons)||!talent(7,2)}&{talent(6,3&player.buff(Savage Roar)||!talent(6,3)}', 'target'},
-	{'Elune\'s Guidance', 'player.combopoints==0&player.energy<action(Ferocious Bite).cost+25-energy.regen*player.spell(Elune\'s Guidance).cooldown', 'player'},
-	{'Elune\'s Guidance', 'player.combopoints==0&player.energy>=action(Ferocious Bite).cost+25', 'player'},
-	{Thrash_Pool, 'talent(7,1)&player.area(8).enemies.infront>8'},
-	{Swipe_Pool, 'player.area(8).enemies.infront>5'},
-	{Rake_Pool, 'player.combopoints<5&{!target.dot(Rake).ticking||{!talent(7,2)&target.dot(Rake).remains<target.dot(Rake).duration*0.3}||{talent(7,2)&player.buff(Bloodtalons)&{!talent(5,1)&target.dot(Rake).remains<8||target.dot(Rake).remains<6}}}&target.dot(Rake).remains>dot(Rake).tick_time'},
-	{Moonfire_Pool, 'talent(1,2)&player.combopoints<5&target.dot(Moonfire).remains<5.2&target.dot(Moonfire).remains>dot(Moonfire).tick_time*2'},
-	{Thrash_Pool, 'target.dot(Thrash).remains<=target.dot(Thrash).duration*0.3&player.area(8).enemies.infront>1'},
-	{'Swipe', 'player.combopoints<5&player.area(8).enemies.infront>2', 'target'},
-	{'Shred', 'player.combopoints<5&{player.area(8).enemies.infront<3||talent(7,1)}', 'target'},
+	{'Brutal Slash', 'talent(6,2)&player.combopoints<5', 'target'},
+	{'!Ashamane\'s Frenzy', 'player.combopoints<3&toggle(Cooldowns)&{player.buff(Bloodtalons)||!talent(7,2)}&{player.buff(Savage Roar)||!talent(5,3)}', 'target'},
+	{'Elune\'s Guidance', 'talent(5,3)&{combopoints==0&energy<action(Ferocious Bite).cost+25-energy.regen*spell(Elune\'s Guidance).cooldown}', 'player'},
+	{'Elune\'s Guidance', 'talent(5,3)&{combopoints==0&energy>=action(Ferocious Bite).cost+25}', 'player'},
+	{'Thrash', 'talent(6,2)&player.area(8).enemies.inFront>8', 'target'},
+	{'Thrash', 'dot.remains<=dot.duration*0.3&player.area(8).enemies.inFront>1', 'target'},
+	{'Swipe', 'player.area(8).enemies.inFront>5', 'target'},
+	{'Swipe', 'player.combopoints<5&player.area(8).enemies.inFront>2', 'target'},
+	{'Rake', 'player.combopoints<5&{!dot.ticking||{!talent(7,2)&dot.remains<dot.duration*0.3}||{talent(7,2)&player.buff(Bloodtalons)&{!talent(5,1)&dot.remains<8||dot.remains<6}&persistent_multiplier>dot.pmultiplier*0.80}}&dot.remains>dot.tick_time', 'target'},
+	{'Moonfire', 'talent(1,3)&player.combopoints<5&dot.remains<5.2&dot.remains>dot.tick_time*2', 'target'},
+	{'Shred', 'player.combopoints<5&{player.area(8).enemies.inFront<3||talent(6,2)}', 'target'}
 }
 
 local xCombat = {
 	{Finisher},
-	{Generator},
+	{Generator}
 }
 
 local Survival = {
@@ -190,30 +147,35 @@ local Survival = {
 	--{'/run CancelShapeshiftForm()', 'form>0&talent(3,3)&!player.buff(Rejuvenation)'},
 	--{'Rejuvenation', 'talent(3,3)&!player.buff(Rejuvenation)', 'player'},
 	{'/run CancelShapeshiftForm()', 'cooldown(Swiftmend).up.&form>0&talent(3,3)&player.health<=UI(swiftm_spin)&UI(swiftm_check)'},
-	{'Swiftmend', 'talent(3,3)&health<=UI(swiftm_spin)&UI(swiftm_check)', 'player'}
+	{'Swiftmend', 'talent(3,3)&health<=UI(swiftm_spin)&UI(swiftm_check)', 'player'},
+	{'Survival Instincts', 'player.health<=UI(sint_spin)&UI(sint_check)', 'player'},
+	{'#152615', 'item(152615).usable&item(152615).count>0&health<=UI(AHP_spin)&UI(AHP_check)', 'player'}, 													-- Astral Healing Potion
+	{'#127834', 'item(152615).count==0&item(127834).usable&item(127834).count>0&health<=UI(AHP_spin)&UI(AHP_check)', 'player'}, 		-- Ancient Healing Potion
+	{'#5512', 'item(5512).usable&item(5512).count>0&health<=UI(HS_spin)&UI(HS_check)', 'player'}, 																	-- Health Stone
 }
 
 local inCombat = {
-	{Mythic_Plus, 'inMelee'},
 	{Keybinds},
 	{Interrupts, 'target.interruptAt(70)&toggle(Interrupts)&target.inFront&target.inMelee'},
 	{Interrupts_Random},
 	{Survival, 'player.health<100'},
-	{'Cat Form', 'toggle(xFORM)&!buff(Frenzied Regeneration)&!buff&!buff(Travel Form)', 'player'},
+	{'Cat Form', '!buff(Frenzied Regeneration)&{!buff(Cat Form)&{!buff(Travel Form)||area(8).enemies.inFront>0}}', 'player'},
 	{Cooldowns, '!player.buff(Frenzied Regeneration)&toggle(Cooldowns)'},
-	{Moonfire_Pool, 'talent(1,2)&!target.inMelee&target.range<50&target.inFront&!player.buff(Prowl)&!target.debuff(Moonfire)'},
-	{xCombat, '!player.buff(Frenzied Regeneration)&target.inMelee&target.inFront'},
+	{'Moonfire', 'talent(1,3)&!range>8&range<41&inFront&!player.buff(Prowl)&!debuff(Moonfire)', 'target'},
+	{Mythic_Plus, 'inMelee&inFront'},
+	{xCombat, '!player.buff(Frenzied Regeneration)&target.inMelee&target.inFront'}
 }
 
 local outCombat = {
 	{Keybinds},
 	{PreCombat},
-	{Interrupts, 'target.interruptAt(70)&toggle(Interrupts)&target.inFront&target.inMelee'},
-	{Interrupts_Random},
+	{Interrupts, 'target.interruptAt(70)&toggle(Interrupts)'},
+	{Interrupts_Random}
 }
 
 NeP.CR:Add(103, {
 	name = '[|cff'..Zylla.addonColor..'Zylla\'s|r] Druid - Feral',
+	pooling = true,
 	ic = inCombat,
 	ooc = outCombat,
 	gui = GUI,
