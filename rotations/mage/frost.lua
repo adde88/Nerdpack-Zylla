@@ -112,7 +112,7 @@ local xPvP = {
 }
 
 local Cooldowns = {
-	{'Rune of Power', '{!buff&{cooldown(Icy Veins).remains<cooldown(Rune of Power).cast_time}||{cooldown.charges<1.9&cooldown(Icy Veins).remains>10}||buff(Icy Veins)||{target.ttd+5<cooldown.charges*10}', 'player'},
+	{'Rune of Power', '!buff&{{cooldown(Icy Veins).remains<cooldown.cast_time}||{cooldown.charges<1.9&cooldown(Icy Veins).remains>10}||buff(Icy Veins)||{target.ttd+5<cooldown.charges*10}}', 'player'},
 	{'Icy Veins', '!player.buff(Icy Veins)'},
 	{'Mirror Image'},
 	{'Blood Fury'},
@@ -123,28 +123,31 @@ local Cooldowns = {
 	{'#144259', 'UI(kj_check)&target.range<41&target.area(10).enemies>UI(kj_spin)&equipped(144259)'}, -- Kil'jaeden's Burning Wish / AoE Trinket
 }
 
+local Fillers = {
+	{'Glacial Spike', nil, 'target'},
+	{'Ice Nova', nil, 'target'},
+}
+
 local xCombat = {
-	{'Ice Lance', '!player.buff(Fingers of Frost)&prev_gcd(Flurry)'},
-	{'Blizzard', 'advanced&{{UI(blizze_check)||UI(blizz_check)}&player.buff(Potion of Deadly Grace)&!target.debuff(Water Jet)}', 'target.ground'},
-	{'!Ice Nova', 'target.debuff(Winter\'s Chill)'},
-	{'Frostbolt', 'target.debuff(Water Jet).remains>action(Frostbolt).cast_time&player.buff(Fingers of Frost).stack<2'},
-	{'&Water Jet', 'pet.exists&petrange<46&!talent(1,2)&prev_gcd(Frostbolt)&player.buff(Fingers of Frost).stack<{2+artifact(Icy Hand).zenabled}&!player.buff(Brain Freeze)'},
-	{'Ray of Frost', 'player.buff(Icy Veins)||{cooldown(Icy Veins).remains>action(Ray of Frost).cooldown&!player.buff(Rune of Power)}'},
-	{'Flurry', 'player.buff(Brain Freeze)&!player.buff(Fingers of Frost)&!prev_gcd(Flurry)'},
-	{'Glacial Spike'},
-	{'Frozen Touch', 'player.buff(Fingers of Frost).stack<={0+artifact(Icy Hand).zenabled}'},
-	{'Frost Bomb', 'target.debuff(Frost Bomb).remains<action(Ice Lance).travel_time&player.buff(Fingers of Frost).stack>0'},
-	{'Ice Lance', 'player.buff(Fingers of Frost).stack>0&cooldown(Icy Veins).remains>10||player.buff(Fingers of Frost).stack>2'},
---{'Frozen Orb',  'advanced', 'target.ground'},	-- We need to check PvP Talents.
-	{'Frozen Orb'},
-	{'Ice Nova'},
+	{'Ice Lance', '!player.buff(Fingers of Frost)&lastcast(Flurry)', 'target'},
+	{'Blizzard', 'advanced&{{UI(blizze_check)||UI(blizz_check)}&player.buff(Potion of Deadly Grace)&!debuff(Water Jet)}', 'target.ground'},
+	{'!Ice Nova', 'debuff(Winter\'s Chill)', 'target'},
+	{'Frostbolt', 'debuff(Water Jet).remains>action(Frostbolt).cast_time&player.buff(Fingers of Frost).stack<2', 'target'},
+	{'&Water Jet', 'pet.exists&petrange<46&!talent(1,2)&lastcast(Frostbolt)&player.buff(Fingers of Frost).stack<{2+artifact(Icy Hand).zenabled}&!player.buff(Brain Freeze)', 'target'},
+	{'Ray of Frost', 'player.buff(Icy Veins)||{cooldown(Icy Veins).remains>action(Ray of Frost).cooldown&!player.buff(Rune of Power)}', 'target'},
+	{'Flurry', 'player.buff(Brain Freeze)&!player.buff(Fingers of Frost)&!lastcast', 'target'},
+	{'Frozen Touch', 'player.buff(Fingers of Frost).stack<={0+artifact(Icy Hand).zenabled}', 'target'},
+	{'Frost Bomb', 'debuff(Frost Bomb).remains<action(Ice Lance).travel_time&player.buff(Fingers of Frost).stack>0', 'target'},
+	{'Ice Lance', '{player.buff(Fingers of Frost).stack>0&cooldown(Icy Veins).remains>10}||player.buff(Fingers of Frost).stack>2', 'target'},
+	{'Frozen Orb', nil, 'target'},
+	{'Frozen Orb',  'advanced&honortalent(6,1)', 'target.ground'},
 	{'Comet Storm', 'range<41&combat&alive&infront&advanced&UI(cstorm_check)&area(6).enemies>=UI(cstorm_spin)', 'enemies.ground'},
-	{'Blizzard', 'range<41&combat&alive&advanced&{{UI(blizze_check)&talent(6,3)&area(10).enemies>=UI(blizze_spin})||{UI(blizz_check)!talent(6,3)&area(8).enemies>=UI(blizz)}}', 'enemies.ground'},
-	{'Ebonbolt', 'player.buff(Fingers of Frost).stack<={0+artifact(Icy Hand).zenabled}'},
-	{'Ice Barrier', '!player.buff(Ice Barrier)&!player.buff(Rune of Power)'},
-	{'Ice Floes', 'gcd.remains<0.2&xmoving==1&!prev_gcd(Ice Floes)&!player.buff(Ice Floes)'},
-	{'Summon Water Elemental', '!talent(1,2)&{!pet.exists||!pet.alive}'},
-	{'Frostbolt', 'xmoving==0||player.buff(Ice Floes)'},
+	{'Blizzard', 'range<41&combat&alive&advanced&{{UI(blizze_check)&talent(6,3)&area(10).enemies>=UI(blizze_spin})||{UI(blizz_check)!talent(6,3)&area(8).enemies>=UI(blizz_spin)}}', 'enemies.ground'},
+	{'Ebonbolt', 'player.buff(Fingers of Frost).stack<={0+artifact(Icy Hand).zenabled}', 'target'},
+	{'Ice Barrier', '!buff&!buff(Rune of Power)', 'player'},
+	{'Ice Floes', 'gcd.remains<0.2&xmoving==1&!lastcast&!buff', 'player'},
+	{'Summon Water Elemental', '!talent(1,2)&{!pet.exists||!pet.alive}', 'player'},
+	{'Frostbolt', 'xmoving==0||player.buff(Ice Floes)', 'target'},
 }
 
 local inCombat = {
@@ -155,7 +158,8 @@ local inCombat = {
 	{xCombat, 'range<41&inFront'},
 	{Cooldowns, 'toggle(Cooldowns)'},
 	{Mythic_Plus, 'range<41'},
-	{Hero}
+	{Hero},
+	{Fillers, 'range<41&inFront'}
 }
 
 local outCombat = {
@@ -167,7 +171,7 @@ local outCombat = {
 
 NeP.CR:Add(64, {
 	name = '[|cff'..Zylla.addonColor..'Zylla\'s|r] Mage - Frost',
---waitfor = true,
+	pooling = true,
 	ic = {
 		{inCombat, '!player.casting(Summon Water Elemental)||!player.channeling(Ray of Frost)'},
 		{RoF, 'player.channeling(Ray of Frost)'}
