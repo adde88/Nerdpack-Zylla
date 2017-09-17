@@ -17,7 +17,7 @@ local GUI = {
 	-- Settings
 	{type = 'header', 	size = 16, text = 'Class Settings',						align = 'center'},
 	{type = 'checkbox', text = 'Enable DBM Integration',							key = 'kDBM', 				default = true},
-	{type = 'checkspin',text = 'Light\'s Judgment - Units', 					key = 'LJ',						spin = 4,	step = 1,	max = 20,	check = true,	desc = '|cffABD473World Spell usable on Argus.|r'},
+	{type = 'checkspin',text = 'Light\'s Judgment - Units', 					key = 'LJ',						spin = 4,	step = 1,	max = 20, min = 1,	check = true,	desc = '|cffABD473World Spell usable on Argus.|r'},
 	{type = 'checkbox', text = 'Summon Pet',									 				key = 'kPet', 				default = true},
 	{type = 'checkbox', text = 'Barrage Enabled',							 				key = 'kBarrage', 		default = false},
 	{type = 'checkbox', text = 'Volley Enabled',											key = 'kVolley', 			default = true},
@@ -117,9 +117,9 @@ local xCombat = {
 	{'Stampede', 'inFront&{{player.buff(Bloodlust)||player.buff(Bestial Wrath)||player.spell(Bestial Wrath).cooldown<3}||ttd<24}', 'target'},
 	{'Dire Beast', 'player.spell(Bestial Wrath).cooldown>3', 'target'},
 	{'Dire Frenzy', '{pet.buff(Dire Frenzy).duration<=gcd.max*1.2}||player.spell(Dire Frenzy).charges>0.8||target.ttd<9'},
-	{'Barrage', 'toggle(aoe)&UI(kBarrage)&{area(15).enemies.infront>1||{area(15).enemies.infront==1&player.focus>90}}', 'target'},
-	{'Multi-Shot', 'inFront&toggle(aoe)&area(10).enemies>4&{pet.buff(Beast Cleave).duration<gcd.max||!pet.buff(Beast Cleave)}', 'target'},
-	{'Multi-Shot', 'inFront&toggle(aoe)&area(10).enemies>1&{pet.buff(Beast Cleave).duration<gcd.max*2||!pet.buff(Beast Cleave)}', 'target'},
+	{'Barrage', 'toggle(aoe)&UI(kBarrage)&{player.area(15).enemies.infront>1||{player.area(15).enemies.infront==1&player.focus>90}}', 'target'},
+	{'Multi-Shot', 'inFront&toggle(aoe)&area(10).enemies>=5&{pet.buff(Beast Cleave).duration<gcd.max||!pet.buff(Beast Cleave)}', 'target'},
+	{'Multi-Shot', 'inFront&toggle(aoe)&area(10).enemies>=2&{pet.buff(Beast Cleave).duration<gcd.max*2||!pet.buff(Beast Cleave)}', 'target'},
 	{'Chimaera Shot', 'inFront&player.focus<90'},
 	{'Cobra Shot', 'inFront&{{player.spell(Kill Command).cooldown>focus.time_to_max&player.spell(Bestial Wrath).cooldown>focus.time_to_max}||{player.buff(Bestial Wrath)&focus.regen*player.spell(Kill Command).cooldown>action(Kill Command).cost}||ttd<player.spell(Kill Command).cooldown||{equipped(Parsel\'s Tongue)&player.buff(Parsel\'s Tongue).duration<=gcd.max*2}}', 'target'}
 }
@@ -131,7 +131,7 @@ local xPet = {
 			{'Heart of the Phoenix', '!player.debuff(Weakened Heart)&player.combat'}, 	-- Heart of the Phoenix
 			{'Revive Pet'} 																															-- Revive Pet
 	}, {'pet.dead', 'UI(kPet)'}},
-	{'&Kill Command', 'alive&combat&pet.exists&pet.alive', 'target'},
+	{'&Kill Command', 'alive&combat&pet.exists&pet.alive&petrange<=12', 'target'},
 	{'/cast [@focus, help] [@pet, nodead, exists] Misdirection', 'player.spell(Misdirection).cooldown<gcd&UI(kDBM)&toggle(xMisdirect)&{player.combat||{!player.combat&dbm(pull in)<3}}'},
 	{'/cast [@focus, help] [@pet, nodead, exists] Misdirection', 'player.spell(Misdirection).cooldown<gcd&!UI(kDBM)&toggle(xMisdirect)&player.combat'},
 }
