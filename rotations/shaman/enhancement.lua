@@ -8,7 +8,6 @@ local unpack = _G.unpack
 local GUI = {
 	unpack(Logo_GUI),
 	-- Keybinds
-	-- Keybinds
 	{type = 'header',  	size = 16, text = 'Keybinds',	 														align = 'center'},
 	{type = 'checkbox',	text = 'Left Shift: |cff0070DEPause|r',										align = 'left', 			key = 'lshift', 	default = true},
 	{type = 'checkbox',	text = 'Left Ctrl: |cff0070DETier 3 Talent Totems|r',			align = 'left', 			key = 'lcontrol',	default = true},
