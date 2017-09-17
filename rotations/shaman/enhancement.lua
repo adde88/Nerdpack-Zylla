@@ -8,33 +8,35 @@ local unpack = _G.unpack
 local GUI = {
 	unpack(Logo_GUI),
 	-- Keybinds
-	{type = 'header', 	text = 'Keybinds', align = 'center'},
-	{type = 'text', 	text = 'Left Shift: Pause', align = 'center'},
-	{type = 'text', 	text = 'Left Ctrl: Tier 3 Talent Totems @ cursor', align = 'center'},
-	{type = 'text', 	text = 'Left Alt: ', align = 'center'},
-	{type = 'text', 	text = 'Right Alt: ', align = 'center'},
+	-- Keybinds
+	{type = 'header',  	size = 16, text = 'Keybinds',	 														align = 'center'},
+	{type = 'checkbox',	text = 'Left Shift: |cff0070DEPause|r',										align = 'left', 			key = 'lshift', 	default = true},
+	{type = 'checkbox',	text = 'Left Ctrl: |cff0070DETier 3 Talent Totems|r',			align = 'left', 			key = 'lcontrol',	default = true},
+	{type = 'checkbox',	text = 'Left Alt: |cff0070DEBinding Shot|r',							align = 'left', 			key = 'lalt', 		default = true},
+	{type = 'checkbox',	text = 'Right Alt: |cff0070DEFreezing Trap|r',						align = 'left', 			key = 'ralt', 		default = true},
 	{type = 'ruler'},	 {type = 'spacer'},
 	-- Settings
-	{type = 'header', 	text = 'Class Settings',							 			align = 'center'},
-	{type = 'checkbox', text = 'Pause Enabled',								 			key = 'kPause', 		default = true},
-	{type = 'checkbox', text = 'Use Trinket #1', 										key = 'trinket1',		default = true},
-	{type = 'checkbox', text = 'Use Trinket #2', 										key = 'trinket2', 	default = true},
+	{type = 'header', 	text = 'Class Settings',							 										align = 'center'},
+	{type = 'checkbox', text = 'Pause Enabled',								 										key = 'kPause', 				default = true},
+	{type = 'checkbox', text = 'Use Trinket #1', 																	key = 'trinket1',				default = true},
+	{type = 'checkbox', text = 'Use Trinket #2', 																	key = 'trinket2', 			default = true,		desc = '|cff0070DETrinkets will be used whenever possible!|r'},
+	{type = 'checkspin',text = 'Light\'s Judgment - Units', 											key = 'LJ',							spin = 4,	step = 1,	max = 20, min = 1,	check = true,	desc = '|cff0070DEWorld Spell usable on Argus.|r'},
 	-- Survival
-	{type = 'header', 	text = 'Survival',									  	      align = 'center'},
-	{type = 'checkbox', text = 'Enable Healing Surge',								key = 'E_HS',           default = false},
-	{type = 'spinner', 	text = 'Healing Surge below HP%',             key = 'HS_HP',          default = 20},
-	{type = 'spinner', 	text = 'Astral Shift below HP%',             	key = 'AS_HP',          default = 40},
-	{type = 'checkbox', text = 'Use Rainfall to Heal Player',					key = 'E_RF_PL',        default = true},
-	{type = 'spinner', 	text = 'below HP%',             							key = 'P_RF_HP',       	default = 33},
-	{type = 'checkspin',text = 'Healthstone',													key = 'HS',							spin = 45, check = true},
-	{type = 'checkspin',text = 'Healing Potion',											key = 'AHP',						spin = 45, check = true},
+	{type = 'header', 	text = 'Survival',									  	      						align = 'center'},
+	{type = 'checkbox', text = 'Enable Healing Surge',														key = 'E_HS',           default = false},
+	{type = 'spinner', 	text = 'Healing Surge below HP%',             						key = 'HS_HP',          default = 20},
+	{type = 'spinner', 	text = 'Astral Shift below HP%',             							key = 'AS_HP',          default = 40},
+	{type = 'checkbox', text = 'Use Rainfall to Heal Player',											key = 'E_RF_PL',        default = true},
+	{type = 'spinner', 	text = 'below HP%',             													key = 'P_RF_HP',       	default = 33},
+	{type = 'checkspin',text = 'Healthstone',																			key = 'HS',							spin = 45, check = true},
+	{type = 'checkspin',text = 'Healing Potion',																	key = 'AHP',						spin = 45, check = true},
 	{type = 'ruler'},	  {type = 'spacer'},
 	-- Group/Party stuff...
-	{type = 'header', 	text = 'Party/Group',									  	    align = 'center'},
-	{type = 'checkbox', text = 'Heal Lowest Party Member',						key = 'E_HEAL',        default = false},
-	{type = 'spinner', 	text = 'below HP%',             							key = 'L_HS_HP',       default = 33},
-	{type = 'checkbox', text = 'Use Rainfall to Heal Party',					key = 'E_HEAL_RF',     default = false},
-	{type = 'spinner', 	text = 'below HP%',             							key = 'L_RF_HP',       default = 25},
+	{type = 'header', 	text = 'Party/Group',									  	    						align = 'center'},
+	{type = 'checkbox', text = 'Heal Lowest Party Member',												key = 'E_HEAL',        default = false},
+	{type = 'spinner', 	text = 'below HP%',             													key = 'L_HS_HP',       default = 33},
+	{type = 'checkbox', text = 'Use Rainfall to Heal Party',											key = 'E_HEAL_RF',     default = false},
+	{type = 'spinner', 	text = 'below HP%',             													key = 'L_RF_HP',       default = 25},
 	{type = 'ruler'},	  {type = 'spacer'},
 	unpack(Mythic_GUI),
 }
@@ -69,14 +71,15 @@ local Keybinds = {
 
 local PreCombat = {
 	{'Healing Surge', '!moving&player.health<80', 'player'},
-	{'Ghost Wolf', 'movingfor>0.5&!player.buff(Ghost Wolf)'}
+	{'Ghost Wolf', 'movingfor>0.5&!buff', 'player'}
 }
 
 local Survival = {
 	{'!Healing Surge', '!moving&UI(E_HS)&player.health<UI(HS_HP)&player.maelstrom>10', 'player'},
 	{'!Rainfall', 'UI(E_RF_PL)&player.health<UI(P_RF_HP)&player.maelstrom>10&range<41', 'player.ground'},
-	{'#127834', 'item(127834).usable&item(127834).count>0&player.health<=UI(AHP_spin)&UI(AHP_check)'}, 		-- Ancient Healing Potion
-	{'#5512', 'item(5512).usable&item(5512).count>0&player.health<=UI(HS_spin)&UI(HS_check)', 'player'}, 	--Health Stone
+	{'#152615', 'item(152615).usable&item(152615).count>0&health<=UI(AHP_spin)&UI(AHP_check)', 'player'}, 													-- Astral Healing Potion
+	{'#127834', 'item(152615).count==0&item(127834).usable&item(127834).count>0&health<=UI(AHP_spin)&UI(AHP_check)', 'player'}, 		-- Ancient Healing Potion
+	{'#5512', 'item(5512).usable&item(5512).count>0&health<=UI(HS_spin)&UI(HS_check)', 'player'}, 																	-- Health Stone
 }
 
 local Party = {
@@ -91,22 +94,23 @@ local Cooldowns = {
 	{'Blood Fury', 'player.buff(Ascendance)||player.buff(Feral Spirit).duration>5||player.level<110', 'player'},
 	{'Doom Winds', '{player.spell(Flametongue).cooldown<gcd}||{talent(4,3)&player.spell(Frostbrand).cooldown<gcd}', 'player'},
 	{'Ascendance', 'player.spell(Feral Spirit).cooldown<gcd', 'player'},
-	{'#trinket1', 'UI(trinket1)'},
-	{'#trinket2', 'UI(trinket2)'}
+	{'#Trinket1', 'UI(trinket1)'},
+	{'#Trinket2', 'UI(trinket2)'},
+	{'Light\'s Judgment', 'UI(LJ_check)&range<61&area(15).enemies>=UI(LJ_spin)', 'enemies.ground'}
 }
 
 local Interrupts = {
 	{'!Wind Shear', 'range<36&interruptAt(70)'},
-	{'!Lightning Surge Totem', 'advanced&interruptAt(1)&range<36&player.spell(Wind Shear).cooldown>gcd&!player.lastgcd(Wind Shear)', 'target.ground'},
+	{'!Lightning Surge Totem', 'advanced&interruptAt(1)&range<36&player.spell(Wind Shear).cooldown>gcd&!player.lastcast(Wind Shear)', 'target.ground'},
 }
 
 local Interrupts_Random = {
 	{'!Wind Shear', 'interruptAt(70)&toggle(xIntRandom)&toggle(Interrupts)&range<36', 'enemies'},
-	{'!Lightning Surge Totem', 'advanced&interruptAt(1)&toggle(xIntRandom)&toggle(Interrupts)&player.spell(Wind Shear).cooldown>gcd&!player.lastgcd(Wind Shear)&inFront&range<36', 'enemies.ground'},
+	{'!Lightning Surge Totem', 'advanced&interruptAt(1)&toggle(xIntRandom)&toggle(Interrupts)&player.spell(Wind Shear).cooldown>gcd&!player.lastcast(Wind Shear)&inFront&range<36', 'enemies.ground'},
 }
 
 local xCombat = {
-	{'Windstrike', 'player.buff(Ascendance)||lastcast(Ascendance)'},
+	{'Windstrike', 'player.buff(Ascendance)||player.lastcast(Ascendance)'},
 	{'Crash Lightning', '{toggle(AoE)&{player.area(8).enemies>=2||player.buff(Lightning Crash).duration<gcd}}||{!toggle(AoE)&player.buff(Lightning Crash).duration<gcd}'},
 	{'Stormstrike', '!talent(4,3)&player.area(8).enemies>2'},
 	{'Stormstrike', 'player.buff(Stormbringer)'},
@@ -133,17 +137,15 @@ local Ranged = {
 
 local inCombat = {
 	{Keybinds},
-	{Interrupts_Random, '!player.lastgcd(Feral Spirit)'},
-	{Interrupts, '!player.lastgcd(Feral Spirit)&target.interruptAt(70)&toggle(Interrupts)&target.range<41'},
-	{Survival, '!player.lastgcd(Feral Spirit)'},
-	{Party, '!player.lastgcd(Feral Spirit)'},
-	{Cooldowns, 'toggle(Cooldowns)&!player.lastgcd(Feral Spirit)'},
-	{'Crash Lightning', 'target.inMelee&target.inFront&player.lastgcd(Feral Spirit)'},
+	{Interrupts_Random},
+	{Interrupts, 'target.interruptAt(70)&toggle(Interrupts)&target.range<41'},
+	{Survival},
+	{Party},
+	{Cooldowns, 'toggle(Cooldowns)'},
 	{Mythic_Plus, 'ui(mythic_fel)&inMelee'},
-	{Mythic_Plus, 'inMelee'},
-	{xCombat, 'target.inMelee&target.inFront&!player.lastgcd(Feral Spirit)'},
-	{Ranged, '!player.lastgcd(Feral Spirit)'},
-	{'Ghost Wolf', 'player.movingfor>0.75&target.range>12'}
+	{xCombat, 'target.inMelee&target.inFront'},
+	{Ranged},
+	{'Ghost Wolf', 'movingfor>0.75&target.range>=12!buff', 'player'}
 }
 
 local outCombat = {
@@ -155,7 +157,10 @@ local outCombat = {
 
 NeP.CR:Add(263, {
 	name = '[|cff'..Zylla.addonColor..'Zylla\'s|r] Shaman - Enhancement (default)',
-	ic = inCombat,
+	ic = {
+		{inCombat, '!player.lastcast(Feral Spirit)'},
+		{'Crash Lightning', 'inMelee&inFront&player.lastcast(Feral Spirit)', 'target'},
+	},
 	ooc = outCombat,
 	gui = GUI,
 	gui_st = {title='Zylla\'s Combat Routines', width='256', height='520', color='A330C9'},
