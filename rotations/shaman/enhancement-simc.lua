@@ -8,13 +8,18 @@ local unpack = _G.unpack
 local GUI = {
 	unpack(Logo_GUI),
 	-- Keybinds
-	{type = 'header', 	text = 'Keybinds', align = 'center'},
-	{type = 'text', 	text = 'Left Shift: Pause', align = 'center'},
-	{type = 'text', 	text = 'Left Ctrl: ', align = 'center'},
-	{type = 'text', 	text = 'Left Alt: ', align = 'center'},
-	{type = 'text', 	text = 'Right Alt: ', align = 'center'},
-	{type = 'checkbox', text = 'Pause Enabled', key = 'kPause', default = true},
-	{type = 'ruler'},	{type = 'spacer'},
+	{type = 'header',  	size = 16, text = 'Keybinds',	 														align = 'center'},
+	{type = 'checkbox',	text = 'Left Shift: |cff0070DEPause|r',										align = 'left', 			key = 'lshift', 	default = true},
+	{type = 'checkbox',	text = 'Left Ctrl: |cff0070DETier 3 Talent Totems|r',			align = 'left', 			key = 'lcontrol',	default = true},
+	{type = 'checkbox',	text = 'Left Alt: |cff0070DEBinding Shot|r',							align = 'left', 			key = 'lalt', 		default = true},
+	{type = 'checkbox',	text = 'Right Alt: |cff0070DEFreezing Trap|r',						align = 'left', 			key = 'ralt', 		default = true},
+	{type = 'ruler'},	 {type = 'spacer'},
+	-- Settings
+	{type = 'header', 	text = 'Class Settings',							 										align = 'center'},
+	{type = 'checkbox', text = 'Pause Enabled',								 										key = 'kPause', 				default = true},
+	{type = 'checkbox', text = 'Use Trinket #1', 																	key = 'trinket1',				default = true},
+	{type = 'checkbox', text = 'Use Trinket #2', 																	key = 'trinket2', 			default = true,		desc = '|cff0070DETrinkets will be used whenever possible!|r'},
+	{type = 'checkspin',text = 'Light\'s Judgment - Units', 											key = 'LJ',							spin = 4,	step = 1,	max = 20, min = 1,	check = true,	desc = '|cff0070DEWorld Spell usable on Argus.|r'},
 	-- Survival
 	{type = 'header', 	text = 'Survival',									  	      align = 'center'},
 	{type = 'checkbox', text = 'Enable Healing Surge',								key = 'E_HS',           default = false},
@@ -65,8 +70,9 @@ local PreCombat = {
 
 local Survival = {
 	{'!Healing Surge', '!moving&UI(E_HS)&player.health<=UI(HS_HP)&player.maelstrom>10', 'player'},
-	{'#127834', 'item(127834).usable&item(127834).count>0&player.health<=UI(AHP_spin)&UI(AHP_check)'}, 		-- Ancient Healing Potion
-	{'#5512', 'item(5512).usable&item(5512).count>0&player.health<=UI(HS_spin)&UI(HS_check)', 'player'}, 	--Health Stone
+	{'#152615', 'item(152615).usable&item(152615).count>0&health<=UI(AHP_spin)&UI(AHP_check)', 'player'}, 													-- Astral Healing Potion
+	{'#127834', 'item(152615).count==0&item(127834).usable&item(127834).count>0&health<=UI(AHP_spin)&UI(AHP_check)', 'player'}, 		-- Ancient Healing Potion
+	{'#5512', 'item(5512).usable&item(5512).count>0&health<=UI(HS_spin)&UI(HS_check)', 'player'}, 																	-- Health Stone
 }
 
 local Party = {
@@ -81,6 +87,9 @@ local Cooldowns = {
 	{'Blood Fury', 'player.buff(Ascendance)||player.buff(Feral Spirit).duration>5||player.level<100'},
 	{'Doom Winds'},
 	{'Ascendance', 'player.buff(Stormbringer).react'},
+	{'#Trinket1', 'UI(trinket1)'},
+	{'#Trinket2', 'UI(trinket2)'},
+	{'Light\'s Judgment', 'UI(LJ_check)&range<61&area(15).enemies>=UI(LJ_spin)', 'enemies.ground'}
 }
 
 local Interrupts = {
