@@ -1,5 +1,7 @@
 local _, Zylla = ...
 local NeP = _G.NeP
+local _G = _G
+
 local gsub = _G.gsub
 local UnitClass = _G.UnitClass
 local CreateFrame = _G.CreateFrame
@@ -7,7 +9,6 @@ local UIParent = _G.UIParent
 local UnitIsAFK = _G.UnitIsAFK
 local C_PetBattles = _G.C_PetBattles
 local DEFAULT_CHAT_FRAME = _G.DEFAULT_CHAT_FRAME
-local UnitThreatSituation = _G.UnitThreatSituation
 local UnitExists = _G.UnitExists
 local GetSpellInfo = _G.GetSpellInfo
 local GetNetStats = _G.GetNetStats
@@ -27,7 +28,6 @@ local GetTime = _G.GetTime
 local UnitGUID = _G.UnitGUID
 local UnitIsDeadOrGhost = _G.UnitIsDeadOrGhost
 local UnitAffectingCombat = _G.UnitAffectingCombat
---local InCombatLockdown = _G.InCombatLockdown
 local TravelSpeed = _G.TravelSpeed
 local UnitGetIncomingHeals = _G.UnitGetIncomingHeals
 local UnitGetTotalHealAbsorbs = _G.UnitGetTotalHealAbsorbs
@@ -38,61 +38,61 @@ local UnitStagger = _G.UnitStagger
 local rad = _G.rad
 local atan2 = _G.atan2
 local GetSpellCooldown = _G.GetSpellCooldown
+local OpenURL = _G.OpenURL
 
-Zylla.Version = '2.0'
-Zylla.Branch = 'RELEASE'
+--XXX: Travert into global space
+_G.Zylla = Zylla
+
+Zylla.Version = '2.1'
+Zylla.Branch = 'DEV'
 Zylla.Name = 'NerdPack - Zylla\'s Rotations'
 Zylla.Author = 'Zylla'
-Zylla.addonColor = '8801c0'
+Zylla.addonColor = '8801C0'
+Zylla.ClassColor = '|cff'..NeP.Core:ClassColor('player', 'hex')
 Zylla.wow_ver = '7.3.0'
 Zylla.nep_ver = '1.8'
 Zylla.spell_timers = {}
 Zylla.isAFK = false;
+Zylla.Class = select(3,UnitClass("player"))
+Zylla.timer = {}
+Zylla.DonateURL = 'https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=23HX4QKDAD4YG'
 
 local Parse = NeP.DSL.Parse
 local Zframe = CreateFrame('GameTooltip', 'Zylla_ScanningTooltip', UIParent, 'GameTooltipTemplate')
 
-Zylla.Class = select(3,UnitClass("player"))
+function Zylla.timer:useTimer(timerName, interval)
+    if self[timerName] == nil then self[timerName] = 0 end
+    if GetTime()-self[timerName] >= interval then
+        self[timerName] = GetTime()
+        return true
+    else
+        return false
+    end
+end
 
--- Toggles off the CR if the player becomes AFK.
--- And toggle back on when player is un-AFKed.
-function Zylla.onFlagChange()
-  if (UnitIsAFK("player") and not Zylla.isAFK) then
-    -- Player has become AFK
+function Zylla.onFlagChange()	--XXX: Toggles off the CR if the player becomes AFK. And toggle back on when player is un-AFKed.
+  if (UnitIsAFK("player") and not Zylla.isAFK) then	--XXX: Player has become AFK
     if (C_PetBattles.IsInBattle()==false) then
-      -- This should contain the stuff to execute when player is flagged AFK
+      --XXX: Contains the stuff to be executed when the player is flagged as AFK
       NeP.Interface:toggleToggle('mastertoggle')
     end
     DEFAULT_CHAT_FRAME:AddMessage("|cffC41F3BPlayer is AFK! Stopping Zylla's Combat Routine.|r");
     Zylla.isAFK = true;
-  elseif (not UnitIsAFK("player") and Zylla.isAFK) then
-    -- Player has been flagged un-AFK
-    -- This should contain the stuff to execute when player is flagged as not AFK
+  elseif (not UnitIsAFK("player") and Zylla.isAFK) then	--XXX: Player has been flagged un-AFK
+    --XXX: Contains the stuff to be executed when the player is flagged as NOT AFK
     NeP.Interface:toggleToggle('mastertoggle')
     DEFAULT_CHAT_FRAME:AddMessage("|cffFFFB2FPlayer is unAFK! Restarting Zylla's Combat Routine.|r")
     Zylla.isAFK = false;
   -- else
-  -- Player's flag change concerned DND, not becoming AFK or un-AFK
+  --XXX: Player's flag change concerned DND, not becoming AFK or un-AFK
   end
 end
 
 function Zylla.AFKCheck()
   local frame = CreateFrame("FRAME", "AfkFrame");
-  frame:RegisterEvent("PLAYER_FLAGS_CHANGED"); -- "PLAYER_FLAGS_CHANGED" This will trigger when the player becomes unAFK and unDND
+  frame:RegisterEvent("PLAYER_FLAGS_CHANGED"); --XXX: "PLAYER_FLAGS_CHANGED" This will trigger when the player becomes unAFK and unDND
   frame:SetScript("OnEvent", Zylla.onFlagChange);
 end
-
---[[
- --Different Classes Taunt Abilities
-local classTaunt = {
-  [1] = 'Taunt',
-  [2] = 'Hand of Reckoning',
-  [6] = 'Dark Command',
-  [10] = 'Provoke',
-  [11] = 'Growl',
-  [12] = 'Torment'
-}
-]]--
 
 function Zylla.ExeOnLoad()
   print('|cffFFFB2F ----------------------------------------------------------------------|r')
@@ -103,7 +103,7 @@ function Zylla.ExeOnLoad()
   print('|cffFFFB2F You can also get support from the NerdPack community on Discord.|r')
   print('|cffFFFB2F ----------------------------------------------------------------------|r')
 
-	Zylla.Splash() -- Call the Splash-screen on all CR's...
+	Zylla.Splash() --XXX: Call the Splash-screen on all CR's...
 
 end
 
@@ -111,61 +111,47 @@ function Zylla.ExeOnUnload()
   print('|cffFFFB2F Thank you for using Zylla\'s Combat Routines.|r')
 end
 
--- Global Variables used on many if not all routines.
+function Zylla.Donate()
+	_G.OpenURL(Zylla.DonateURL)
+end
+
 --[[
-_G['Zylla.Blacklist'] = {
+_G.Blacklist = {
 units = {"UNIT_ID", ####},
 buffs = {{name = "special_buff", count = 2}, "special_buff", ####},
 debuff = {####, ####, ####}
 --]]
 
-_G.PauseCR = {
-   -- Vault of the Wardens, Sapped Soul
-}
-
-_G.Logo_GUI = {
-	--  Zylla's Combat Routine Logo
-	{type = 'texture', texture = 'Interface\\AddOns\\Nerdpack-Zylla\\media\\logo.blp', width = 128, height = 128, offset = 90, y = -60, align = 'center'},
+_G.Logo_GUI = {	--XXX: Zylla's Combat Routine Logo
+	{type = 'texture', texture = 'Interface\\AddOns\\Nerdpack-Zylla\\media\\logo.blp', width = 128, height = 128, offset = 90, y = -30, align = 'center'},
 	{type = 'spacer'}, {type = 'spacer'}, {type = 'spacer'}, {type = 'ruler'},
 }
 
-_G.PayPal_GUI = {
-	--  Donation logo
-	{type = 'texture',  texture = 'Interface\\AddOns\\Nerdpack-Zylla\\media\\paypal.blp', width = 69, height = 35, offset = 90, y = -60, align = 'center'},
-	{type = 'ruler'},	--TODO: To be added in Settings.
+_G.PayPal_IMG = {
+	{type = 'texture',  texture = 'Interface\\AddOns\\Nerdpack-Zylla\\media\\paypal.blp', width = 69, height = 35, y = -5,align = 'center'},
 }
 
-_G.Mythic_GUI = {
-	-- Mythic + / Raiding
+_G.PayPal_GUI = {	--XXX: Donation logo
+	{type = 'button', 	text = '|cffFFFFFFDonate to Zylla\'s Project|r',	width = 155, height = 25, callback = function() Zylla.Donate() end},
+}
+
+_G.Mythic_GUI = {	-- Mythic + / Raiding
 	{type = 'header', 	size = 14, text = 'Mythic+ Raid Settings', 		align = 'center'},
 	{type = 'text',  		size = 10, text = 'Fel Explosives',	 					align = 'left'},
-	{type = 'checkbox', text = 'Fel Explosives [Affix]', 							key = 'mythic_fel', width = 55, default = true, desc = '|cffC41F3BThis will automatically target the \'Fel Explosives\' in Mythic+ dungeons!'},
+	{type = 'checkbox', text = 'Fel Explosives [Affix]', 							key = 'mythic_fel', width = 55, default = true, desc = '|cffC41F3BThis will automatically target the \'Fel Explosives\' in Mythic+ dungeons!|r'},
 	{type = 'text',  		size = 10, text = 'Quaking',	 								align = 'left'},
-	{type = 'checkbox', text = 'Quaking [Affix]', 										key = 'quaking', width = 55, default = true, desc = '|cffC41F3BThis will automatically interrupt your casts at the end of your Quaking Debuff from Mythic+ dungeons!'},
-	{type = 'ruler'},	--XXX: Global GUI-part to be used on all combat routines.
+	{type = 'checkbox', text = 'Quaking [Affix]', 										key = 'quaking', 		width = 55, default = true, desc = '|cffC41F3BThis will automatically interrupt your casts at the end of your Quaking Debuff from Mythic+ dungeons!|r'},
+	{type = 'ruler'},		--XXX: Global GUI-part to be used on all combat routines.
 }
 
 _G.Mythic_Plus = {
 	{{
-			{"/target 'Fel Explosives'", 'id(120651)&inFront', 'enemies'}
+			{"/target 'Fel Explosives'", 'id(120651)&inFront', 'enemies'},
+			{"/target 'Fel Surge Totem'", 'id(121499)&inFront', 'enemies'},
 	},	'UI(mythic_fel)'}, 																																				--XXX: Fel Explosives Mythic+ Affix
 	{'!/stopcasting','debuff(Quake).any.duration<gcd&debuff(Quake).any&UI(quaking)', 'player'},		--XXX: Quaking Mythic+ Affix
 	{'%pause' , 'player.debuff(200904)||player.debuff(Sapped Soul)'},															--XXX: Vault of the Wardens - Sapped Soul Encounter
 }
-
-function Zylla.Taunt(eval, args)
-  local spell = NeP.Engine:Spell(args)
-  if not spell then return end
-  for i=1,#NeP.OM['unitEnemie'] do
-    local Obj = NeP.OM['unitEnemie'][i]
-    local Threat = UnitThreatSituation('player', Obj.key)
-    if Threat and Threat >= 0 and Threat < 3 and Obj.distance <= 30 then
-      eval.spell = spell
-      eval.target = Obj.key
-      return NeP.Engine:STRING(eval)
-    end
-  end
-end
 
 function Zylla.Round(num, idp)
   if num then
@@ -244,30 +230,30 @@ function Zylla.AutoDoT(debuff,spellx)
   end
 end
 
---[[
 function Zylla.AutoDoT2(debuff)
-for _, Obj in pairs(NeP.OM:Get('Enemy')) do
-if UnitExists(Obj.key) then
-if (NeP.DSL:Get('combat')(Obj.key) or Obj.isdummy) then
-local objRange = NeP.DSL:Get('range')(Obj.key)
-local _,_,_,_, minRange, maxRange = GetSpellInfo(debuff)
-if (NeP.DSL:Get('infront')(Obj.key) and objRange >= minRange and objRange <= maxRange) then
-if (NeP.DSL:Get('debuff.duration')(Obj.key, debuff) < NeP.DSL:Get('gcd')()) then
-local _, _, _, lagWorld = GetNetStats()
-local latency = lagWorld / 1000
-C_Timer.After(latency, function ()
-if (NeP.DSL:Get('debuff.duration')(Obj.key, debuff) < NeP.DSL:Get('gcd')()) then
-NeP:Queue(debuff, Obj.key)
-return true
+	for _, Obj in pairs(NeP.OM:Get('Enemy')) do
+		if UnitExists(Obj.key) then
+			if (NeP.DSL:Get('combat')(Obj.key) or Obj.isdummy) then
+				local objRange = NeP.DSL:Get('range')(Obj.key)
+				local _,_,_,_, minRange, maxRange = GetSpellInfo(debuff)
+				if (NeP.DSL:Get('infront')(Obj.key) and objRange >= minRange and objRange <= maxRange) then
+					if (NeP.DSL:Get('debuff.duration')(Obj.key, debuff) < NeP.DSL:Get('gcd')()) then
+						local _, _, _, lagWorld = GetNetStats()
+						local latency = lagWorld / 1000
+						C_Timer.After(latency, function ()
+							if (NeP.DSL:Get('debuff.duration')(Obj.key, debuff) < NeP.DSL:Get('gcd')()) then
+								RunMacroText('/run CastSpellByName("'..debuff..'","'..Obj.key..'")')
+								--NeP:Queue(debuff, Obj.key)
+								return true
+							end
+						end)
+					end
+				end
+			end
+		end
+	end
 end
-end)
-end
-end
-end
-end
-end
-end
---]]
+
 --------------------------------------------------------------------------------
 ----------------------------------ToolTips--------------------------------------
 --------------------------------------------------------------------------------
@@ -303,7 +289,7 @@ end
 -------------------------------NeP HoT / DoT API -------------------------------
 --------------------------------------------------------------------------------
 
-local function oFilter(owner, spell, spellID, caster)
+function Zylla.oFilter(owner, spell, spellID, caster)
   if not owner then
     if spellID == tonumber(spell) and (caster == 'player' or caster == 'pet') then
       return false
@@ -323,7 +309,7 @@ if tonumber(spell) then
   while i <= 40 and go do
     i = i + 1
     name,_,_,count,_,_,expires,caster,_,_,spellID = _G['UnitBuff'](target, i)
-    go = oFilter(owner, spell, spellID, caster)
+    go = Zylla.oFilter(owner, spell, spellID, caster)
   end
 else
   name,_,_,count,_,_,expires,caster = _G['UnitBuff'](target, spell)
@@ -338,7 +324,7 @@ if tonumber(spell) then
   while i <= 40 and go do
     i = i + 1
     name,_,_,count,_,duration,expires,caster,_,_,spellID,_,_,_,power = _G['UnitDebuff'](target, i)
-    go = oFilter(owner, spell, spellID, caster)
+    go = Zylla.oFilter(owner, spell, spellID, caster)
   end
 else
   name,_,_,count,_,duration,expires,caster = _G['UnitDebuff'](target, spell)
@@ -413,11 +399,230 @@ function Zylla.getIgnorePain()
     --maxIP = 268634.7
 end
 
+Zylla.setsTable = {
+	["DEATH KNIGHT"] = {
+		["T19"] = {
+		138355, --Dreadwyrm Crown
+		138349, --Dreadwyrm Breastplate
+		138361, --Dreadwyrm Shoulderguards
+		138352, --Dreadwyrm Gauntlets
+		138358, --Dreadwyrm Legplates
+		138364, --Dreadwyrm Greatcloak
+		},
+		["T20"] = {
+		147121, --Gravewarden Chestplate
+		147122, --Gravewarden Cloak
+		147123, --Gravewarden Handguards
+		147124, --Gravewarden Visage
+		147125, --Gravewarden Legplates
+		147126, --Gravewarden Pauldrons
+		},
+	},
+	["DEMON HUNTER"] = {
+		["T19"] = {
+		138378, --Mask of Second Sight
+		138376, --Tunic of Second Sight
+		138380, --Shoulderguards of Second Sight
+		138377, --Gloves of Second Sight
+		138379, --Legwraps of Second Sight
+		138375, --Cape of Second Sight
+		},
+		["T20"] = {
+		147127, --Demonbane Harness
+		147128, --Demonbane Shroud
+		147129, --Demonbane Gauntlets
+		147130, --Demonbane Faceguard
+		147131, --Demonbane Leggings
+		147132, --Demonbane Shoulderpads
+		},
+	},
+	["DRUID"] = {
+		["T19"] = {
+		138330, --Hood of the Astral Warden
+		138324, --Robe of the Astral Warden
+		138336, --Mantle of the Astral Warden
+		138327, --Gloves of the Astral Warden
+		138333, --Leggings of the Astral Warden
+		138366, --Cloak of the Astral Warden
+		},
+		["T20"] = {
+		147133, --Stormheart Tunic
+		147134, --Stormheart Drape
+		147135, --Stormheart Gloves
+		147136, --Stormheart Headdress
+		147137, --Stormheart Legguards
+		147138, --Stormheart Mantle
+		},
+	},
+	["HUNTER"] = {
+		["T19"] = {
+		138342, --Eagletalon Cowl
+		138339, --Eagletalon Tunic
+		138347, --Eagletalon Spaulders
+		138340, --Eagletalon Gauntlets
+		138344, --Eagletalon Legchains
+		138368, --Eagletalon Cloak
+		},
+		["T20"] = {
+		147139, --Wildstalker Chestguard
+		147140, --Wildstalker Cape
+		147141, --Wildstalker Gauntlets
+		147142, --Wildstalker Helmet
+		147143, --Wildstalker Leggings
+		147144, --Wildstalker Spaulders
+		},
+	},
+	["MAGE"] = {
+		["T19"] = {
+		138312, --Hood of Everburning Knowledge
+		138318, --Robe of Everburning Knowledge
+		138321, --Mantle of Everburning Knowledge
+		138309, --Gloves of Everburning Knowledge
+		138315, --Leggings of Everburning Knowledge
+		138365, --Cloak of Everburning Knowledge
+		},
+		["T20"] = {
+		147145, --Drape of the Arcane Tempest
+		147146, --Gloves of the Arcane Tempest
+		147147, --Crown of the Arcane Tempest
+		147148, --Leggings of the Arcane Tempest
+		147149, --Robes of the Arcane Tempest
+		147150, --Mantle of the Arcane Tempest
+		},
+	},
+	["MONK"] = {
+		["T19"] = {
+		138331, --Hood of Enveloped Dissonance
+		138325, --Tunic of Enveloped Dissonance
+		138337, --Pauldrons of Enveloped Dissonance
+		138328, --Gloves of Enveloped Dissonance
+		138334, --Leggings of Enveloped Dissonance
+		138367, --Cloak of Enveloped Dissonance
+		},
+		["T20"] = {
+		147151, --Xuen's Tunic
+		147152, --Xuen's Cloak
+		147153, --Xuen's Gauntlets
+		147154, --Xuen's Helm
+		147155, --Xuen's Legguards
+		147156, --Xuen's Shoulderguards
+		},
+	},
+	["PALADIN"] = {
+		["T19"] = {
+		138356, --Helmet of the Highlord
+		138350, --Breastplate of the Highlord
+		138362, --Pauldrons of the Highlord
+		138353, --Gauntlets of the Highlord
+		138359, --Legplates of the Highlord
+		138369, --Greatmantle of the Highlord
+		},
+		["T20"] = {
+		147157, --Radiant Lightbringer Breastplate
+		147158, --Radiant Lightbringer Cape
+		147159, --Radiant Lightbringer Gauntlets
+		147160, --Radiant Lightbringer Crown
+		147161, --Radiant Lightbringer Greaves
+		147162, --Radiant Lightbringer Shoulderguards
+		},
+	},
+	["PRIEST"] = {
+		["T19"] = {
+		138313, --Purifier's Gorget
+		138319, --Purifier's Cassock
+		138322, --Purifier's Mantle
+		138310, --Purifier's Gloves
+		138316, --Purifier's Leggings
+		138370, --Purifier's Drape
+		},
+		["T20"] = {
+		147163, --Shawl of Blind Absolution
+		147164, --Gloves of Blind Absolution
+		147165, --Hood of Blind Absolution
+		147166, --Leggings of Blind Absolution
+		147167, --Robes of Blind Absolution
+		147168, --Mantle of Blind Absolution
+		},
+	},
+	["ROGUE"] = {
+		["T19"] = {
+		138332, --Doomblade Cowl
+		138326, --Doomblade Tunic
+		138338, --Doomblade Spaulders
+		138329, --Doomblade Gauntlets
+		138335, --Doomblade Pants
+		138371, --Doomblade Shadowwrap
+		},
+		["T20"] = {
+		147169, --Fanged Slayer's Chestguard
+		147170, --Fanged Slayer's Shroud
+		147171, --Fanged Slayer's Handguards
+		147172, --Fanged Slayer's Helm
+		147173, --Fanged Slayer's Legguards
+		147174, --Fanged Slayer's Shoulderpads
+		},
+	},
+	["SHAMAN"] = {
+		["T19"] = {
+		138343, --Helm of Shackled Elements
+		138346, --Raiment of Shackled Elements
+		138348, --Pauldrons of Shackled Elements
+		138341, --Gauntlets of Shackled Elements
+		138345, --Leggings of Shackled Elements
+		138372, --Cloak of Shackled Elements
+		},
+		["T20"] = {
+		147175, --Harness of the Skybreaker
+		147176, --Drape of the Skybreaker
+		147177, --Grips of the Skybreaker
+		147178, --Helmet of the Skybreaker
+		147179, --Legguards of the Skybreaker
+		147180, --Pauldrons of the Skybreaker
+		},
+	},
+	["WARLOCK"] = {
+		["T19"] = {
+		138314, --Eyes of Azj'Aqir
+		138320, --Finery of Azj'Aqir
+		138323, --Pauldrons of Azj'Aqir
+		138311, --Clutch of Azj'Aqir
+		138317, --Leggings of Azj'Aqir
+		138373, --Cloak of Azj'Aqir
+		},
+		["T20"] = {
+		147181, --Diabolic Shroud
+		147182, --Diabolic Gloves
+		147183, --Diabolic Helm
+		147184, --Diabolic Leggings
+		147185, --Diabolic Robe
+		147186, --Diabolic Mantle
+		},
+	},
+	["WARRIOR"] = {
+		["T19"] = {
+		138357, --Warhelm of the Obsidian Aspect
+		138351, --Chestplate of the Obsidian Aspect
+		138363, --Shoulderplates of the Obsidian Aspect
+		138354, --Gauntlets of the Obsidian Aspect
+		138360, --Legplates of the Obsidian Aspect
+		138374, --Greatcloak of the Obsidian Aspect
+		},
+		["T20"] = {
+		147187, --Titanic Onslaught Breastplate
+		147188, --Titanic Onslaught Cloak
+		147189, --Titanic Onslaught Handguards
+		147190, --Titanic Onslaught Greathelm
+		147191, --Titanic Onslaught Greaves
+		147192, --Titanic Onslaught Pauldrons
+		},
+	},
+}
+
 --set bonuses
 --/dump Zylla.GetNumberSetPieces('T18', 'WARRIOR')
 function Zylla.GetNumberSetPieces(set, class)
   class = class or select(2, UnitClass("player"))
-  local pieces = Zylla.sets[class][set] or {}
+  local pieces = Zylla.setsTable[class][set] or {}
   local counter = 0
   for _, itemID in ipairs(pieces) do
     if IsEquippedItem(itemID) then
@@ -426,18 +631,6 @@ function Zylla.GetNumberSetPieces(set, class)
   end
   return counter
 end
-
-Zylla.sets = {
-  ["WARRIOR"] = {
-    ["T18"] = {
-      124319,
-      124329,
-      124334,
-      124340,
-      124346,
-    },
-  },
-}
 
 --------------------------------------------------------------------------------
 -------------------------------- WARLOCK ---------------------------------------
