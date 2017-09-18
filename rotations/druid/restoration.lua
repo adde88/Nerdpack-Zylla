@@ -8,15 +8,14 @@ local unpack = _G.unpack
 local GUI = {
 	unpack(Logo_GUI),
 	-- Keybinds
-	{type='header', 	text='Keybinds', 							align='center'},
-	{type='text', 		text='Left Shift: Pause', 					align='center'},
-	{type='text', 		text='Left Ctrl: Efflorescence', 			align='center'},
-	{type='text', 		text='Left Alt: Healing Routine (OOC)',		align='center'},
-	{type='text', 		text='Right Alt: ', 						align='center'},
-	{type='ruler'},		{type='spacer'},
+	{type = 'header',  	size = 16, text = 'Keybinds',	 												align = 'center'},
+	{type = 'checkbox',	text = 'Left Shift: |cffABD473Pause|r',								align = 'left', 			key = 'lshift', 	default = true},
+	{type = 'checkbox',	text = 'Left Ctrl: |cffABD473Efflorescence|r',				align = 'left', 			key = 'lcontrol',	default = true},
+	{type = 'checkbox',	text = 'Left Alt: |cffABD473Healing Routine (OOC)|r',	align = 'left', 			key = 'lalt', 		default = true},
+	{type = 'checkbox',	text = 'Right Alt: ',																	align = 'left', 			key = 'ralt', 		default = true},
+	{type = 'ruler'},	 	{type = 'spacer'},
 	-- General Class/Spec Settings
 	{type = 'header',	text = 'General Settings',					align = 'center'},
-	{type='checkbox',	text='Pause Enabled',						key='kPause',	default=true},
 	{type = 'spinner', 	text = 'Critical HP%',					key = 'k_CH',	default = 33},
 	{type = 'spinner', 	text = 'DPS while ppl. are above HP%',		key = 'k_DPSHP',default = 90},
 	{type = 'spinner', text = 'Rejuvenation - Player amount', key = 'REJUV_UNITS', align = 'left', width = 55, step = 1, default = 8, max = 40},
@@ -61,6 +60,13 @@ local exeOnLoad = function()
 	})
 
 	NeP.Interface:AddToggle({
+		key='xStealth',
+		name='Auto Stealth',
+		text = 'If Enabled we will automatically use Stealth out of combat.',
+		icon='Interface\\Icons\\ability_stealth',
+	})
+
+	NeP.Interface:AddToggle({
 		key = 'xFORM',
 		name = 'Handle Forms',
 		text = 'Automatically handle player forms',
@@ -91,14 +97,14 @@ local exeOnLoad = function()
 end
 
 local PreCombat = {
-	--{'Travel Form', 'toggle(xFORM)&movingfor>2&!indoors&!player.form==0'},
-	{'Cat Form', 'toggle(xFORM)&indoors&!player.buff(Cat Form)&!player.buff(Travel Form)'},
- 	{'Prowl', '!player.buff(Prowl)&player.area(40).enemies>0'},
+	{'Travel Form', 'toggle(xFORM)&movingfor>0.75&!indoors&!buff&!buff(Prowl)', 'player'},
+	{'Cat Form', 'toggle(xFORM)&movingfor>0.75&indoors&!buff&!buff(Travel Form)&!buff(Prowl)', 'player'},
+	{'Prowl', 'toggle(xFORM)&toggle(xStealth)&!buff', 'player'},
 }
 
 local Keybinds = {
-	{'%pause', 'keybind(lshift)'},
-	{'!Efflorescence', 'keybind(lcontrol)', 'cursor.ground'},
+	{'%pause', 'keybind(lshift)&UI(lshift)'},
+	{'!Efflorescence', 'keybind(lcontrol)&UI(lcontrol)', 'cursor.ground'},
 }
 
 local Interrupts = {
@@ -107,14 +113,14 @@ local Interrupts = {
 }
 
 local Interrupts_Random = {
-	{'!Skull Bash', 'interruptAt(70)&player.form>0&toggle(xIntRandom)&toggle(Interrupts)&range<14', 'enemies'},
-	{'!Mighty Bash', 'interruptAt(60)&toggle(xIntRandom)&toggle(Interrupts)&inFront&inMelee', 'enemies'},
+	{'!Skull Bash', 'interruptAt(70)&player.form>0&toggle(xIntRandom)&toggle(Interrupts)&range<14&combat&alive', 'enemies'},
+	{'!Mighty Bash', 'interruptAt(60)&toggle(xIntRandom)&toggle(Interrupts)&inFront&inMelee&combat&alive', 'enemies'},
 }
 
 local DPS = {
-	{'Moonfire', 'debuff.duration<3&range<41&combat', 'enemies'},
-	{'Sunfire', 'debuff.duration<3&range<41&combat', 'enemies'},
-	{'Solar Wrath', 'debuff(Moonfire)&debuff(Sunfire)&range<41&combat', 'enemies'},
+	{'Moonfire', 'debuff.duration<3&range<41&combat&alive', 'enemies'},
+	{'Sunfire', 'debuff.duration<3&range<41&combat&alive', 'enemies'},
+	{'Solar Wrath', 'debuff(Moonfire)&debuff(Sunfire)&range<41&combat&alive', 'enemies'},
 }
 
 local Innervate = {
@@ -123,104 +129,85 @@ local Innervate = {
 	{'Regrowth', nil, 'lowest'},
 }
 
-local TreeForm = {}
-
 local Emergency = {
 	{'!Swiftmend', nil, 'lowest'},
 	{'!Regrowth', nil, 'lowest'},
 }
 
 local Cooldowns = {
-	{'Tranquility', 'player.area(40,75).heal>2'},
-	{'Innervate', 'player.mana<60'},
+	{'Tranquility', 'area(40,75).heal>2', 'player'},
+	{'Innervate', 'mana<60', 'player'},
 }
 
 local Mitigations = {
-	{'Barkskin', 'player.health<40'},
+	{'Barkskin', 'health<40', 'player'},
 	{'Ironbark', 'health<30', '{tank, lowest}'},
-	--{'Ironbark', 'lowest.health<30', 'lowest'},
+	--{'Ironbark', 'health<30', 'lowest'},
 }
 
 local Moving = {
-	{'Lifebloom', 'tank.buff(Lifebloom).duration<5.5', 'tank'},
+	{'Lifebloom', 'buff.duration<5.5&health>=UI(tsm)||!buff(Lifebloom)', 'tank'},
 	-- Wardz
-	{'Cenarion Ward', 'talent(1,2)&!tank.buff(Cenarion Ward)', 'tank'},
-	{'Cenarion Ward', 'talent(1,2)&!tank2.buff(Cenarion Ward)', 'tank2'},
-	{'Cenarion Ward', 'talent(1,2)', 'lnbuff(Cenarion Ward)'},
-	-- Rejuvs
-	{'Rejuvenation', 'tank.health<=UI(trejuv)&!tank.buff(Rejuvenation)', 'tank'},
-	{'Rejuvenation', 'tank2.health<=UI(trejuv)&!tank2.buff(Rejuvenation)', 'tank2)'},
-	{'Rejuvenation', 'health<=UI(lrejuv)&!buff(Rejuvenation)', 'lnbuff(Rejuvenation)'},
+	{'Cenarion Ward', '!buff', {'tank', 'tank2', 'lowest'}},
+	-- Rejuvzzzz
+	{'Rejuvenation', 'health<=UI(trejuv)&!buff', {'tank', 'tank2'}},
+	{'Rejuvenation', 'health<=UI(lrejuv)', 'lnbuff(Rejuvenation)'},
 	-- Germs
-	{'Rejuvenation', 'talent(6,3)&tank.buff(Rejuvenation)&!tank.buff(Rejuvenation (Germination))&tank.health<=UI(lgerm)', 'tank'},
-	{'Rejuvenation', 'talent(6,3)&tank2.buff(Rejuvenation)&!tank2.buff(Rejuvenation (Germination))&tank2.health<=UI(lgerm)', 'tank2'},
-	{'Rejuvenation', 'talent(6,3)&buff(Rejuvenation)&health<=UI(lgerm)', 'lnbuff(Rejuvenation (Germination))'},
+	{'Rejuvenation', 'talent(6,3)&buff&!buff(Rejuvenation (Germination))&health<=UI(lgerm)', {'tank', 'tank2'}},
+	{'Rejuvenation', 'talent(6,3)&buff&health<=UI(lgerm)', 'lnbuff(Rejuvenation (Germination))'},
 	-- Swifties
-	{'Swiftmend', 'tank.health<=UI(tsm)', 'tank'},
-	{'Swiftmend', 'tank2.health<=UI(tsm)', 'tank2'},
-	{'Swiftmend', 'lowest.health<=UI(lsm)', 'lowest'},
+	{'Swiftmend', 'health<=UI(tsm)', {'tank', 'tank2'}},
+	{'Swiftmend', 'health<=UI(lsm)', 'lowest'},
 }
 
-local SWP_MASS = {
-	{'Rejuvenation', 'range<41&combat&alive&buff.count.any<UI(REJUV_UNITS)&buff.duration<3&health<=UI(MASS_REJUV_HP)', 'lnbuff(Rejuvenation)'}
+local Mass_Rejuv = {
+	{'Rejuvenation', 'range<41&combat&alive&count.friendly.buffs<UI(REJUV_UNITS)&buff.duration<3&health<=UI(MASS_REJUV_HP)', 'lowest'}
 }
 
 local xHealing = {
 	{Emergency, 'lowest.health<=UI(k_CH)'},
 	{Innervate, 'player.buff(Innervate)'},
-	{'Lifebloom', 'tank.buff(Lifebloom).duration<5.5&tank.health>=UI(tsm)||!tank.buff(Lifebloom)', 'tank'},
-
-	{'Cenarion Ward', 'talent(1,2)&!tank.buff(Cenarion Ward)', 'tank'},
-	{'Cenarion Ward', 'talent(1,2)&!tank2.buff(Cenarion Ward)', 'tank2'},
-	{'Cenarion Ward', 'talent(1,2)', 'lnbuff(Cenarion Ward)'},
-
-	{'Wild Growth', 'lowest.area(30,75).heal>2', 'lowest'},
-	{'Essence of G\'Hanir', 'player.area(30,75).heal>2'},
-	{'Flourish', 'talent(7,3)&player.lastcast(Wild Growth)&lowest.health<60'},
-
+	{'Lifebloom', 'buff.duration<5.5&health>=UI(tsm)||!buff(Lifebloom)', 'tank'},
+	{'Cenarion Ward', '!buff', {'tank', 'tank2', 'lowest'}},
+	{'Wild Growth', 'area(30,75).heal>2', 'lowest'},
+	{'Essence of G\'Hanir', 'area(30,75).heal>2', 'lowest'},
+	{'Flourish', 'lastcast(Wild Growth)&lowest.health<60', 'player'},
 	{'Regrowth', 'player.buff(Clearcasting)', 'lowest'},
-
-	-- Rejuv
-	{'Rejuvenation', 'tank.health<=UI(trejuv)&!tank.buff(Rejuvenation)', 'tank'},
-	{'Rejuvenation', 'tank2.health<=UI(trejuv)&!tank2.buff(Rejuvenation)', 'tank2)'},
-	{'Rejuvenation', 'health<=UI(lrejuv)&!buff(Rejuvenation)', 'lnbuff(Rejuvenation)'},
-	-- Germ
-	{'Rejuvenation', 'talent(6,3)&tank.buff(Rejuvenation)&!tank.buff(Rejuvenation (Germination))&tank.health<=UI(lgerm)', 'tank'},
-	{'Rejuvenation', 'talent(6,3)&tank2.buff(Rejuvenation)&!tank2.buff(Rejuvenation (Germination))&tank2.health<=UI(lgerm)', 'tank2'},
-	{'Rejuvenation', 'talent(6,3)&buff(Rejuvenation)&health<=UI(lgerm)&!buff', 'lnbuff(Rejuvenation (Germination))'},
-
-	{'Swiftmend', 'tank.health<=UI(tsm)', 'tank'},
-	{'Swiftmend', 'tank2.health<=UI(tsm)', 'tank2'},
-	{'Swiftmend', 'lowest.health<=UI(lsm)', 'lowest'},
-
-	{'Regrowth', 'tank.health<=UI(trg)', 'tank'},
-	{'Regrowth', 'tank2.health<=UI(trg)', 'tank2'},
-	{'Regrowth', 'lowest.health<=UI(lrg)', 'lowest'},
-
-	{'Healing Touch', 'tank.health<=UI(tht)', 'tank'},
-	{'Healing Touch', 'tank2.health<=UI(tht)', 'tank2'},
-	{'Healing Touch', 'lowest.health<=UI(lht)', 'lowest'},
+	-- Rejuvzzzz
+	{'Rejuvenation', 'health<=UI(trejuv)&!buff', {'tank', 'tank2'}},
+	{'Rejuvenation', 'health<=UI(lrejuv)', 'lnbuff(Rejuvenation)'},
+	-- Germination
+	{'Rejuvenation', 'talent(6,3)&buff&!buff(Rejuvenation (Germination))&health<=UI(lgerm)', {'tank', 'tank2'}},
+	{'Rejuvenation', 'talent(6,3)&buff&health<=UI(lgerm)', 'lnbuff(Rejuvenation (Germination))'},
+	-- Swifties
+	{'Swiftmend', 'health<=UI(tsm)', {'tank', 'tank2'}},
+	{'Swiftmend', 'health<=UI(lsm)', 'lowest'},
+	{'Regrowth', 'health<=UI(trg)', {'tank', 'tank2'}},
+	{'Regrowth', 'health<=UI(lrg)', 'lowest'},
+	{'Healing Touch', 'health<=UI(tht)', {'tank', 'tank2'}},
+	{'Healing Touch', 'health<=UI(lht)', 'lowest'},
 }
 
 local inCombat = {
-	{Util},
-	{Trinkets},
-	{Heirlooms},
 	{Keybinds},
 	{Interrupts, 'target.interruptAt(70)&toggle(Interrupts)&target.inFront&target.inMelee'},
+	{Interrupts_Random},
 	{Mitigations},
 	{Cooldowns, 'toggle(Cooldowns)'},
 	{'%dispelall', 'toggle(disp)'},
 	{xHealing, '!player.moving'},
 	{Moving, 'player.moving'},
 	{DPS, 'toggle(xDPS)&lowest.health>=UI(k_DPSHP)'},
-	{Rejuvenation, 'toggle(xRejuv)'},
-	{Mythic_Plus, 'range<=40'},
+	{Mass_Rejuv, 'toggle(xRejuv)'},
+	{Mythic_Plus, 'range<41'},
+	{'Cat Form', 'movingfor>0.75&toggle(xFORM)&!buff(Cat Form)&{!buff(Travel Form)||area(8).enemies.inFront>0}', 'player'},
 }
 
 local outCombat = {
 	{PreCombat},
 	{Keybinds},
+	{Interrupts, 'target.interruptAt(70)&toggle(Interrupts)&target.inFront&target.inMelee'},
+	{Interrupts_Random}
 }
 
 NeP.CR:Add(105, {
