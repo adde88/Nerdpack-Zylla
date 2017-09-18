@@ -3,38 +3,45 @@ local _, Zylla = ...
 local Mythic_GUI = _G.Mythic_GUI
 local Mythic_Plus = _G.Mythic_Plus
 local Logo_GUI = _G.Logo_GUI
+local PayPal_GUI = _G.PayPal_GUI
+local PayPal_IMG = _G.PayPal_IMG
 local unpack = _G.unpack
 
 local GUI = {
 	unpack(Logo_GUI),
-	-- Keybinds
-	{type = 'header',  	size = 16, text = 'Keybinds',	 								align = 'center'},
-	{type = 'checkbox',	text = 'Left Shift: |cffABD473Pause|r',				align = 'left', 			key = 'lshift', 	default = true},
-	{type = 'checkbox',	text = 'Left Ctrl: |cffABD473Tar Trap|r',			align = 'left', 			key = 'lcontrol',	default = true},
-	{type = 'checkbox',	text = 'Left Alt: |cffABD473Binding Shot|r',	align = 'left', 			key = 'lalt', 		default = true},
-	{type = 'checkbox',	text = 'Right Alt: |cffABD473Freezing Trap|r',align = 'left', 			key = 'ralt', 		default = true},
+	-- Header
+	{type = 'header',  	size = 16, text = 'Keybinds',	 														align = 'center'},
+	{type = 'checkbox',	text = 'Left Shift: '..Zylla.ClassColor..'Pause|r',				align = 'left', 			key = 'lshift', 	default = true},
+	{type = 'checkbox',	text = 'Left Ctrl: '..Zylla.ClassColor..'Tar Trap|r',			align = 'left', 			key = 'lcontrol',	default = true},
+	{type = 'checkbox',	text = 'Left Alt: '..Zylla.ClassColor..'Binding Shot|r',	align = 'left', 			key = 'lalt', 		default = true},
+	{type = 'checkbox',	text = 'Right Alt: '..Zylla.ClassColor..'Freezing Trap|r',align = 'left', 			key = 'ralt', 		default = true},
+	{type = 'spacer'},
+--{type = 'checkbox', text = 'Enable Chatoverlay', 															key = 'chat', 				width = 55, 			default = true, desc = ''..Zylla.ClassColor..'This will enable some messages as an overlay!|r'},
+	unpack(PayPal_GUI),
+	{type = 'spacer'},
+	unpack(PayPal_IMG),
 	{type = 'ruler'},	 	{type = 'spacer'},
 	-- Settings
-	{type = 'header', 	size = 16, text = 'Class Settings',						align = 'center'},
-	{type = 'checkbox', text = 'Enable DBM Integration',							key = 'kDBM', 				default = true},
-	{type = 'checkspin',text = 'Light\'s Judgment - Units', 					key = 'LJ',						spin = 4,	step = 1,	max = 20, min = 1,	check = true,	desc = '|cffABD473World Spell usable on Argus.|r'},
-	{type = 'checkbox', text = 'Summon Pet',									 				key = 'kPet', 				default = true},
-	{type = 'checkbox', text = 'Barrage Enabled',							 				key = 'kBarrage', 		default = false},
-	{type = 'checkbox', text = 'Volley Enabled',											key = 'kVolley', 			default = true},
-	{type = 'checkbox', text = 'Misdirect Focus/Pet',									key = 'kMisdirect', 	default = true},
-	{type = 'checkbox', text = 'Freezing Trap (Interrupt)' ,					key = 'FT_Int', 			default = false},
-	{type = 'checkbox', text = 'Tarnished Sentinel Medallion',				key = 'e_TSM', 				default = true},
-	{type = 'checkbox', text = 'Use Trinket #1', 											key = 'trinket1',			default = true},
-	{type = 'checkbox', text = 'Use Trinket #2', 											key = 'trinket2', 		default = true,		desc = '|cffABD473Trinkets will be used whenever possible!|r'},
+	{type = 'header', 	size = 16, text = 'Class Settings',												align = 'center'},
+	{type = 'checkbox', text = 'Enable DBM Integration',													key = 'kDBM', 				default = true},
+	{type = 'checkspin',text = 'Light\'s Judgment - Units', 											key = 'LJ',						spin = 4,	step = 1,	max = 20, min = 1,	check = true,	desc = ''..Zylla.ClassColor..'World Spell usable on Argus.|r'},
+	{type = 'checkbox', text = 'Summon Pet',									 										key = 'kPet', 				default = true},
+	{type = 'checkbox', text = 'Barrage Enabled',							 										key = 'kBarrage', 		default = false},
+	{type = 'checkbox', text = 'Volley Enabled',																	key = 'kVolley', 			default = true},
+	{type = 'checkbox', text = 'Misdirect Focus/Pet',															key = 'kMisdirect', 	default = true},
+	{type = 'checkbox', text = 'Freezing Trap (Interrupt)' ,											key = 'FT_Int', 			default = false},
+	{type = 'checkbox', text = 'Tarnished Sentinel Medallion',										key = 'e_TSM', 				default = true},
+	{type = 'checkbox', text = 'Use Trinket #1', 																	key = 'trinket1',			default = true},
+	{type = 'checkbox', text = 'Use Trinket #2', 																	key = 'trinket2', 		default = true,			desc = ''..Zylla.ClassColor..'Trinkets will be used whenever possible!|r'},
 	{type = 'ruler'},	  {type = 'spacer'},
 	-- Survival
-	{type = 'header', 	size = 16, text = 'Survival',									align = 'center'},
-	{type = 'checkspin',text = 'Heal Pet below HP%', 									key = 'P_HP', 				spin = 75, check = true},
-	{type = 'checkspin',text = 'Exhileration below HP%', 							key = 'E_HP', 				spin = 67, check = true},
-	{type = 'checkspin',text = 'Healthstone',													key = 'HS',						spin = 45, check = true},
-	{type = 'checkspin',text = 'Healing Potion',											key = 'AHP',					spin = 45, check = true},
-	{type = 'checkspin',text = 'Aspect of the Turtle', 								key = 'AotT', 				spin = 20, check = true},
-	{type = 'checkspin',text = 'Feign Death (Legendary Healing) %',		key = 'FD',		 				spin = 16, check = true},
+	{type = 'header', 	size = 16, text = 'Survival',															align = 'center'},
+	{type = 'checkspin',text = 'Heal Pet below HP%', 															key = 'P_HP', 				spin = 75, check = true},
+	{type = 'checkspin',text = 'Exhileration below HP%', 													key = 'E_HP', 				spin = 67, check = true},
+	{type = 'checkspin',text = 'Healthstone',																			key = 'HS',						spin = 45, check = true},
+	{type = 'checkspin',text = 'Healing Potion',																	key = 'AHP',					spin = 45, check = true},
+	{type = 'checkspin',text = 'Aspect of the Turtle', 														key = 'AotT', 				spin = 20, check = true},
+	{type = 'checkspin',text = 'Feign Death (Legendary Healing) %',								key = 'FD',		 				spin = 16, check = true},
 	{type = 'ruler'},		{type = 'spacer'},
 	unpack(Mythic_GUI),
 }
