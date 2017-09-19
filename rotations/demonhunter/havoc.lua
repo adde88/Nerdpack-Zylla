@@ -3,38 +3,45 @@ local _, Zylla = ...
 local Mythic_GUI = _G.Mythic_GUI
 local Mythic_Plus = _G.Mythic_Plus
 local Logo_GUI = _G.Logo_GUI
+local PayPal_GUI = _G.PayPal_GUI
+local PayPal_IMG = _G.PayPal_IMG
 local unpack = _G.unpack
 
 local GUI = {
 	unpack(Logo_GUI),
-	{type = 'header', 		text = 'Keybinds', 																		align = 'center'},
-	{type = 'text', 			text = 'Left Shift: |cffA330C9Pause|r',			 					align = 'left'},
-	{type = 'text', 			text = 'Left Ctrl: |cffA330C9Metamorphosis|r', 				align = 'left'},
-	{type = 'text', 			text = 'Left Alt: |cffA330C9Netherwalk|r',						align = 'left'},
-	{type = 'text', 			text = 'Right Alt: |cffA330C9Darkness|r',	 						align = 'left'},
-	{type = 'ruler'},			{type = 'spacer'},
-	-- Settings
-	{type = 'header', 		text = 'Class Settings',							 								align = 'center'},
-	{type = 'checkbox', 	text = 'Pause Enabled',								 								key = 'kPause', 		default = true},
-	{type = 'checkspin',	text = 'Light\'s Judgment - Units', 									key = 'LJ',					width = 55, step = 1, spin = 4, max = 20, check = true,	desc = '|cffA330C9World Spell usable on Argus.|r'},
-	{type = 'checkbox', 	text = 'Enable Bursting',								 							key = 'burst', 			default = true},
---{type = 'checkbox', 	text = 'Auto-target enemy during Eye Beam',						key = 'eyeface', 		default = false},	-- Will be implemented soon...
---{type = 'checkbox', 	text = 'Cancel Movement/Action Animations',						key = 'kanime', 		default = false},	-- Will be implemented soon...
-	{type = 'checkbox', 	text = 'Use \'Vengeful Retreat\'',										key = 'vengeful', 	default = true},
-	{type = 'checkbox', 	text = 'Use \'Fel Rush\'',														key = 'felrush', 		default = true},
-	{type = 'checkspin', 	text = 'Use \'Metamorphosis + Units to strike\'',			key = 'meta',       spin = 4, step = 1, max = 20, check = true },
-	{type = 'checkspin', 	text = 'Use \'Chaos Nova + Units to strike\'',				key = 'chaos',      spin = 4, step = 1, max = 20, check = true },
-	{type = 'checkbox', 	text = 'Use Trinket #1', 															key = 'trinket1',		default = true},
-	{type = 'checkbox', 	text = 'Use Trinket #2', 															key = 'trinket2', 	width = 55, default = true,	desc = '|cffA330C9Trinkets will be used whenever possible!|r'},
+	-- Header
+	{type = 'header',  	size = 16, text = 'Keybinds',	 															align = 'center'},
+	{type = 'checkbox',	text = 'Left Shift: '..Zylla.ClassColor..'Pause|r',					align = 'left', 		key = 'lshift', 	default = true},
+	{type = 'checkbox',	text = 'Left Ctrl: '..Zylla.ClassColor..'Metamorphosis|r',	align = 'left', 		key = 'lcontrol',	default = true},
+	{type = 'checkbox',	text = 'Left Alt: '..Zylla.ClassColor..'Netherwalk|r',			align = 'left', 		key = 'lalt', 		default = true},
+	{type = 'checkbox',	text = 'Right Alt: '..Zylla.ClassColor..'Darkness|r',				align = 'left', 		key = 'ralt', 		default = true},
 	{type = 'spacer'},
-	{type = 'checkspin', 	text = 'Kil\'Jaeden\'s Burning Wish - Units', 				key = 'kj', 				width = 55, step = 1, spin = 4, max = 20, check = true, desc = '|cffA330C9Legendary will be used only on selected amount of units!|r'},
+--{type = 'checkbox', text = 'Enable Chatoverlay', 																key = 'chat', 			width = 55, 			default = true, desc = Zylla.ClassColor..'This will enable some messages as an overlay!|r'},
+	unpack(PayPal_GUI),
+	{type = 'spacer'},
+	unpack(PayPal_IMG),
+	{type = 'ruler'},	 	{type = 'spacer'},
+	-- Settings
+	{type = 'header', 		text = 'Class Settings',							 										align = 'center'},
+	{type = 'checkspin',	text = 'Light\'s Judgment - Units', 											key = 'LJ',					width = 55, step = 1, spin = 4, max = 20, check = true,	desc = Zylla.ClassColor..'World Spell usable on Argus.|r'},
+	{type = 'checkbox', 	text = 'Enable Bursting',								 									key = 'burst', 			default = true},
+--{type = 'checkbox', 	text = 'Auto-target enemy during Eye Beam',								key = 'eyeface', 		default = false},	-- Will be implemented soon...
+--{type = 'checkbox', 	text = 'Cancel Movement/Action Animations',								key = 'kanime', 		default = false},	-- Will be implemented soon...
+	{type = 'checkbox', 	text = 'Use \'Vengeful Retreat\'',												key = 'vengeful', 	default = true},
+	{type = 'checkbox', 	text = 'Use \'Fel Rush\'',																key = 'felrush', 		default = true},
+	{type = 'checkspin', 	text = 'Use \'Metamorphosis + Units to strike\'',					key = 'meta',       spin = 4, step = 1, max = 20, check = true },
+	{type = 'checkspin', 	text = 'Use \'Chaos Nova + Units to strike\'',						key = 'chaos',      spin = 4, step = 1, max = 20, check = true },
+	{type = 'checkbox', 	text = 'Use Trinket #1', 																	key = 'trinket1',		default = true},
+	{type = 'checkbox', 	text = 'Use Trinket #2', 																	key = 'trinket2', 	width = 55, default = true,	desc = Zylla.ClassColor..'Trinkets will be used whenever possible!|r'},
+	{type = 'spacer'},
+	{type = 'checkspin', 	text = 'Kil\'Jaeden\'s Burning Wish - Units', 						key = 'kj', 				width = 55, step = 1, spin = 4, max = 20, check = true, desc = Zylla.ClassColor..'Legendary will be used only on selected amount of units!|r'},
 	{type = 'ruler'},			{type = 'spacer'},
 	-- Survival
-	{type = 'header', 		text = 'Survival',									  	    					align = 'center'},
-	{type = 'checkspin', 	text = 'Blur below HP%',               								key = 'blur',       spin = 60, check = true},
-	{type = 'checkspin', 	text = 'Netherwalk below HP%',              					key = 'nether',     spin = 25, check = true},
-  {type = 'checkspin',	text = 'Healthstone',																	key = 'HS',					spin = 45, check = true},
-  {type = 'checkspin',	text = 'Healing Potion',															key = 'AHP',				spin = 45, check = true},
+	{type = 'header', 		text = 'Survival',									  	    							align = 'center'},
+	{type = 'checkspin', 	text = 'Blur below HP%',               										key = 'blur',       spin = 60, check = true},
+	{type = 'checkspin', 	text = 'Netherwalk below HP%',              							key = 'nether',     spin = 25, check = true},
+  {type = 'checkspin',	text = 'Healthstone',																			key = 'HS',					spin = 45, check = true},
+  {type = 'checkspin',	text = 'Healing Potion',																	key = 'AHP',				spin = 45, check = true},
 	{type = 'ruler'},	  	{type = 'spacer'},
 	unpack(Mythic_GUI),
 }
@@ -59,7 +66,7 @@ local exeOnLoad = function()
 end
 
 local Keybinds = {
-	{'%pause', 'keybind(lshift)&UI(kPause)'},
+	{'%pause', 'keybind(lshift)&UI(lshift)'},
 	{'Metamorphosis', 'keybind(lcontrol)', 'cursor.ground'},
 	{'Netherwalk', 'keybind(lalt)', 'player'},
 	{'Darkness', 'keybind(ralt)', 'player'}

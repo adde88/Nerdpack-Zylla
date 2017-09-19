@@ -3,34 +3,40 @@ local _, Zylla = ...
 local Mythic_GUI = _G.Mythic_GUI
 local Mythic_Plus = _G.Mythic_Plus
 local Logo_GUI = _G.Logo_GUI
+local PayPal_GUI = _G.PayPal_GUI
+local PayPal_IMG = _G.PayPal_IMG
 local unpack = _G.unpack
 
 local GUI = {
 	unpack(Logo_GUI),
-	-- Keybinds
-	{type = 'header', 		text = 'Keybinds', 																				align = 'center',	size = 16},
-	{type = 'text', 			text = 'Left Shift: |cffABD473Pause|r', 									align = 'center'},
-	{type = 'text', 			text = 'Left Ctrl: |cffABD473Death and Decay @ cursor|r', align = 'center'},
-	{type = 'text', 			text = 'Left Alt: ', 																			align = 'center'},
-	{type = 'text', 			text = 'Right Alt: ', 																		align = 'center'},
-	{type = 'ruler'},			{type = 'spacer'},
+	-- Header
+	{type = 'header',  	size = 16, text = 'Keybinds',	 																		align = 'center'},
+	{type = 'checkbox',	text = 'Left Shift: '..Zylla.ClassColor..'Pause|r',								align = 'left', 			key = 'lshift', 	default = true},
+	{type = 'checkbox',	text = 'Left Ctrl: '..Zylla.ClassColor..'Death and Decay|r',			align = 'left', 			key = 'lcontrol',	default = true},
+	{type = 'checkbox',	text = 'Left Alt: '..Zylla.ClassColor..'|r',	align = 'left', 		key = 'lalt', 				default = true},
+	{type = 'checkbox',	text = 'Right Alt: '..Zylla.ClassColor..'|r',align = 'left', 			key = 'ralt', 				default = true},
+	{type = 'spacer'},
+--{type = 'checkbox', text = 'Enable Chatoverlay', 																			key = 'chat', 				width = 55, 			default = true, desc = Zylla.ClassColor..'This will enable some messages as an overlay!|r'},
+	unpack(PayPal_GUI),
+	{type = 'spacer'},
+	unpack(PayPal_IMG),
+	{type = 'ruler'},	 	{type = 'spacer'},
 	-- Settings
-	{type = 'header', 		text = 'Class Settings',																	align = 'center',	size = 16},
-	{type = 'checkbox', 	text = 'Pause Enabled', key = 'kPause', 									default = true},
-	{type = 'checkspin',	text = 'Light\'s Judgment - Units', 											key = 'LJ',				spin = 4, step = 1, max = 20, check = true,	desc = '|cffC41F3BWorld Spell usable on Argus.|r'},
-	{type = 'checkbox', 	text = 'Use Death Grip as backup Interrupt', 							key = 'DGInt', 		default = false},
-	{type = 'checkbox', 	text = 'Use Death Grip as backup Taunt', 									key = 'DGTaunt', 	default = false},
-	{type = 'checkbox', 	text = 'Use Trinket #1', 																	key = 'trinket1',	default = true},
-	{type = 'checkbox', 	text = 'Use Trinket #2', 																	key = 'trinket2', default = true,	desc = '|cffC41F3BTrinkets will be used whenever possible!|r'},
+	{type = 'header', 		text = 'Class Settings',																				align = 'center',	size = 16},
+	{type = 'checkspin',	text = 'Light\'s Judgment - Units', 														key = 'LJ',				spin = 4, step = 1, max = 20, check = true,	desc = Zylla.ClassColor..'World Spell usable on Argus.|r'},
+	{type = 'checkbox', 	text = 'Use Death Grip as backup Interrupt', 										key = 'DGInt', 		default = false},
+	{type = 'checkbox', 	text = 'Use Death Grip as backup Taunt', 												key = 'DGTaunt', 	default = false},
+	{type = 'checkbox', 	text = 'Use Trinket #1', 																				key = 'trinket1',	default = true},
+	{type = 'checkbox', 	text = 'Use Trinket #2', 																				key = 'trinket2', default = true,	desc = Zylla.ClassColor..'Trinkets will be used whenever possible!|r'},
 	{type = 'ruler'},			{type = 'spacer'},
 	-- Survival
-	{type = 'header', 		text = 'Survival',																				align = 'center',	size = 16},
-	{type = 'checkspin',	text = 'Death Strike below HP%',													key = 'DSA', 			spin = 70, step = 5, max = 100},
-	{type = 'checkspin',	text = 'Death Strike above RP',														key = 'DSb', 			spin = 85, step = 5, max = 100},
-	{type = 'checkspin', 	text = 'Icebound Fortitude below HP%',										key = 'IwF', 			spin = 30, step = 5, max = 100},
-	{type = 'checkspin', 	text = 'Vampiric Blood below HP%',												key = 'VB', 			spin = 50, step = 5, max = 100},
-	{type = 'checkspin',	text = 'Healthstone', 																		key = 'HS',	 			spin = 45, step = 5, max = 100},
-	{type = 'checkspin',	text = 'Ancient Healing Potion', 													key = 'AHP',	 		spin = 45, step = 5, max = 100},
+	{type = 'header', 		text = 'Survival',																							align = 'center',	size = 16},
+	{type = 'checkspin',	text = 'Death Strike below HP%',																key = 'DSA', 			spin = 70, step = 5, max = 100},
+	{type = 'checkspin',	text = 'Death Strike above RP',																	key = 'DSb', 			spin = 85, step = 5, max = 100},
+	{type = 'checkspin', 	text = 'Icebound Fortitude below HP%',													key = 'IwF', 			spin = 30, step = 5, max = 100},
+	{type = 'checkspin', 	text = 'Vampiric Blood below HP%',															key = 'VB', 			spin = 50, step = 5, max = 100},
+	{type = 'checkspin',	text = 'Healthstone', 																					key = 'HS',	 			spin = 45, step = 5, max = 100},
+	{type = 'checkspin',	text = 'Ancient Healing Potion', 																key = 'AHP',	 		spin = 45, step = 5, max = 100},
 	{type = 'ruler'},	 {type = 'spacer'},
 	unpack(Mythic_GUI),
 }
@@ -71,7 +77,7 @@ local Survival = {
 
 local Keybinds = {
 	-- Pause
-	{'%pause', 'keybind(lshift)&UI(kPause)'},
+	{'%pause', 'keybind(lshift)&UI(lshift)'},
 	{'!Death and Decay', 'keybind(lcontrol)', 'cursor.ground'},
 }
 

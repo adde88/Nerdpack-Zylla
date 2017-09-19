@@ -3,27 +3,34 @@ local _, Zylla = ...
 local Mythic_GUI = _G.Mythic_GUI
 local Mythic_Plus = _G.Mythic_Plus
 local Logo_GUI = _G.Logo_GUI
+local PayPal_GUI = _G.PayPal_GUI
+local PayPal_IMG = _G.PayPal_IMG
 local unpack = _G.unpack
 
 local GUI = {
 	unpack(Logo_GUI),
-	{type = 'header', 	size = 16, text = 'Keybinds', 								align = 'center'},
-	{type = 'checkbox',	text = 'Left Shift: |cffFF7D0APause|r', 			align = 'left', 		key = 'lshift'},
-	{type = 'checkbox',	text = 'Left Ctrl: |cffFF7D0A |r', 						align = 'left', 		key = 'lctrl'},
-	{type = 'checkbox',	text = 'Left Alt: |cffFF7D0A |r', 						align = 'left', 		key = 'lalt'},
-	{type = 'checkbox',	text = 'Right Alt: |cffFF7D0A |r', 						align = 'left', 		key = 'ralt'},
-	{type = 'ruler'},		{type = 'spacer'},
+	-- Header
+	{type = 'header',  	size = 16, text = 'Keybinds',	 														align = 'center'},
+	{type = 'checkbox',	text = 'Left Shift: '..Zylla.ClassColor..'Pause|r',				align = 'left', 		key = 'lshift', 	default = true},
+	{type = 'checkbox',	text = 'Left Ctrl: '..Zylla.ClassColor..'|r',							align = 'left', 		key = 'lcontrol',	default = true},
+	{type = 'checkbox',	text = 'Left Alt: '..Zylla.ClassColor..'|r',							align = 'left', 		key = 'lalt', 		default = true},
+	{type = 'checkbox',	text = 'Right Alt: '..Zylla.ClassColor..'|r',							align = 'left', 		key = 'ralt', 		default = true},
+	{type = 'spacer'},
+--{type = 'checkbox', text = 'Enable Chatoverlay', 															key = 'chat', 			width = 55, 			default = true, desc = Zylla.ClassColor..'This will enable some messages as an overlay!|r'},
+	unpack(PayPal_GUI),
+	{type = 'spacer'},
+	unpack(PayPal_IMG),
+	{type = 'ruler'},	 	{type = 'spacer'},
 	-- Settings
-	{type = 'header', 	size = 16, text = 'Class Settings',						align = 'center'},
-	{type = 'checkbox', text = 'Pause Enabled',												key = 'kPause', 		default = true},
-	{type = 'checkspin',text = 'Light\'s Judgment - Units', 					key = 'LJ',					spin = 4,	step = 1,	max = 20,	check = true,	desc = '|cffFF7D0AWorld Spell usable on Argus.|r'},
-	{type = 'checkbox', text = 'Use Trinket #1', 											key = 'trinket1',		default = true},
-	{type = 'checkbox', text = 'Use Trinket #2', 											key = 'trinket2', 	default = true,		desc = '|cffFF7D0ATrinkets will be used whenever possible!|r'},
+	{type = 'header', 	size = 16, text = 'Class Settings',												align = 'center'},
+	{type = 'checkspin',text = 'Light\'s Judgment - Units', 											key = 'LJ',					spin = 4,	step = 1,	max = 20,	check = true,	desc = Zylla.ClassColor..'World Spell usable on Argus.|r'},
+	{type = 'checkbox', text = 'Use Trinket #1', 																	key = 'trinket1',		default = true},
+	{type = 'checkbox', text = 'Use Trinket #2', 																	key = 'trinket2', 	default = true,		desc = Zylla.ClassColor..'Trinkets will be used whenever possible!|r'},
 	{type = 'ruler'},	 	{type = 'spacer'},
 	-- Survival
-	{type = 'header', 	size = 16, text = 'Survival',									align = 'center'},
-	{type = 'checkspin',text = 'Swiftmend below HP%', 								key = 'swiftm', 		spin = 85, step = 5, max = 100, check = true},
-	{type = 'checkspin',text = 'Survival Instincts', 									key = 'sint', 			spin = 50, step = 5, max = 100, check = true},
+	{type = 'header', 	size = 16, text = 'Survival',															align = 'center'},
+	{type = 'checkspin',text = 'Swiftmend below HP%', 														key = 'swiftm', 		spin = 85, step = 5, max = 100, check = true},
+	{type = 'checkspin',text = 'Survival Instincts', 															key = 'sint', 			spin = 50, step = 5, max = 100, check = true},
 	{type = 'ruler'},		{type = 'spacer'},
 	unpack(Mythic_GUI),
 }
@@ -71,7 +78,7 @@ local PreCombat = {
 
 local Keybinds = {
 	-- Pause
-	{'%pause', 'keybind(lshift)&UI(kPause)'}
+	{'%pause', 'keybind(lshift)&UI(lshift)'}
 }
 
 local Interrupts = {

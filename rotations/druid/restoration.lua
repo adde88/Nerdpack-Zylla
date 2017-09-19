@@ -3,39 +3,46 @@ local _, Zylla = ...
 local Mythic_GUI = _G.Mythic_GUI
 local Mythic_Plus = _G.Mythic_Plus
 local Logo_GUI = _G.Logo_GUI
+local PayPal_GUI = _G.PayPal_GUI
+local PayPal_IMG = _G.PayPal_IMG
 local unpack = _G.unpack
 
 local GUI = {
 	unpack(Logo_GUI),
-	-- Keybinds
-	{type = 'header',  	size = 16, text = 'Keybinds',	 												align = 'center'},
-	{type = 'checkbox',	text = 'Left Shift: |cffABD473Pause|r',								align = 'left', 			key = 'lshift', 	default = true},
-	{type = 'checkbox',	text = 'Left Ctrl: |cffABD473Efflorescence|r',				align = 'left', 			key = 'lcontrol',	default = true},
-	{type = 'checkbox',	text = 'Left Alt: |cffABD473Healing Routine (OOC)|r',	align = 'left', 			key = 'lalt', 		default = true},
-	{type = 'checkbox',	text = 'Right Alt: ',																	align = 'left', 			key = 'ralt', 		default = true},
+	-- Header
+	{type = 'header',  	size = 16, text = 'Keybinds',	 																				align = 'center'},
+	{type = 'checkbox',	text = 'Left Shift: '..Zylla.ClassColor..'Pause|r',										align = 'left', 		key = 'lshift', 	default = true},
+	{type = 'checkbox',	text = 'Left Ctrl: '..Zylla.ClassColor..'Efflorescence|r',						align = 'left', 		key = 'lcontrol',	default = true},
+	{type = 'checkbox',	text = 'Left Alt: '..Zylla.ClassColor..'Force Healing Routine|r',			align = 'left', 		key = 'lalt', 		default = true},
+	{type = 'checkbox',	text = 'Right Alt: '..Zylla.ClassColor..'|r',													align = 'left', 		key = 'ralt', 		default = true},
+	{type = 'spacer'},
+--{type = 'checkbox', text = 'Enable Chatoverlay', 																					key = 'chat', 			width = 55, 			default = true, desc = Zylla.ClassColor..'This will enable some messages as an overlay!|r'},
+	unpack(PayPal_GUI),
+	{type = 'spacer'},
+	unpack(PayPal_IMG),
 	{type = 'ruler'},	 	{type = 'spacer'},
-	-- General Class/Spec Settings
-	{type = 'header',	text = 'General Settings',					align = 'center'},
-	{type = 'spinner', 	text = 'Critical HP%',					key = 'k_CH',	default = 33},
-	{type = 'spinner', 	text = 'DPS while ppl. are above HP%',		key = 'k_DPSHP',default = 90},
-	{type = 'spinner', text = 'Rejuvenation - Player amount', key = 'REJUV_UNITS', align = 'left', width = 55, step = 1, default = 8, max = 40},
-	{type = 'spinner', text = 'Rejuvenation - when below HP%', key = 'MASS_REJUV_HP', align = 'left', width = 55, step = 5, default = 95, max = 100},
+	-- Settings
+	{type = 'header',	text = 'General Settings',																							align = 'center'},
+	{type = 'spinner', 	text = 'Critical HP%',																								key = 'k_CH',						default = 33},
+	{type = 'spinner', 	text = 'DPS while ppl. are above HP%',																key = 'k_DPSHP',				default = 90},
+	{type = 'spinner', text = 'Rejuvenation - Player amount', 																key = 'REJUV_UNITS', 		align = 'left', width = 55, step = 1, default = 8, max = 40},
+	{type = 'spinner', text = 'Rejuvenation - when below HP%', 																key = 'MASS_REJUV_HP', 	align = 'left', width = 55, step = 5, default = 95, max = 100},
 	{type='ruler'},		{type='spacer'},
 	-- TANK
-	{type = 'header', 	text = 'Tank Healing',						align = 'center'},
-	{type = 'spinner', 	text = 'Rejuvenation',						key = 'trejuv',	default = 99},
-	{type = 'spinner', 	text = 'Germination',						key = 'tgerm',	default = 90},
-	{type = 'spinner', 	text = 'Swiftmend',							key = 'tsm',	default = 80},
-	{type = 'spinner', 	text = 'Healing Touch)',					key = 'tht',	default = 90},
-	{type = 'spinner', 	text = 'Regrowth',							key = 'trg',	default = 60},
+	{type = 'header', 	text = 'Tank Healing',																								align = 'center'},
+	{type = 'spinner', 	text = 'Rejuvenation',																								key = 'trejuv',					default = 99},
+	{type = 'spinner', 	text = 'Germination',																									key = 'tgerm',					default = 90},
+	{type = 'spinner', 	text = 'Swiftmend',																										key = 'tsm',						default = 80},
+	{type = 'spinner', 	text = 'Healing Touch)',																							key = 'tht',						default = 90},
+	{type = 'spinner', 	text = 'Regrowth',																										key = 'trg',						default = 60},
 	{type='ruler'},		{type='spacer'},
 	-- LOWEST
-	{type = 'header', 	text = 'Lowest Healing', 							align = 'center'},
-	{type = 'spinner', 	text = 'Rejuv', 							key = 'lrejuv', default = 90},
-	{type = 'spinner', 	text = 'Germ', 								key = 'lgerm', 	default = 75},
-	{type = 'spinner', 	text = 'Swiftmend', 						key = 'lsm', 	default = 80},
-	{type = 'spinner', 	text = 'Healing touch)', 					key = 'lht',	default = 90},
-	{type = 'spinner', 	text = 'Regrowth', 							key = 'lrg', 	default = 60},
+	{type = 'header', 	text = 'Lowest Healing', 																							align = 'center'},
+	{type = 'spinner', 	text = 'Rejuv', 																											key = 'lrejuv', 				default = 90},
+	{type = 'spinner', 	text = 'Germ', 																												key = 'lgerm', 					default = 75},
+	{type = 'spinner', 	text = 'Swiftmend', 																									key = 'lsm', 						default = 80},
+	{type = 'spinner', 	text = 'Healing touch)', 																							key = 'lht',						default = 90},
+	{type = 'spinner', 	text = 'Regrowth', 																										key = 'lrg', 						default = 60},
 	{type='ruler'},		{type='spacer'},
 	unpack(Mythic_GUI),
 }

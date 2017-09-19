@@ -3,36 +3,43 @@ local _, Zylla = ...
 local Mythic_GUI = _G.Mythic_GUI
 local Mythic_Plus = _G.Mythic_Plus
 local Logo_GUI = _G.Logo_GUI
+local PayPal_GUI = _G.PayPal_GUI
+local PayPal_IMG = _G.PayPal_IMG
 local unpack = _G.unpack
 
 local GUI = {
 	unpack(Logo_GUI),
+	-- Header
+	{type = 'header',  	size = 16, text = 'Keybinds',	 																			align = 'center'},
+	{type = 'checkbox',	text = 'Left Shift: '..Zylla.ClassColor..'Pause|r',									align = 'left', 			key = 'lshift', 	default = true},
+	{type = 'checkbox',	text = 'Left Ctrl: '..Zylla.ClassColor..'Liquid Magma Totem|r',			align = 'left', 			key = 'lcontrol',	default = true},
+	{type = 'checkbox',	text = 'Left Alt: '..Zylla.ClassColor..'Lightning Surge Totem|r',		align = 'left', 			key = 'lalt', 		default = true},
+	{type = 'checkbox',	text = 'Right Alt: '..Zylla.ClassColor..'Earthbind Totem|r',				align = 'left', 			key = 'ralt', 		default = true},
+	{type = 'spacer'},
+--{type = 'checkbox', text = 'Enable Chatoverlay', 																				key = 'chat', 				width = 55, 			default = true, desc = Zylla.ClassColor..'This will enable some messages as an overlay!|r'},
+	unpack(PayPal_GUI),
+	{type = 'spacer'},
+	unpack(PayPal_IMG),
+	{type = 'ruler'},	 	{type = 'spacer'},
 	-- GUI Survival
-	{type = 'header', text = 'Survival', align = 'center'},
-	{type = 'checkbox', text = 'Enable Astral Shift', key = 'S_ASE', default = true},
-	{type = 'spinner', text = '', key = 'S_AS', default = 40},
-	{type = 'checkbox', text = 'Enable Healing Surge', key = 'S_HSGE', default = true},
-	{type = 'spinner', text = '', key = 'S_HSG', default = 35},
-	{type = 'checkbox', text = 'Enable Earth Elemental', key = 'S_EEE', default = true},
-	{type = 'spinner', text = '', key = 'S_EE', default = 20},
-	{type = 'checkbox', text = 'Enable Gift of the Naaru', key = 'S_GOTNE', default = true},
-	{type = 'spinner', text = '', key = 'S_GOTN', default = 40},
-	{type = 'checkspin',	text = 'Healthstone',												key = 'HS',						spin = 45, check = true},
-	{type = 'checkspin',	text = 'Healing Potion',										key = 'AHP',					spin = 45, check = true},
-	{type = 'ruler'},{type = 'spacer'},
+	{type = 'header', 	text = 'Survival', 																									align = 'center'},
+	{type = 'checkbox', text = 'Enable Astral Shift', 																			key = 'S_ASE', 				default = true},
+	{type = 'spinner', 	text = '', 																													key = 'S_AS', 				default = 40},
+	{type = 'checkbox', text = 'Enable Healing Surge', 																			key = 'S_HSGE', 			default = true},
+	{type = 'spinner', 	text = '', 																													key = 'S_HSG', 				default = 35},
+	{type = 'checkbox', text = 'Enable Earth Elemental', 																		key = 'S_EEE', 				default = true},
+	{type = 'spinner', 	text = '', 																													key = 'S_EE', 				default = 20},
+	{type = 'checkbox', text = 'Enable Gift of the Naaru', 																	key = 'S_GOTNE',			default = true},
+	{type = 'spinner', 	text = '', 																													key = 'S_GOTN', 			default = 40},
+	{type = 'checkspin',text = 'Healthstone',																								key = 'HS',						spin = 45, check = true},
+	{type = 'checkspin',text = 'Healing Potion',																						key = 'AHP',					spin = 45, check = true},
+	{type = 'ruler'},		{type = 'spacer'},
 	-- GUI Emergency Group Healing
-	{type = 'header', text = 'Emergency Group Healing', align = 'center'},
-	{type = 'checkbox', text = 'Enable Emergency Group Healing', key = 'E_HSGE', default = false},
-	{type = 'text', text = 'Healing Surge'},
-	{type = 'spinner', text = '', key = 'E_HSG', default = 35},
-	{type = 'ruler'},{type = 'spacer'},
-	-- GUI Keybinds
-	{type = 'header', text = 'Keybinds', align = 'center'},
-	{type = 'checkbox', text = 'Pause Enabled', key = 'kPause', default = true},
-	{type = 'checkbox', text = 'L-Shift: Liquid Magma Totem @ Cursor', key = 'K_LMT', default = true},
-	{type = 'checkbox', text = 'L-Control: Lightning Surge Totem @ Cursor', key = 'K_LST', default = true},
-	{type = 'checkbox', text = 'L-Alt: Earthbind Totem @ Cursor', key = 'K_ET', default = true},
-	{type = 'ruler'},	{type = 'spacer'},
+	{type = 'header', 	text = 'Emergency Group Healing', 																	align = 'center'},
+	{type = 'checkbox', text = 'Enable Emergency Group Healing', 														key = 'E_HSGE', 			default = false},
+	{type = 'text', 		text = 'Healing Surge'},
+	{type = 'spinner', 	text = '', 																													key = 'E_HSG', 				default = 35},
+	{type = 'ruler'},		{type = 'spacer'},
 	unpack(Mythic_GUI),
 }
 
@@ -75,9 +82,9 @@ local Emergency = {
 }
 
 local Keybinds = {
-	{'!Liquid Magma Totem', 'UI(K_LMT)&talent(6,1)&keybind(lshift)', 'cursor.ground'},
-	{'!Lightning Surge Totem', 'UI(K_LST)&keybind(lcontrol)', 'cursor.ground'},
-	{'!Earthbind Totem', 'UI(K_ET)&keybind(lalt)', 'cursor.ground'},
+	{'!Liquid Magma Totem', 'UI(lshift)&talent(6,1)&keybind(lshift)', 'cursor.ground'},
+	{'!Lightning Surge Totem', 'UI(lcontrol)&keybind(lcontrol)', 'cursor.ground'},
+	{'!Earthbind Totem', 'UI(lalt)&keybind(ralt)', 'cursor.ground'},
 }
 
 local Interrupts = {

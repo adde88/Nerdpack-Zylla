@@ -3,26 +3,33 @@ local _, Zylla = ...
 local Mythic_GUI = _G.Mythic_GUI
 local Mythic_Plus = _G.Mythic_Plus
 local Logo_GUI = _G.Logo_GUI
+local PayPal_GUI = _G.PayPal_GUI
+local PayPal_IMG = _G.PayPal_IMG
 local unpack = _G.unpack
 
 local GUI = {
 	unpack(Logo_GUI),
-	-- Keybinds
-	{type = 'header', text = 'Keybinds',	 					 			align = 'center'},
-	{type = 'text', 	 text = 'Left Shift: Pause',				align = 'left'},
-	{type = 'text', 	 text = 'Left Ctrl: ',							align = 'left'},
-	{type = 'text', 	 text = 'Left Alt: ',								align = 'left'},
-	{type = 'text', 	 text = 'Right Alt: ',							align = 'left'},
+	-- Header
+	{type = 'header',  	size = 16, text = 'Keybinds',	 														align = 'center'},
+	{type = 'checkbox',	text = 'Left Shift: '..Zylla.ClassColor..'Pause|r',				align = 'left', 			key = 'lshift', 	default = true},
+	{type = 'checkbox',	text = 'Left Ctrl: '..Zylla.ClassColor..'|r',							align = 'left', 			key = 'lcontrol',	default = true},
+	{type = 'checkbox',	text = 'Left Alt: '..Zylla.ClassColor..'|r',							align = 'left', 			key = 'lalt', 		default = true},
+	{type = 'checkbox',	text = 'Right Alt: '..Zylla.ClassColor..'|r',							align = 'left', 			key = 'ralt', 		default = true},
+	{type = 'spacer'},
+--{type = 'checkbox', text = 'Enable Chatoverlay', 															key = 'chat', 				width = 55, 			default = true, desc = Zylla.ClassColor..'This will enable some messages as an overlay!|r'},
+	unpack(PayPal_GUI),
+	{type = 'spacer'},
+	unpack(PayPal_IMG),
+	{type = 'ruler'},		{type = 'spacer'},
 	-- Settings
-	{type = 'header', 	text = 'Class Settings', align = 'center'},
-	{type = 'checkbox', text = 'Pause Enabled', key = 'kPause', default = true},
-	{type='spinner', 	text = 'Crimson Vial Below (HP%)', key='E_HP', default = 60},
-	{type = 'ruler'},	{type = 'spacer'},
+	{type = 'header', 	text = 'Class Settings', 																	align = 'center'},
+	{type='spinner', 		text = 'Crimson Vial Below (HP%)', 												key='E_HP', 					default = 60},
+	{type = 'ruler'},		{type = 'spacer'},
 	-- Survival
-	{type = 'header', 	text = 'Survival', align = 'center'},
-	{type = 'checkspin',	text = 'Healthstone',												key = 'HS',						spin = 45, check = true},
-	{type = 'checkspin',	text = 'Healing Potion',										key = 'AHP',					spin = 45, check = true},
-	{type = 'ruler'},	{type = 'spacer'},
+	{type = 'header', 	text = 'Survival', 																				align = 'center'},
+	{type = 'checkspin',text = 'Healthstone',																			key = 'HS',						spin = 45, check = true},
+	{type = 'checkspin',text = 'Healing Potion',																	key = 'AHP',					spin = 45, check = true},
+	{type = 'ruler'},		{type = 'spacer'},
 	unpack(Mythic_GUI),
 }
 
@@ -65,7 +72,7 @@ local PreCombat = {
 
 local Keybinds = {
 	-- Pause
-	{'%pause', 'keybind(lshift)&UI(kPause)'},
+	{'%pause', 'keybind(lshift)&UI(lshift)'},
 }
 
 local Interrupts = {

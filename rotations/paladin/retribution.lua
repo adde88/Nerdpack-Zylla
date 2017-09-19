@@ -3,45 +3,51 @@ local _, Zylla = ...
 local Mythic_GUI = _G.Mythic_GUI
 local Mythic_Plus = _G.Mythic_Plus
 local Logo_GUI = _G.Logo_GUI
+local PayPal_GUI = _G.PayPal_GUI
+local PayPal_IMG = _G.PayPal_IMG
 local unpack = _G.unpack
 
 local GUI = {
 	unpack(Logo_GUI),
-	-- Keybinds
-	{type = 'header', 	text = 'Keybinds', 														align = 'center'},
-	{type = 'text', 		text = 'Left Shift: |cffF58CBAPause|r', 			align = 'center'},
-	{type = 'text', 		text = 'Left Ctrl: |cffF58CBADivine Steed|r',	align = 'left'},
-	{type = 'text', 		text = 'Left Alt: ', 													align = 'left'},
-	{type = 'text', 		text = 'Right Alt: ', 												align = 'left'},
-	{type = 'ruler'},		{type = 'spacer'},
+	-- Header
+	{type = 'header',  	size = 16, text = 'Keybinds',	 																				align = 'center'},
+	{type = 'checkbox',	text = 'Left Shift: '..Zylla.ClassColor..'Pause|r',										align = 'left', 		key = 'lshift', 	default = true},
+	{type = 'checkbox',	text = 'Left Ctrl: '..Zylla.ClassColor..'Divine Steed|r',							align = 'left', 		key = 'lcontrol',	default = true},
+	{type = 'checkbox',	text = 'Left Alt: '..Zylla.ClassColor..'|r',													align = 'left', 		key = 'lalt', 		default = true},
+	{type = 'checkbox',	text = 'Right Alt: '..Zylla.ClassColor..'|r',													align = 'left', 		key = 'ralt', 		default = true},
+	{type = 'spacer'},
+--{type = 'checkbox', text = 'Enable Chatoverlay', 																					key = 'chat', 			width = 55, 			default = true, desc = Zylla.ClassColor..'This will enable some messages as an overlay!|r'},
+	unpack(PayPal_GUI),
+	{type = 'spacer'},
+	unpack(PayPal_IMG),
+	{type = 'ruler'},	 	{type = 'spacer'},
 	-- Settings
-	{type = 'header', 	text = 'Class Settings', 											align = 'center'},
-	{type = 'checkbox', text = 'Pause Enabled',												key = 'kPause', 		default = true},
-	{type = 'checkspin',text = 'Light\'s Judgment - Units', 					key = 'LJ',					spin = 4, step = 1, max = 20, check = true,	desc = '|cffF58CBAWorld Spell usable on Argus.|r'},
-	{type = 'checkbox', text = 'Blessing of Kings', 									key = 'BoK', 				default = true},
-	{type = 'checkbox', text = 'Blessing of Wisdom', 									key = 'BoW', 				default = true, desc = '|cffF58CBACheck to Enable Blessings on yourself.|r'},
-	{type = 'checkbox', text = 'Use Every Man for Himself', 					key = 'EMfH', 			default = true},
-	{type = 'checkbox', text = 'Use Blessing of Freedom', 						key = 'BoF', 				default = true},
-	{type = 'checkbox', text = 'Use Trinket #1', 											key = 'trinket1',		default = true},
-	{type = 'checkbox', text = 'Use Trinket #2', 											key = 'trinket2', 	default = true,	desc = '|cffF58CBATrinkets will be used whenever possible!|r'},
-	{type = 'ruler'},	{type = 'spacer'},
+	{type = 'header', 	text = 'Class Settings', 																							align = 'center'},
+	{type = 'checkspin',text = 'Light\'s Judgment - Units', 																	key = 'LJ',					spin = 4, step = 1, max = 20, check = true,	desc = Zylla.ClassColor..'World Spell usable on Argus.|r'},
+	{type = 'checkbox', text = 'Blessing of Kings', 																					key = 'BoK', 				default = true},
+	{type = 'checkbox', text = 'Blessing of Wisdom', 																					key = 'BoW', 				default = true, desc = Zylla.ClassColor..'Check to Enable Blessings on yourself.|r'},
+	{type = 'checkbox', text = 'Use Every Man for Himself', 																	key = 'EMfH', 			default = true},
+	{type = 'checkbox', text = 'Use Blessing of Freedom', 																		key = 'BoF', 				default = true},
+	{type = 'checkbox', text = 'Use Trinket #1', 																							key = 'trinket1',		default = true},
+	{type = 'checkbox', text = 'Use Trinket #2', 																							key = 'trinket2', 	default = true,	desc = Zylla.ClassColor..'Trinkets will be used whenever possible!|r'},
+	{type = 'ruler'},		{type = 'spacer'},
 	-- Survival
-	{type = 'header', 	text = 'Survival', 														align = 'center'},
-	{type = 'checkspin',text = 'Use Gift of the Naaru', 							key = 'GotN', 		spin = 40, step = 5, max = 100, check = true},
-	{type = 'checkspin',text = 'Use Lay on Hands', 										key = 'LoH', 			spin = 10, step = 5, max = 100, check = true},
-	{type = 'checkspin',text = 'Use Flash of Light', 									key = 'FoL', 			spin = 40, step = 5, max = 100, check = true},
-	{type = 'checkspin',text = 'Use Shield of Vengeance', 						key = 'SoV', 			spin = 75, step = 5, max = 100, check = true},
-	{type = 'checkspin',text = 'Enable Eye for an Eye', 							key = 'EfaE', 		spin = 90, step = 5, max = 100, check = true},
-	{type = 'checkspin',text = 'Healthstone',													key = 'HS',				spin = 45, step = 5, max = 100, check = true},
-	{type = 'checkspin',text = 'Healing Potion',											key = 'AHP',			spin = 45, step = 5, max = 100, check = true},
-	{type = 'ruler'},{type = 'spacer'},
+	{type = 'header', 	text = 'Survival', 																										align = 'center'},
+	{type = 'checkspin',text = 'Use Gift of the Naaru', 																			key = 'GotN', 		spin = 40, step = 5, max = 100, check = true},
+	{type = 'checkspin',text = 'Use Lay on Hands', 																						key = 'LoH', 			spin = 10, step = 5, max = 100, check = true},
+	{type = 'checkspin',text = 'Use Flash of Light', 																					key = 'FoL', 			spin = 40, step = 5, max = 100, check = true},
+	{type = 'checkspin',text = 'Use Shield of Vengeance', 																		key = 'SoV', 			spin = 75, step = 5, max = 100, check = true},
+	{type = 'checkspin',text = 'Enable Eye for an Eye', 																			key = 'EfaE', 		spin = 90, step = 5, max = 100, check = true},
+	{type = 'checkspin',text = 'Healthstone',																									key = 'HS',				spin = 45, step = 5, max = 100, check = true},
+	{type = 'checkspin',text = 'Healing Potion',																							key = 'AHP',			spin = 45, step = 5, max = 100, check = true},
+	{type = 'ruler'},		{type = 'spacer'},
 	-- Group Assistance
-	{type = 'header', 	text = 'Emergency Group Assistance', 					align = 'center'},
-	{type = 'checkspin',text = 'Flash of Light', 											key = 'G_FoL', 		spin = 35, step = 5, max = 100, check = false},
-	{type = 'checkspin',text = 'Lay on Hands', 												key = 'G_LoH', 		spin = 10, step = 5, max = 100, check = false},
-	{type = 'checkspin',text = 'Blessing of Protection', 							key = 'G_BoP', 		spin = 10, step = 5, max = 100, check = false},
-	{type = 'checkbox',	text = 'Dispel Party Members',								key = 'disAll', 	default = true},
-	{type = 'checkbox', text = 'Use Blessing of Freedom', 						key = 'G_BoF', 		default = false},
+	{type = 'header', 	text = 'Emergency Group Assistance', 																	align = 'center'},
+	{type = 'checkspin',text = 'Flash of Light', 																							key = 'G_FoL', 		spin = 35, step = 5, max = 100, check = false},
+	{type = 'checkspin',text = 'Lay on Hands', 																								key = 'G_LoH', 		spin = 10, step = 5, max = 100, check = false},
+	{type = 'checkspin',text = 'Blessing of Protection', 																			key = 'G_BoP', 		spin = 10, step = 5, max = 100, check = false},
+	{type = 'checkbox',	text = 'Dispel Party Members',																				key = 'disAll', 	default = true},
+	{type = 'checkbox', text = 'Use Blessing of Freedom', 																		key = 'G_BoF', 		default = false},
 	{type = 'ruler'},		{type = 'spacer'},
 	unpack(Mythic_GUI),
 }
@@ -49,10 +55,10 @@ local GUI = {
 local exeOnLoad = function()
 	Zylla.ExeOnLoad()
 	Zylla.AFKCheck()
-	print('|cfff58cba ----------------------------------------------------------------------|r')
-	print('|cfff58cba --- |rPaladin: |cfff58cbaRETRIBUTION|r')
-	print('|cfff58cba --- |rTalents: 1/2 - 2/2 - 3/1 - 4/2 - 5/2 - 6/1 - 7/2|r')
-	print('|cfff58cba ----------------------------------------------------------------------|r')
+	print(Zylla.ClassColor..' ----------------------------------------------------------------------|r')
+	print(Zylla.ClassColor..' --- |rPaladin: |cfff58cbaRETRIBUTION|r')
+	print(Zylla.ClassColor..' --- |rTalents: 1/2 - 2/2 - 3/1 - 4/2 - 5/2 - 6/1 - 7/2|r')
+	print(Zylla.ClassColor..' ----------------------------------------------------------------------|r')
 	print('|cffff0000 Configuration: |rRight-click the MasterToggle and go to Combat Routines Settings|r')
 
 	NeP.Interface:AddToggle({
@@ -81,7 +87,7 @@ local exeOnLoad = function()
 end
 
 local Keybinds = {
-	{'%pause', 'keybind(lshift)&UI(kPause)'},
+	{'%pause', 'keybind(lshift)&UI(lshift)'},
 	{'Divine Steed', 'keybind(lcontrol)', 'player'}
 }
 

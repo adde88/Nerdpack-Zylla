@@ -3,29 +3,30 @@ local _, Zylla = ...
 local Mythic_GUI = _G.Mythic_GUI
 local Mythic_Plus = _G.Mythic_Plus
 local Logo_GUI = _G.Logo_GUI
+local PayPal_GUI = _G.PayPal_GUI
+local PayPal_IMG = _G.PayPal_IMG
 local unpack = _G.unpack
 
 local GUI = {
 	unpack(Logo_GUI),
-  -- General
-  {type = 'header', text = 'Keybinds', 		align = 'center'},
-  {type = 'text', text = 'Left Shift: Pause', align = 'center'},
-  {type = 'text', text = 'Left Ctrl: ', align = 'center'},
-  {type = 'text', text = 'Left Alt: ', align = 'center'},
-  {type = 'text', text = 'Right Alt: ', align = 'center'},
-  {type = 'checkbox', text = 'Pause Enabled', key = 'kPause', 	default = true},
-  {type = 'ruler'},	{type = 'spacer'},
-  -- Trinkets + Heirlooms for leveling
-  {type = 'header', text = 'Trinkets/Heirlooms', align = 'center'},
-  {type = 'checkbox', text = 'Use Trinket #1', key = 'kT1', default = true},
-  {type = 'checkbox', text = 'Use Trinket #2', key = 'kT2', default = true},
-  {type = 'checkbox', text = 'Ring of Collapsing Futures', key = 'kRoCF', default = true},
-  {type = 'checkbox', text = 'Use Heirloom Necks When Below X% HP', key = 'k_HEIR', default = true},
+	-- Header
+	{type = 'header',  	size = 16, text = 'Keybinds',	 														align = 'center'},
+	{type = 'checkbox',	text = 'Left Shift: '..Zylla.ClassColor..'Pause|r',				align = 'left', 			key = 'lshift', 	default = true},
+	{type = 'checkbox',	text = 'Left Ctrl: '..Zylla.ClassColor..'|r',							align = 'left', 			key = 'lcontrol',	default = true},
+	{type = 'checkbox',	text = 'Left Alt: '..Zylla.ClassColor..'|r',							align = 'left', 			key = 'lalt', 		default = true},
+	{type = 'checkbox',	text = 'Right Alt: '..Zylla.ClassColor..'|r',							align = 'left', 			key = 'ralt', 		default = true},
+	{type = 'spacer'},
+--{type = 'checkbox', text = 'Enable Chatoverlay', 															key = 'chat', 				width = 55, 			default = true, desc = Zylla.ClassColor..'This will enable some messages as an overlay!|r'},
+	unpack(PayPal_GUI),
+	{type = 'spacer'},
+	unpack(PayPal_IMG),
+	{type = 'ruler'},	{type = 'spacer'},
+	-- Settings
   -- Survival
-  {type='spacer'}, {type='rule'},
-  {type = 'header', text = 'Survival', align = 'center'},
-  {type='checkbox', text = 'Enable Self-Heal (Flash of Light)',	key='kFoL', default=false},
-  {type='spinner', text = 'Flash of Light (HP%)', key='E_FoL', default=60},
+  {type='spacer'}, 	{type='rule'},
+  {type = 'header', text = 'Survival', 																					align = 'center'},
+  {type='checkbox', text = 'Enable Self-Heal (Flash of Light)',									key='kFoL', default=false},
+  {type='spinner', 	text = 'Flash of Light (HP%)', key='E_FoL', 								default=60},
 	unpack(Mythic_GUI),
 }
 
@@ -47,7 +48,7 @@ local exeOnLoad = function()
 end
 
 local Keybinds = {
-  {'%pause', 'keybind(lshift)&UI(kPause)'},
+  {'%pause', 'keybind(lshift)&UI(lshift)'},
 }
 
 local Interrupts = {

@@ -3,36 +3,42 @@ local _, Zylla = ...
 local Mythic_GUI = _G.Mythic_GUI
 local Mythic_Plus = _G.Mythic_Plus
 local Logo_GUI = _G.Logo_GUI
+local PayPal_GUI = _G.PayPal_GUI
+local PayPal_IMG = _G.PayPal_IMG
 local unpack = _G.unpack
 
 local GUI = {
 	unpack(Logo_GUI),
-	-- Keybinds
-	{type = 'header', text = 'Keybinds',	 					 			align = 'center'},
-	{type = 'text', 	 text = 'Left Shift: Pause',				align = 'left'},
-	{type = 'text', 	 text = 'Left Ctrl: ',							align = 'left'},
-	{type = 'text', 	 text = 'Left Alt: ',								align = 'left'},
-	{type = 'text', 	 text = 'Right Alt: ',							align = 'left'},
-	{type = 'ruler'},	 {type = 'spacer'},
+	-- Header
+	{type = 'header',  	size = 16, text = 'Keybinds',	 														align = 'center'},
+	{type = 'checkbox',	text = 'Left Shift: '..Zylla.ClassColor..'Pause|r',				align = 'left', 			key = 'lshift', 	default = true},
+	{type = 'checkbox',	text = 'Left Ctrl: '..Zylla.ClassColor..'|r',							align = 'left', 			key = 'lcontrol',	default = true},
+	{type = 'checkbox',	text = 'Left Alt: '..Zylla.ClassColor..'|r',							align = 'left', 			key = 'lalt', 		default = true},
+	{type = 'checkbox',	text = 'Right Alt: '..Zylla.ClassColor..'|r',							align = 'left', 			key = 'ralt', 		default = true},
+	{type = 'spacer'},
+--{type = 'checkbox', text = 'Enable Chatoverlay', 															key = 'chat', 				width = 55, 			default = true, desc = Zylla.ClassColor..'This will enable some messages as an overlay!|r'},
+	unpack(PayPal_GUI),
+	{type = 'spacer'},
+	unpack(PayPal_IMG),
+	{type = 'ruler'},	 	{type = 'spacer'},
 	-- Settings
-	{type = 'header', 	text = 'Class Settings',							 			align = 'center'},
-	{type = 'checkbox', text = 'Pause Enabled', key = 'kPause', default = true},
-	{type='checkbox',		text = 'Multi-Dot (Target/Focus/MousOver)',		key='multi', 	default=true},
-	{type='checkbox',		text = 'Mantle of the Master Assassin',			key='mantle', 	default=false},
-	{type = 'checkbox', 	text = 'Pause Enabled', 						key = 'kPause', default = true},
+	{type = 'header', 	text = 'Class Settings',							 										align = 'center'},
+	{type='checkbox',		text = 'Multi-Dot (Target/Focus/MousOver)',								key='multi', 					default=true},
+	{type='checkbox',		text = 'Mantle of the Master Assassin',										key='mantle', 				default=false},
+	{type = 'checkbox', text = 'Pause Enabled', 																	key = 'lshift', 			default = true},
 	{type='ruler'},			{type='spacer'},
 	-- Survival
-	{type = 'header', 		text = 'Survival', align = 'center'},
-	{type='spinner', 		text = 'Crimson Vial', 							key='cv', 		default_spin=65},
-	{type='spinner', 		text = 'Evasion (HP%)', 							key='E_HP', 	default_spin=40},
-	{type = 'checkspin',	text = 'Healthstone',												key = 'HS',						spin = 45, check = true},
-	{type = 'checkspin',	text = 'Healing Potion',										key = 'AHP',					spin = 45, check = true},
+	{type = 'header', 	text = 'Survival', 																				align = 'center'},
+	{type='spinner', 		text = 'Crimson Vial', 																		key='cv', 						default_spin=65},
+	{type='spinner', 		text = 'Evasion (HP%)', 																	key='E_HP', 					default_spin=40},
+	{type = 'checkspin',text = 'Healthstone',																			key = 'HS',						spin = 45, check = true},
+	{type = 'checkspin',text = 'Healing Potion',																	key = 'AHP',					spin = 45, check = true},
 	{type='ruler'},			{type='spacer'},
 	--Cooldowns
-	{type = 'header', 	text = 'Cooldowns When Toggled ON', 				align = 'center'},
-	{type='checkbox',		text = 'Vanish',									key='van', 		default=true},
-	{type='checkbox',		text = 'Vendetta',								key='ven', 		default=true},
-	{type='checkbox',		text = 'Potion of the Old War',					key='ow', 		default=false},
+	{type = 'header', 	text = 'Cooldowns When Toggled ON', 											align = 'center'},
+	{type='checkbox',		text = 'Vanish',																					key='van', 						default=true},
+	{type='checkbox',		text = 'Vendetta',																				key='ven', 						default=true},
+	{type='checkbox',		text = 'Potion of the Old War',														key='ow', 						default=false},
 	{type='ruler'},			{type='spacer'},
 	unpack(Mythic_GUI),
 }
@@ -65,10 +71,10 @@ local exeOnLoad=function()
 end
 
 local Keybinds = {
-	{'%pause', 'keybind(lshift)&UI(kPause)'},
+	{'%pause', 'keybind(lshift)&UI(lshift)'},
 }
 
-local Interrupts = {
+local lshiftupts = {
 	{'!Kick', 'target.inMelee&target.inFront'},
 	{'!Kidney Shot', 'target.inMelee&&target.inFront&cooldown(Kick).remains>gcd&!player.lastcast(Kick)&player.combopoints>0'},
 	{'!Arcane Torrent', 'target.inMelee&spell(Kick).cooldown>gcd&!prev_gcd(Kick)'},
@@ -144,7 +150,7 @@ local xCombat = {
 
 local inCombat = {
 	{Keybinds},
-	{Interrupts, 'target.interruptAt(70)&toggle(Interrupts)'},
+	{lshiftupts, 'target.lshiftuptAt(70)&toggle(lshiftupts)'},
 	{TricksofTrade},
 	{Cooldowns, 'toggle(cooldowns)'},
 	{Mythic_Plus, 'inMelee'},

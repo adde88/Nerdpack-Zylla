@@ -3,47 +3,54 @@ local _, Zylla = ...
 local Mythic_GUI = _G.Mythic_GUI
 local Mythic_Plus = _G.Mythic_Plus
 local Logo_GUI = _G.Logo_GUI
+local PayPal_GUI = _G.PayPal_GUI
+local PayPal_IMG = _G.PayPal_IMG
 local unpack = _G.unpack
 
 local GUI = {
 	unpack(Logo_GUI),
-	-- Keybinds
-	{type = 'header', text = 'Keybinds',	 					 															align = 'center'},
-	{type = 'text', 	 text = 'Left Shift: Pause',																align = 'center'},
-	{type = 'text', 	 text = 'Left Ctrl: Transendence/Transfer',									align = 'center'},
-	{type = 'text', 	 text = 'Left Alt: Touch of Karma',													align = 'center'},
-	{type = 'ruler'},	 {type = 'spacer'},
-	-- General
-	{type = 'header',		text = 'General:',																				align = 'center'},
---{type = 'checkbox', text = 'Auto-target when casting Fists of Fury', 					key = 'xfistface', 	default = true},	--XXX: temp disabled.
-	{type = 'checkspin',text = 'Light\'s Judgment - Units', 				key = 'LJ',					spin = 4, step = 1, max = 20, check = true,	desc = '|cff00FF96World Spell usable on Argus.|r'},
-	{type = 'checkbox',	text = 'Automatic Res',																		key = 'auto_res',		default = true},
-	{type = 'checkbox',	text = '5 min DPS test', 																	key = 'dpstest',		default = false},
-	{type = 'checkbox',	text = 'Pause Enabled', 																	key = 'kPause',			default = true},
-	{type = 'checkbox', text = 'Use Trinket #1', 																	key = 'trinket1',		default = true},
-	{type = 'checkbox', text = 'Use Trinket #2', 																	key = 'trinket2', 	default = true, 	desc = '|cff00FF96Trinkets will be used in sync with \'Serenity\' or \'Storm, Earth, and Fire\'!|r'},
+	-- Header
+	{type = 'header',  	size = 16, text = 'Keybinds',	 																					align = 'center'},
+	{type = 'checkbox',	text = 'Left Shift: '..Zylla.ClassColor..'Pause|r',											align = 'left', 			key = 'lshift', 	default = true},
+	{type = 'checkbox',	text = 'Left Ctrl: '..Zylla.ClassColor..'Transcendence/Tranfer|r',			align = 'left', 			key = 'lcontrol',	default = true},
+	{type = 'checkbox',	text = 'Left Alt: '..Zylla.ClassColor..'Touch of Karma|r',							align = 'left', 			key = 'lalt', 		default = true},
+	{type = 'checkbox',	text = 'Right Alt: '..Zylla.ClassColor..'Freezing Trap|r',							align = 'left', 			key = 'ralt', 		default = true},
+	{type = 'spacer'},
+--{type = 'checkbox', text = 'Enable Chatoverlay', 																						key = 'chat', 				width = 55, 			default = true, desc = Zylla.ClassColor..'This will enable some messages as an overlay!|r'},
+	unpack(PayPal_GUI),
+	{type = 'spacer'},
+	unpack(PayPal_IMG),
+	{type = 'ruler'},	 	{type = 'spacer'},
+	-- Settings
+	{type = 'header',		text = 'General:',																											align = 'center'},
+--{type = 'checkbox', text = 'Auto-target when casting Fists of Fury', 												key = 'xfistface', 		default = true},	--TODO: temp disabled.
+	{type = 'checkspin',text = 'Light\'s Judgment - Units', 																		key = 'LJ',						spin = 4, step = 1, max = 20, check = true,	desc = Zylla.ClassColor..'World Spell usable on Argus.|r'},
+	{type = 'checkbox',	text = 'Automatic Res',																									key = 'auto_res',			default = true},
+	{type = 'checkbox',	text = '5 min DPS test', 																								key = 'dpstest',			default = false},
+	{type = 'checkbox', text = 'Use Trinket #1', 																								key = 'trinket1',			default = true},
+	{type = 'checkbox', text = 'Use Trinket #2', 																								key = 'trinket2', 		default = true, 	desc = Zylla.ClassColor..'Trinkets will be used in sync with \'Serenity\' or \'Storm, Earth, and Fire\'!|r'},
 	-- Survival
 	{type = 'spacer'},		{type = 'rule'},
-	{type = 'header',			text = 'Survival:', 																		align = 'center'},
-	{type = 'checkspin',	text = 'Touch of Karma',																key = 'tok',					spin = 70, check = true},
-	{type = 'text', 			text = 'Will also be used when taking big damage', 			align = 'left'},
+	{type = 'header',			text = 'Survival:', 																									align = 'center'},
+	{type = 'checkspin',	text = 'Touch of Karma',																							key = 'tok',					spin = 70, check = true},
+	{type = 'text', 			text = 'Will also be used when taking big damage', 										align = 'left'},
 	{type = 'spacer'},
-	{type = 'checkspin',	text = 'Healthstone',																		key = 'hs',						spin = 45, check = true},
-	{type = 'checkspin',	text = 'Ancient Healing Potion',												key = 'ahp',					spin = 40, check = true},
-	{type = 'checkspin',	text = 'Effuse below HP%',															key = 'eff',					spin = 60, check = true},
-	{type = 'checkspin',	text = 'Healing Elixir',																key = 'he',						spin = 50, check = true},
+	{type = 'checkspin',	text = 'Healthstone',																									key = 'hs',						spin = 45, check = true},
+	{type = 'checkspin',	text = 'Ancient Healing Potion',																			key = 'ahp',					spin = 40, check = true},
+	{type = 'checkspin',	text = 'Effuse below HP%',																						key = 'eff',					spin = 60, check = true},
+	{type = 'checkspin',	text = 'Healing Elixir',																							key = 'he',						spin = 50, check = true},
 	{type = 'spacer'},
-	{type = 'checkspin',	text = 'Effuse Party-Member HP%',												key = 'effp',					spin = 60, check = false},
-	{type = 'checkbox',		text = 'Dispel Party Members', 													key = 'E_disAll',			default = true},
-	{type = 'checkbox', 	text = 'Use Paralysis to Interrupt', 										key = 'para', 				default = true},
+	{type = 'checkspin',	text = 'Effuse Party-Member HP%',																			key = 'effp',					spin = 60, check = false},
+	{type = 'checkbox',		text = 'Dispel Party Members', 																				key = 'E_disAll',			default = true},
+	{type = 'checkbox', 	text = 'Use Paralysis to Interrupt', 																	key = 'para', 				default = true},
 	-- Offensive
 	{type = 'spacer'},	{type = 'rule'},
-	{type = 'header',		text = 'Offensive:',																			align = 'center'},
-	{type = 'checkbox',	text = 'Use: Storm Earth, and Fire',											key = 'sef_toggle', 	default = true},
-	{type = 'checkbox',	text = 'Use: Crackling Jade Lightning',								 		key = 'auto_cjl',			default = true},
-	{type = 'checkbox',	text = 'Use: Chi Wave at Pull',														key = 'auto_cw',			default = true},
-	{type = 'checkbox',	text = 'Mark of the Crane Dotting',												key = 'auto_dot',			default = true},
-	{type = 'checkbox',	text = 'Crackling Jade Lightning to Maintain Hit Combo',	key = 'auto_cjl_hc',	default = true},
+	{type = 'header',		text = 'Offensive:',																										align = 'center'},
+	{type = 'checkbox',	text = 'Use: Storm Earth, and Fire',																		key = 'sef_toggle', 	default = true},
+	{type = 'checkbox',	text = 'Use: Crackling Jade Lightning',								 									key = 'auto_cjl',			default = true},
+	{type = 'checkbox',	text = 'Use: Chi Wave at Pull',																					key = 'auto_cw',			default = true},
+	{type = 'checkbox',	text = 'Mark of the Crane Dotting',																			key = 'auto_dot',			default = true},
+	{type = 'checkbox',	text = 'Crackling Jade Lightning to Maintain Hit Combo',								key = 'auto_cjl_hc',	default = true},
 	{type = 'ruler'},		{type = 'spacer'},
 	unpack(Mythic_GUI),
 }
@@ -78,7 +85,7 @@ end
 local Keybinds = {
 	-- Keybinds
 	{'!Touch of Karma', 'keybind(lalt)'},
-	{'%pause', 'keybind(lshift)&UI(kPause)'},
+	{'%pause', 'keybind(lshift)&UI(lshift)'},
 	{'!Transcendence', 'keybind(lcontrol)&!player.buff(Transcendence)'},
 	{'!Transcendence: Transfer', 'keybind(lcontrol)&player.buff(Transcendence)'},
 	{'!/cancelaura Transcendence', 'keybind(lcontrol)&player.buff(Transcendence)&lastcast(Transcendence: Transfer)'},
@@ -196,7 +203,7 @@ local inCombat = {
 	{Dispel, 'toggle(dispels)&player.spell(Detox).cooldown<gcd'},
 	{Survival, 'player.health<100'},
 	{Interrupts, 'toggle(Interrupts)'},
-	{Interrupts_Random, 'toggle(xIntRandom)&toggle(Interrupts)'},
+	{Interrupts_Random},
 	{Cooldowns, 'toggle(cooldowns)&target.inMelee'},
 	{Serenity, 'player.buff(Serenity)&target.inMelee'},
 	{SEF, 'target.inMelee&UI(sef_toggle)&!talent(7,3)&player.spell(Strike of the Windlord).cooldown<24&player.spell(Fists of Fury).cooldown<7&player.spell(Rising Sun Kick).cooldown<7'},
@@ -208,7 +215,7 @@ local inCombat = {
 local outCombat = {
 	{Keybinds},
 	{Interrupts, 'toggle(Interrupts)'},
-	{Interrupts_Random, 'toggle(xIntRandom)&toggle(Interrupts)'},
+	{Interrupts_Random},
 	{Dispel, 'toggle(dispels)&!player.spell(Detox).cooldown'},
 	{'Effuse', 'UI(eff_check)&player.health<90&player.lastmoved>0', 'player'}, -- Self healing. Toggle in Settings
 	{'%ressdead(Resuscitate)', 'UI(auto_res)'},

@@ -3,34 +3,40 @@ local _, Zylla = ...
 local Mythic_GUI = _G.Mythic_GUI
 local Mythic_Plus = _G.Mythic_Plus
 local Logo_GUI = _G.Logo_GUI
+local PayPal_GUI = _G.PayPal_GUI
+local PayPal_IMG = _G.PayPal_IMG
 local unpack = _G.unpack
 
 local GUI = {
 	unpack(Logo_GUI),
-	-- Keybinds
-	{type = 'header', 	text = 'Keybinds', 																align = 'center'},
-	{type = 'text', 	text = 'Left Shift: Pause', 												align = 'center'},
-	{type = 'text', 	text = 'Left Ctrl:  Flamestrike (Target Ground)',		align = 'center'},
-	{type = 'text', 	text = 'Left Alt:  Rune of Power', 									align = 'center'},
-	{type = 'text', 	text = 'Right Alt:  ', 															align = 'center'},
-	{type = 'ruler'},	{type = 'spacer'},
-	-- Settings
-	{type = 'header', 	text = 'Class Settings', 													align = 'center'},
-	{type = 'checkbox', text = 'Pause Enabled', 													key = 'kPause', 	default = true},
-	{type = 'checkspin',text = 'Light\'s Judgment - Units', 							key = 'LJ',				spin = 4, step = 1, max = 20, check = true,	desc = '|cff69CCF0World Spell usable on Argus.|r'},
-	{type = 'checkbox', text = 'Ring of Frost (Interrupt)',								key = 'RoF_Int',	default = true},
-	{type = 'checkbox', text = 'Polymorph (Interrupt)',										key = 'Pol_Int',	default = false},
-	{type = 'checkbox', text = 'Use Trinket #1', 													key = 'trinket1',	default = true},
-	{type = 'checkbox', text = 'Use Trinket #2', 													key = 'trinket2', default = true,	desc = '|cff69CCF0Trinkets will be used whenever possible!|r'},
+	-- Header
+	{type = 'header',  	size = 16, text = 'Keybinds',	 														align = 'center'},
+	{type = 'checkbox',	text = 'Left Shift: '..Zylla.ClassColor..'Pause|r',				align = 'left', 			key = 'lshift', 	default = true},
+	{type = 'checkbox',	text = 'Left Ctrl: '..Zylla.ClassColor..'Flamestrike|r',	align = 'left', 			key = 'lcontrol',	default = true},
+	{type = 'checkbox',	text = 'Left Alt: '..Zylla.ClassColor..'Rune of Power|r',	align = 'left', 			key = 'lalt', 		default = true},
+	{type = 'checkbox',	text = 'Right Alt: '..Zylla.ClassColor..'|r',							align = 'left', 			key = 'ralt', 		default = true},
 	{type = 'spacer'},
-	{type = 'checkspin', 	text = 'Kil\'Jaeden\'s Burning Wish - Units', 	key = 'kj', align = 'left', width = 55, step = 1, spin = 4, max = 15, check = true, desc = '|cff69CCF0Legendary will be used only on selected amount of units!|r'},
+--{type = 'checkbox', text = 'Enable Chatoverlay', 															key = 'chat', 				width = 55, 			default = true, desc = Zylla.ClassColor..'This will enable some messages as an overlay!|r'},
+	unpack(PayPal_GUI),
+	{type = 'spacer'},
+	unpack(PayPal_IMG),
+	{type = 'ruler'},	 	{type = 'spacer'},
+	-- Settings
+	{type = 'header', 	text = 'Class Settings', 																	align = 'center'},
+	{type = 'checkspin',text = 'Light\'s Judgment - Units', 											key = 'LJ',				spin = 4, step = 1, max = 20, check = true,	desc = Zylla.ClassColor..'World Spell usable on Argus.|r'},
+	{type = 'checkbox', text = 'Ring of Frost (Interrupt)',												key = 'RoF_Int',	default = true},
+	{type = 'checkbox', text = 'Polymorph (Interrupt)',														key = 'Pol_Int',	default = false},
+	{type = 'checkbox', text = 'Use Trinket #1', 																	key = 'trinket1',	default = true},
+	{type = 'checkbox', text = 'Use Trinket #2', 																	key = 'trinket2', default = true,	desc = Zylla.ClassColor..'Trinkets will be used whenever possible!|r'},
+	{type = 'spacer'},
+	{type = 'checkspin', 	text = 'Kil\'Jaeden\'s Burning Wish - Units', 					key = 'kj', 			align = 'left', width = 55, step = 1, spin = 4, max = 15, check = true, desc = Zylla.ClassColor..'Legendary will be used only on selected amount of units!|r'},
 	{type = 'ruler'},	{type = 'spacer'},
 	-- Survival
-	{type = 'header', 		text = 'Survival',									 	 					align = 'center'},
-	{type = 'checkbox', 	text = 'Blazing Barrier', 											key = 'bb', 			default = true},
-	{type = 'checkspin',	text = 'Healthstone',														key = 'HS',				spin = 45, check = true},
-	{type = 'checkspin',	text = 'Healing Potion',												key = 'AHP',			spin = 45, check = true},
-	{type = 'checkspin', 	text = 'Ice Block', 														key = 'ib', 			spin = 20, check = true},
+	{type = 'header', 		text = 'Survival',									 	 									align = 'center'},
+	{type = 'checkbox', 	text = 'Blazing Barrier', 															key = 'bb', 			default = true},
+	{type = 'checkspin',	text = 'Healthstone',																		key = 'HS',				spin = 45, check = true},
+	{type = 'checkspin',	text = 'Healing Potion',																key = 'AHP',			spin = 45, check = true},
+	{type = 'checkspin', 	text = 'Ice Block', 																		key = 'ib', 			spin = 20, check = true},
 	{type = 'ruler'},		 {type = 'spacer'},
 	unpack(Mythic_GUI),
 }
@@ -61,7 +67,7 @@ local exeOnLoad = function()
 end
 
 local Keybinds = {
-	{'%pause', 'keybind(lshift)&UI(kPause)'},
+	{'%pause', 'keybind(lshift)&UI(lshift)'},
 	{'!Rune of Power', 'keybind(lalt)'},
 	{'!Flamestrike', 'keybind(lcontrol)', 'cursor.ground'}
 }
@@ -71,9 +77,11 @@ local PreCombat = {
 }
 
 local Interrupts = {
-	{'!Counterspell'},
-	{'!Arcane Torrent', 'target.inMelee&spell(Counterspell).cooldown>gcd&!player.lastcast(Counterspell)'},
-	{'!Dragon\'s Breath', 'player.spell(Counterspell).cooldown>gcd&!prev_gcd(Counterspell)&player.area(12).enemies.inFront>0'},
+	{'!Counterspell', 'interruptAt(70)', 'target'},
+	{'!Arcane Torrent', 'interruptAt(70)&inMelee&inFront&player.spell(Counterspell).cooldown>gcd&!player.lastcast(Counterspell)', 'target'},
+	{'!Dragon\'s Breath', 'interruptAt(70)&player.spell(Counterspell).cooldown>gcd&!prev_gcd(Counterspell)&player.area(12).enemies.inFront>0', 'target'},
+	{'!Ring of Frost', 'interruptAt(5)&advanced&!player.moving&UI(RoF_Int)&player.spell(Counterspell).cooldown>gcd&!prev_gcd(Counterspell)&range<31', 'target.ground'},
+	{'!Polymorph', '!player.moving&UI(Pol_Int)&interruptAt(5)&player.spell(Counterspell).cooldown>gcd&!prev_gcd(Counterspell)&range<31', 'target'},
 }
 
 local Interrupts_Random = {
@@ -140,34 +148,34 @@ local MainRotation = {
 	{'&Fire Blast', 'player.casting(Fireball).percent>40&xtime>3&!player.casting(Rune of Power)&!talent(7,1)&player.buff(Heating Up)&!player.lastcast(Fire Blast)&{!talent(3,2)||action(Fire Blast).charges>1.4||player.spell(Combustion).cooldown<40}&(3-action(Fire Blast).charges)*(12*spell_haste)<=player.spell(Combustion).cooldown+3'},
 	{'&Fire Blast', 'player.casting(Fireball).percent>40&xtime>3&!player.casting(Rune of Power)&talent(7,1)&player.buff(Heating Up)&!player.lastcast(Fire Blast)&{!talent(3,2)||action(Fire Blast).charges>1.5||player.spell(Combustion).cooldown<40}&{3-action(Fire Blast).charges}*{18*spell_haste}<=player.spell(Combustion).cooldown+3'},
 	{'Phoenix\'s Flames', '{player.buff(Combustion)||player.buff(Rune of Power)||player.buff(Incanter\'s Flow).stack>3||talent(3,1)}&{{4-action(Phoenix\'s Flames).charges}*13<player.spell(Combustion).cooldown+5||target.ttd<10}'},
-	{'Phoenix\'s Flames', '{player.buff(Combustion)||player.buff(Rune of Power)}&{4-action(Phoenix\'s Flames).charges}*30<player.spell(Combustion).cooldown+5'},
-	{'Scorch', 'target.health<35&equipped(132454)'},
-	{'Ice Floes', 'player.spell(61304).cooldown<0.5&player.moving&!player.lastcast(Ice Floes)&!player.buff(Ice Floes)'},
-	{'Fireball', '!player.moving||{player.moving&player.buff(Ice Floes)}'},
-	{'Ice Barrier', '!player.buff(Ice Barrier)&!player.buff(Combustion)&!player.buff(Rune of Power)'},
-	{'Scorch', 'player.moving&!player.buff(Ice Floes)'},
-	{'Dragon\'s Breath', 'player.area(12).enemies.inFront>2'},
+	{'Phoenix\'s Flames', '{player.buff(Combustion)||player.buff(Rune of Power)}&{4-action(Phoenix\'s Flames).charges}*30<player.spell(Combustion).cooldown+5', 'target'},
+	{'Scorch', 'health<35&equipped(132454)', 'target'},
+	{'Ice Floes', 'gcd.remains<0.5&movingfor>0.75&!lastcast&!buff', 'player'},
+	{'Fireball', '!player.moving||{player.moving&player.buff(Ice Floes)}', 'target'},
+	{'Ice Barrier', '!buff&!buff(Combustion)&!buff(Rune of Power)', 'player'},
+	{'Scorch', 'player.moving&!player.buff(Ice Floes)', 'target'},
+	{'Dragon\'s Breath', 'player.area(12).enemies.inFront>2', 'target'},
 }
 
 local xCombat = {
 	{'Rune of Power', '!player.moving&toggle(cooldowns)&{{player.spell(Combustion).cooldown>40}&{!player.buff(Combustion)&{player.spell(Flame On).cooldown<5||player.spell(Flame On).cooldown>30}&!talent(7,1)||target.ttd<11||talent(7,1)&{action(Rune of Power).charges>1.8||xtime<40}&{player.spell(Combustion).cooldown>40)}}}'},
-	{Combustion, '!player.moving&{player.spell(Combustion).cooldown<=action(Rune of Power).cast_time+gcd||player.buff(Combustion)}'},
+	{Combustion, 'toggle(cooldowns)&!player.moving&{player.spell(Combustion).cooldown<=action(Rune of Power).cast_time+gcd||player.buff(Combustion)}'},
 	{RoP, '!player.moving&player.buff(Rune of Power)&!player.buff(Combustion)'},
 	{MainRotation},
 }
 
 local Cumbustion ={
-	{'&Combustion', 'toggle(cooldowns)&target.range<41&target.ttd>12&{player.buff(Rune of Power)||player.casting(Rune of Power).percent>80}'}
+	{'&Combustion', 'target.range<41&target.ttd>12&{buff(Rune of Power)||casting(Rune of Power).percent>80}', 'player'}
 }
 
 local inCombat = {
 	{Keybinds},
 	{Interrupts_Random},
-	{Interrupts, 'target.interruptAt(70)&toggle(interrupts)&target.inFront&target.range<41'},
+	{Interrupts, 'toggle(interrupts)&target.inFront&target.range<41'},
 	{Cooldowns, 'toggle(cooldowns)'},
 	{Survival},
 	{Talents},
-	{xCombat, 'target.range<41&target.inFront'},
+	{xCombat, 'range<41&inFront'},
 	{Mythic_Plus, 'range<41'}
 }
 
@@ -175,7 +183,7 @@ local outCombat = {
 	{Keybinds},
 	{PreCombat},
 	{Interrupts_Random},
-	{Interrupts, 'target.interruptAt(70)&toggle(interrupts)&target.inFront&target.range<41'},
+	{Interrupts, 'toggle(interrupts)&target.inFront&target.range<41'},
 }
 
 NeP.CR:Add(63, {

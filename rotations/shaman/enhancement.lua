@@ -3,23 +3,29 @@ local _, Zylla = ...
 local Mythic_GUI = _G.Mythic_GUI
 local Mythic_Plus = _G.Mythic_Plus
 local Logo_GUI = _G.Logo_GUI
+local PayPal_GUI = _G.PayPal_GUI
+local PayPal_IMG = _G.PayPal_IMG
 local unpack = _G.unpack
 
 local GUI = {
 	unpack(Logo_GUI),
-	-- Keybinds
+	-- Header
 	{type = 'header',  	size = 16, text = 'Keybinds',	 																			align = 'center'},
-	{type = 'checkbox',	text = 'Left Shift: |cff0070DEPause|r',															align = 'left', 			key = 'lshift', 	default = true},
-	{type = 'checkbox',	text = 'Left Ctrl: |cff0070DETier 3 Talent Totems|r',								align = 'left', 			key = 'lcontrol',	default = true},
-	{type = 'checkbox',	text = 'Left Alt: |cff0070DEBinding Shot|r',												align = 'left', 			key = 'lalt', 		default = true},
-	{type = 'checkbox',	text = 'Right Alt: |cff0070DEFreezing Trap|r',											align = 'left', 			key = 'ralt', 		default = true},
-	{type = 'ruler'},	 {type = 'spacer'},
+	{type = 'checkbox',	text = 'Left Shift: '..Zylla.ClassColor..'Pause|r',									align = 'left', 				key = 'lshift', 	default = true},
+	{type = 'checkbox',	text = 'Left Ctrl: '..Zylla.ClassColor..'Tier 3 Totems|r',					align = 'left', 				key = 'lcontrol',	default = true},
+	{type = 'checkbox',	text = 'Left Alt: '..Zylla.ClassColor..'|r',												align = 'left', 				key = 'lalt', 		default = true},
+	{type = 'checkbox',	text = 'Right Alt: '..Zylla.ClassColor..'|r',												align = 'left', 				key = 'ralt', 		default = true},
+	{type = 'spacer'},
+--{type = 'checkbox', text = 'Enable Chatoverlay', 																				key = 'chat', 					width = 55, 			default = true, desc = Zylla.ClassColor..'This will enable some messages as an overlay!|r'},
+	unpack(PayPal_GUI),
+	{type = 'spacer'},
+	unpack(PayPal_IMG),
+	{type = 'ruler'},	 	{type = 'spacer'},
 	-- Settings
 	{type = 'header', 	size = 16, text = 'Class Settings',							 										align = 'center'},
-	{type = 'checkbox', text = 'Pause Enabled',								 															key = 'kPause', 				default = true},
 	{type = 'checkbox', text = 'Use Trinket #1', 																						key = 'trinket1',				default = true},
-	{type = 'checkbox', text = 'Use Trinket #2', 																						key = 'trinket2', 			default = true,		desc = '|cff0070DETrinkets will be used whenever possible!|r'},
-	{type = 'checkspin',text = 'Light\'s Judgment - Units', 																key = 'LJ',							spin = 4,	step = 1,	max = 20, min = 1,	check = true,	desc = '|cff0070DEWorld Spell usable on Argus.|r'},
+	{type = 'checkbox', text = 'Use Trinket #2', 																						key = 'trinket2', 			default = true,		desc = Zylla.ClassColor..'Trinkets will be used whenever possible!|r'},
+	{type = 'checkspin',text = 'Light\'s Judgment - Units', 																key = 'LJ',							spin = 4,	step = 1,	max = 20, min = 1,	check = true,	desc = Zylla.ClassColor..'World Spell usable on Argus.|r'},
 	-- Survival
 	{type = 'header', 	size = 16, text = 'Survival',									  	      						align = 'center'},
 	{type = 'checkbox', text = 'Enable Healing Surge',																			key = 'E_HS',           default = false},
@@ -61,7 +67,7 @@ end
 
 local Keybinds = {
 	-- Pause
-	{'%pause', 'keybind(lshift)&UI(kPause)'},
+	{'%pause', 'keybind(lshift)&UI(lshift)'},
 	{'!Lightning Surge Totem', 'keybind(lcontrol)' , 'cursor.ground'},
 	{'!Earthgrab Totem', 'keybind(lcontrol)' , 'cursor.ground'},
 	{'!Voodoo Totem', 'keybind(lcontrol)' , 'cursor.ground'},

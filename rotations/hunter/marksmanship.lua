@@ -3,31 +3,37 @@ local _, Zylla = ...
 local Mythic_GUI = _G.Mythic_GUI
 local Mythic_Plus = _G.Mythic_Plus
 local Logo_GUI = _G.Logo_GUI
+local PayPal_GUI = _G.PayPal_GUI
+local PayPal_IMG = _G.PayPal_IMG
 local unpack = _G.unpack
 
 local GUI = {
 	unpack(Logo_GUI),
-	-- Keybinds
-	{type = 'header', 	text = 'Keybinds',								align = 'center'},
-	{type = 'text', 	text = 'Left Shift: Pause',						align = 'center'},
-	{type = 'text', 	text = 'Left Ctrl: Tar Trap',					align = 'center'},
-	{type = 'text', 	text = 'Left Alt: Binding Shot',				align = 'center'},
-	{type = 'text', 	text = 'Right Alt: Freezing Trap',				align = 'center'},
-	{type = 'ruler'},	{type = 'spacer'},
+	-- Header
+	{type = 'header',  	size = 16, text = 'Keybinds',	 														align = 'center'},
+	{type = 'checkbox',	text = 'Left Shift: '..Zylla.ClassColor..'Pause|r',				align = 'left', 			key = 'lshift', 	default = true},
+	{type = 'checkbox',	text = 'Left Ctrl: '..Zylla.ClassColor..'Tar Trap|r',			align = 'left', 			key = 'lcontrol',	default = true},
+	{type = 'checkbox',	text = 'Left Alt: '..Zylla.ClassColor..'Binding Shot|r',	align = 'left', 			key = 'lalt', 		default = true},
+	{type = 'checkbox',	text = 'Right Alt: '..Zylla.ClassColor..'Freezing Trap|r',align = 'left', 			key = 'ralt', 		default = true},
+	{type = 'spacer'},
+--{type = 'checkbox', text = 'Enable Chatoverlay', 															key = 'chat', 				width = 55, 			default = true, desc = Zylla.ClassColor..'This will enable some messages as an overlay!|r'},
+	unpack(PayPal_GUI),
+	{type = 'spacer'},
+	unpack(PayPal_IMG),
+	{type = 'ruler'},	 	{type = 'spacer'},
 	-- Settings
-	{type = 'header', 	text = 'Class Settings',						align = 'center'},
-	{type = 'checkbox', text = 'Pause Enabled',							key = 'kPause',			default = true},
-	{type = 'checkbox', text = 'Summon Pet',							key = 'kPet',			default = false},
-	{type = 'checkbox', text = 'Barrage Enabled',						key = 'kBarrage',		default = false},
-   	{type = 'checkbox', text = 'Volley Enabled',						key = 'kVolley',		default = true},
-	{type = 'checkbox', text = 'Misdirect Focus/Pet', 					key = 'kMisdirect',		default = true},
+	{type = 'header', 	text = 'Class Settings',																	align = 'center'},
+	{type = 'checkbox', text = 'Summon Pet',																			key = 'kPet',					default = false},
+	{type = 'checkbox', text = 'Barrage Enabled',																	key = 'kBarrage',			default = false},
+   	{type = 'checkbox', text = 'Volley Enabled',																key = 'kVolley',			default = true},
+	{type = 'checkbox', text = 'Misdirect Focus/Pet', 														key = 'kMisdirect',		default = true},
 	{type = 'ruler'},	{type = 'spacer'},
   	-- Survival
-	{type = 'header', 	text = 'Survival',								align = 'center'},
-	{type = 'spinner', 	text = 'Exhileration below HP%',				key = 'E_HP',			default = 67},
-	{type = 'spinner',	text = 'Healthstone or Healing Potions',		key = 'Health Stone',	default = 45},
-	{type = 'spinner',	text = 'Aspect of the Turtle',					key = 'AotT',           default = 21},
-	{type = 'spinner',	text = 'Feign Death (Legendary Healing) %',		key = 'FD',				default = 16},
+	{type = 'header', 	text = 'Survival',																				align = 'center'},
+	{type = 'spinner', 	text = 'Exhileration below HP%',													key = 'E_HP',					default = 67},
+	{type = 'spinner',	text = 'Healthstone or Healing Potions',									key = 'Health Stone',	default = 45},
+	{type = 'spinner',	text = 'Aspect of the Turtle',														key = 'AotT',         default = 21},
+	{type = 'spinner',	text = 'Feign Death (Legendary Healing) %',								key = 'FD',						default = 16},
   	{type = 'ruler'},	{type = 'spacer'},
 	unpack(Mythic_GUI),
 }
@@ -61,7 +67,7 @@ local PreCombat = {
 
 local Keybinds = {
 	-- Pause
-	{'%pause', 'keybind(lshift)&UI(kPause)'},
+	{'%pause', 'keybind(lshift)&UI(lshift)'},
 	{'!Binding Shot', 'keybind(lalt)', 'cursor.ground'},
 	{'!Tar Trap', 'keybind(lcontrol)', 'cursor.ground'},
 	{'!Freezing Trap', 'keybind(ralt)', 'cursor.ground'},

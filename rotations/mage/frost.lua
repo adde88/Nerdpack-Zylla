@@ -3,32 +3,41 @@ local _, Zylla = ...
 local Mythic_GUI = _G.Mythic_GUI
 local Mythic_Plus = _G.Mythic_Plus
 local Logo_GUI = _G.Logo_GUI
+local PayPal_GUI = _G.PayPal_GUI
+local PayPal_IMG = _G.PayPal_IMG
 local unpack = _G.unpack
 
 local GUI = {
 	unpack(Logo_GUI),
-	{type = 'header', 	size = 16, text = 'Keybinds', 																		align = 'center'},
-	{type = 'checkbox',	text = 'Left Shift: |cff69CCF0Pause|r', 													align = 'left', 	key = 'kPause',	default = true,},
-	{type = 'checkbox', text = 'Left Ctrl: |cff69CCF0Blizzard|r', 												align = 'left', 	key = 'lctrl',	default = true, desc = '|cffFF7D0AThis spell will be placed at your cursors ground location.|r'},
-	{type = 'checkbox', text = 'Left Alt: |cff69CCF0Frost Nova|r', 												align = 'left',		key = 'lalt',		default = true,},
-	{type = 'ruler'},		{type = 'spacer'},
+	-- Header
+	{type = 'header',  	size = 16, text = 'Keybinds',	 																		align = 'center'},
+	{type = 'checkbox',	text = 'Left Shift: '..Zylla.ClassColor..'Pause|r',								align = 'left', 			key = 'lshift', 	default = true},
+	{type = 'checkbox',	text = 'Left Ctrl: '..Zylla.ClassColor..'Blizzard|r',							align = 'left', 			key = 'lcontrol',	default = true},
+	{type = 'checkbox',	text = 'Left Alt: '..Zylla.ClassColor..'Frost Nova|r',						align = 'left', 			key = 'lalt', 		default = true},
+	{type = 'checkbox',	text = 'Right Alt: '..Zylla.ClassColor..'|r',											align = 'left', 			key = 'ralt', 		default = true},
+	{type = 'spacer'},
+--{type = 'checkbox', text = 'Enable Chatoverlay', 																			key = 'chat', 				width = 55, 			default = true, desc = Zylla.ClassColor..'This will enable some messages as an overlay!|r'},
+	unpack(PayPal_GUI),
+	{type = 'spacer'},
+	unpack(PayPal_IMG),
+	{type = 'ruler'},	 	{type = 'spacer'},
 	-- Settings
 	{type = 'header', 	size = 16, text = 'Class Settings',																align = 'center'},
 	{type = 'checkbox',	text = 'Use Timewarp',																						key = 'kTW', 			default = false},
 	{type = 'checkbox',	text = 'Stop Casting Ray of Frost (Target in Melee range)',				key = 'RoFstop', 	default = true},
 	{type = 'checkbox',	text = 'Polymorph (Backup Interrupt)',														key = 'Pol_Int',	default = false},
 	{type = 'spacer'},
-	{type = 'checkspin',text = 'Blizzard + Arctic Gale - Units',													key = 'blizze',		spin = 2,	step = 1,	max = 20,	check = false,	desc = '|cff69CCF0How many units to hit with Blizzard + Arctic Gale.|r'},
-	{type = 'checkspin',text = 'Blizzard (normal) - Units',																key = 'blizz',		spin = 3,	step = 1,	max = 20,	check = true,	desc = '|cff69CCF0How many units to hit with normal Blizzard.|r'},
+	{type = 'checkspin',text = 'Blizzard + Arctic Gale - Units',													key = 'blizze',		min = 1,	spin = 2,	step = 1,	max = 20,	check = false,	desc = Zylla.ClassColor..'How many units to hit with Blizzard + Arctic Gale.|r'},
+	{type = 'checkspin',text = 'Blizzard (normal) - Units',																key = 'blizz',		min = 1,	spin = 3,	step = 1,	max = 20,	check = true,		desc = Zylla.ClassColor..'How many units to hit with normal Blizzard.|r'},
 	{type = 'spacer'},
-	{type = 'checkspin',text = 'Comet Storm - Units',																			key = 'cstorm',		spin = 4,	step = 1,	max = 20,	check = true,	desc = '|cff69CCF0How many units to hit with Comet Storm.|r'},
+	{type = 'checkspin',text = 'Comet Storm - Units',																			key = 'cstorm',		min = 1,	spin = 4,	step = 1,	max = 20,	check = true,		desc = Zylla.ClassColor..'How many units to hit with Comet Storm.|r'},
 	{type = 'spacer'},
 	{type = 'checkbox', text = 'Use Trinket #1', 																					key = 'trinket1',	default = true},
-	{type = 'checkbox', text = 'Use Trinket #2', 																					key = 'trinket2', default = true,	desc = '|cff69CCF0Trinkets will be used whenever possible!|r'},
+	{type = 'checkbox', text = 'Use Trinket #2', 																					key = 'trinket2', default = true,	desc = Zylla.ClassColor..'Trinkets will be used whenever possible!|r'},
 	{type = 'spacer'},
-	{type = 'checkspin',text = 'Light\'s Judgment - Units', 															key = 'LJ',				spin = 4,	step = 1,	max = 20,	check = true,	desc = '|cff69CCF0World Spell usable on Argus.|r'},
+	{type = 'checkspin',text = 'Light\'s Judgment - Units', 															key = 'LJ',				min = 1,	spin = 4,	step = 1,	max = 20,	check = true,		desc = Zylla.ClassColor..'World Spell usable on Argus.|r'},
 	{type = 'spacer'},
-	{type = 'checkspin', 	text = 'Kil\'Jaeden\'s Burning Wish - Units', 									key = 'kj', 			step = 1, spin = 4, max = 15, check = true, desc = '|cff69CCF0Legendary will be used only on selected amount of units!|r'},
+	{type = 'checkspin', 	text = 'Kil\'Jaeden\'s Burning Wish - Units', 									key = 'kj', 			min = 1,	step = 1, spin = 4, max = 15, check = true, 	desc = Zylla.ClassColor..'Legendary will be used only on selected amount of units!|r'},
 	{type = 'ruler'},		{type = 'spacer'},
 	-- Survival
 	{type = 'header',		size = 16, text = 'Survival',									 	 									align = 'center'},
@@ -70,7 +79,7 @@ local PreCombat = {
 
 local Keybinds = {
 	-- Pause
-	{'%pause', 'keybind(lshift)&UI(kPause)'},
+	{'%pause', 'keybind(lshift)&UI(lshift)'},
 	{'Blizzard', 'keybind(lcontrol)&UI(lctrl)', 'cursor.ground'},
 	{'Frost Nova', 'keybind(lalt)&UI(lalt)'}
 }

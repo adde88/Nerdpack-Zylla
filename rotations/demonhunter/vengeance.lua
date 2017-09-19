@@ -3,23 +3,30 @@ local _, Zylla = ...
 local Mythic_GUI = _G.Mythic_GUI
 local Mythic_Plus = _G.Mythic_Plus
 local Logo_GUI = _G.Logo_GUI
+local PayPal_GUI = _G.PayPal_GUI
+local PayPal_IMG = _G.PayPal_IMG
 local unpack = _G.unpack
 
 local GUI = {
 	unpack(Logo_GUI),
-	-- Keybinds
-	{type = 'header', 		text = 'Keybinds', 																					align = 'center'},
-	{type = 'text', 			text = 'Left Shift: Pause', 																align = 'center'},
-	{type = 'text', 			text = 'Left Ctrl: Infernal Strike @ Cursor',						 		align = 'center'},
-	{type = 'text', 			text = 'Left Alt: Sigil of Flame @ Cursor', 								align = 'center'},
-	{type = 'ruler'},			{type = 'spacer'},
+	-- Header
+	{type = 'header',  	size = 16, text = 'Keybinds',	 																align = 'center'},
+	{type = 'checkbox',	text = 'Left Shift: '..Zylla.ClassColor..'Pause|r',						align = 'left', 			key = 'lshift', 	default = true},
+	{type = 'checkbox',	text = 'Left Ctrl: '..Zylla.ClassColor..'Infernal Strike|r',	align = 'left', 			key = 'lcontrol',	default = true},
+	{type = 'checkbox',	text = 'Left Alt: '..Zylla.ClassColor..'Sigil of Flame|r',		align = 'left', 			key = 'lalt', 		default = true},
+	{type = 'checkbox',	text = 'Right Alt: '..Zylla.ClassColor..'|r',									align = 'left', 			key = 'ralt', 		default = true},
+	{type = 'spacer'},
+--{type = 'checkbox', text = 'Enable Chatoverlay', 																	key = 'chat', 				width = 55, 			default = true, desc = Zylla.ClassColor..'This will enable some messages as an overlay!|r'},
+	unpack(PayPal_GUI),
+	{type = 'spacer'},
+	unpack(PayPal_IMG),
+	{type = 'ruler'},	 	{type = 'spacer'},
 	-- Settings
 	{type = 'header', 		text = 'Class Settings',																		align = 'center'},
-	{type = 'checkbox', 	text = 'Pause Enabled', 																		key = 'kPause', 	default = true},
-	{type = 'checkspin',	text = 'Light\'s Judgment - Units', 												key = 'LJ',				spin = 4, step = 1, max = 20, check = true,	desc = '|cffABD473World Spell usable on Argus.|r'},
+	{type = 'checkspin',	text = 'Light\'s Judgment - Units', 												key = 'LJ',				spin = 4, step = 1, max = 20, check = true,	desc = Zylla.ClassColor..'World Spell usable on Argus.|r'},
 	{type = 'checkbox', 	text = 'Auto use Infernal Strike with Flame Crash Talent', 	key = 'kIS', 			default = true},
 	{type = 'checkbox', 	text = 'Use Trinket #1', 																		key = 'trinket1',	default = true},
-	{type = 'checkbox', 	text = 'Use Trinket #2', 																		key = 'trinket2', default = true,	desc = '|cffABD473Trinkets will be used whenever possible!|r'},
+	{type = 'checkbox', 	text = 'Use Trinket #2', 																		key = 'trinket2', default = true,	desc = Zylla.ClassColor..'Trinkets will be used whenever possible!|r'},
 	{type = 'ruler'},			{type = 'spacer'},
 	-- Survival
 	{type = 'header', 		text = 'Survival',									  	      							align = 'center'},
@@ -56,7 +63,7 @@ local exeOnLoad = function()
 end
 
 local Keybinds = {
-	{'%pause', 'keybind(lshift)&UI(kPause)'},
+	{'%pause', 'keybind(lshift)&UI(lshift)'},
 	{'Sigil of Flame', 'keybind(lalt)', 'cursor.ground'},
 	{'Infernal Strike', 'keybind(lcontrol)', 'cursor.ground'},
 }

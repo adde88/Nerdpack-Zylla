@@ -3,33 +3,39 @@ local _, Zylla = ...
 local Mythic_GUI = _G.Mythic_GUI
 local Mythic_Plus = _G.Mythic_Plus
 local Logo_GUI = _G.Logo_GUI
+local PayPal_GUI = _G.PayPal_GUI
+local PayPal_IMG = _G.PayPal_IMG
 local unpack = _G.unpack
 
 local GUI = {
 	unpack(Logo_GUI),
-	-- Keybinds
-	{type = 'header', text = 'Keybinds', 																align = 'center'},
-	{type = 'text', 	text = 'Left Shift: Pause', 											align = 'center'},
-	{type = 'text', 	text = 'Left Ctrl: Transcendence/Transfer', 			align = 'center'},
-	{type = 'text', 	text = 'Left Alt: Black Ox Statue @cursor',				align = 'center'},
-	{type = 'ruler'},	{type = 'spacer'},
-	-- Class Settings
-	{type = 'spacer'},	{type = 'rule'},
-	{type = 'header', 	text = 'General', 											align = 'center'},
-	{type = 'checkbox', text = 'Automatic Ressurect', 					key = 'auto_res', 		default = true},
-	{type = 'checkbox', text = 'Pause Enbled', 									key = 'kPause', 			default = true},
-	{type = 'checkbox',	text = 'Use: Crackling Jade Lightning',	key = 'e_cjl',				default = false},
+	-- Header
+	{type = 'header',  	size = 16, text = 'Keybinds',	 																					align = 'center'},
+	{type = 'checkbox',	text = 'Left Shift: '..Zylla.ClassColor..'Pause|r',											align = 'left', 					key = 'lshift', 	default = true},
+	{type = 'checkbox',	text = 'Left Ctrl: '..Zylla.ClassColor..'Transcendence/Transfer|r',			align = 'left', 					key = 'lcontrol',	default = true},
+	{type = 'checkbox',	text = 'Left Alt: '..Zylla.ClassColor..'Black Ox Statue|r',							align = 'left', 					key = 'lalt', 		default = true},
+	{type = 'checkbox',	text = 'Right Alt: '..Zylla.ClassColor..'|r',														align = 'left', 					key = 'ralt', 		default = true},
+	{type = 'spacer'},
+--{type = 'checkbox', text = 'Enable Chatoverlay', 																						key = 'chat', 						width = 55, 			default = true, desc = Zylla.ClassColor..'This will enable some messages as an overlay!|r'},
+	unpack(PayPal_GUI),
+	{type = 'spacer'},
+	unpack(PayPal_IMG),
+	{type = 'ruler'},	 	{type = 'spacer'},
+	-- Settings
+	{type = 'header', 	text = 'General', 																											align = 'center'},
+	{type = 'checkbox', text = 'Automatic Ressurect', 																					key = 'auto_res', 				default = true},
+	{type = 'checkbox',	text = 'Use: Crackling Jade Lightning',																	key = 'e_cjl',						default = false},
 	{type = 'ruler'},	{type = 'spacer'},
 	-- Survival
-	{type = 'header', 	text = 'Survival',												align = 'center'},
-	{type = 'checkbox',	text = 'Enable Self-Heal (Effuse)', 			key = 'kEffuse',					default = false},
-	{type = 'spinner', 	text = 'Effuse (HP%)', 										key = 'E_HP',							default = 60},
-	{type = 'spinner',	text = 'Healthstone below HP%',						key = 'hs_hp',						default = 45},
-	{type = 'spinner',	text = 'Ancient Healing Potion HP%',			key = 'ahp_hp',						default = 40},
-	{type = 'spinner',	text = 'Healing Elixir', 									key = 'Healing Elixir',		default = 70},
-	{type = 'spinner',	text = 'Expel Harm', 											key = 'Expel Harm',				default = 100},
-	{type = 'spinner',	text = 'Fortifying Brew',									key = 'Fortifying Brew',	default = 20},
-	{type = 'spinner',	text = 'Ironskin Brew',										key = 'Ironskin Brew',		default = 80},
+	{type = 'header', 	text = 'Survival',																											align = 'center'},
+	{type = 'checkbox',	text = 'Enable Self-Heal (Effuse)', 																		key = 'kEffuse',					default = false},
+	{type = 'spinner', 	text = 'Effuse (HP%)', 																									key = 'E_HP',							default = 60},
+	{type = 'spinner',	text = 'Healthstone below HP%',																					key = 'hs_hp',						default = 45},
+	{type = 'spinner',	text = 'Ancient Healing Potion HP%',																		key = 'ahp_hp',						default = 40},
+	{type = 'spinner',	text = 'Healing Elixir', 																								key = 'Healing Elixir',		default = 70},
+	{type = 'spinner',	text = 'Expel Harm', 																										key = 'Expel Harm',				default = 100},
+	{type = 'spinner',	text = 'Fortifying Brew',																								key = 'Fortifying Brew',	default = 20},
+	{type = 'spinner',	text = 'Ironskin Brew',																									key = 'Ironskin Brew',		default = 80},
 	{type = 'ruler'},	{type = 'spacer'},
 	unpack(Mythic_GUI),
 }
@@ -74,7 +80,7 @@ local TransferBack = {
 }
 
 local Keybinds = {
-	{'%pause', 'keybind(lshift)&UI(kPause)'},
+	{'%pause', 'keybind(lshift)&UI(lshift)'},
 	{'!Summon Black Ox Statue', 'talent(4,2)&keybind(lalt)', 'cursor.ground'},
     {'!Transcendence', 'keybind(lcontrol)&!player.buff(Transcendence)'},
     {TransferBack, 'keybind(lcontrol)&player.buff(Transcendence)'},

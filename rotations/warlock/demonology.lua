@@ -3,37 +3,44 @@ local _, Zylla = ...
 local Mythic_GUI = _G.Mythic_GUI
 local Mythic_Plus = _G.Mythic_Plus
 local Logo_GUI = _G.Logo_GUI
+local PayPal_GUI = _G.PayPal_GUI
+local PayPal_IMG = _G.PayPal_IMG
 local unpack = _G.unpack
 
 local GUI = {
 	unpack(Logo_GUI),
-	-- Keybinds
-	{type = 'header', 	text = 'Keybinds', 							align = 'center'},
-	{type = 'checkbox', text = 'L-Control: Shadowfury @ Cursor',	key = 'K_SF',		default = true},
-	{type = 'checkbox', text = 'L-Alt: Demonic Circle', 			key = 'K_DC',		default = true},
-	{type = 'checkbox', text = 'L-Shift: Pause', 					key = 'kPause', 	default = true},
-	{type = 'ruler'},	{type = 'spacer'},
+	-- Header
+	{type = 'header',  	size = 16, text = 'Keybinds',	 															align = 'center'},
+	{type = 'checkbox',	text = 'Left Shift: '..Zylla.ClassColor..'Pause|r',					align = 'left', 			key = 'lshift', 	default = true},
+	{type = 'checkbox',	text = 'Left Ctrl: '..Zylla.ClassColor..'Shadowfury|r',			align = 'left', 			key = 'lcontrol',	default = true},
+	{type = 'checkbox',	text = 'Left Alt: '..Zylla.ClassColor..'Demonic Circle|r',	align = 'left', 			key = 'lalt', 		default = true},
+	{type = 'checkbox',	text = 'Right Alt: '..Zylla.ClassColor..'|r',								align = 'left', 			key = 'ralt', 		default = true},
+	{type = 'spacer'},
+--{type = 'checkbox', text = 'Enable Chatoverlay', 																key = 'chat', 				width = 55, 			default = true, desc = Zylla.ClassColor..'This will enable some messages as an overlay!|r'},
+	unpack(PayPal_GUI),
+	{type = 'spacer'},
+	unpack(PayPal_IMG),
+	{type = 'ruler'},	 	{type = 'spacer'},
 	-- Settings
-	{type = 'header', 	text = 'Class Settings',	align = 'center'},
-	{type = 'checkbox', text = 'Pause Enabled',		key = 'kPause',	default = true},
-	{type = 'checkbox', text = 'Summon Pet',		key = 'kPet',	default = true},
+	{type = 'header', 	text = 'Class Settings',																		align = 'center'},
+	{type = 'checkbox', text = 'Summon Pet',																				key = 'kPet',					default = true},
 	{type = 'ruler'},	  {type = 'spacer'},
 	-- Survival
-	{type = 'header',	text = 'Survival', 							align = 'center'},
-	{type = 'checkbox',	text = 'Enable Unending Resolve', 			key = 'S_UEE', 		default = true},
-	{type = 'spinner',	text = '',									key = 'S_UE', 		default = 40},
-	{type = 'checkbox', text = 'Enable Dark Pact', 					key = 'S_DPE', 		default = true},
-	{type = 'spinner',	text = '',									key = 'S_DP', 		default = 50},
-	{type = 'checkbox',	text = 'Enable Drain Life', 				key = 'S_DLE', 		default = true},
-	{type = 'spinner',	text = '',									key = 'S_DL', 		default = 30},
-	{type = 'checkbox',	text = 'Enable Health Funnel', 				key = 'S_HFE', 		default = true},
-	{type = 'spinner',	text = '',									key = 'S_HF', 		default = 60},
-	{type = 'checkbox',	text = 'Enable Gift of the Naaru', 			key = 'S_GOTNE', 	default = true},
-	{type = 'spinner',	text = '',									key = 'S_GOTN', 	default = 40},
-	{type = 'checkbox',	text = 'Enable Healthstone', 				key = 'S_HSE', 		default = true},
-	{type = 'spinner',	text = '',									key = 'S_HS', 		default = 20},
-	{type = 'checkbox',	text = 'Enable Ancient Healing Potion', 	key = 'S_AHPE', 	default = true},
-	{type = 'spinner',	text = '',									key = 'S_AHP', 		default = 20},
+	{type = 'header',	text = 'Survival', 																						align = 'center'},
+	{type = 'checkbox',	text = 'Enable Unending Resolve', 													key = 'S_UEE', 				default = true},
+	{type = 'spinner',	text = '',																									key = 'S_UE', 				default = 40},
+	{type = 'checkbox', text = 'Enable Dark Pact', 																	key = 'S_DPE', 				default = true},
+	{type = 'spinner',	text = '',																									key = 'S_DP', 				default = 50},
+	{type = 'checkbox',	text = 'Enable Drain Life', 																key = 'S_DLE', 				default = true},
+	{type = 'spinner',	text = '',																									key = 'S_DL', 				default = 30},
+	{type = 'checkbox',	text = 'Enable Health Funnel', 															key = 'S_HFE', 				default = true},
+	{type = 'spinner',	text = '',																									key = 'S_HF', 				default = 60},
+	{type = 'checkbox',	text = 'Enable Gift of the Naaru', 													key = 'S_GOTNE', 			default = true},
+	{type = 'spinner',	text = '',																									key = 'S_GOTN', 			default = 40},
+	{type = 'checkbox',	text = 'Enable Healthstone', 																key = 'S_HSE', 				default = true},
+	{type = 'spinner',	text = '',																									key = 'S_HS', 				default = 20},
+	{type = 'checkbox',	text = 'Enable Ancient Healing Potion', 										key = 'S_AHPE', 			default = true},
+	{type = 'spinner',	text = '',																									key = 'S_AHP', 				default = 20},
 	{type = 'ruler'},	{type = 'spacer'},
 	unpack(Mythic_GUI),
 }
@@ -93,7 +100,7 @@ local Player = {
 }
 
 local Keybinds = {
-	{'%pause', 'keybind(lshift)&UI(kPause)'},
+	{'%pause', 'keybind(lshift)&UI(lshift)'},
 	{'!Shadowfury', '!player.moving&UI(K_SF)&talent(3,3)&keybind(lcontrol)', 'cursor.ground'},
 	{'!Demonic Circle', 'UI(K_DC)&talent(3,1)&keybind(lalt)'},
 }

@@ -3,33 +3,40 @@ local _, Zylla = ...
 local Mythic_GUI = _G.Mythic_GUI
 local Mythic_Plus = _G.Mythic_Plus
 local Logo_GUI = _G.Logo_GUI
+local PayPal_GUI = _G.PayPal_GUI
+local PayPal_IMG = _G.PayPal_IMG
 local unpack = _G.unpack
 
 local GUI = {
 	unpack(Logo_GUI),
-	-- Keybinds
-	{type = 'header', 	size = 16, text = 'Keybinds', 										align = 'center'},
-	{type = 'text', 		text = 'Left Shift: |cffC79C6EPause', 						align = 'center'},
-	{type = 'text', 		text = 'Left Ctrl: |cffC79C6EHeroic Leap', 				align = 'center'},
-	{type = 'text', 		text = 'Left Alt: |cffC79C6EIntimidating Shout',	align = 'center'},
-	{type = 'ruler'},		{type = 'spacer'},
+	-- Header
+	{type = 'header',  	size = 16, text = 'Keybinds',	 																	align = 'center'},
+	{type = 'checkbox',	text = 'Left Shift: '..Zylla.ClassColor..'Pause|r',							align = 'left', 			key = 'lshift', 	default = true},
+	{type = 'checkbox',	text = 'Left Ctrl: '..Zylla.ClassColor..'Heroic Leap|r',				align = 'left', 			key = 'lcontrol',	default = true},
+	{type = 'checkbox',	text = 'Left Alt: '..Zylla.ClassColor..'|r',										align = 'left', 			key = 'lalt', 		default = true},
+	{type = 'checkbox',	text = 'Right Alt: '..Zylla.ClassColor..'|r',										align = 'left', 			key = 'ralt', 		default = true},
+	{type = 'spacer'},
+--{type = 'checkbox', text = 'Enable Chatoverlay', 																		key = 'chat', 				width = 55, 			default = true, desc = Zylla.ClassColor..'This will enable some messages as an overlay!|r'},
+	unpack(PayPal_GUI),
+	{type = 'spacer'},
+	unpack(PayPal_IMG),
+	{type = 'ruler'},	 	{type = 'spacer'},
 	-- Settings
-	{type = 'header', 	size = 16, text = 'Class Settings', 							align = 'center'},
-	{type = 'checkbox', text = 'Pause Enabled', 													key = 'kPause', 		default = true},
-	{type = 'checkspin',text = 'Light\'s Judgment - Units', 							key = 'LJ',					spin = 4,	step = 1,	max = 20,	check = true,	desc = '|cffC79C6EWorld Spell usable on Argus.|r'},
-	{type = 'checkbox', text = 'Use Trinket #1', 													key = 'trinket1',		default = true},
-	{type = 'checkbox', text = 'Use Trinket #2', 													key = 'trinket2', 	default = true,	desc = '|cffC79C6ETrinkets will be used whenever possible!|r'},
+	{type = 'header', 	size = 16, text = 'Class Settings', 														align = 'center'},
+	{type = 'checkspin',text = 'Light\'s Judgment - Units', 														key = 'LJ',						spin = 4,	step = 1,	max = 20,	check = true,	desc = Zylla.ClassColor..'World Spell usable on Argus.|r'},
+	{type = 'checkbox', text = 'Use Trinket #1', 																				key = 'trinket1',			default = true},
+	{type = 'checkbox', text = 'Use Trinket #2', 																				key = 'trinket2', 		default = true,	desc = Zylla.ClassColor..'Trinkets will be used whenever possible!|r'},
 	{type = 'ruler'},	{type = 'spacer'},
 	-- Survival
-	{type = 'header', 		size = 16, text = 'Survival',										align = 'center'},
-	{type = 'checkspin',	text = 'Victory Rush below HP%',								key = 'vrush',				spin = 80, 	max = 100, step = 5, check = true, },
-	{type = 'checkspin',	text = 'Enraged Regeneration',									key = 'en_rege',			spin = 45, 	max = 100, step = 5, check = true, },
-	{type = 'checkspin',	text = 'Healthstone',														key = 'HS',						spin = 45, 	max = 100, step = 5, check = true, },
-	{type = 'checkspin',	text = 'Healing Potion',												key = 'AHP',					spin = 45, 	max = 100, step = 5, check = true, },
+	{type = 'header', 		size = 16, text = 'Survival',																	align = 'center'},
+	{type = 'checkspin',	text = 'Victory Rush below HP%',															key = 'vrush',				spin = 80, 	max = 100, step = 5, check = true, },
+	{type = 'checkspin',	text = 'Enraged Regeneration',																key = 'en_rege',			spin = 45, 	max = 100, step = 5, check = true, },
+	{type = 'checkspin',	text = 'Healthstone',																					key = 'HS',						spin = 45, 	max = 100, step = 5, check = true, },
+	{type = 'checkspin',	text = 'Healing Potion',																			key = 'AHP',					spin = 45, 	max = 100, step = 5, check = true, },
 	-- PvP
-	{type = 'header', 		size = 16, text = 'PvP',												align = 'center'},
-	{type = 'checkspin',	text = 'Death Wish - Max Stacks',								key = 'DWS',					spin = 5, 	max = 10, 	step = 1, 	check = true},
-	{type = 'checkspin',	text = 'Death Wish HP% limit',									key = 'DWH',					spin = 5, 	max = 100, 	step = 5, 	check = true, desc = '|cffC79C6ESelect how many stacks you want of \'Death Wish\', and the HP% limit you want to have on \'Death Wish\'!|r'},
+	{type = 'header', 		size = 16, text = 'PvP',																			align = 'center'},
+	{type = 'checkspin',	text = 'Death Wish - Max Stacks',															key = 'DWS',					spin = 5, 	max = 10, 	step = 1, 	check = true},
+	{type = 'checkspin',	text = 'Death Wish HP% limit',																key = 'DWH',					spin = 5, 	max = 100, 	step = 5, 	check = true, desc = Zylla.ClassColor..'Select how many stacks you want of \'Death Wish\', and the HP% limit you want to have on \'Death Wish\'!|r'},
 	unpack(Mythic_GUI),
 }
 
@@ -54,7 +61,7 @@ end
 
 local Keybinds = {
 	-- Pause
-	{'%pause', 'keybind(lshift)&UI(kPause)'},
+	{'%pause', 'keybind(lshift)&UI(lshift)'},
 	{'!Heroic Leap', 'keybind(lcontrol)' , 'cursor.ground'}
 }
 
