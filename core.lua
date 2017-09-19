@@ -38,13 +38,12 @@ local UnitStagger = _G.UnitStagger
 local rad = _G.rad
 local atan2 = _G.atan2
 local GetSpellCooldown = _G.GetSpellCooldown
-local OpenURL = _G.OpenURL
 
 --XXX: Travert into global space
 _G.Zylla = Zylla
 
 Zylla.Version = '2.1'
-Zylla.Branch = 'DEV'
+Zylla.Branch = 'RELEASE'
 Zylla.Name = 'NerdPack - Zylla\'s Rotations'
 Zylla.Author = 'Zylla'
 Zylla.addonColor = '8801C0'
