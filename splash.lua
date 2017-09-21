@@ -56,7 +56,7 @@ function Zylla.Splash()
 	local _, SpecName, _, icon, _ = GetSpecializationInfo(currentSpec)
 	local class = UnitClass('player')
 	texture:SetTexture(icon)
-	text:SetText(AddonInfo..'\n|cff'..color..class..' - '..SpecName..' \n|cffD11E0E--- Version: '..Zylla.Version..' ---')
+	text:SetText(AddonInfo..'\n|cff'..color..class..' - '..SpecName..' \n|cffD11E0E--- Version: '..Zylla.Version..' ---\n|cff0e89d1'..Zylla.Branch..'')
 	callTime = GetTime()
 	local Width = text:GetStringWidth()+texture:GetWidth()+8
 	Splash_Frame:SetSize(Width,100)
