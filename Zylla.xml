@@ -8,6 +8,7 @@
   <Script file="fakeunits.lua" />
   <Script file="locale.lua" />
   <Script file="overlay.lua" />
+	<Script file="tables.lua" />
 
   <!-- Rotations -->
   <Script file="rotations\deathknight\frost.lua" />
