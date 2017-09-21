@@ -109,8 +109,8 @@ local Cooldowns = {
 	{'Summon Doomguard', 'player.movingfor<0.75&UI(kPet)&!talent(6,1)&target.area(10).enemies<3'},
 	{'Soul Harvest', 'count(Immolate).enemies.debuffs>UI(SH_units)'},
 	{'Grimoire: Imp', 'talent(6,2)', 'target'},
-	{'#Trinket1', 'UI(trinket1)'},
-	{'#Trinket2', 'UI(trinket2)'},
+	{'#trinket1', 'UI(trinket1)'},
+	{'#trinket2', 'UI(trinket2)'},
 }
 
 local Interrupts = {

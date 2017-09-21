@@ -95,8 +95,8 @@ local Cooldowns = {
 	{'Nemesis', 'player.spell(Chaos Blades).cooldown<gcd', 'target'},
 	{'Chaos Blades', nil, 'player'},
 	{'Chaos Nova', 'player.area(8).enemies>UI(chaos_spin)&UI(chaos_check)', 'target'},
-	{'#Trinket1', 'UI(trinket1)'},
-	{'#Trinket2', 'UI(trinket2)'},
+	{'#trinket1', 'UI(trinket1)'},
+	{'#trinket2', 'UI(trinket2)'},
 	{'#144259', 'UI(kj_check)&target.range<41&target.area(10).enemies>UI(kj_spin)&equipped(144259)'},		--XXX: Kil'jaeden's Burning Wish / AoE Trinket
 	{'Light\'s Judgment', 'UI(LJ_check)&range<61&area(15).enemies>UI(LJ_spin)', 'enemies.ground'}
 }

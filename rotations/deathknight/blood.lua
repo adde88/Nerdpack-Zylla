@@ -84,8 +84,8 @@ local Keybinds = {
 local Cooldowns = {
 	{'Dancing Rune Weapon', 'inFront&inMelee&{{player.incdmg(2.5)>player.health.max*0.50}||{player.health<30}}', 'target'},
 	{'Vampiric Blood', 'UI(VB_check)&{incdmg(2.5)>health.max*0.50||health<=UI(VB_spin)}', 'player'},
-	{'#Trinket1', 'UI(trinket1)'},
-	{'#Trinket2', 'UI(trinket2)'},
+	{'#trinket1', 'UI(trinket1)'},
+	{'#trinket2', 'UI(trinket2)'},
 	{'Light\'s Judgment', 'UI(LJ_check)&range<61&area(15).enemies>=UI(LJ_spin)', 'enemies.ground'}
 }
 

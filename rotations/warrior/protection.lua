@@ -95,8 +95,8 @@ local Cooldowns = {
 	{'#144249', 'equipped(144249)&{player.area(8).enemies>4||player.incdmg(2.5)>player.health.max*0.20}'}, -- Archimonde's Hatred Reborn (Trinket)
 	{'Avatar', 'target.inMelee'},
 	{'Ravager', 'combat&alive&range<41&area(8).enemies>=UI(ravager)', 'enemies'},
-	{'#Trinket1', 'UI(trinket1)'},
-	{'#Trinket2', 'UI(trinket2)'},
+	{'#trinket1', 'UI(trinket1)'},
+	{'#trinket2', 'UI(trinket2)'},
 	{'Light\'s Judgment', 'UI(LJ_check)&range<61&area(15).enemies>=UI(LJ_spin)', 'enemies.ground'}
 }
 

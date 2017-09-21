@@ -127,8 +127,8 @@ local Cooldowns = {
 	{'Marked for Death', 'talent(7,2)&{player.combopoints<6&player.energy>16}||xtime<20', 'target'},
 	{'Curse of the Dreadblades', 'combo_points.deficit>3&{target.debuff(Ghostly Strike)||!talent(1,1)}', 'player'},
 	{'Killing Spree', 'talent(6,3)&energy.time_to_max>5||player.energy<15', 'target'},
-	{'#Trinket1', 'UI(trinket1)'},
-	{'#Trinket2', 'UI(trinket2)'},
+	{'#trinket1', 'UI(trinket1)'},
+	{'#trinket2', 'UI(trinket2)'},
 	{'Light\'s Judgment', 'UI(LJ_check)&range<61&area(15).enemies>=UI(LJ_spin)', 'enemies.ground'}
 }
 

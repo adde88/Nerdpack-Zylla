@@ -112,8 +112,8 @@ local Cooldowns = {
 	{'Summon Doomguard', '!player.moving&UI(kPet)&!talent(6,1)&target.area(10).enemies<3'},
 	{'Soul Harvest', '{count(Agony).enemies.debuffs>UI(SH_units)||target.area(20).enemies==1&target.debuff(Agony).count==15	}'},
 	{'Grimoire: Felhunter', 'talent(6,2)'},
-	{'#Trinket1', 'UI(trinket1)'},
-	{'#Trinket2', 'UI(trinket2)'}
+	{'#trinket1', 'UI(trinket1)'},
+	{'#trinket2', 'UI(trinket2)'}
 }
 
 local Corruption = {

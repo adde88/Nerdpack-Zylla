@@ -93,8 +93,8 @@ local Cooldowns = {
 	{'Bloodbath', 'player.buff(Dragon Roar)||{!talent(7,3)&{player.buff(Battle Cry)||spell(Battle Cry).cooldown>10}}', 'target'},
 	{'Blood Fury', 'buff(Battle Cry)', 'player'},
 	{'Berserking', 'buff(Battle Cry)', 'player'},
-	{'#Trinket1', 'UI(trinket1)'},
-	{'#Trinket2', 'UI(trinket2)'}
+	{'#trinket1', 'UI(trinket1)'},
+	{'#trinket2', 'UI(trinket2)'}
 }
 
 local Bladestorm = {
