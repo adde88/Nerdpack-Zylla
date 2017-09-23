@@ -46,6 +46,7 @@ local GUI = {
 	{type = 'checkspin',text = 'Flash of Light', 																							key = 'G_FoL', 		spin = 35, step = 5, max = 100, check = false},
 	{type = 'checkspin',text = 'Lay on Hands', 																								key = 'G_LoH', 		spin = 10, step = 5, max = 100, check = false},
 	{type = 'checkspin',text = 'Blessing of Protection', 																			key = 'G_BoP', 		spin = 10, step = 5, max = 100, check = false},
+	{type = 'checkbox',	text = 'BoP on Tanks',																				key = 'G_BoP_T', default = false},
 	{type = 'checkbox',	text = 'Dispel Party Members',																				key = 'disAll', 	default = true},
 	{type = 'checkbox', text = 'Use Blessing of Freedom', 																		key = 'G_BoF', 		default = false},
 	{type = 'ruler'},		{type = 'spacer'},
@@ -106,7 +107,8 @@ local Survival = {
 local Group = {
 	{'!Flash of Light', 'UI(G_FoL_check)&health<=UI(G_FoL_spin)', 'lowest'},
 	{'!Lay on Hands', 'UI(G_LoH_check)&health<=UI(G_LoH_spin)', 'lowest'},
-	{'!Blessing of Protection', 'UI(G_BoP_check)&health<=UI(G_BoP_spin)', 'lowest'},
+	{'!Blessing of Protection', 'UI(G_BoP_check)&health<=UI(G_BoP_spin)&UI(G_BoP_T}', 'lowest'},
+	{'!Blessing of Protection', 'UI(G_BoP_check)&health<=UI(G_BoP_spin)&!UI(G_BoP_T}&!lowest.role(tank)', 'lowest'},	
 	{'!Blessing of Freedom', 'player.ingroup&target.ingroup&range<41&UI(G_BoF)&{state(root)||state(snare)}' ,'friendly'},
 }
 
