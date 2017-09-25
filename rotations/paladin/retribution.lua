@@ -1,14 +1,7 @@
 local _, Zylla = ...
 
-local Mythic_GUI = _G.Mythic_GUI
-local Mythic_Plus = _G.Mythic_Plus
-local Logo_GUI = _G.Logo_GUI
-local PayPal_GUI = _G.PayPal_GUI
-local PayPal_IMG = _G.PayPal_IMG
-local unpack = _G.unpack
-
 local GUI = {
-	unpack(Logo_GUI),
+	unpack(Zylla.Logo_GUI),
 	-- Header
 	{type = 'header',  	size = 16, text = 'Keybinds',	 																				align = 'center'},
 	{type = 'checkbox',	text = 'Left Shift: '..Zylla.ClassColor..'Pause|r',										align = 'left', 		key = 'lshift', 	default = true},
@@ -17,9 +10,9 @@ local GUI = {
 	{type = 'checkbox',	text = 'Right Alt: '..Zylla.ClassColor..'|r',													align = 'left', 		key = 'ralt', 		default = true},
 	{type = 'spacer'},
 --{type = 'checkbox', text = 'Enable Chatoverlay', 																					key = 'chat', 			width = 55, 			default = true, desc = Zylla.ClassColor..'This will enable some messages as an overlay!|r'},
-	unpack(PayPal_GUI),
+	unpack(Zylla.PayPal_GUI),
 	{type = 'spacer'},
-	unpack(PayPal_IMG),
+	unpack(Zylla.PayPal_IMG),
 	{type = 'ruler'},	 	{type = 'spacer'},
 	-- Settings
 	{type = 'header', 	text = 'Class Settings', 																							align = 'center'},
@@ -49,7 +42,7 @@ local GUI = {
 	{type = 'checkbox',	text = 'Dispel Party Members',																				key = 'disAll', 	default = true},
 	{type = 'checkbox', text = 'Use Blessing of Freedom', 																		key = 'G_BoF', 		default = false},
 	{type = 'ruler'},		{type = 'spacer'},
-	unpack(Mythic_GUI),
+	unpack(Zylla.Mythic_GUI),
 }
 
 local exeOnLoad = function()
@@ -166,7 +159,6 @@ local Templar = {
 	{'Templar\'s Verdict', 'debuff(Judgment)&player.buff(Whisper of the Nathrezim).duration<gcd*1.5&{{!talent(7,2)||player.buff(Crusade).duration>gcd*3}}', 'target'},
 	{'Templar\'s Verdict', 'player.holypower>=3&{player.spell(Judgment).cooldown&!debuff(Judgment)}', 'target'} -- Attempt to fix target-issue with Judgment
 }
-
 
 local Combat = {
 	{DS_Castable, 'player.area(6).enemies>=2||{player.buff(Scarlet Inquisitor\'s Expurgation).stack>=29}&{player.buff(Avenging Wrath)||{player.buff(Crusade).stack>=15}||{player.spell(Crusade).cooldown>15&!player.buff(Crusade)}||player.spell(Avenging Wrath).cooldown>15}'},

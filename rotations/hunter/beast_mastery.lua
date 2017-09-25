@@ -1,14 +1,7 @@
 local _, Zylla = ...
 
-local Mythic_GUI = _G.Mythic_GUI
-local Mythic_Plus = _G.Mythic_Plus
-local Logo_GUI = _G.Logo_GUI
-local PayPal_GUI = _G.PayPal_GUI
-local PayPal_IMG = _G.PayPal_IMG
-local unpack = _G.unpack
-
 local GUI = {
-	unpack(Logo_GUI),
+	unpack(Zylla.Logo_GUI),
 	-- Header
 	{type = 'header',  	size = 16, text = 'Keybinds',	 														align = 'center'},
 	{type = 'checkbox',	text = 'Left Shift: '..Zylla.ClassColor..'Pause|r',				align = 'left', 			key = 'lshift', 	default = true},
@@ -17,13 +10,16 @@ local GUI = {
 	{type = 'checkbox',	text = 'Right Alt: '..Zylla.ClassColor..'Freezing Trap|r',align = 'left', 			key = 'ralt', 		default = true},
 	{type = 'spacer'},
 --{type = 'checkbox', text = 'Enable Chatoverlay', 															key = 'chat', 				width = 55, 			default = true, desc = Zylla.ClassColor..'This will enable some messages as an overlay!|r'},
-	unpack(PayPal_GUI),
+	unpack(Zylla.PayPal_GUI),
 	{type = 'spacer'},
-	unpack(PayPal_IMG),
+	unpack(Zylla.PayPal_IMG),
 	{type = 'ruler'},	 	{type = 'spacer'},
 	-- Settings
 	{type = 'header', 	size = 16, text = 'Class Settings',												align = 'center'},
 	{type = 'checkbox', text = 'Enable DBM Integration',													key = 'kDBM', 				default = true},
+	{type = 'checkbox', text = 'Enable \'pre-potting\' and flasks',								key = 'prepot', 			default = false},
+	{type = 'combo',		default = "1",																						key = "list", 				list = Zylla.prepots, 	width = 175},
+	{type = 'spacer'},	{type = 'spacer'},
 	{type = 'checkspin',text = 'Light\'s Judgment - Units', 											key = 'LJ',						spin = 4,	step = 1,	max = 20, min = 1,	check = true,	desc = Zylla.ClassColor..'World Spell usable on Argus.|r'},
 	{type = 'checkbox', text = 'Summon Pet',									 										key = 'kPet', 				default = true},
 	{type = 'checkbox', text = 'Barrage Enabled',							 										key = 'kBarrage', 		default = false},
@@ -32,7 +28,7 @@ local GUI = {
 	{type = 'checkbox', text = 'Freezing Trap (Interrupt)' ,											key = 'FT_Int', 			default = false},
 	{type = 'checkbox', text = 'Tarnished Sentinel Medallion',										key = 'e_TSM', 				default = true},
 	{type = 'checkbox', text = 'Use Trinket #1', 																	key = 'trinket1',			default = true},
-	{type = 'checkbox', text = 'Use Trinket #2', 																	key = 'trinket2', 		default = true,			desc = Zylla.ClassColor..'Trinkets will be used whenever possible!|r'},
+	{type = 'checkbox', text = 'Use Trinket #2', 																	key = 'trinket2', 		default = true, desc = Zylla.ClassColor..'Trinkets will be used whenever possible!|r'},
 	{type = 'ruler'},	  {type = 'spacer'},
 	-- Survival
 	{type = 'header', 	size = 16, text = 'Survival',															align = 'center'},
@@ -43,7 +39,7 @@ local GUI = {
 	{type = 'checkspin',text = 'Aspect of the Turtle', 														key = 'AotT', 				spin = 20, check = true},
 	{type = 'checkspin',text = 'Feign Death (Legendary Healing) %',								key = 'FD',		 				spin = 16, check = true},
 	{type = 'ruler'},		{type = 'spacer'},
-	unpack(Mythic_GUI),
+	unpack(Zylla.Mythic_GUI),
 }
 
 local exeOnLoad = function()
@@ -76,6 +72,8 @@ local PreCombat = {
 	{'Call Pet 1', '!pet.exists&UI(kPet)', 'player'},
 	{'Volley', '{UI(kVolley)&toggle(aoe)&!buff}||{{buff&{!toggle(aoe)||!UI(kVolley)}}}', 'player'},
 	{'%pause', 'player.buff(Feign Death)'},
+	{'#142117', 'item(142117).usable&item(142117).count>0&UI(kDBM)&UI(prepot)&!buff&dbm(pull in)<3', 'player'}, --XXX: Potion of Prolonged Power
+	{'#127848', 'item(127848).usable&item(127848).count>0&UI(prepot)&!buff', 'player'}, 												--XXX: Flask of the Seventh Demon
 }
 
 local Keybinds = {

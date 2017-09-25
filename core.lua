@@ -1,53 +1,11 @@
 local _, Zylla = ...
-local NeP = _G.NeP
-local _G = _G
 
-local gsub = _G.gsub
-local UnitClass = _G.UnitClass
-local CreateFrame = _G.CreateFrame
-local UIParent = _G.UIParent
-local UnitIsAFK = _G.UnitIsAFK
-local C_PetBattles = _G.C_PetBattles
-local DEFAULT_CHAT_FRAME = _G.DEFAULT_CHAT_FRAME
-local UnitExists = _G.UnitExists
-local GetSpellInfo = _G.GetSpellInfo
-local GetNetStats = _G.GetNetStats
-local C_Timer = _G.C_Timer
-local RunMacroText = _G.RunMacroText
-local UnitBuff = _G.UnitBuff
-local UnitPower = _G.UnitPower
-local GetSpellPowerCost = _G.GetSpellPowerCost
-local UnitAttackPower = _G.UnitAttackPower
-local GetCombatRatingBonus = _G.GetCombatRatingBonus
-local GetVersatilityBonus = _G.GetVersatilityBonus
-local UnitHealth = _G.UnitHealth
-local UnitHealthMax = _G.UnitHealthMax
-local GetTalentInfo = _G.GetTalentInfo
-local IsEquippedItem = _G.IsEquippedItem
-local GetTime = _G.GetTime
-local UnitGUID = _G.UnitGUID
-local UnitIsDeadOrGhost = _G.UnitIsDeadOrGhost
-local UnitAffectingCombat = _G.UnitAffectingCombat
-local TravelSpeed = _G.TravelSpeed
-local UnitGetIncomingHeals = _G.UnitGetIncomingHeals
-local UnitGetTotalHealAbsorbs = _G.UnitGetTotalHealAbsorbs
-local UnitPlayerOrPetInParty = _G.UnitPlayerOrPetInParty
-local UnitIsUnit = _G.UnitIsUnit
-local UnitDebuff = _G.UnitDebuff
-local UnitStagger = _G.UnitStagger
-local rad = _G.rad
-local atan2 = _G.atan2
-local GetSpellCooldown = _G.GetSpellCooldown
-
---XXX: Travert into global space
-_G.Zylla = Zylla
-
-Zylla.Version = '2.1'
+Zylla.Version = '2.2'
 Zylla.Branch = 'RELEASE'
 Zylla.Name = 'NerdPack - Zylla\'s Rotations'
 Zylla.Author = 'Zylla'
 Zylla.addonColor = '8801C0'
-Zylla.ClassColor = '|cff'..NeP.Core:ClassColor('player', 'hex')
+Zylla.ClassColor = '|cff'..NeP.Core:ClassColor('player', 'hex')..''
 Zylla.wow_ver = '7.3.0'
 Zylla.nep_ver = '1.9'
 Zylla.spell_timers = {}
@@ -111,7 +69,7 @@ function Zylla.ExeOnUnload()
 end
 
 function Zylla.Donate()
-	_G.OpenURL(Zylla.DonateURL)
+	OpenURL(Zylla.DonateURL)
 end
 
 function Zylla.Round(num, idp)
@@ -146,18 +104,7 @@ function Zylla.ShortNumber(number)
   return string.format("%."..dec.."f"..affixes[affix], num1)
 end
 
---------------------------------------------------------------------------------
------------------------------- Auto Dotting ------------------------------------
---------------------------------------------------------------------------------
---/dump GetSpellInfo('Frostbolt')
---/dump UnitDebuff('target', 'Moonfire', "",'PLAYER')
---/dump UnitDebuff('target', 'Chilled', "",'PLAYER')
---spell='Rake', debuff='Infected Wound'
-
---local _,_,_,_,_,_,debuffDuration = UnitDebuff(Obj.key, debuff, '', 'PLAYER')
---if debuffDuration == nil then debuffDuration = 0 end
---if (debuffDuration - GetTime() < NeP.DSL:Get('gcd')()) then
---print('target: '..Obj.key..'duration: '..NeP.DSL:Get('debuff.duration')(Obj.key, debuff))
+--XXX: Auto Dotting
 
 function Zylla.AutoDoT(debuff,spellx)
   for _, Obj in pairs(NeP.OM:Get('Enemy')) do
@@ -169,13 +116,13 @@ function Zylla.AutoDoT(debuff,spellx)
         if maxRange == 0 then maxRange = 5 end
         --print('spell: '..spellx..' skill range: '..minRange..', '..maxRange..' obj range: '..objRange)
         if (NeP.DSL:Get('infront')(Obj.key) and objRange >= minRange and objRange <= maxRange) then
-          local travel_time = Zylla.Round((NeP.DSL:Get('travel_time')(Obj.key, spellx)), 3)
-          local _, _, _, lagWorld = GetNetStats()
-          local latency = ((((lagWorld / 1000) * 1.1) + (travel_time * 1.25)))
+          local Travel_Times = Zylla.Round((NeP.DSL:Get('travel_time')(Obj.key, spellx)), 3)
+          local _, _, _, lagWorld = GetNetStas()
+          local latency = ((((lagWorld / 1000) * 1.1) + (Travel_Times * 1.25)))
           local debuffDuration = NeP.DSL:Get('debuff.duration')(Obj.key, debuff)
           if (debuffDuration < (NeP.DSL:Get('gcd')() + latency + cast_time_sec)) then
             --print('debuff: '..debuff..' key: '..Obj.key..' duration: '..debuffDuration)
-            --print(' lag: '..(lagWorld / 1000)..' traveltime: '..travel_time..' latency: '..latency)
+            --print(' lag: '..(lagWorld / 1000)..' traveltime: '..Travel_Times..' latency: '..latency)
             C_Timer.After(latency, function ()
               if (debuffDuration < (NeP.DSL:Get('gcd')() + cast_time_sec)) then
                 --print('/run CastSpellByName("'..spellx..'","'..Obj.key..'")')
@@ -199,7 +146,7 @@ function Zylla.AutoDoT2(debuff)
 				local _,_,_,_, minRange, maxRange = GetSpellInfo(debuff)
 				if (NeP.DSL:Get('infront')(Obj.key) and objRange >= minRange and objRange <= maxRange) then
 					if (NeP.DSL:Get('debuff.duration')(Obj.key, debuff) < NeP.DSL:Get('gcd')()) then
-						local _, _, _, lagWorld = GetNetStats()
+						local _, _, _, lagWorld = GetNetStas()
 						local latency = lagWorld / 1000
 						C_Timer.After(latency, function ()
 							if (NeP.DSL:Get('debuff.duration')(Obj.key, debuff) < NeP.DSL:Get('gcd')()) then
@@ -215,9 +162,7 @@ function Zylla.AutoDoT2(debuff)
 	end
 end
 
---------------------------------------------------------------------------------
-----------------------------------ToolTips--------------------------------------
---------------------------------------------------------------------------------
+--XXX: Tooltips
 
 --/dump Zylla.Scan_SpellCost('Rake')
 function Zylla.Scan_SpellCost(spell)
@@ -234,8 +179,8 @@ end
 --/dump Zylla.Scan_IgnorePain()
 function Zylla.Scan_IgnorePain()
   for i = 1, 40 do
-    local qqq = select(11,UnitBuff('player', i))
-    if qqq == 190456 then
+    local debuff = select(11,UnitBuff('player', i))
+    if debuff == 190456 then
       Zframe:SetOwner(UIParent, 'ANCHOR_NONE')
       Zframe:SetUnitBuff('player', i)
       local tooltipText = _G['Zylla_ScanningTooltipTextLeft2']:GetText()
@@ -246,9 +191,7 @@ function Zylla.Scan_IgnorePain()
   return false
 end
 
---------------------------------------------------------------------------------
--------------------------------NeP HoT / DoT API -------------------------------
---------------------------------------------------------------------------------
+--XXX: NeP HoT / DoT API
 
 function Zylla.oFilter(owner, spell, spellID, caster)
   if not owner then
@@ -293,9 +236,7 @@ end
 return name, count, duration, expires, caster, power	-- This adds some random factor
 end
 
---------------------------------------------------------------------------------
--------------------------------- WARRIOR ---------------------------------------
---------------------------------------------------------------------------------
+--XXX: Warrior
 
 --/dump Zylla.getIgnorePain()
 function Zylla.getIgnorePain()
@@ -593,115 +534,14 @@ function Zylla.GetNumberSetPieces(set, class)
   return counter
 end
 
---------------------------------------------------------------------------------
--------------------------------- WARLOCK ---------------------------------------
---------------------------------------------------------------------------------
-
-Zylla.durations = {}
-Zylla.durations["Wild Imp"] = 12
-Zylla.durations["Dreadstalker"] = 12
-Zylla.durations["Imp"] = 25
-Zylla.durations["Felhunter"] = 25
-Zylla.durations["Succubus"] = 25
-Zylla.durations["Felguard"] = 25
-Zylla.durations["Darkglare"] = 12
-Zylla.durations["Doomguard"] = 25
-Zylla.durations["Infernal"] = 25
-Zylla.durations["Voidwalker"] = 25
-
-Zylla.active_demons = {}
-Zylla.empower = 0
-Zylla.demon_count = 0
-
-Zylla.minions = {"Wild Imp", "Dreadstalker", "Imp", "Felhunter", "Succubus", "Felguard", "Darkglare", "Doomguard", "Infernal", "Voidwalker"}
-
-function Zylla.update_demons()
-  --print('Zylla.update_demons')
-  for key,_ in pairs(Zylla.active_demons) do
-    if (Zylla.is_demon_dead(Zylla.active_demons[key].name, Zylla.active_demons[key].time)) then
-      Zylla.active_demons[key] = nil
-      Zylla.demon_count = Zylla.demon_count - 1
-      --Zylla.sort_demons()
-    end
-  end
-end
-
-function Zylla.is_demon_empowered(guid)
-  --print('Zylla.is_demon_empowered')
-  if (Zylla.active_demons[guid].empower_time ~= 0 and GetTime() - Zylla.active_demons[guid].empower_time <= 12) then
-    return true
-  end
-  return false
-end
-
-function Zylla.count_active_demon_type(demon)
-  --print('Zylla.count_active_demon_type')
-  local count = 0
-  for _,v in pairs(Zylla.active_demons) do
-    if v.name == demon then
-      count = count + 1
-    end
-  end
-  return count
-end
-
-function Zylla.remaining_duration(demon)
-  --print('Zylla.remaining_duration')
-  for _,v in pairs(Zylla.active_demons) do
-    if v.name == demon then
-      return Zylla.get_remaining_time(v.name, v.time)
-    end
-  end
-end
-
-function Zylla.implosion_cast()
-  --print('Zylla.implosion_cast')
-  for key,_ in pairs(Zylla.active_demons) do
-    if (Zylla.active_demons[key].name == "Wild Imp") then
-      Zylla.active_demons[key] = nil
-      Zylla.demon_count = Zylla.demon_count - 1
-      --Zylla.sort_demons()
-    end
-  end
-end
-
-function Zylla.is_demon_dead(name, spawn)
-  --print('Zylla.is_demon_dead')
-  if (Zylla.get_remaining_time(name, spawn) <= 0) then
-    return true
-  end
-  return false
-end
-
-function Zylla.get_remaining_time(name, spawn)
-  --print('Zylla.get_remaining_time')
-  if name == 'Empower' then
-    return 12 - (GetTime() - spawn)
-  else
-    return Zylla.durations[name] - (GetTime() - spawn)
-  end
-end
-
-function Zylla.IsMinion(name)
-  --print('Zylla.IsMinion')
-  for i = 1, #Zylla.minions do
-    if (name == Zylla.minions[i]) then
-      return true
-    end
-  end
-  return false
-end
-
---------------------------------------------------------------------------------
---------------------------------- PRIEST ---------------------------------------
---------------------------------------------------------------------------------
+--XXX: Priest
 
 Zylla.Voidform_Summary = true
 Zylla.S2M_Summary = true
 
---Zylla.Voidform_Drain_Stacks = 0
---Zylla.Voidform_Current_Drain_Rate = 0
---Zylla.SA_TOTAL = 0
+Zylla.Voidform_Drain_Stacks = 0
+Zylla.Voidform_Current_Drain_Rate = 0
+Zylla.SA_TOTAL = 0
 
 function Zylla.SA_Cleanup(guid)
   if Zylla.SA_STATS[guid] then
@@ -719,252 +559,7 @@ function Zylla.SA_Cleanup(guid)
   end
 end
 
-NeP.Listener:Add('Zylla.SA', 'COMBAT_LOG_EVENT_UNFILTERED', function(_,combatevent,_,sourceGUID,_,_,_,destGUID,_,_,_,spellid,_,_,_,_,_,_,_,_,_,_,_,_,_)
-  if Zylla.class == 5 then
-    local CurrentTime = GetTime()
-    Zylla.SA_NUM_UNITS = Zylla.SA_NUM_UNITS or 0
-    Zylla.SA_TOTAL     = Zylla.SA_TOTAL or 0
-    -- Stats buffer
-    Zylla.SA_STATS     = Zylla.SA_STATS or {}
-    Zylla.SA_DEAD      = Zylla.SA_DEAD or {}
-    Zylla.LAST_CONTINUITY_CHECK = Zylla.LAST_CONTINUITY_CHECK or GetTime()
-    if sourceGUID == UnitGUID("player") then
-      if spellid == 147193 and combatevent == "SPELL_CAST_SUCCESS" then -- Shadowy Apparition Spawned
-        if not Zylla.SA_STATS[destGUID] or Zylla.SA_STATS[destGUID] == nil then
-          Zylla.SA_STATS[destGUID]       = {}
-          Zylla.SA_STATS[destGUID].Count = 0
-          Zylla.SA_NUM_UNITS             = Zylla.SA_NUM_UNITS + 1
-      end
-      Zylla.SA_TOTAL = Zylla.SA_TOTAL + 1
-      --print('SA spawn :'..Zylla.SA_TOTAL..' remaining SA')
-      Zylla.SA_STATS[destGUID].Count      = Zylla.SA_STATS[destGUID].Count + 1
-      Zylla.SA_STATS[destGUID].LastUpdate = CurrentTime
-      elseif spellid == 148859 and combatevent == "SPELL_DAMAGE" then --Auspicious Spirit Hit
-        if Zylla.SA_TOTAL < 0 then
-          Zylla.SA_TOTAL = 0
-      else
-        Zylla.SA_TOTAL = Zylla.SA_TOTAL - 1
-      end
-      --print('SA hit :'..Zylla.SA_TOTAL..' remaining SA')
-      if Zylla.SA_STATS[destGUID] and Zylla.SA_STATS[destGUID].Count > 0 then
-        Zylla.SA_STATS[destGUID].Count      = Zylla.SA_STATS[destGUID].Count - 1
-        Zylla.SA_STATS[destGUID].LastUpdate = CurrentTime
-        if Zylla.SA_STATS[destGUID].Count <= 0 then
-          Zylla.SA_Cleanup(destGUID)
-        end
-      end
-      end
-    end
-    if Zylla.SA_TOTAL < 0 then
-      Zylla.SA_TOTAL = 0
-    end
-    for guid,_ in pairs(Zylla.SA_STATS) do
-      if (CurrentTime - Zylla.SA_STATS[guid].LastUpdate) > 10 then
-        --If we haven't had a new SA spawn in 10sec, that means all SAs that are out have hit the target (usually), or, the target disappeared.
-        Zylla.SA_Cleanup(guid)
-      end
-    end
-    if (combatevent == "UNIT_DIED" or combatevent == "UNIT_DESTROYED" or combatevent == "SPELL_INSTAKILL") then -- Unit Died, remove them from the target list.
-      Zylla.SA_Cleanup(destGUID)
-    end
-
-    if UnitIsDeadOrGhost("player") or not UnitAffectingCombat("player") then -- We died, or, exited combat, go ahead and purge the list
-      for guid,_ in pairs(Zylla.SA_STATS) do
-        Zylla.SA_Cleanup(guid)
-    end
-    Zylla.SA_STATS     = {}
-    Zylla.SA_NUM_UNITS = 0
-    Zylla.SA_TOTAL     = 0
-    end
-    if CurrentTime - Zylla.LAST_CONTINUITY_CHECK > 10 then --Force check of unit count every 10sec
-      local newUnits = 0
-      for _,_ in pairs(Zylla.SA_STATS) do
-        newUnits = newUnits + 1
-      end
-      Zylla.SA_NUM_UNITS          = newUnits
-      Zylla.LAST_CONTINUITY_CHECK = CurrentTime
-    end
-    if Zylla.SA_NUM_UNITS > 0 then
-      local totalSAs = 0
-      for guid,_ in pairs(Zylla.SA_STATS) do
-        if Zylla.SA_STATS[guid].Count <= 0 or (UnitIsDeadOrGhost(guid)) then
-          Zylla.SA_DEAD[guid] = true
-        else
-          totalSAs = totalSAs + Zylla.SA_STATS[guid].Count
-        end
-      end
-      if totalSAs > 0 and Zylla.SA_TOTAL > 0 then
-        return true
-      end
-    end
-    return false
-  end
-end)
-
-NeP.Listener:Add('Zylla_VF_S2M', 'COMBAT_LOG_EVENT_UNFILTERED', function(_,combatevent,_,sourceGUID,_,_,_,destGUID,_,_,_,spellid,_,_,_,_,_,_,_,_,_,_,_,_,_)
-  if Zylla.class == 5 then
-    local CurrentTime = GetTime()
-    Zylla.Voidform_Total_Stacks        = Zylla.Voidform_Total_Stacks or 0
-    Zylla.Voidform_Previous_Stack_Time = Zylla.Voidform_Previous_Stack_Time or 0
-    Zylla.Voidform_Drain_Stacks        = Zylla.Voidform_Drain_Stacks or 0
-    Zylla.Voidform_VoidTorrent_Stacks  = Zylla.Voidform_VoidTorrent_Stacks or 0
-    Zylla.Voidform_Dispersion_Stacks   = Zylla.Voidform_Dispersion_Stacks or 0
-    Zylla.Voidform_Current_Drain_Rate  = Zylla.Voidform_Current_Drain_Rate or 0
-    if Zylla.Voidform_Total_Stacks >= 100 then
-      if (CurrentTime - Zylla.Voidform_Previous_Stack_Time) >= 1 then
-        Zylla.Voidform_Previous_Stack_Time  = CurrentTime
-        Zylla.Voidform_Total_Stacks         = Zylla.Voidform_Total_Stacks + 1
-        if Zylla.Voidform_VoidTorrent_Start == nil and Zylla.Voidform_Dispersion_Start == nil then
-          Zylla.Voidform_Drain_Stacks       = Zylla.Voidform_Drain_Stacks + 1
-          -- print('Zylla.Voidform_Drain_Stacks1: '..Zylla.Voidform_Drain_Stacks)
-          Zylla.Voidform_Current_Drain_Rate = (9.0 + ((Zylla.Voidform_Drain_Stacks - 1) / 2))
-          -- print('Zylla.Voidform_Current_Drain_Rate1: '..Zylla.Voidform_Current_Drain_Rate)
-        elseif Zylla.Voidform_VoidTorrent_Start ~= nil then
-          Zylla.Voidform_VoidTorrent_Stacks = Zylla.Voidform_VoidTorrent_Stacks + 1
-        else
-          Zylla.Voidform_Dispersion_Stacks  = Zylla.Voidform_Dispersion_Stacks + 1
-        end
-      end
-    end
-    if sourceGUID == UnitGUID("player") then
-      if spellid == 194249 then
-        if combatevent == "SPELL_AURA_APPLIED" then -- Entered Voidform
-          Zylla.Voidform_Previous_Stack_Time = CurrentTime
-          Zylla.Voidform_VoidTorrent_Start   = nil
-          Zylla.Voidform_Dispersion_Start    = nil
-          Zylla.Voidform_Drain_Stacks        = 1
-          Zylla.Voidform_Start_Time          = CurrentTime
-          Zylla.Voidform_Total_Stacks        = 1
-          Zylla.Voidform_VoidTorrent_Stacks  = 0
-          Zylla.Voidform_Dispersion_Stacks   = 0
-        elseif combatevent == "SPELL_AURA_APPLIED_DOSE" then -- New Voidform Stack
-          Zylla.Voidform_Previous_Stack_Time  = CurrentTime
-          Zylla.Voidform_Total_Stacks         = Zylla.Voidform_Total_Stacks + 1
-          if Zylla.Voidform_VoidTorrent_Start == nil and Zylla.Voidform_Dispersion_Start == nil then
-            Zylla.Voidform_Drain_Stacks       = Zylla.Voidform_Drain_Stacks + 1
-            -- print('Zylla.Voidform_Drain_Stacks2: '..Zylla.Voidform_Drain_Stacks)
-            Zylla.Voidform_Current_Drain_Rate = (9.0 + ((Zylla.Voidform_Drain_Stacks - 1) / 2))
-            -- print('Zylla.Voidform_Current_Drain_Rate2: '..Zylla.Voidform_Current_Drain_Rate)
-          elseif Zylla.Voidform_VoidTorrent_Start ~= nil then
-            Zylla.Voidform_VoidTorrent_Stacks = Zylla.Voidform_VoidTorrent_Stacks + 1
-          else
-            Zylla.Voidform_Dispersion_Stacks  = Zylla.Voidform_Dispersion_Stacks + 1
-          end
-        elseif combatevent == "SPELL_AURA_REMOVED" then -- Exited Voidform
-          if Zylla.Voidform_Summary == true then
-            print("Voidform Info:")
-            print("--------------------------")
-            print(string.format("Voidform Duration: %.2f seconds", (CurrentTime-Zylla.Voidform_Start_Time)))
-            if Zylla.Voidform_Total_Stacks > 100 then
-              print(string.format("Voidform Stacks: 100 (+%.0f)", (Zylla.Voidform_Total_Stacks - 100)))
-            else
-              print(string.format("Voidform Stacks: %.0f", Zylla.Voidform_Total_Stacks))
-            end
-            print(string.format("Dispersion Stacks: %.0f", Zylla.Voidform_Dispersion_Stacks))
-            print(string.format("Void Torrent Stacks: %.0f", Zylla.Voidform_VoidTorrent_Stacks))
-            print("Final Drain: "..Zylla.Voidform_Drain_Stacks.." stacks, "..Zylla.Voidform_Current_Drain_Rate.." / sec")
-        end
-        Zylla.Voidform_VoidTorrent_Start  = nil
-        Zylla.Voidform_Dispersion_Start   = nil
-        Zylla.Voidform_Drain_Stacks       = 0
-        Zylla.Voidform_Current_Drain_Rate = 0
-        Zylla.Voidform_Start_Time         = nil
-        Zylla.Voidform_Total_Stacks       = 0
-        Zylla.Voidform_VoidTorrent_Stacks = 0
-        Zylla.Voidform_Dispersion_Stacks  = 0
-        end
-
-      elseif spellid == 205065 then
-        if combatevent == "SPELL_AURA_APPLIED" then -- Started channeling Void Torrent
-          Zylla.Voidform_VoidTorrent_Start = CurrentTime
-        elseif combatevent == "SPELL_AURA_REMOVED" and Zylla.Voidform_VoidTorrent_Start ~= nil then -- Stopped channeling Void Torrent
-          Zylla.Voidform_VoidTorrent_Start = nil
-        end
-
-      elseif spellid == 47585 then
-        if combatevent == "SPELL_AURA_APPLIED" then -- Started channeling Dispersion
-          Zylla.Voidform_Dispersion_Start  = CurrentTime
-        elseif combatevent == "SPELL_AURA_REMOVED" and Zylla.Voidform_Dispersion_Start ~= nil then -- Stopped channeling Dispersion
-          Zylla.Voidform_Dispersion_Start  = nil
-        end
-
-      elseif spellid == 212570 then
-        if combatevent == "SPELL_AURA_APPLIED" then -- Gain Surrender to Madness
-          Zylla.Voidform_S2M_Activated     = true
-          Zylla.Voidform_S2M_Start         = CurrentTime
-        elseif combatevent == "SPELL_AURA_REMOVED" then -- Lose Surrender to Madness
-          Zylla.Voidform_S2M_Activated     = false
-        end
-      end
-
-    elseif destGUID == UnitGUID("player") and (combatevent == "UNIT_DIED" or combatevent == "UNIT_DESTROYED" or combatevent == "SPELL_INSTAKILL") and Zylla.Voidform_S2M_Activated == true then
-      Zylla.Voidform_S2M_Activated = false
-      if Zylla.S2M_Summary == true then
-        print("Surrender to Madness Info:")
-        print("--------------------------")
-        print(string.format("S2M Duration: %.2f seconds", (CurrentTime-Zylla.Voidform_S2M_Start)))
-        print(string.format("Voidform Duration: %.2f seconds", (CurrentTime-Zylla.Voidform_Start_Time)))
-        if Zylla.Voidform_Total_Stacks > 100 then
-          print(string.format("Voidform Stacks: 100 (+%.0f)", (Zylla.Voidform_Total_Stacks - 100)))
-        else
-          print(string.format("Voidform Stacks: %.0f", Zylla.Voidform_Total_Stacks))
-        end
-        print(string.format("Dispersion Stacks: %.0f", Zylla.Voidform_Dispersion_Stacks))
-        print(string.format("Void Torrent Stacks: %.0f", Zylla.Voidform_VoidTorrent_Stacks))
-        print("Final Drain: "..Zylla.Voidform_Drain_Stacks.." stacks, "..Zylla.Voidform_Current_Drain_Rate.." / sec")
-      end
-      Zylla.Voidform_S2M_Start          = nil
-      Zylla.Voidform_VoidTorrent_Start  = nil
-      Zylla.Voidform_Dispersion_Start   = nil
-      Zylla.Voidform_Drain_Stacks       = 0
-      Zylla.Voidform_Current_Drain_Rate = 0
-      Zylla.Voidform_Start_Time         = nil
-      Zylla.Voidform_Total_Stacks       = 0
-      Zylla.Voidform_VoidTorrent_Stacks = 0
-      Zylla.Voidform_Dispersion_Stacks  = 0
-    end
-  end
-end)
-
---------------------------------------------------------------------------------
---------------------------------- DEMON HUNTER ---------------------------------
---------------------------------------------------------------------------------
--- COMMENTED OUT FOR THE TIME BEING
---[[
-local Zylla.castable.felRush = false
-local cast.felRush() = false
-local Zylla.castable.vengefulRetreat = false
-Zylla.cast.vengefulRetreat() = false
-
-local function Zylla.cancelRush()
-	if Zylla.castable.felRush and GetUnitSpeed("player") == 0 then
-		MoveBackwardStart()
-		JumpOrAscendStart()
-		cast.felRush()
-		MoveBackwardStop()
-		AscendStop()
-	end
-		return
-end
-
-local function Zylla.cancelRetreat()
-	if Zylla.castable.vengefulRetreat then
-		-- C_Timer.After(.001, function() HackEnabled("NoKnockback", true) end)
-		-- C_Timer.After(.35, function() cast.vengefulRetreat() end)
-		-- C_Timer.After(.55, function() HackEnabled("NoKnockback", false) end)
-		HackEnabled("NoKnockback", true)
-		if Zylla.cast.vengefulRetreat() then HackEnabled("NoKnockback", false) end
-	end
-	return
-end
-if HackEnabled("NoKnockback") then HackEnabled("NoKnockback", false) end
-]]--
-
---------------------------------------------------------------------------------
---------------------------------- DRUID ----------------------------------------
---------------------------------------------------------------------------------
-
---Feral
+--XXX: Druid
 
 Zylla.f_pguid = UnitGUID("player")
 Zylla.f_cp = 0
@@ -1090,152 +685,12 @@ function Zylla.f_cancelCleanUp()
   end
 end
 
-NeP.Listener:Add('Zylla_f_update1', 'ZONE_CHANGED_NEW_AREA', function()
-  if Zylla.class == 11 then
-    Zylla.f_update()
-  end
-end)
-
-NeP.Listener:Add('Zylla_f_update2', 'ACTIVE_TALENT_GROUP_CHANGED', function()
-  if Zylla.class == 11 then
-    Zylla.f_update()
-  end
-end)
-
-NeP.Listener:Add('Zylla_f_updateDmg', 'UNIT_POWER', function(unit, type)
-  if Zylla.class == 11 then
-    if unit == "player" and type == "COMBO_POINTS" then
-      Zylla.f_updateDmg()
-    end
-  end
-end)
-
-NeP.Listener:Add('Zylla_f_Snapshot', 'COMBAT_LOG_EVENT_UNFILTERED', function(_, combatevent, _, sourceGUID, _,_,_, destGUID, _,_,_, spellID)
-  if Zylla.class == 11 then
-    --This trigger listens for bleed events to record snapshots.
-    --This trigger also listens for changes in buffs to recalculate bleed damage.
-
-    --Check for only relevant player events
-    if not Zylla.f_buffID[spellID] and not Zylla.f_debuffID[spellID] then return end
-    if not Zylla.f_events[combatevent] then return end
-    if sourceGUID ~= Zylla.f_pguid then return end
-
-    --Handle AURA_APPLY and AURA_REFRESH as the same event type
-    if combatevent == "SPELL_AURA_REFRESH" then combatevent = "SPELL_AURA_APPLIED" end
-
-    --Convert rake stun events into rake casts to handle corner case with prowl+rake
-    if spellID == 163505 and (combatevent=="SPELL_MISSED" or combatevent=="SPELL_AURA_APPLIED") then
-      spellID = 1822
-      combatevent = "SPELL_CAST_SUCCESS"
-    end
-
-    --Listen for buff changes on player that affect snapshots
-    if destGUID == Zylla.f_pguid then
-      if combatevent == "SPELL_AURA_APPLIED" then Zylla.f_update() return
-      elseif combatevent == "SPELL_AURA_REMOVED" then
-        local spellName = Zylla.f_buffID[spellID]
-        local dur = 0
-        --Add small timing window for buffs that can expire before cast
-        if spellName == "bloodtalons" then dur    = 0.1
-        elseif spellName == "prowl" then dur      = 0.1
-        elseif spellName == "shadowmeld" then dur = 0.1
-        end
-
-        if spellName then
-          Zylla.f_buffs[spellName] = GetTime() + dur
-          Zylla.f_nextUpdateDmg    = GetTime() + dur + 0.01
-          return
-        end
-      end
-    end
-
-    -- The following code handles application and expiration of bleeds
-
-    -- 1. Snapshot dmg on spell cast success
-    local fs = Zylla.f_Snapshots
-    if combatevent == "SPELL_CAST_SUCCESS" then
-      local spellName
-      if spellID == 1822 then spellName       = "rake"
-      elseif spellID == 1079 then spellName   = "rip"
-      elseif spellID == 106830 then spellName = "thrash"
-      elseif spellID == 155625 then spellName = "moonfire"
-      end
-
-      if spellName then
-        Zylla.f_update()
-        fs[spellName]["onCast"] = fs[spellName]["current"]
-        return
-      end
-
-      --2. Record snapshot for target if and when the bleed is applied
-    elseif combatevent == "SPELL_AURA_APPLIED" then
-      local spellName
-      if spellID == 155722 then spellName     = "rake"
-      elseif spellID == 1079 then spellName   = "rip"
-      elseif spellID == 106830 then spellName = "thrash"
-      elseif spellID == 155625 then spellName = "moonfire"
-      end
-
-      if spellName then
-        fs[spellName][destGUID] = fs[spellName]["onCast"]
-        return
-      end
-
-      --3. Remove snapshot for target when bleed expires
-    elseif combatevent == "SPELL_AURA_REMOVED" then
-      local spellName
-      if spellID == 155722 then spellName     = "rake"
-      elseif spellID == 1079 then spellName   = "rip"
-      elseif spellID == 106830 then spellName = "thrash"
-      elseif spellID == 155625 then spellName = "moonfire"
-      end
-
-      if spellName then
-        fs[spellName][destGUID] = nil
-        return
-      end
-    end
-  end
-end)
-
-NeP.Listener:Add('Zylla_OutOfCombat', 'PLAYER_REGEN_ENABLED', function()
-  if Zylla.class == 9 then
-    --This trigger manages clean up of snapshots when it is safe to do so
-    --1. Schedule cleanup of snapshots when combat ends
-    Zylla.f_cleanUp()
-  end
-end)
-
-NeP.Listener:Add('Zylla_InCombat', 'PLAYER_REGEN_DISABLED', function()
-  if Zylla.class == 9 then
-    --2. Check for and cancel scheduled cleanup when combat starts
-    Zylla.f_cancelCleanUp()
-
-    C_Timer.NewTicker(1.5, (function()
-      --This trigger runs the update function if there have been no updates recently
-      --due to a lack of relevant combat events.
-      if not UnitIsDeadOrGhost("player") and (UnitAffectingCombat("player")) then
-        if GetTime() - Zylla.f_lastUpdate >= 3 then Zylla.f_update() end
-        --if GetTime() - Zylla.lastDmgUpdate >= 0.045 then Zylla.f_updateDmg() end
-        if Zylla.f_nextUpdateDmg and GetTime() > Zylla.f_nextUpdateDmg then
-          Zylla.f_nextUpdateDmg = nil
-          Zylla.f_updateDmg()
-        end
-      end
-    end), nil)
-  end
-end)
-
---Guardian--
-
---------------------------------------------------------------------------------
--------------------------------- TRAVEL SPEED-----------------------------------
---------------------------------------------------------------------------------
+--XXX: Travel Speed
 
 -- List of known spells travel-speed. Non charted spells will be considered traveling 40 yards/s
 -- To recover travel speed, open up /eventtrace, calculate difference between SPELL_CAST_SUCCESS and SPELL_DAMAGE events
 
-local Travel_Chart = {
+Zylla.Travel_Times = {
   [116]    = 23.174,  -- Frostbolt
   [228597] = 23.174,  -- Frostbolt
   [133]    = 45.805,  -- Fireball
@@ -1254,29 +709,25 @@ local Travel_Chart = {
 -- Return the time a spell will need to travel to the current target
 function Zylla.TravelTime(unit, spell)
   local spellID = NeP.Core:GetSpellID(spell)
-  if Travel_Chart[spellID] then
-    TravelSpeed = Travel_Chart[spellID]
-    return NeP.DSL:Get("distance")(unit) / TravelSpeed
+  if Zylla.Travel_Times[spellID] then
+    local Travel_Speed = Zylla.Travel_Times[spellID]
+    return NeP.DSL:Get("distance")(unit) / Travel_Speed
   else
     return 0
   end
 end
 
----------------------------
--- Gabbz fake units + misc
----------------------------
-
 Zylla.flySpells = {
-	 [0]    =  90267, -- Eastern Kingdoms = Flight Master's License
-	 [1]    =  90267, -- Kalimdor         = Flight Master's License
-	 [646]  =  90267, -- Deepholm         = Flight Master's License
-	 [571]  =  54197, -- Northrend        = Cold Weather Flying
-	 [870]  = 115913, -- Pandaria         = Wisdom of the Four Winds
-	 [1116] = 191645, -- Draenor          = Draenor Pathfinder
-	 [1464] = 191645, -- Tanaan Jungle    = Draenor Pathfinder
-	 [1191] = -1, -- Ashran - World PvP
-	 [1265] = -1, -- Tanaan Jungle Intro
-	 [1220] = 233368, -- Broken Isles     = Broken Isles Pathfinder Rank 2
+	 [0]    =  90267,  -- Eastern Kingdoms = Flight Master's License
+	 [1]    =  90267,  -- Kalimdor         = Flight Master's License
+	 [646]  =  90267,  -- Deepholm         = Flight Master's License
+	 [571]  =  54197,  -- Northrend        = Cold Weather Flying
+	 [870]  = 115913,  -- Pandaria         = Wisdom of the Four Winds
+	 [1116] = 191645,  -- Draenor          = Draenor Pathfinder
+	 [1464] = 191645,  -- Tanaan Jungle    = Draenor Pathfinder
+	 [1191] = -1,      -- Ashran - World PvP
+	 [1265] = -1,      -- Tanaan Jungle Intro
+	 [1220] = 233368,  -- Broken Isles     = Broken Isles Pathfinder Rank 2
 }
 
 function Zylla.dynEval(condition, spell)
@@ -1286,39 +737,6 @@ end
 function Zylla.GetPredictedHealth(unit)
   return UnitHealth(unit)-(UnitGetTotalHealAbsorbs(unit) or 0)+(UnitGetIncomingHeals(unit) or 0)
 end
-
--- Lowest
-NeP.FakeUnits:Add('healingCandidate', function(nump)
-  local tempTable = {}
-  local num = nump or 1
-
-  for _, Obj in pairs(NeP.OM:Get('Friendly')) do
-    if UnitPlayerOrPetInParty(Obj.key) or UnitIsUnit('player', Obj.key) then
-      local healthRaw = Zylla.GetPredictedHealth(Obj.key)
-      local maxHealth = UnitHealthMax(Obj.key)
-      local healthPercent =  (healthRaw / maxHealth) * 100
-      tempTable[#tempTable+1] = {
-        key = Obj.key,
-        health = healthPercent,
-      }
-    end
-  end
-  table.sort( tempTable, function(a,b) return a.health < b.health end )
-  print("Zylla Unit: " ..tempTable[num].key .." Health: " ..tempTable[num].health)
-  return tempTable[num].key
-end)
-
-
-NeP.DSL:Register("area.enemiesheals", function(unit, distance)
-  local total = 0
-  if not UnitExists(unit) then return total end
-  for _, Obj in pairs(NeP.OM:Get('Enemy')) do
-    if NeP.DSL:Get('combat')(Obj.key) and NeP.Protected.Distance(unit, Obj.key) <= tonumber(distance) then
-      total = total +1
-    end
-  end
-  return total
-end)
 
 function Zylla.NrHealsAroundFriendly(healthp, distance, unit)
   local health = healthp
@@ -1333,10 +751,6 @@ function Zylla.NrHealsAroundFriendly(healthp, distance, unit)
   return total
 end
 
--------------------------
--- Gabbz END
--------------------------
-
 function Zylla.tt()
   if NeP.Unlocked and UnitAffectingCombat('player') and not NeP.DSL:Get('casting')('player', 'Fists of Fury') then
     NeP:Queue('Transcendence: Transfer', 'player')
@@ -1348,133 +762,3 @@ function Zylla.ts()
     NeP:Queue('Transcendence', 'player')
   end
 end
-
-NeP.FakeUnits:Add('Zylla_sck', function(debuff)
-  for _, Obj in pairs(NeP.OM:Get('Enemy')) do
-    if UnitExists(Obj.key) then
-      if (NeP.DSL:Get('combat')(Obj.key) or Obj.isdummy) then
-        if (NeP.DSL:Get('infront')(Obj.key) and NeP.DSL:Get('inMelee')(Obj.key)) then
-          local _,_,_,_,_,_,debuffDuration = UnitDebuff(Obj.key, debuff, nil, 'PLAYER')
-          if not debuffDuration or debuffDuration - GetTime() < 1.5 then
-            --print("Zylla_sck: returning "..Obj.name.." ("..Obj.key.." - "..Obj.guid..' :'..time()..")");
-            return Obj.key
-          end
-        end
-      end
-    end
-  end
-end)
-
-NeP.Library:Add('Zylla', {
-
-  hitcombo = function(_, spell)
-    local HitComboLastCast = ''
-    if not spell then return true end
-    local _, _, _, _, _, _, spellID = GetSpellInfo(spell)
-    if NeP.DSL:Get('buff')('player', 'Hit Combo') then
-      -- We're using hit-combo and we need to check if the spell we've passed is in the list
-      if HitComboLastCast == spellID then
-        -- If the passed spell is in the list as flagged, we need to return false and exit
-        --print('hitcombo('..spell..') and it is was flagged ('..HitComboLastCast..'), returning false');
-        return false
-      end
-    end
-    return true
-  end,
-
-	face = function(target)
-		local ax, ay = _G.ObjectPosition('player')
-		local bx, by = _G.ObjectPosition(target)
-		if not ax or not bx then return end
-		local angle = rad(atan2(by - ay, bx - ax))
-		if angle < 0 then
-			_G.FaceDirection(angle + 360)
-		else
-			_G.FaceDirection(angle + 360)
-		end
-	end,
---[[
-  sef = function()
-    local SEF_Fixate_Casted = false
-    if NeP.DSL:Get('buff')('player', 'Storm, Earth, and Fire') then
-      if SEF_Fixate_Casted then
-        return false
-      else
-        SEF_Fixate_Casted = true
-        return true
-      end
-    else
-      SEF_Fixate_Casted = false
-    end
-    return false
-  end,
-]]--
-  staggered = function()
-    local stagger = UnitStagger("player");
-    local percentOfHealth = (100/UnitHealthMax("player")*stagger);
-    -- TODO: We are targetting 4.5% stagger value - too low?  I think we used 25% or heavy stagger before as the trigger
-    if (percentOfHealth > 4.5) or UnitDebuff("player", GetSpellInfo(124273)) then
-      return true
-    end
-    return false
-  end,
-
-  purifyingCapped = function()
-    local MaxBrewCharges = 3
-    if NeP.DSL:Get('talent')(nil, '3,1') then
-      MaxBrewCharges = MaxBrewCharges + 1
-    end
-    if (NeP.DSL:Get('spell.charges')('player', 'Purifying Brew') == MaxBrewCharges) or ((NeP.DSL:Get('spell.charges')('player', 'Purifying Brew') == MaxBrewCharges - 1) and NeP.DSL:Get('spell.recharge')('player', 'Purifying Brew') < 3 ) then
-      return true
-    end
-    return false
-  end,
-
-	rollingbones = function()
-		local int = 0
-    local bearing = false
-    local shark = false
-    -- Shark Infested Waters
-    if UnitBuff('player', GetSpellInfo(193357)) then
-        shark = true
-        int = int + 1
-    end
-    -- True Bearing
-    if UnitBuff('player', GetSpellInfo(193359)) then
-        bearing = true
-        int = int + 1
-    end
-    -- Jolly Roger
-    if UnitBuff('player', GetSpellInfo(199603)) then
-        int = int + 1
-    end
-    -- Grand Melee
-    if UnitBuff('player', GetSpellInfo(193358)) then
-        int = int + 1
-    end
-    -- Buried Treasure
-    if UnitBuff('player', GetSpellInfo(199600)) then
-        int = int + 1
-    end
-    -- Broadsides
-    if UnitBuff('player', GetSpellInfo(193356)) then
-        int = int + 1
-    end
-    -- If all six buffs are active:
-    if int == 6 then
-        return true --"LEEEROY JENKINS!"
-    -- If two or Shark/Bearing and AR/Curse active:
-    elseif int == 2 or int == 3 or ((bearing or shark) and ((UnitBuff("player", GetSpellInfo(13750)) or UnitDebuff("player", GetSpellInfo(202665))))) then
-        return true --"Keep."
-	-- If only Shark or True Bearing and CDs ready
-    elseif (bearing or shark) and ((GetSpellCooldown(13750) == 0) or (GetSpellCooldown(202665) == 0)) then
-        return true --"AR/Curse NOW and keep!"
-	--if we have only ONE bad buff BUT AR/curse is active:
-    elseif int ==1 and ((UnitBuff("player", GetSpellInfo(13750)) or UnitDebuff("player", GetSpellInfo(202665)))) then
-        return true
-	-- If only one bad buff:
-    else return false	--"Reroll now!"
-    end
-	end,
-
-})

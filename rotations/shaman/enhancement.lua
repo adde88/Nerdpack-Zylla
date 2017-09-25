@@ -1,14 +1,7 @@
 local _, Zylla = ...
 
-local Mythic_GUI = _G.Mythic_GUI
-local Mythic_Plus = _G.Mythic_Plus
-local Logo_GUI = _G.Logo_GUI
-local PayPal_GUI = _G.PayPal_GUI
-local PayPal_IMG = _G.PayPal_IMG
-local unpack = _G.unpack
-
 local GUI = {
-	unpack(Logo_GUI),
+	unpack(Zylla.Logo_GUI),
 	-- Header
 	{type = 'header',  	size = 16, text = 'Keybinds',	 																			align = 'center'},
 	{type = 'checkbox',	text = 'Left Shift: '..Zylla.ClassColor..'Pause|r',									align = 'left', 				key = 'lshift', 	default = true},
@@ -17,9 +10,9 @@ local GUI = {
 	{type = 'checkbox',	text = 'Right Alt: '..Zylla.ClassColor..'|r',												align = 'left', 				key = 'ralt', 		default = true},
 	{type = 'spacer'},
 --{type = 'checkbox', text = 'Enable Chatoverlay', 																				key = 'chat', 					width = 55, 			default = true, desc = Zylla.ClassColor..'This will enable some messages as an overlay!|r'},
-	unpack(PayPal_GUI),
+	unpack(Zylla.PayPal_GUI),
 	{type = 'spacer'},
-	unpack(PayPal_IMG),
+	unpack(Zylla.PayPal_IMG),
 	{type = 'ruler'},	 	{type = 'spacer'},
 	-- Settings
 	{type = 'header', 	size = 16, text = 'Class Settings',							 										align = 'center'},
@@ -43,7 +36,7 @@ local GUI = {
 	{type = 'checkbox', text = 'Use Rainfall to Heal Party',																key = 'E_HEAL_RF',     default = false},
 	{type = 'spinner', 	text = 'below HP%',             																		key = 'L_RF_HP',       default = 25},
 	{type = 'ruler'},	  {type = 'spacer'},
-	unpack(Mythic_GUI),
+	unpack(Zylla.Mythic_GUI),
 }
 
 local exeOnLoad = function()

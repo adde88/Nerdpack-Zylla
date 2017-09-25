@@ -1,10 +1,4 @@
 local _, Zylla = ...
-local NeP = _G.NeP
-local _G = _G
-
-local GetTime = _G.GetTime
-local CreateFrame = _G.CreateFrame
-local ChatFrame1 = _G.ChatFrame1
 
 local function onUpdate(self,_)
 	if self.time < GetTime() - 2.0 then

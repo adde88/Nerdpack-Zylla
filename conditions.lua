@@ -1,43 +1,6 @@
 local _, Zylla = ...
-local NeP = _G.NeP
-local _G = _G
-local strmatch = _G.strmatch
-local gsub = _G.gsub
-local IsFlying = _G.IsFlying
-local GetCurrentMapAreaID = _G.GetCurrentMapAreaID
-local IsIndoors = _G.IsIndoors
-local GetUnitSpeed = _G.GetUnitSpeed
-local UnitDebuff = _G.UnitDebuff
-local GetTime = _G.GetTime
-local GetSpellCharges = _G.GetSpellCharges
-local UnitPowerMax = _G.UnitPowerMax
-local UnitPower = _G.UnitPower
-local GetComboPoints = _G.GetComboPoints
-local GetPowerRegen = _G.GetPowerRegen
-local GetSpellInfo = _G.GetSpellInfo
-local IsEquippedItem = _G.IsEquippedItem
-local UnitClass = _G.UnitClass
-local HasTalent = _G.HasTalent
-local UnitBuff = _G.UnitBuff
-local GetSpellCooldown = _G.GetSpellCooldown
-local GetMasteryEffect = _G.GetMasteryEffect
-local GetCritChance = _G.GetCritChance
-local UnitStat = _G.UnitStat
-local GetCombatRatingBonus = _G.GetCombatRatingBonus
-local IsInRaid = _G.IsInRaid
-local IsInGroup = _G.IsInGroup
-local GetInstanceInfo = _G.GetInstanceInfo
-local IsFlyableArea = _G.IsFlyableArea
-local IsSpellKnown = _G.IsSpellKnown
-local IsOnGarrisonMap = _G.C_Garrison.IsOnGarrisonMap
-local IsOnShipyardMap = _G.C_Garrison.IsOnShipyardMap
-local GetSpecialization = _G.GetSpecialization
-local GetHaste = _G.GetHaste
-local UnitGUID = _G.UnitGUID
 
---------------------------------------------------------------------------------
------------------------------------MISC CONDITIONS------------------------------
---------------------------------------------------------------------------------
+--XXX: Miscellaneous conditions
 
 NeP.DSL:Register('isflyable', function()
       if IsFlyableArea() then
@@ -70,9 +33,8 @@ end)
 NeP.DSL:Register('indoors', function()
     return IsIndoors()
 end)
---------------------------------------------------------------------------------
---------------------------------SimulationCraft CONDITIONS----------------------
---------------------------------------------------------------------------------
+
+--XXX: SimulationCraft Conditions
 
 NeP.DSL:Register('buff.react', function(target, spell)
   local x = NeP.DSL:Get('buff.count')(target, spell)
@@ -93,17 +55,6 @@ NeP.DSL:Register('xmoving', function()
         return 0
     end
 end)
-
---[[
-local classTaunt = {
-  [1] = 'Taunt',
-  [2] = 'Hand of Reckoning',
-  [6] = 'Dark Command',
-  [10] = 'Provoke',
-  [11] = 'Growl',
-  [12] = 'Torment'
-}
---]]
 
 local PowerT = {
     [0] = ('^.-Mana'),
@@ -158,22 +109,7 @@ end)
 NeP.DSL:Register('dot.remains', function(target, spell)
     return NeP.DSL:Get('debuff.duration')(target, spell)
 end)
---[[
-NeP.DSL:Register('dot.ticks_remain', function(target, spell)
-    end)
 
-NeP.DSL:Register('dot.current_ticks', function(target, spell)
-    end)
-
-NeP.DSL:Register('dot.ticks', function(target, spell)
-    end)
-
-NeP.DSL:Register('dot.tick_time_remains', function(target, spell)
-    end)
-
-NeP.DSL:Register('dot.active_dot', function(target, spell)
-    end)
-]]--
 
 NeP.DSL:Register('buff.down', function(target, spell)
     local x = NeP.DSL:Get('buff.count')(target, spell)
@@ -224,7 +160,7 @@ NeP.DSL:Register('debuff.remains', function(target, spell)
     return NeP.DSL:Get('debuff.duration')(target, spell)
 end)
 
---TODO: work out off gcd/gcd only skills now all of this is just like SiMC 'prev'
+--TODO: (Work out off gcd/gcd only skills. Now all of this is just like SiMC 'prev')
 
 NeP.DSL:Register('prev_off_gcd', function(_, spell)
     return NeP.DSL:Get('lastcast')('player', spell)
@@ -275,8 +211,6 @@ NeP.DSL:Register('action.cooldown_to_max', function(_, spell)
         return 0
     end
 end)
-
---return GetSpellBaseCooldown(spellID) / 1000
 
 NeP.DSL:Register('action.cooldown', function(_, spell)
     if NeP.DSL:Get('spell.exists')(_, spell) then
@@ -371,7 +305,7 @@ NeP.DSL:Register('astral_power.deficit', function()
 end)
 
 NeP.DSL:Register('combo_points.deficit', function(target)
-    return (UnitPowerMax(target, _G.SPELL_POWER_COMBO_POINTS)) - (UnitPower(target, _G.SPELL_POWER_COMBO_POINTS))
+    return (UnitPowerMax(target, SPELL_POWER_COMBO_POINTS)) - (UnitPower(target, SPELL_POWER_COMBO_POINTS))
 end)
 
 NeP.DSL:Register('combo_points', function()
@@ -388,9 +322,7 @@ NeP.DSL:Register('mana.pct', function()
     return NeP.DSL:Get('mana')('player')
 end)
 
---max_energy=1, this means that u will get energy cap in less than one GCD
-
-NeP.DSL:Register('max_energy', function()
+NeP.DSL:Register('max_energy', function()             --XXX: max_energy=1, this means that u will get energy cap in less than one GCD
     local ttm = NeP.DSL:Get('energy.time_to_max')()
     local GCD = NeP.DSL:Get('gcd')()
     if GCD > ttm then
@@ -474,9 +406,7 @@ NeP.DSL:Register('line_cd', function(_, spell)
     return 0
 end)
 
---------------------------------------------------------------------------------
----------------------------------PROT WARRIOR CONDITIONS------------------------
---------------------------------------------------------------------------------
+--XXX: Protection Warrior Conditions
 
 NeP.DSL:Register('ignorepain_cost', function()
     return Zylla.Scan_IgnorePain()
@@ -491,9 +421,7 @@ NeP.DSL:Register('ignorepain_max', function()
     end
 end)
 
---------------------------------------------------------------------------------
----------------------------------FERAL DRUID CONDITIONS-------------------------
---------------------------------------------------------------------------------
+--XXX: Feral Druid Conditions
 
 local DotTicks = {
     [1] = {
@@ -542,9 +470,7 @@ NeP.DSL:Register('f_test', function()	-- This is for debugging purposes.
 	return Zylla.f_Snapshots
 end)
 
---------------------------------------------------------------------------------
---------------------------------WARLOCK CONDITIONS------------------------------
---------------------------------------------------------------------------------
+--XXX: Warlock Conditions
 
 NeP.DSL:Register('petexists', function()
   return NeP.DSL:Get('exists')('pet')
@@ -557,8 +483,6 @@ end)
 NeP.DSL:Register('warlock.count', function(demon)
     return Zylla.count_active_demon_type(demon)
 end)
-
---------------------------------------------------------------------------------
 
 NeP.DSL:Register('warlock.active_pets_list', function()
     return Zylla.active_demons
@@ -580,9 +504,7 @@ NeP.DSL:Register('soul_shard', function()
     return NeP.DSL:Get('soulshards')('player')
 end)
 
---------------------------------------------------------------------------------
--------------------------------- PRIEST CONDITIONS------------------------------
---------------------------------------------------------------------------------
+--XXX: Priest Conditions
 
 NeP.DSL:Register('variable.actors_fight_time_mod', function()
     local time = NeP.DSL:Get('xtime')()
@@ -616,9 +538,7 @@ end)
 
 --{current_insanity_drain*gcd.max>player.insanity}&{player.insanity-{current_insanity_drain*gcd.max}+90}<100
 
---------------------------------------------------------------------------------
---------------------------------- ROGUE CONDITIONS------------------------------
---------------------------------------------------------------------------------
+--XXX: Rogue Conditions
 
 NeP.DSL:Register('stealthed', function()
     if NeP.DSL:Get('buff')('player', 'Shadow Dance') or NeP.DSL:Get('buff')('player', 'Stealth') or NeP.DSL:Get('buff')('player', 'Subterfuge') or NeP.DSL:Get('buff')('player', 'Shadowmeld') or NeP.DSL:Get('buff')('player', 'Prowl') then
@@ -708,9 +628,7 @@ NeP.DSL:Register('RtB', function()
     end
 end)
 
---------------------------------------------------------------------------------
---------------------------------- HUNTER CONDITIONS-----------------------------
---------------------------------------------------------------------------------
+--XXX: Hunter Conditions
 
 NeP.DSL:Register('maxRange', function(spell)
     local _, _, _, _, _, maxRange = GetSpellInfo(spell)
@@ -746,7 +664,6 @@ NeP.DSL:Register('inareaid', function()
     return  GetCurrentMapAreaID()
 end)
 
---{'set_bonus(T19)=2||set_bonus(T19)>=4'}
 NeP.DSL:Register("set_bonus", function(_, set)
 	local class = select(2,UnitClass('player'))
 	local pieces = Zylla.setsTable[class][set] or {}
@@ -861,19 +778,19 @@ NeP.DSL:Register('cwsolo.heals', function()
 end)
 
 NeP.DSL:Register('chainheal.heals', function()
-    return math.sqrt((UnitStat("player", 4)*GetCombatRatingBonus(_G.CR_VERSATILITY_DAMAGE_DONE)*GetCombatRatingBonus(_G.CR_CRIT_SPELL)*1.2)^2/NeP.DSL:Get('mana')('player'))
+    return math.sqrt((UnitStat("player", 4)*GetCombatRatingBonus(CR_VERSATILITY_DAMAGE_DONE)*GetCombatRatingBonus(CR_CRIT_SPELL)*1.2)^2/NeP.DSL:Get('mana')('player'))
 end)
 
 NeP.DSL:Register('healingsurge.heals', function()
-    return math.sqrt((UnitStat("player", 4)*GetCombatRatingBonus(_G.CR_VERSATILITY_DAMAGE_DONE)*GetCombatRatingBonus(_G.CR_CRIT_SPELL)*1.44)^2/NeP.DSL:Get('mana')('player'))
+    return math.sqrt((UnitStat("player", 4)*GetCombatRatingBonus(CR_VERSATILITY_DAMAGE_DONE)*GetCombatRatingBonus(CR_CRIT_SPELL)*1.44)^2/NeP.DSL:Get('mana')('player'))
 end)
 
 NeP.DSL:Register('healingwave.heals', function()
-    return math.sqrt((UnitStat("player", 4)*GetCombatRatingBonus(_G.CR_VERSATILITY_DAMAGE_DONE)*GetCombatRatingBonus(_G.CR_CRIT_SPELL)*1.44)^2/NeP.DSL:Get('mana')('player'))
+    return math.sqrt((UnitStat("player", 4)*GetCombatRatingBonus(CR_VERSATILITY_DAMAGE_DONE)*GetCombatRatingBonus(CR_CRIT_SPELL)*1.44)^2/NeP.DSL:Get('mana')('player'))
 end)
 
 NeP.DSL:Register('riptide.heals', function()
-    return math.sqrt((UnitStat("player", 4)*GetCombatRatingBonus(_G.CR_VERSATILITY_DAMAGE_DONE)*GetCombatRatingBonus(_G.CR_CRIT_SPELL)*1.6)^2/NeP.DSL:Get('mana')('player'))
+    return math.sqrt((UnitStat("player", 4)*GetCombatRatingBonus(CR_VERSATILITY_DAMAGE_DONE)*GetCombatRatingBonus(CR_CRIT_SPELL)*1.6)^2/NeP.DSL:Get('mana')('player'))
 end)
 
 NeP.DSL:Register('holyshockraid.heals', function()

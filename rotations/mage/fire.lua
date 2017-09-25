@@ -1,14 +1,7 @@
 local _, Zylla = ...
 
-local Mythic_GUI = _G.Mythic_GUI
-local Mythic_Plus = _G.Mythic_Plus
-local Logo_GUI = _G.Logo_GUI
-local PayPal_GUI = _G.PayPal_GUI
-local PayPal_IMG = _G.PayPal_IMG
-local unpack = _G.unpack
-
 local GUI = {
-	unpack(Logo_GUI),
+	unpack(Zylla.Logo_GUI),
 	-- Header
 	{type = 'header',  	size = 16, text = 'Keybinds',	 														align = 'center'},
 	{type = 'checkbox',	text = 'Left Shift: '..Zylla.ClassColor..'Pause|r',				align = 'left', 			key = 'lshift', 	default = true},
@@ -17,9 +10,9 @@ local GUI = {
 	{type = 'checkbox',	text = 'Right Alt: '..Zylla.ClassColor..'|r',							align = 'left', 			key = 'ralt', 		default = true},
 	{type = 'spacer'},
 --{type = 'checkbox', text = 'Enable Chatoverlay', 															key = 'chat', 				width = 55, 			default = true, desc = Zylla.ClassColor..'This will enable some messages as an overlay!|r'},
-	unpack(PayPal_GUI),
+	unpack(Zylla.PayPal_GUI),
 	{type = 'spacer'},
-	unpack(PayPal_IMG),
+	unpack(Zylla.PayPal_IMG),
 	{type = 'ruler'},	 	{type = 'spacer'},
 	-- Settings
 	{type = 'header', 	text = 'Class Settings', 																	align = 'center'},
@@ -29,7 +22,7 @@ local GUI = {
 	{type = 'checkbox', text = 'Use Trinket #1', 																	key = 'trinket1',	default = true},
 	{type = 'checkbox', text = 'Use Trinket #2', 																	key = 'trinket2', default = true,	desc = Zylla.ClassColor..'Trinkets will be used whenever possible!|r'},
 	{type = 'spacer'},
-	{type = 'checkspin', 	text = 'Kil\'Jaeden\'s Burning Wish - Units', 					key = 'kj', 			align = 'left', width = 55, step = 1, spin = 4, max = 15, check = true, desc = Zylla.ClassColor..'Legendary will be used only on selected amount of units!|r'},
+	{type = 'checkspin', 	text = 'Kil\'Jaeden\'s Burning Wish - Units', 					key = 'kj', 			align = 'left', width = 55, step = 1, spin = 4, max = 20, min = 1, check = true, desc = Zylla.ClassColor..'Legendary will be used only on selected amount of units!|r'},
 	{type = 'ruler'},	{type = 'spacer'},
 	-- Survival
 	{type = 'header', 		text = 'Survival',									 	 									align = 'center'},
@@ -38,7 +31,7 @@ local GUI = {
 	{type = 'checkspin',	text = 'Healing Potion',																key = 'AHP',			spin = 45, check = true},
 	{type = 'checkspin', 	text = 'Ice Block', 																		key = 'ib', 			spin = 20, check = true},
 	{type = 'ruler'},		 {type = 'spacer'},
-	unpack(Mythic_GUI),
+	unpack(Zylla.Mythic_GUI),
 }
 
 local exeOnLoad = function()
@@ -95,7 +88,7 @@ local Cooldowns = {
 	{'Blood Fury'},
 	{'Berserking', 'toggle(xTimeWarp)'},
 	{'Time Warp', 'toggle(xTimeWarp)'},
-	{'#144259', 'UI(kj_check)&target.range<41&target.area(10).enemies>UI(kj_spin)&equipped(144259)'}, -- Kil'jaeden's Burning Wish / AoE Trinket
+	{'#144259', 'UI(kj_check)&target.range<41&target.area(10).enemies>=UI(kj_spin)&equipped(144259)'}, -- Kil'jaeden's Burning Wish / AoE Trinket
 	{'#trinket1', 'UI(trinket1)'},
 	{'#trinket2', 'UI(trinket2)'},
 	{'Light\'s Judgment', 'UI(LJ_check)&range<61&area(15).enemies>=UI(LJ_spin)', 'enemies.ground'}

@@ -1,10 +1,8 @@
 local _, Zylla = ...
-Zylla.SpellIDs = {}
--- This is used to make my CR's work across all locales.
--- Testing it at the moment.
 
---------------------- Warrior ---------------------
----------------------------------------------------
+Zylla.SpellIDs = {}
+
+--XXX: Warrior Spells
 Zylla.SpellIDs[1] = {
 	["Light's Judgment"]							 = 247427,
   ["Sweeping Strikes"]               = 202161,
@@ -158,8 +156,8 @@ Zylla.SpellIDs[1] = {
   ["Dual Wield"]                     = 231842,
   ["Attack"]                         = 88163,
 }
---------------------- Paladin ---------------------
----------------------------------------------------
+
+--XXX: Paladin Spells
 Zylla.SpellIDs[2] = {
 	["Light's Judgment"]							 	 = 247427,
   ["Cleanse"]                          = 4987,
@@ -309,8 +307,8 @@ Zylla.SpellIDs[2] = {
   ["Consecrated Hammer"]               = 203785,
   ["First Avenger"]                    = 203776,
 }
----------------------- Hunter ----------------------
-----------------------------------------------------
+
+--XXX: Hunter Spells
 Zylla.SpellIDs[3] = {
 	["Light's Judgment"]							 = 247427,
   ["Steel Trap Expert"]              = 201199,
@@ -511,8 +509,8 @@ Zylla.SpellIDs[3] = {
   ["Binding Shot"]                   = 109248,
   ["Shadow Nova"]                    = 188402,
 }
----------------------- Rogue ----------------------
----------------------------------------------------
+
+--XXX: Rogue Spells
 Zylla.SpellIDs[4] = {
 	["Light's Judgment"]				 = 247427,
   ["Ruthlessness"]             = 14161,
@@ -664,8 +662,8 @@ Zylla.SpellIDs[4] = {
   ["Deepening Shadows"]        = 185314,
   ["Bribe"]                    = 199740,
 }
----------------------- Priest ----------------------
-----------------------------------------------------
+
+--XXX: Priest Spells
 Zylla.SpellIDs[5] = {
 	["Light's Judgment"]				 = 247427,
   ["Shadow Word: Pain"]        = 589,
@@ -810,8 +808,8 @@ Zylla.SpellIDs[5] = {
   ["Glyph of Shadowy Friends"] = 126745,
   ["Divine Star"]              = 110744,
 }
-------------------- Death Knight -------------------
-----------------------------------------------------
+
+--XXX: Death Knight Spells
 Zylla.SpellIDs[6] = {
 	["Light's Judgment"]							 = 247427,
   ["Castigator"]                     = 207305,
@@ -997,8 +995,8 @@ Zylla.SpellIDs[6] = {
   ["Freezing Fog"]                   = 207060,
   ["Apocalypse"]                     = 220143,
 }
----------------------- Shaman ----------------------
-----------------------------------------------------
+
+--XXX: Shaman Spells
 Zylla.SpellIDs[7] = {
 	["Light's Judgment"]								 = 247427,
   ["Elemental Shaman"]                 = 137040,
@@ -1202,8 +1200,8 @@ Zylla.SpellIDs[7] = {
   ["Energized Retinal Armor"]          = 127121,
   ["Energized Bio-Optic Killshades"]   = 81720,
 }
------------------------ Mage -----------------------
-----------------------------------------------------
+
+--XXX: Mage Spells
 Zylla.SpellIDs[8] = {
 	["Light's Judgment"]							 = 247427,
   ["Bone Chilling"]                  = 205027,
@@ -1339,8 +1337,8 @@ Zylla.SpellIDs[8] = {
   ["Flamestrike"]                    = 2120,
   ["Fire Blast"]                     = 231568,
 }
---------------------- Warlock ---------------------
----------------------------------------------------
+
+--XXX: Warlock Spells
 Zylla.SpellIDs[9] = {
 	["Light's Judgment"]					= 247427,
   ["Singe Magic"]               = 89808,
@@ -1497,8 +1495,8 @@ Zylla.SpellIDs[9] = {
   ["Spell Lock"]                = 19647,
   ["Felguard"]                  = 56285,
 }
------------------------ Monk -----------------------
-----------------------------------------------------
+
+----XXX: Monk Spells
 Zylla.SpellIDs[10] = {
 	["Light's Judgment"]								 									 = 247427,
   ["Life Cocoon"]                                        = 116849,
@@ -1642,8 +1640,8 @@ Zylla.SpellIDs[10] = {
   ["Detox"]                                              = 218164,
   ["Crosswinds"]                                         = 196061,
 }
----------------------- Druid ----------------------
----------------------------------------------------
+
+--XXX: Druid Spells
 Zylla.SpellIDs[11] = {
 	["Light's Judgment"]								= 247427,
   ["Swiftmend"]                       = 18562,
@@ -1833,8 +1831,8 @@ Zylla.SpellIDs[11] = {
   ["Essence of G'Hanir"]              = 218889,
   ["Balance Affinity"]                = 197632,
 }
-------------------- Demon Hunter -------------------
-----------------------------------------------------
+
+--XXX: Demon Hunter Spells
 Zylla.SpellIDs[12] = {
 	["Light's Judgment"]				= 247427,
   ["First Blood"]             = 206416,
