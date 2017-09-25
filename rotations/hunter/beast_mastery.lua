@@ -72,8 +72,12 @@ local PreCombat = {
 	{'Call Pet 1', '!pet.exists&UI(kPet)', 'player'},
 	{'Volley', '{UI(kVolley)&toggle(aoe)&!buff}||{{buff&{!toggle(aoe)||!UI(kVolley)}}}', 'player'},
 	{'%pause', 'player.buff(Feign Death)'},
-	{'#142117', 'item(142117).usable&item(142117).count>0&UI(kDBM)&UI(prepot)&!buff&dbm(pull in)<3', 'player'}, --XXX: Potion of Prolonged Power
-	{'#127848', 'item(127848).usable&item(127848).count>0&UI(prepot)&!buff', 'player'}, 												--XXX: Flask of the Seventh Demon
+	-- Pots
+	{'#127844', 'UI(list)==1&item(127844).usable&item(127844).count>0&UI(kDBM)&UI(prepot)&!buff(Potion of the Old War)&dbm(pull in)<3', 'player'}, 	--XXX: Potion of the Old War
+	{'#127843', 'UI(list)==2&item(127843).usable&item(127843).count>0&UI(kDBM)&UI(prepot)&!buff(Potion of Deadly Grace)&dbm(pull in)<3', 'player'}, 	--XXX: Potion of Deadly Grace
+	{'#142117', 'UI(list)==3&item(142117).usable&item(142117).count>0&UI(kDBM)&UI(prepot)&!buff(Potion of Prolonged Power)&dbm(pull in)<3', 'player'}, 	--XXX: Potion of Prolonged Power
+	-- Flasks
+	{'#127848', 'item(127848).usable&item(127848).count>0&UI(prepot)&!buff(Flask of the Seventh Demon)', 'player'},	--XXX: Flask of the Seventh Demon
 }
 
 local Keybinds = {
@@ -136,7 +140,7 @@ local xPet = {
 			{'Heart of the Phoenix', '!player.debuff(Weakened Heart)&player.combat'}, 	-- Heart of the Phoenix
 			{'Revive Pet'} 																															-- Revive Pet
 	}, {'pet.dead', 'UI(kPet)'}},
-	{'&Kill Command', 'alive&combat&pet.exists&pet.alive&petrange<=12', 'target'},
+	{'&Kill Command', 'alive&combat&pet.exists&pet.alive', 'target'},
 	{'/cast [@focus, help] [@pet, nodead, exists] Misdirection', 'player.spell(Misdirection).cooldown<gcd&UI(kDBM)&toggle(xMisdirect)&{player.combat||{!player.combat&dbm(pull in)<3}}'},
 	{'/cast [@focus, help] [@pet, nodead, exists] Misdirection', 'player.spell(Misdirection).cooldown<gcd&!UI(kDBM)&toggle(xMisdirect)&player.combat'},
 }
