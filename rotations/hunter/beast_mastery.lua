@@ -8,7 +8,9 @@ local GUI = {
 	{type = 'checkbox',	text = 'Left Ctrl: '..Zylla.ClassColor..'Tar Trap|r',			align = 'left', 			key = 'lcontrol',	default = true},
 	{type = 'checkbox',	text = 'Left Alt: '..Zylla.ClassColor..'Binding Shot|r',	align = 'left', 			key = 'lalt', 		default = true},
 	{type = 'checkbox',	text = 'Right Alt: '..Zylla.ClassColor..'Freezing Trap|r',align = 'left', 			key = 'ralt', 		default = true},
-	{type = 'spacer'},
+	{type = 'checkbox', size = 10, text = Zylla.ClassColor..'Use Call Pet                                  Select Pet: |r',		align = 'right', 	key = 'epets', 		default = true},
+	{type = 'combo',		default = "1",																						key = "pets", 				list = Zylla.pets, 	width = 50},
+	{type = 'spacer'},	{type = 'spacer'},
 --{type = 'checkbox', text = 'Enable Chatoverlay', 															key = 'chat', 				width = 55, 			default = true, desc = Zylla.ClassColor..'This will enable some messages as an overlay!|r'},
 	unpack(Zylla.PayPal_GUI),
 	{type = 'spacer'},
@@ -17,11 +19,10 @@ local GUI = {
 	-- Settings
 	{type = 'header', 	size = 16, text = 'Class Settings',												align = 'center'},
 	{type = 'checkbox', text = 'Enable DBM Integration',													key = 'kDBM', 				default = true},
-	{type = 'checkbox', text = 'Enable \'pre-potting\' and flasks',								key = 'prepot', 			default = false},
+	{type = 'checkbox', text = 'Enable \'pre-potting\' and Flasks',								key = 'prepot', 			default = false},
 	{type = 'combo',		default = "1",																						key = "list", 				list = Zylla.prepots, 	width = 175},
 	{type = 'spacer'},	{type = 'spacer'},
 	{type = 'checkspin',text = 'Light\'s Judgment - Units', 											key = 'LJ',						spin = 4,	step = 1,	max = 20, min = 1,	check = true,	desc = Zylla.ClassColor..'World Spell usable on Argus.|r'},
-	{type = 'checkbox', text = 'Summon Pet',									 										key = 'kPet', 				default = true},
 	{type = 'checkbox', text = 'Barrage Enabled',							 										key = 'kBarrage', 		default = false},
 	{type = 'checkbox', text = 'Volley Enabled',																	key = 'kVolley', 			default = true},
 	{type = 'checkbox', text = 'Misdirect Focus/Pet',															key = 'kMisdirect', 	default = true},
@@ -68,8 +69,16 @@ local exeOnLoad = function()
 
 end
 
+local CallPet = {
+	{'Call Pet 1', '!pet.exists&UI(pets)==1'},
+	{'Call Pet 2', '!pet.exists&UI(pets)==2'},
+	{'Call Pet 3', '!pet.exists&UI(pets)==3'},
+	{'Call Pet 4', '!pet.exists&UI(pets)==4'},
+	{'Call Pet 5', '!pet.exists&UI(pets)==5'}
+}
+
 local PreCombat = {
-	{'Call Pet 1', '!pet.exists&UI(kPet)', 'player'},
+	{CallPet},
 	{'Volley', '{UI(kVolley)&toggle(aoe)&!buff}||{{buff&{!toggle(aoe)||!UI(kVolley)}}}', 'player'},
 	{'%pause', 'player.buff(Feign Death)'},
 	-- Pots
@@ -111,14 +120,14 @@ local Cooldowns = {
 
 local Interrupts = {
 	{'!Counter Shot', nil, 'target'},
-	{'!Intimidation', 'player.spell(Counter Shot).cooldown>gcd&!prev_gcd(Counter Shot)&!immune(Stun)', 'target'},
-	{'!Freezing Trap', 'UI(FT_Int)&player.spell(Counter Shot).cooldown>gcd&!prev_gcd(Counter Shot)', 'target.ground'},
+	{'!Intimidation', 'player.spell(Counter Shot).cooldown>gcd&!lastcast(Counter Shot)', 'target'},
+	{'!Freezing Trap', 'UI(FT_Int)&player.spell(Counter Shot).cooldown>gcd&!lastcast(Counter Shot)', 'target.ground'},
 }
 
 local Interrupts_Random = {
 	{'!Counter Shot', 'interruptAt(70)&toggle(xIntRandom)&toggle(Interrupts)&inFront&range<41', 'enemies'},
-	{'!Intimidation', 'interruptAt(70)&toggle(xIntRandom)&toggle(Interrupts)&player.spell(Counter Shot).cooldown>gcd&!prev_gcd(Counter Shot)&inFront&range<41', 'enemies'},
-	{'!Freezing Trap', 'interruptAt(5)&UI(FT_Int)&toggle(xIntRandom)&toggle(Interrupts)&player.spell(Counter Shot).cooldown>gcd&!prev_gcd(Counter Shot)&range<41', 'enemies.ground'},
+	{'!Intimidation', 'interruptAt(70)&toggle(xIntRandom)&toggle(Interrupts)&player.spell(Counter Shot).cooldown>gcd&!lastcast(Counter Shot)&inFront&range<41', 'enemies'},
+	{'!Freezing Trap', 'interruptAt(5)&UI(FT_Int)&toggle(xIntRandom)&toggle(Interrupts)&player.spell(Counter Shot).cooldown>gcd&!lastcast(Counter Shot)&range<41', 'enemies.ground'},
 }
 
 local xCombat = {
@@ -134,15 +143,17 @@ local xCombat = {
 }
 
 local xPet = {
-	{'Call Pet 1', '!pet.exists&UI(kPet)'},
+	{CallPet},
 	{'Mend Pet', 'pet.alive&pet.health<=UI(P_HP_spin)&UI(P_HP_check)&!pet.buff(Mend Pet)'},
 		{{ 																			 																			-- Pet Dead
 			{'Heart of the Phoenix', '!player.debuff(Weakened Heart)&player.combat'}, 	-- Heart of the Phoenix
 			{'Revive Pet'} 																															-- Revive Pet
 	}, {'pet.dead', 'UI(kPet)'}},
 	{'&Kill Command', 'alive&combat&pet.exists&pet.alive', 'target'},
-	{'/cast [@focus, help] [@pet, nodead, exists] Misdirection', 'player.spell(Misdirection).cooldown<gcd&UI(kDBM)&toggle(xMisdirect)&{player.combat||{!player.combat&dbm(pull in)<3}}'},
-	{'/cast [@focus, help] [@pet, nodead, exists] Misdirection', 'player.spell(Misdirection).cooldown<gcd&!UI(kDBM)&toggle(xMisdirect)&player.combat'},
+	--{'/cast [@focus, help] [@pet, nodead, exists] Misdirection', 'player.spell(Misdirection).cooldown<gcd&UI(kDBM)&toggle(xMisdirect)&{player.combat||{!player.combat&dbm(pull in)<3}}'},
+	--{'/cast [@focus, help] [@pet, nodead, exists] Misdirection', 'player.spell(Misdirection).cooldown<gcd&!UI(kDBM)&toggle(xMisdirect)&player.combat'},
+	{'/cast [@focus, help] [@pet, nodead, exists] Misdirection', 'focus.casting(Fel Burst)&player.spell(Misdirection).cooldown<gcd&{player.spell(Counter Shot).cooldown>gcd||player.spell(Intimidation).cooldown>gcd}'},
+	{'&26064', 'focus.casting(Fel Burst)&{player.spell(Counter Shot).cooldown>gcd||player.spell(Intimidation).cooldown>gcd}'}, --XXX: Shell Shield for Tugar Bloodtotem Encounter
 }
 
 local xPvP = {

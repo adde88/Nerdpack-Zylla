@@ -50,3 +50,11 @@ Zylla.prepots = {
 	{key = '2', text = 'Potion of Deadly Grace'},
 	{key = '3', text = 'Potion of Prolonged Power'},
 }
+
+Zylla.pets = {
+	{key = '1', text = 'Pet 1'},
+	{key = '2', text = 'Pet 2'},
+	{key = '3', text = 'Pet 3'},
+	{key = '4', text = 'Pet 4'},
+	{key = '5', text = 'Pet 5'},
+}
