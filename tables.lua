@@ -34,8 +34,8 @@ Zylla.Mythic_GUI = {	--XXX: Mythic + / Raiding
 
 Zylla.Mythic_Plus = {
 	{{
-			{"/target 'Fel Explosives'", 'id(120651)&inFront', 'enemies'},
-			{"/target 'Fel Surge Totem'", 'id(121499)&inFront', 'enemies'},
+			{"/target 'Fel Explosives'", 'is(120651)&inFront', 'enemies'},
+			{"/target 'Fel Surge Totem'", 'is(121499)&inFront', 'enemies'},
 	},	'UI(mythic_fel)'}, 																																				--XXX: Fel Explosives Mythic+ Affix
 	{'!/stopcasting','debuff(Quake).any.duration<gcd&debuff(Quake).any&UI(quaking)', 'player'},		--XXX: Quaking Mythic+ Affix
 	{'%pause' , 'player.debuff(200904)||player.debuff(Sapped Soul)'},															--XXX: Vault of the Wardens - Sapped Soul Encounter

@@ -30,6 +30,8 @@ local GUI = {
 	{type = 'checkbox', text = 'Tarnished Sentinel Medallion',										key = 'e_TSM', 				default = true},
 	{type = 'checkbox', text = 'Use Trinket #1', 																	key = 'trinket1',			default = true},
 	{type = 'checkbox', text = 'Use Trinket #2', 																	key = 'trinket2', 		default = true, desc = Zylla.ClassColor..'Trinkets will be used whenever possible!|r'},
+	{type = 'spacer'},
+	{type = 'checkspin', 	text = 'Kil\'Jaeden\'s Burning Wish - Units', 					key = 'kj', 			align = 'left', width = 55, step = 1, spin = 4, max = 20, min = 1, check = true, desc = Zylla.ClassColor..'Legendary will be used only on selected amount of units!|r'},
 	{type = 'ruler'},	  {type = 'spacer'},
 	-- Survival
 	{type = 'header', 	size = 16, text = 'Survival',															align = 'center'},
@@ -98,9 +100,9 @@ local Keybinds = {
 
 local Survival = {
 	{'Exhilaration', 'player.health<=UI(E_HP_spin)&UI(E_HP_check)'},
-	{'#152615', 'item(152615).usable&item(152615).count>0&health<=UI(AHP_spin)&UI(AHP_check)', 'player'}, 													-- Astral Healing Potion
-	{'#127834', 'item(152615).count==0&item(127834).usable&item(127834).count>0&health<=UI(AHP_spin)&UI(AHP_check)', 'player'}, 		-- Ancient Healing Potion
-	{'#5512', 'item(5512).usable&item(5512).count>0&health<=UI(HS_spin)&UI(HS_check)', 'player'}, 																	-- Health Stone
+	{'#152615', 'item(152615).usable&item(152615).count>0&health<=UI(AHP_spin)&UI(AHP_check)', 'player'}, 													--XXX: Astral Healing Potion
+	{'#127834', 'item(152615).count==0&item(127834).usable&item(127834).count>0&health<=UI(AHP_spin)&UI(AHP_check)', 'player'}, 		--XXX: Ancient Healing Potion
+	{'#5512', 'item(5512).usable&item(5512).count>0&health<=UI(HS_spin)&UI(HS_check)', 'player'}, 																	--XXX: Health Stone
 	{'Aspect of the Turtle', 'health<=UI(AotT_spin)&UI(AotT_check)', 'player'},
 	{'Feign Death', 'health<=UI(FD_spin)&UI(FD_check)&equipped(137064)', 'player'},
 	{'%pause', 'player.buff(Feign Death)'},
@@ -115,7 +117,8 @@ local Cooldowns = {
 	{'Berserking'},
 	{'#trinket1', 'UI(trinket1)'},
 	{'#trinket2', 'UI(trinket2)'},
-	{'Light\'s Judgment', 'UI(LJ_check)&range<61&area(15).enemies>=UI(LJ_spin)', 'enemies.ground'}
+	{'Light\'s Judgment', 'UI(LJ_check)&range<61&area(15).enemies>=UI(LJ_spin)', 'enemies.ground'},
+	{'#144259', 'UI(kj_check)&range<41&area(10).enemies>=UI(kj_spin)&equipped(144259)', 'target'}, --XXX: Kil'jaeden's Burning Wish (Legendary)
 }
 
 local Interrupts = {
@@ -145,15 +148,15 @@ local xCombat = {
 local xPet = {
 	{CallPet},
 	{'Mend Pet', 'pet.alive&pet.health<=UI(P_HP_spin)&UI(P_HP_check)&!pet.buff(Mend Pet)'},
-		{{ 																			 																			-- Pet Dead
-			{'Heart of the Phoenix', '!player.debuff(Weakened Heart)&player.combat'}, 	-- Heart of the Phoenix
-			{'Revive Pet'} 																															-- Revive Pet
+		{{ 																			 																			--XXX: Pet Dead
+			{'Heart of the Phoenix', '!player.debuff(Weakened Heart)&player.combat'}, 	--XXX: Heart of the Phoenix
+			{'Revive Pet'} 																															--XXX: Revive Pet
 	}, {'pet.dead', 'UI(kPet)'}},
-	{'&Kill Command', 'alive&combat&pet.exists&pet.alive', 'target'},
-	--{'/cast [@focus, help] [@pet, nodead, exists] Misdirection', 'player.spell(Misdirection).cooldown<gcd&UI(kDBM)&toggle(xMisdirect)&{player.combat||{!player.combat&dbm(pull in)<3}}'},
-	--{'/cast [@focus, help] [@pet, nodead, exists] Misdirection', 'player.spell(Misdirection).cooldown<gcd&!UI(kDBM)&toggle(xMisdirect)&player.combat'},
-	{'/cast [@focus, help] [@pet, nodead, exists] Misdirection', 'focus.casting(Fel Burst)&player.spell(Misdirection).cooldown<gcd&{player.spell(Counter Shot).cooldown>gcd||player.spell(Intimidation).cooldown>gcd}'},
-	{'&26064', 'focus.casting(Fel Burst)&{player.spell(Counter Shot).cooldown>gcd||player.spell(Intimidation).cooldown>gcd}'}, --XXX: Shell Shield for Tugar Bloodtotem Encounter
+	{'&Kill Command', 'alive&combat&pet.exists&pet.alive&petrange<10', 'target'},
+	{'/cast [@focus, help] [@pet, nodead, exists] Misdirection', 'player.spell(Misdirection).cooldown<gcd&UI(kDBM)&toggle(xMisdirect)&{player.combat||{!player.combat&dbm(pull in)<3}}'},
+	{'/cast [@focus, help] [@pet, nodead, exists] Misdirection', 'player.spell(Misdirection).cooldown<gcd&!UI(kDBM)&toggle(xMisdirect)&player.combat'},
+	--{'/cast [@focus, help] [@pet, nodead, exists] Misdirection', 'focus.casting(Fel Burst)&player.spell(Misdirection).cooldown<gcd&{player.spell(Counter Shot).cooldown>gcd||player.spell(Intimidation).cooldown>gcd}'},
+	--{'&26064', 'focus.casting(Fel Burst)&{player.spell(Counter Shot).cooldown>gcd||player.spell(Intimidation).cooldown>gcd}'}, --XXX: Shell Shield for Tugar Bloodtotem Encounter
 }
 
 local xPvP = {
