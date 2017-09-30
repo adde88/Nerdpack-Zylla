@@ -170,7 +170,7 @@ local inCombat = {
 	{Survival, 'player.health<100'},
 	{'Cat Form', '!buff(Frenzied Regeneration)&{!buff(Cat Form)&{!buff(Travel Form)||area(8).enemies.inFront>0}}', 'player'},
 	{Cooldowns, '!player.buff(Frenzied Regeneration)&toggle(Cooldowns)'},
-	{'Moonfire', 'talent(1,3)&!inMelee&range<41&inFront&!player.buff(Prowl)&!debuff', 'target'},
+	{'Moonfire', 'talent(1,3)&inFront&!player.buff(Prowl)&!debuff', 'target'},
 	{Mythic_Plus, 'inMelee&inFront'},
 	{xCombat, '!player.buff(Frenzied Regeneration)&target.inMelee&target.inFront'}
 }
