@@ -26,6 +26,8 @@ local GUI = {
 	{type = 'checkspin',text = 'Light\'s Judgment - Units', 											key = 'LJ',					spin = 4,	step = 1,	max = 20, min = 1,	check = true,	desc = Zylla.ClassColor..'World Spell usable on Argus.|r'},
 	{type = 'checkbox', text = 'Use Trinket #1', 																	key = 'trinket1',		default = false},
 	{type = 'checkbox', text = 'Use Trinket #2', 																	key = 'trinket2', 	default = false,		desc = Zylla.ClassColor..'Trinkets will be used whenever possible!|r'},
+	{type = 'spacer'},
+	{type = 'checkspin', 	text = 'Kil\'Jaeden\'s Burning Wish - Units', 					key = 'kj', 				align = 'left', width = 55, step = 1, spin = 4, max = 20, min = 1, check = true, desc = Zylla.ClassColor..'Legendary will be used only on selected amount of units!|r'},
 	{type = 'ruler'},	 	{type = 'spacer'},
 	-- Survival
 	{type = 'header', 	size = 16, text = 'Survival',															align = 'center'},
@@ -128,7 +130,8 @@ local Cooldowns = {
 	{'!Regrowth', 'equipped(137024)&talent(7,2)&buff(Predatory Swiftness).stack>1&!buff(Bloodtalons)', 'player'},		--XXX: Special logic for Ailuro Pouncers legendary.
 	{'#trinket1', 'UI(trinket1)'},
 	{'#trinket2', 'UI(trinket2)'},
-	{'Light\'s Judgment', 'UI(LJ_check)&range<61&area(15).enemies>=UI(LJ_spin)', 'enemies.ground'}
+	{'Light\'s Judgment', 'UI(LJ_check)&range<61&area(15).enemies>=UI(LJ_spin)', 'enemies.ground'},
+	{'#144259', 'UI(kj_check)&range<41&area(10).enemies>=UI(kj_spin)&equipped(144259)', 'target'}, --XXX: Kil'jaeden's Burning Wish (Legendary)
 }
 
 local Finisher = {
