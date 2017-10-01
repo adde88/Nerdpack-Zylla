@@ -51,21 +51,22 @@ local GUI = {
 	{type='ruler'},		{type='spacer'},
 	--XXX: TANK
 	{type = 'header', 	size = 16, text = 'Tank Healing',																			align = 'center'},
-	{type = 'checkspin', 	text = 'Rejuvenation',																							key = 'trejuv',					check = true, align = 'left', width = 55, step = 1, shiftStep = 5, spin = 99, max = 100},
-	{type = 'checkspin', 	text = 'Germination',																								key = 'tgerm',					check = true, align = 'left', width = 55, step = 1, shiftStep = 5, spin = 90, max = 100},
-	{type = 'checkspin', 	text = 'Swiftmend',																									key = 'tsm',						check = true, align = 'left', width = 55, step = 1, shiftStep = 5, spin = 80, max = 100},
-	{type = 'checkspin', 	text = 'Healing Touch',																							key = 'tht',						check = true, align = 'left', width = 55, step = 1, shiftStep = 5, spin = 90, max = 100},
-	{type = 'checkspin', 	text = 'Regrowth',																									key = 'trg',						check = true, align = 'left', width = 55, step = 1, shiftStep = 5, spin = 60, max = 100},
+	{type = 'checkspin',text = 'Rejuvenation',																								key = 'trejuv',					check = true, align = 'left', width = 55, step = 1, shiftStep = 5, spin = 99, max = 100},
+	{type = 'checkspin',text = 'Germination',																									key = 'tgerm',					check = true, align = 'left', width = 55, step = 1, shiftStep = 5, spin = 90, max = 100},
+	{type = 'checkspin',text = 'Swiftmend',																										key = 'tsm',						check = true, align = 'left', width = 55, step = 1, shiftStep = 5, spin = 80, max = 100},
+	{type = 'checkspin',text = 'Healing Touch',																								key = 'tht',						check = true, align = 'left', width = 55, step = 1, shiftStep = 5, spin = 90, max = 100},
+	{type = 'checkspin',text = 'Regrowth',																										key = 'trg',						check = true, align = 'left', width = 55, step = 1, shiftStep = 5, spin = 60, max = 100},
 	{type = 'checkspin',text = 'Ironbark',              																			key = 'tbark',          check = true, align = 'left', width = 55, step = 1, shiftStep = 5, spin = 20, max = 40},
 	{type='ruler'},		{type='spacer'},
 	--XXX: LOWEST
 	{type = 'header', 	size = 16, text = 'Lowest Healing', 																	align = 'center'},
 	{type = 'checkbox', text = 'Dispel Everyone',																							key = 'dispelall', 			default = true},
-	{type = 'checkspin', 	text = 'Rejuvenation', 																							key = 'lrejuv', 				check = true, align = 'left', width = 55, step = 1, shiftStep = 5, spin = 90, max = 100},
-	{type = 'checkspin', 	text = 'Germination', 																							key = 'lgerm', 					check = true, align = 'left', width = 55, step = 1, shiftStep = 5, spin = 75, max = 100},
-	{type = 'checkspin', 	text = 'Swiftmend', 																								key = 'lsm', 						check = true, align = 'left', width = 55, step = 1, shiftStep = 5, spin = 90, max = 100},
-	{type = 'checkspin', 	text = 'Healing Touch', 																						key = 'lht',						check = true, align = 'left', width = 55, step = 1, shiftStep = 5, spin = 90, max = 100},
-	{type = 'checkspin', 	text = 'Regrowth', 																									key = 'lrg', 						check = true, align = 'left', width = 55, step = 1, shiftStep = 5, spin = 60, max = 100},
+	{type = 'checkspin',text = 'Flourish', 																										key = 'flourish', 			check = true, align = 'left', width = 55, step = 1, shiftStep = 5, spin = 60, max = 100},
+	{type = 'checkspin',text = 'Rejuvenation', 																								key = 'lrejuv', 				check = true, align = 'left', width = 55, step = 1, shiftStep = 5, spin = 90, max = 100},
+	{type = 'checkspin',text = 'Germination', 																								key = 'lgerm', 					check = true, align = 'left', width = 55, step = 1, shiftStep = 5, spin = 75, max = 100},
+	{type = 'checkspin',text = 'Swiftmend', 																									key = 'lsm', 						check = true, align = 'left', width = 55, step = 1, shiftStep = 5, spin = 90, max = 100},
+	{type = 'checkspin',text = 'Healing Touch', 																							key = 'lht',						check = true, align = 'left', width = 55, step = 1, shiftStep = 5, spin = 90, max = 100},
+	{type = 'checkspin',text = 'Regrowth', 																										key = 'lrg', 						check = true, align = 'left', width = 55, step = 1, shiftStep = 5, spin = 60, max = 100},
 	{type = 'checkspin',text = 'Ironbark',              																			key = 'lbark',          check = true, align = 'left', width = 55, step = 1, shiftStep = 5, spin = 15, max = 40},
 	{type='ruler'},		{type='spacer'},
 	unpack(Zylla.Mythic_GUI),
@@ -194,23 +195,24 @@ local xHealing = {
 	--XXX: AoE Stuff....
 	{'Wild Growth', '!player.moving&area(30,75).heal>=3', 'lowest'},
 	{'Essence of G\'Hanir', '!moving&area(30,75).heal>=3', 'player'},
-	{'Flourish', 'lastcast(Wild Growth)&lowest.health<60', 'player'},
+	{'Flourish', 'UI(flourish_check)&lastcast(Wild Growth)&lowest.health<=UI(flourish_spin)', 'player'},
 	{'Efflorescence', 'area(10,80).heal>=3&mushrooms==0', 'lowest.ground'},
 	--XXX: Rejuvenation
-	{'Rejuvenation', 'health<=UI(trejuv_spin)&!buff&!is(player)', {'tank', 'tank2'}},
-	{'Rejuvenation', 'health<=UI(lrejuv_spin)&!buff&!is(player)', 'lowest'},
+	{'Rejuvenation', 'UI(trejuv_check)&health<=UI(trejuv_spin)&!buff&!is(player)', {'tank', 'tank2'}},
+	{'Rejuvenation', 'UI(lrejuv_check)&health<=UI(lrejuv_spin)&!buff&!is(player)', 'lowest'},
 	--XXX: Germination
-	{'Rejuvenation', 'talent(6,3)&buff&!buff(Rejuvenation (Germination))&health<=UI(lgerm_spin)&!is(player)', {'tank', 'tank2', 'lowest'}},
+	{'Rejuvenation', 'UI(tgerm_check)&talent(6,3)&buff&!buff(Rejuvenation (Germination))&health<=UI(tgerm_spin)&!is(player)', {'tank', 'tank2'}},
+	{'Rejuvenation', 'UI(lgerm_check)&talent(6,3)&buff&!buff(Rejuvenation (Germination))&health<=UI(lgerm_spin)&!is(player)', 'lowest'},
 	--XXX: Swiftmend
-	{'Swiftmend', 'health<=UI(tsm_spin)&!is(player)', {'tank', 'tank2'}},
-	{'Swiftmend', 'health<=UI(lsm_spin)&!is(player)', 'lowest'},
+	{'Swiftmend', 'UI(tsm_check)&health<=UI(tsm_spin)&!is(player)', {'tank', 'tank2'}},
+	{'Swiftmend', 'UI(lsm_check)&health<=UI(lsm_spin)&!is(player)', 'lowest'},
 	--XXX: Regrowth
 	{'Regrowth', 'player.buff(Clearcasting)', 'lowest'},
-	{'Regrowth', '!player.moving&health<=UI(trg_spin)&!is(player)', {'tank', 'tank2'}},
-	{'Regrowth', '!player.moving&health<=UI(lrg_spin)&!is(player)', 'lowest'},
+	{'Regrowth', 'UI(trg_check)&!player.moving&health<=UI(trg_spin)&!is(player)', {'tank', 'tank2'}},
+	{'Regrowth', 'UI(lrg_check)&!player.moving&health<=UI(lrg_spin)&!is(player)', 'lowest'},
 	--XXX: Healing Touch
-	{'Healing Touch', '!player.moving&health<=UI(tht_spin)&!is(player)', {'tank', 'tank2'}},
-	{'Healing Touch', '!player.moving&health<=UI(lht_spin)&!is(player)', 'lowest'},
+	{'Healing Touch', 'UI(tht_check)&!player.moving&health<=UI(tht_spin)&!is(player)', {'tank', 'tank2'}},
+	{'Healing Touch', 'UI(lht_check)&!player.moving&health<=UI(lht_spin)&!is(player)', 'lowest'},
 }
 
 local inCombat = {
