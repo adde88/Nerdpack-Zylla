@@ -121,13 +121,14 @@ NeP.Library:Add('Zylla', {
     return
   end,
 
-	--usage "@Zylla.areaHeal(VAR1, VAR2, VAR3)"
+  --usage "@Zylla.areaHeal(VAR1, VAR2, VAR3)"
 	areaHeal = function(_, args)
-		local a,b,c = strsplit(",", args, 3)
-		a = NeP.DSL:Get("ui")(nil, a)
-		b = NeP.DSL:Get("ui")(nil, b)
-		c = NeP.DSL:Get("ui")(nil, c)
-		return NeP.DSL:Get("area.heal")("lowest", a..","..b) > c
+		args = args:gsub("%s+", "")
+		local a, b, c = strsplit(",", args, 3)
+		a = tonumber(a) or NeP.DSL:Get("ui")(nil, a)	--XXX: Range
+		b = tonumber(b) or NeP.DSL:Get("ui")(nil, b)	--XXX: HP%
+		c = tonumber(c) or NeP.DSL:Get("ui")(nil, c)	--XXX: Units
+		return a and b and c and NeP.DSL:Get("area.heal")("lowest", a..","..b) >= c - 1
 	end,
 
 })
