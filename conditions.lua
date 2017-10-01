@@ -1,25 +1,27 @@
 local _, Zylla = ...
+local _G = _G
+local NeP = _G.NeP
 
 --XXX: Miscellaneous conditions
 
 NeP.DSL:Register('isflyable', function()
-      if IsFlyableArea() then
-         local _, _, _, _, _, _, _, instanceMapID = GetInstanceInfo()
+      if _G.IsFlyableArea() then
+         local _, _, _, _, _, _, _, instanceMapID = _G.GetInstanceInfo()
          local reqSpell = Zylla.flySpells[instanceMapID]
          if reqSpell then
-            return reqSpell > 0 and IsSpellKnown(reqSpell)
-         elseif not IsOnGarrisonMap() and not IsOnShipyardMap() then
-            return IsSpellKnown(34090) or IsSpellKnown(34091) or IsSpellKnown(90265)
+            return reqSpell > 0 and _G.IsSpellKnown(reqSpell)
+         elseif not _G.IsOnGarrisonMap() and not _G.IsOnShipyardMap() then
+              return _G.IsSpellKnown(34090) or _G.IsSpellKnown(34091) or _G.IsSpellKnown(90265)
          end
       end
 end)
 
 NeP.DSL:Register('nfly', function()
-  return IsFlying()
+  return _G.IsFlying()
 end)
 
 NeP.DSL:Register('map_area_id', function()
-    return  GetCurrentMapAreaID()
+    return  _G.GetCurrentMapAreaID()
 end)
 
 NeP.DSL:Register('casting.left', function(target, spell)
@@ -31,7 +33,7 @@ NeP.DSL:Register('casting.left', function(target, spell)
 end)
 
 NeP.DSL:Register('indoors', function()
-    return IsIndoors()
+    return _G.IsIndoors()
 end)
 
 --XXX: SimulationCraft Conditions
@@ -48,7 +50,7 @@ NeP.DSL:Register('buff.react', function(target, spell)
 end)
 
 NeP.DSL:Register('xmoving', function()
-    local speed = GetUnitSpeed('player')
+    local speed = _G.GetUnitSpeed('player')
     if speed ~= 0 then
         return 1
     else
@@ -67,9 +69,9 @@ NeP.DSL:Register('action.cost', function(_, spell)
     local costText = Zylla.Scan_SpellCost(spell)
     local numcost = 0
     for i = 0, 3 do
-        local cost = strmatch(costText, PowerT[i])
+        local cost = _G.strmatch(costText, PowerT[i])
         if cost ~= nil then
-            numcost = gsub(cost, '%D', '') + 0
+            numcost = _G.gsub(cost, '%D', '') + 0
         end
     end
     if numcost > 0 then
@@ -80,9 +82,9 @@ NeP.DSL:Register('action.cost', function(_, spell)
 end)
 
 NeP.DSL:Register('dot.refreshable', function(_, spell)
-    local _,_,_,_,_,duration,expires,_,_,_,spellID = UnitDebuff('target', spell, nil, 'PLAYER|HARMFUL')
+    local _,_,_,_,_,duration,expires,_,_,_,spellID = _G.UnitDebuff('target', spell, nil, 'PLAYER|HARMFUL')
     if spellID and expires then
-        local time_left = expires - GetTime()
+        local time_left = expires - _G.GetTime()
         if time_left < (duration/3) then
             return true
         end
@@ -202,9 +204,9 @@ NeP.DSL:Register('cooldown.up', function(_, spell)
 end)
 
 NeP.DSL:Register('action.cooldown_to_max', function(_, spell)
-    local charges, maxCharges, start, duration = GetSpellCharges(spell)
+    local charges, maxCharges, start, duration = _G.GetSpellCharges(spell)
     if duration and charges ~= maxCharges then
-        local charges_to_max = maxCharges - ( charges + ((GetTime() - start) / duration))
+        local charges_to_max = maxCharges - ( charges + ((_G.GetTime() - start) / duration))
         local cooldown = duration * charges_to_max
         return cooldown
     else
@@ -283,8 +285,8 @@ NeP.DSL:Register('execute_time', function(_, spell)
 end)
 
 NeP.DSL:Register('deficit', function()
-    local max = UnitPowerMax('player')
-    local curr = UnitPower('player')
+    local max = _G.UnitPowerMax('player')
+    local curr = _G.UnitPower('player')
     return (max - curr)
 end)
 
@@ -300,21 +302,21 @@ NeP.DSL:Register('rage.deficit', function()
     return NeP.DSL:Get('deficit')()
 end)
 
-NeP.DSL:Register('astral_power.deficit', function()
+NeP.DSL:Register('astralpower.deficit', function()
     return NeP.DSL:Get('deficit')()
 end)
 
 NeP.DSL:Register('combo_points.deficit', function(target)
-    return (UnitPowerMax(target, SPELL_POWER_COMBO_POINTS)) - (UnitPower(target, SPELL_POWER_COMBO_POINTS))
+    return (_G.UnitPowerMax(target, _G.SPELL_POWER_COMBO_POINTS)) - (_G.UnitPower(target, _G.SPELL_POWER_COMBO_POINTS))
 end)
 
 NeP.DSL:Register('combo_points', function()
-    return GetComboPoints('player', 'target')
+    return _G.GetComboPoints('player', 'target')
 end)
 
 NeP.DSL:Register('cast_regen', function(target, spell)
-    local regen = select(2, GetPowerRegen(target))
-    local _, _, _, cast_time = GetSpellInfo(spell)
+    local regen = select(2, _G.GetPowerRegen(target))
+    local _, _, _, cast_time = _G.GetSpellInfo(spell)
     return math.floor(((regen * cast_time) / 1000) * 10^3 ) / 10^3
 end)
 
@@ -333,7 +335,7 @@ NeP.DSL:Register('max_energy', function()             --XXX: max_energy=1, this 
 end)
 
 NeP.DSL:Register('energy.regen', function()
-    local eregen = select(2, GetPowerRegen('player'))
+    local eregen = select(2, _G.GetPowerRegen('player'))
     return eregen
 end)
 
@@ -344,7 +346,7 @@ NeP.DSL:Register('energy.time_to_max', function()
 end)
 
 NeP.DSL:Register('focus.regen', function()
-    local fregen = select(2, GetPowerRegen('player'))
+    local fregen = select(2, _G.GetPowerRegen('player'))
     return fregen
 end)
 
@@ -354,7 +356,7 @@ NeP.DSL:Register('focus.time_to_max', function()
     return deficit / fregen
 end)
 
-NeP.DSL:Register('astral_power', function()
+NeP.DSL:Register('astralpower', function()
     return NeP.DSL:Get('lunarpower')('player')
 end)
 
@@ -391,7 +393,7 @@ NeP.DSL:Register('talent.enabled', function(_, x,y)
 end)
 
 NeP.DSL:Register('xequipped', function(item)
-    if IsEquippedItem(item) then
+    if _G.IsEquippedItem(item) then
         return 1
     else
         return 0
@@ -401,7 +403,7 @@ end)
 NeP.DSL:Register('line_cd', function(_, spell)
     local spellID = NeP.Core:GetSpellID(spell)
     if Zylla.spell_timers[spellID] then
-        return GetTime() - Zylla.spell_timers[spellID].time
+        return _G.GetTime() - Zylla.spell_timers[spellID].time
     end
     return 0
 end)
@@ -414,7 +416,7 @@ end)
 
 NeP.DSL:Register('ignorepain_max', function()
     local ss = NeP.DSL:Get('health.max')('player')
-    if HasTalent(5,2) then
+    if _G.HasTalent(5,2) then
         return NeP.Core.Round((((77.86412474516502 * 1.70) * ss) / 100))
     else
         return NeP.Core.Round(((77.86412474516502 * ss) / 100))
@@ -441,8 +443,8 @@ local DotTicks = {
 NeP.DSL:Register('dot.tick_time', function(_, spell)
     spell = NeP.Core:GetSpellID(spell)
     if not spell then return end
-    local class = select(3,UnitClass('player'))
-    if class == 11 and GetSpecialization() == 2 then
+    local class = select(3,_G.UnitClass('player'))
+    if class == 11 and _G.GetSpecialization() == 2 then
         if NeP.DSL:Get('talent')(nil, '5,3') and DotTicks[1][spell] then
             return DotTicks[1][spell] * 0.67
         else
@@ -450,7 +452,7 @@ NeP.DSL:Register('dot.tick_time', function(_, spell)
                 return DotTicks[1][spell]
             else
                 local tick = DotTicks[2][spell]
-                return math.floor((tick / ((GetHaste() / 100) + 1)) * 10^3 ) / 10^3
+                return math.floor((tick / ((_G.GetHaste() / 100) + 1)) * 10^3 ) / 10^3
             end
         end
     else
@@ -459,7 +461,7 @@ NeP.DSL:Register('dot.tick_time', function(_, spell)
 end)
 
 NeP.DSL:Register('dot.pmultiplier', function(_, spell)
-  return Zylla.f_Snapshots[spell:lower()][UnitGUID('target')] or 0
+  return Zylla.f_Snapshots[spell:lower()][_G.UnitGUID('target')] or 0
 end)
 
 NeP.DSL:Register('persistent_multiplier', function(_, spell)
@@ -522,18 +524,15 @@ NeP.DSL:Register('variable.actors_fight_time_mod', function()
 end)
 
 NeP.DSL:Register('shadowy_apparitions_in_flight', function()
-    local x = Zylla.SA_TOTAL
-    return x
+    return Zylla.SA_TOTAL
 end)
 
 NeP.DSL:Register('insanity_drain_stacks', function()
-    local x = Zylla.Voidform_Drain_Stacks
-    return x
+    return Zylla.Voidform_Drain_Stacks
 end)
 
 NeP.DSL:Register('current_insanity_drain', function()
-    local x = Zylla.Voidform_Current_Drain_Rate
-    return x
+    return Zylla.Voidform_Current_Drain_Rate
 end)
 
 --{current_insanity_drain*gcd.max>player.insanity}&{player.insanity-{current_insanity_drain*gcd.max}+90}<100
@@ -570,34 +569,34 @@ NeP.DSL:Register('RtB', function()
     local shark = false
 
     -- Shark Infested Waters
-    if UnitBuff('player', GetSpellInfo(193357)) then
+    if _G.UnitBuff('player', _G.GetSpellInfo(193357)) then
         shark = true
         int = int + 1
     end
 
     -- True Bearing
-    if UnitBuff('player', GetSpellInfo(193359)) then
+    if _G.UnitBuff('player', _G.GetSpellInfo(193359)) then
         bearing = true
         int = int + 1
     end
 
     -- Jolly Roger
-    if UnitBuff('player', GetSpellInfo(199603)) then
+    if _G.UnitBuff('player', _G.GetSpellInfo(199603)) then
         int = int + 1
     end
 
     -- Grand Melee
-    if UnitBuff('player', GetSpellInfo(193358)) then
+    if _G.UnitBuff('player', _G.GetSpellInfo(193358)) then
         int = int + 1
     end
 
     -- Buried Treasure
-    if UnitBuff('player', GetSpellInfo(199600)) then
+    if _G.UnitBuff('player', _G.GetSpellInfo(199600)) then
         int = int + 1
     end
 
     -- Broadsides
-    if UnitBuff('player', GetSpellInfo(193356)) then
+    if _G.UnitBuff('player', _G.GetSpellInfo(193356)) then
         int = int + 1
     end
 
@@ -606,7 +605,7 @@ NeP.DSL:Register('RtB', function()
         return true --"LEEEROY JENKINS!"
 
     -- If two or Shark/Bearing and AR/Curse active:
-    elseif int == 2 or int == 3 or ((bearing or shark) and ((UnitBuff("player", GetSpellInfo(13750)) or UnitDebuff("player", GetSpellInfo(202665))))) then
+    elseif int == 2 or int == 3 or ((bearing or shark) and ((_G.UnitBuff("player", _G.GetSpellInfo(13750)) or _G.UnitDebuff("player", _G.GetSpellInfo(202665))))) then
         return true --"Keep."
 
     --[[
@@ -616,11 +615,11 @@ NeP.DSL:Register('RtB', function()
     --]]
 
 	-- If only Shark or True Bearing and CDs ready
-    elseif (bearing or shark) and ((GetSpellCooldown(13750) == 0) or (GetSpellCooldown(202665) == 0)) then
+    elseif (bearing or shark) and ((_G.GetSpellCooldown(13750) == 0) or (_G.GetSpellCooldown(202665) == 0)) then
         return true --"AR/Curse NOW and keep!"
 
 	--if we have only ONE bad buff BUT AR/curse is active:
-    elseif int ==1 and ((UnitBuff("player", GetSpellInfo(13750)) or UnitDebuff("player", GetSpellInfo(202665)))) then
+    elseif int ==1 and ((_G.UnitBuff("player", _G.GetSpellInfo(13750)) or _G.UnitDebuff("player", _G.GetSpellInfo(202665)))) then
         return true
 
 	-- If only one bad buff:
@@ -631,7 +630,7 @@ end)
 --XXX: Hunter Conditions
 
 NeP.DSL:Register('maxRange', function(spell)
-    local _, _, _, _, _, maxRange = GetSpellInfo(spell)
+    local _, _, _, _, _, maxRange = _G.GetSpellInfo(spell)
     if maxRange == nil then return false end
     return maxRange
 end)
@@ -661,15 +660,15 @@ NeP.DSL:Register('travel_time', function(unit, spell)
 end)
 
 NeP.DSL:Register('inareaid', function()
-    return  GetCurrentMapAreaID()
+    return  _G.GetCurrentMapAreaID()
 end)
 
 NeP.DSL:Register("set_bonus", function(_, set)
-	local class = select(2,UnitClass('player'))
+	local class = select(2,_G.UnitClass('player'))
 	local pieces = Zylla.setsTable[class][set] or {}
 	local counter = 0
 	for _, itemID in ipairs(pieces) do
-		if IsEquippedItem(itemID) then
+		if _G.IsEquippedItem(itemID) then
 			counter = counter + 1
 			--print(counter)
 		end
@@ -677,186 +676,14 @@ NeP.DSL:Register("set_bonus", function(_, set)
 	return counter
 end)
 
-NeP.DSL:Register('rejuvraid.heals', function()
-    return (((100+GetMasteryEffect())/100)*((100+GetCritChance())/100)*(UnitStat("player", 4))*10)
-end)
-
-NeP.DSL:Register('germraid.heals', function()
-    return (((100+GetMasteryEffect())/100)*((100+GetCritChance())/100)*(UnitStat("player", 4))*4.9/((NeP.DSL:Get('mana')('player')/100)^.66))*3
-end)
-
-NeP.DSL:Register('htraid.heals', function()
-    return (((100+GetMasteryEffect())/100)*((100+GetCritChance())/100)*(UnitStat("player", 4))*4.9/((NeP.DSL:Get('mana')('player')/100)^.4))*1.5
-end)
-
-NeP.DSL:Register('wgraid.heals', function()
-    return (((100+GetMasteryEffect())/100)*((100+GetCritChance())/100)*(UnitStat("player", 4))*4.9)*2
-end)
-
-NeP.DSL:Register('regrowthraid.heals', function()
-    return (((100+GetMasteryEffect())/100)*((100+GetCritChance())/100)*(UnitStat("player", 4))*4.9/((NeP.DSL:Get('mana')('player')/100)^1.25))*5
-end)
-
-NeP.DSL:Register('smraid.heals', function()
-    return (((100+GetMasteryEffect())/100)*((100+GetCritChance())/100)*(UnitStat("player", 4))*4.9)*3
-end)
-
-NeP.DSL:Register('cwraid.heals', function()
-    return math.sqrt((UnitStat("player", 4)*GetMasteryEffect()*8)^2/NeP.DSL:Get('mana')('player'))
-end)
-
-NeP.DSL:Register('rejuvparty.heals', function()
-    return math.sqrt((UnitStat("player", 4)*GetMasteryEffect()*5.5)^2/NeP.DSL:Get('mana')('player'))
-end)
-
-NeP.DSL:Register('htparty.heals', function()
-    return math.sqrt((UnitStat("player", 4)*GetMasteryEffect()*4)^2/NeP.DSL:Get('mana')('player'))
-end)
-
-NeP.DSL:Register('htpartytank.heals', function()
-    return math.sqrt((UnitStat("player", 4)*GetMasteryEffect()*3)^2/NeP.DSL:Get('mana')('player'))
-end)
-
-NeP.DSL:Register('htpartyhealer.heals', function()
-    return math.sqrt((UnitStat("player", 4)*GetMasteryEffect()*3.2)^2/NeP.DSL:Get('mana')('player'))
-end)
-
-NeP.DSL:Register('htpartydamager.heals', function()
-    return math.sqrt((UnitStat("player", 4)*GetMasteryEffect()*3.2)^2/NeP.DSL:Get('mana')('player'))
-end)
-
-NeP.DSL:Register('wgparty.heals', function()
-    return math.sqrt((UnitStat("player", 4)*GetMasteryEffect()*4.5)^2/NeP.DSL:Get('mana')('player'))
-end)
-
-NeP.DSL:Register('regrowthparty.heals', function()
-    return math.sqrt((UnitStat("player", 4)*GetMasteryEffect()*7)^2/NeP.DSL:Get('mana')('player'))
-end)
-
-NeP.DSL:Register('regrowthpartytank.heals', function()
-    return math.sqrt((UnitStat("player", 4)*GetMasteryEffect()*6.6)^2/NeP.DSL:Get('mana')('player'))
-end)
-
-NeP.DSL:Register('regrowthpartyhealer.heals', function()
-    return math.sqrt((UnitStat("player", 4)*GetMasteryEffect()*6.8)^2/NeP.DSL:Get('mana')('player'))
-end)
-
-NeP.DSL:Register('regrowthpartydamager.heals', function()
-    return math.sqrt((UnitStat("player", 4)*GetMasteryEffect()*7)^2/NeP.DSL:Get('mana')('player'))
-end)
-
-NeP.DSL:Register('smparty.heals', function()
-    return math.sqrt((UnitStat("player", 4)*GetMasteryEffect()*6)^2/NeP.DSL:Get('mana')('player'))
-end)
-
-NeP.DSL:Register('cwparty.heals', function()
-    return math.sqrt((UnitStat("player", 4)*GetMasteryEffect()*6)^2/NeP.DSL:Get('mana')('player'))
-end)
-
-NeP.DSL:Register('rejuvsolo.heals', function()
-    return math.sqrt((UnitStat("player", 4)*GetMasteryEffect()*4)^2/NeP.DSL:Get('mana')('player'))
-end)
-
-NeP.DSL:Register('htsolo.heals', function()
-    return math.sqrt((UnitStat("player", 4)*GetMasteryEffect()*3)^2/NeP.DSL:Get('mana')('player'))
-end)
-
-NeP.DSL:Register('wgsolo.heals', function()
-    return math.sqrt((UnitStat("player", 4)*GetMasteryEffect()*5.5)^2/NeP.DSL:Get('mana')('player'))
-end)
-
-NeP.DSL:Register('regrowthsolo.heals', function()
-    return math.sqrt((UnitStat("player", 4)*GetMasteryEffect()*5)^2/NeP.DSL:Get('mana')('player'))
-end)
-
-NeP.DSL:Register('smsolo.heals', function()
-    return math.sqrt((UnitStat("player", 4)*GetMasteryEffect()*5.5)^2/NeP.DSL:Get('mana')('player'))
-end)
-
-NeP.DSL:Register('cwsolo.heals', function()
-    return math.sqrt((UnitStat("player", 4)*GetMasteryEffect()*2)^2/NeP.DSL:Get('mana')('player'))
-end)
-
-NeP.DSL:Register('chainheal.heals', function()
-    return math.sqrt((UnitStat("player", 4)*GetCombatRatingBonus(CR_VERSATILITY_DAMAGE_DONE)*GetCombatRatingBonus(CR_CRIT_SPELL)*1.2)^2/NeP.DSL:Get('mana')('player'))
-end)
-
-NeP.DSL:Register('healingsurge.heals', function()
-    return math.sqrt((UnitStat("player", 4)*GetCombatRatingBonus(CR_VERSATILITY_DAMAGE_DONE)*GetCombatRatingBonus(CR_CRIT_SPELL)*1.44)^2/NeP.DSL:Get('mana')('player'))
-end)
-
-NeP.DSL:Register('healingwave.heals', function()
-    return math.sqrt((UnitStat("player", 4)*GetCombatRatingBonus(CR_VERSATILITY_DAMAGE_DONE)*GetCombatRatingBonus(CR_CRIT_SPELL)*1.44)^2/NeP.DSL:Get('mana')('player'))
-end)
-
-NeP.DSL:Register('riptide.heals', function()
-    return math.sqrt((UnitStat("player", 4)*GetCombatRatingBonus(CR_VERSATILITY_DAMAGE_DONE)*GetCombatRatingBonus(CR_CRIT_SPELL)*1.6)^2/NeP.DSL:Get('mana')('player'))
-end)
-
-NeP.DSL:Register('holyshockraid.heals', function()
-    return (((100+GetMasteryEffect())/100)*((100+GetCritChance())/100)*(UnitStat("player", 4))*3)
-end)
-
-NeP.DSL:Register('holyshockparty.heals', function()
-    return (((100+GetMasteryEffect())/100)*((100+GetCritChance())/100)*(UnitStat("player", 4))*3)
-end)
-
-NeP.DSL:Register('holyshocksolo.heals', function()
-    return (((100+GetMasteryEffect())/100)*((100+GetCritChance())/100)*(UnitStat("player", 4))*3)
-end)
-
-NeP.DSL:Register('bfraid.heals', function()
-    return (((100+GetMasteryEffect())/100)*((100+GetCritChance())/100)*(UnitStat("player", 4))*6)
-end)
-
-NeP.DSL:Register('bfshockparty.heals', function()
-    return (((100+GetMasteryEffect())/100)*((100+GetCritChance())/100)*(UnitStat("player", 4))*6)
-end)
-
-NeP.DSL:Register('bfshocksolo.heals', function()
-    return (((100+GetMasteryEffect())/100)*((100+GetCritChance())/100)*(UnitStat("player", 4))*6)
-end)
-
-NeP.DSL:Register('folraid.heals', function()
-    return (((100+GetMasteryEffect())/100)*((100+GetCritChance())/100)*(UnitStat("player", 4))*7/((NeP.DSL:Get('mana')('player')/100)^.7))
-end)
-
-NeP.DSL:Register('folparty.heals', function()
-    return (((100+GetMasteryEffect())/100)*((100+GetCritChance())/100)*(UnitStat("player", 4))*6.5/((NeP.DSL:Get('mana')('player')/100)^.7))
-end)
-
-NeP.DSL:Register('folsolo.heals', function()
-    return (((100+GetMasteryEffect())/100)*((100+GetCritChance())/100)*(UnitStat("player", 4))*6/((NeP.DSL:Get('mana')('player')/100)^.7))
-end)
-
-NeP.DSL:Register('holiraid.heals', function()
-    return (((100+GetMasteryEffect())/100)*((100+GetCritChance())/100)*(UnitStat("player", 4))*3/((NeP.DSL:Get('mana')('player')/100)^.2))
-end)
-
-NeP.DSL:Register('holiparty.heals', function()
-    return (((100+GetMasteryEffect())/100)*((100+GetCritChance())/100)*(UnitStat("player", 4))*3/((NeP.DSL:Get('mana')('player')/100)^.2))
-end)
-
-NeP.DSL:Register('holisolo.heals', function()
-    return (((100+GetMasteryEffect())/100)*((100+GetCritChance())/100)*(UnitStat("player", 4))*3/((NeP.DSL:Get('mana')('player')/100)^.2))
-end)
-
-NeP.DSL:Register('loh.heals', function()
-    return (NeP.DSL:Get('health.actual')('player')*.8)
-end)
-
-NeP.DSL:Register('lohraidtank.heals', function()
-    return (NeP.DSL:Get('health.actual')('player')*1)
-end)
-
 NeP.DSL:Register('partycheck', function()
-        if IsInRaid() then
-            return 3
-        elseif IsInGroup() then
-            return 2
-        else
-            return 1
-        end
+  if _G.IsInRaid() then
+    return 3
+  elseif _G.IsInGroup() then
+    return 2
+  else
+    return 1
+  end
 end)
 
 NeP.DSL:Register('artifact.zenabled', function(_, spell)

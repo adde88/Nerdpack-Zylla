@@ -1,4 +1,7 @@
 local _, Zylla = ...
+local unpack = _G.unpack
+local NeP = _G.NeP
+local Mythic_Plus = _G.Mythic_Plus
 
 local GUI = {
 	unpack(Zylla.Logo_GUI),
@@ -18,8 +21,8 @@ local GUI = {
 	{type = 'header', 	size = 16, text = 'Class Settings',															align = 'center'},
 	{type = 'checkbox', text = 'Intercept enabled', 																		key = 'kIntercept', 	default = false},
 	{type = 'checkspin',text = 'Light\'s Judgment - Units', 														key = 'LJ',						spin = 4,	step = 1,	max = 20,	check = true,	desc = Zylla.ClassColor..'World Spell usable on Argus.|r'},
-	{type = 'checkbox', text = 'Use Trinket #1', 																				key = 'trinket1',			default = true},
-	{type = 'checkbox', text = 'Use Trinket #2', 																				key = 'trinket2', 		default = true,		desc = Zylla.ClassColor..'Trinkets will be used whenever possible!|r'},
+	{type = 'checkbox', text = 'Use Trinket #1', 																				key = 'trinket1',			default = false},
+	{type = 'checkbox', text = 'Use Trinket #2', 																				key = 'trinket2', 		default = false,		desc = Zylla.ClassColor..'Trinkets will be used whenever possible!|r'},
 	{type = 'spinner', 	text = 'Ravager - Units', 																			key = 'ravager', 			default = 2, max =20, step = 1, desc = Zylla.ClassColor..'How many units to strike with Ravager!|r'},
 	unpack(Zylla.Mythic_GUI)
 }
@@ -135,7 +138,7 @@ NeP.CR:Add(73, {
 	ic = inCombat,
 	ooc = outCombat,
 	gui = GUI,
-	gui_st = {title='Zylla\'s Combat Routines', width='256', height='520', color='A330C9'},
+	gui_st = Zylla.GuiSettings,
 	ids = Zylla.SpellIDs[Zylla.Class],
 	wow_ver = Zylla.wow_ver,
 	nep_ver = Zylla.nep_ver,

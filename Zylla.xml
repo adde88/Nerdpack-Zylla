@@ -18,6 +18,7 @@
   <Script file="rotations\deathknight\unholy.lua" />
   <Script file="rotations\deathknight\blood.lua" />
   <Script file="rotations\demonhunter\havoc.lua" />
+	<Script file="rotations\demonhunter\havoc-dk-custom.lua" />
   <Script file="rotations\demonhunter\vengeance.lua" />
   <Script file="rotations\druid\balance.lua" />
   <Script file="rotations\druid\feral.lua" />

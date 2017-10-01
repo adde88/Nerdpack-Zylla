@@ -1,4 +1,7 @@
 local _, Zylla = ...
+local unpack = _G.unpack
+local NeP = _G.NeP
+local Mythic_Plus = _G.Mythic_Plus
 
 local GUI = {
 	unpack(Zylla.Logo_GUI),

@@ -162,7 +162,7 @@ NeP.CR:Add(577, {
 	},
 	ooc = outCombat,
 	gui = GUI,
-	gui_st = {title='Zylla\'s Combat Routines', width='256', height='760', color='A330C9'},
+	gui_st = Zylla.GuiSettings,
 	ids = Zylla.SpellIDs[Zylla.Class],
 	wow_ver = Zylla.wow_ver,
 	nep_ver = Zylla.nep_ver,

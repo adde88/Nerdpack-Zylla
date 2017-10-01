@@ -1,4 +1,7 @@
 local _, Zylla = ...
+local unpack = _G.unpack
+local NeP = _G.NeP
+local Mythic_Plus = _G.Mythic_Plus
 
 local GUI = {
 	unpack(Zylla.Logo_GUI),
@@ -19,8 +22,8 @@ local GUI = {
 	{type = 'checkspin',	text = 'Light\'s Judgment - Units', 														key = 'LJ',				spin = 4, step = 1, max = 20, check = true,	desc = Zylla.ClassColor..'World Spell usable on Argus.|r'},
 	{type = 'checkbox', 	text = 'Use Death Grip as backup Interrupt', 										key = 'DGInt', 		default = false},
 	{type = 'checkbox', 	text = 'Use Death Grip as backup Taunt', 												key = 'DGTaunt', 	default = false},
-	{type = 'checkbox', 	text = 'Use Trinket #1', 																				key = 'trinket1',	default = true},
-	{type = 'checkbox', 	text = 'Use Trinket #2', 																				key = 'trinket2', default = true,	desc = Zylla.ClassColor..'Trinkets will be used whenever possible!|r'},
+	{type = 'checkbox', 	text = 'Use Trinket #1', 																				key = 'trinket1',	default = false},
+	{type = 'checkbox', 	text = 'Use Trinket #2', 																				key = 'trinket2', default = false,	desc = Zylla.ClassColor..'Trinkets will be used whenever possible!|r'},
 	{type = 'ruler'},			{type = 'spacer'},
 	-- Survival
 	{type = 'header', 		text = 'Survival',																							align = 'center',	size = 16},
@@ -137,7 +140,7 @@ NeP.CR:Add(250, {
 	ic = inCombat,
 	ooc = outCombat,
 	gui = GUI,
-	gui_st = {title='Zylla\'s Combat Routines', width='256', height='760', color='A330C9'},
+	gui_st = Zylla.GuiSettings,
 	ids = Zylla.SpellIDs[Zylla.Class],
 	wow_ver = Zylla.wow_ver,
 	nep_ver = Zylla.nep_ver,

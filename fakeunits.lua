@@ -1,13 +1,15 @@
 local _, Zylla = ...
+local _G = _G
+local NeP = _G.NeP
 
 NeP.FakeUnits:Add('healingCandidate', function(nump)
   local tempTable = {}
   local num = nump or 1
 
   for _, Obj in pairs(NeP.OM:Get('Friendly')) do
-    if UnitPlayerOrPetInParty(Obj.key) or UnitIsUnit('player', Obj.key) then
+    if _G.UnitPlayerOrPetInParty(Obj.key) or _G.UnitIsUnit('player', Obj.key) then
       local healthRaw = Zylla.GetPredictedHealth(Obj.key)
-      local maxHealth = UnitHealthMax(Obj.key)
+      local maxHealth = _G.UnitHealthMax(Obj.key)
       local healthPercent =  (healthRaw / maxHealth) * 100
       tempTable[#tempTable+1] = {
         key = Obj.key,
@@ -22,11 +24,11 @@ end)
 
 NeP.FakeUnits:Add('Zylla_sck', function(debuff)
   for _, Obj in pairs(NeP.OM:Get('Enemy')) do
-    if UnitExists(Obj.key) then
+    if _G.UnitExists(Obj.key) then
       if (NeP.DSL:Get('combat')(Obj.key) or Obj.isdummy) then
         if (NeP.DSL:Get('infront')(Obj.key) and NeP.DSL:Get('inMelee')(Obj.key)) then
-          local _,_,_,_,_,_,debuffDuration = UnitDebuff(Obj.key, debuff, nil, 'PLAYER')
-          if not debuffDuration or debuffDuration - GetTime() < 1.5 then
+          local _,_,_,_,_,_,debuffDuration = _G.UnitDebuff(Obj.key, debuff, nil, 'PLAYER')
+          if not debuffDuration or debuffDuration - _G.GetTime() < 1.5 then
             --print("Zylla_sck: returning "..Obj.name.." ("..Obj.key.." - "..Obj.guid..' :'..time()..")");
             return Obj.key
           end

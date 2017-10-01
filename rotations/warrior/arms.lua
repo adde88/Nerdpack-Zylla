@@ -1,4 +1,7 @@
 local _, Zylla = ...
+local unpack = _G.unpack
+local NeP = _G.NeP
+local Mythic_Plus = _G.Mythic_Plus
 
 local GUI = {
 	unpack(Zylla.Logo_GUI),
@@ -122,8 +125,8 @@ local Execute = {
 	{'Colossus Smash', '!player.buff(Shattered Defenses)'},
 	{'Warbreaker', '!player.buff(Shattered Defenses)&player.rage<40'},
 	{'Execute', 'player.buff(Shattered Defenses)&player.rage>22'},
-	{'Execute', '!player.buff(Shattered Defenses)&{{xequipped(137060)&rage>40}||!xequipped(137060)}'},
-	{'Mortal Strike', 'xequipped(137060)'},
+	{'Execute', '!player.buff(Shattered Defenses)&{{equipped(137060)&rage>40}||!equipped(137060)}'},
+	{'Mortal Strike', 'equipped(137060)'},
 	{'Execute', '!player.buff(Shattered Defenses)'},
 	{'Bladestorm'},
 }
@@ -141,8 +144,8 @@ local ST = {
 	{'Mortal Strike', '!talent(5,3)'},
 	{'Whirlwind', 'player.area(8).enemies>1||talent(3,1)&player.rage>35'},
 	{'Slam', '!talent(3,1)&player.area(8).enemies==1&player.rage>22'},
-	{'Execute', 'xequipped(137060)'},
-	{'Focused Rage', 'xequipped(137060)'},
+	{'Execute', 'equipped(137060)'},
+	{'Focused Rage', 'equipped(137060)'},
 	{'Bladestorm'},
 }
 
@@ -170,7 +173,7 @@ NeP.CR:Add(71, {
 	ic = inCombat,
 	ooc = outCombat,
 	gui = GUI,
-	gui_st = {title='Zylla\'s Combat Routines', width='256', height='520', color='A330C9'},
+	gui_st = Zylla.GuiSettings,
 	ids = Zylla.SpellIDs[Zylla.Class],
 	wow_ver = Zylla.wow_ver,
 	nep_ver = Zylla.nep_ver,

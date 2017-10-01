@@ -1,4 +1,7 @@
 local _, Zylla = ...
+local unpack = _G.unpack
+local NeP = _G.NeP
+local Mythic_Plus = _G.Mythic_Plus
 
 local GUI = {
 	unpack(Zylla.Logo_GUI),
@@ -19,8 +22,8 @@ local GUI = {
 	{type = 'checkspin',text = 'Light\'s Judgment - Units', 											key = 'LJ',				spin = 4, step = 1, max = 20, check = true,	desc = Zylla.ClassColor..'World Spell usable on Argus.|r'},
 	{type = 'checkbox', text = 'Ring of Frost (Interrupt)',												key = 'RoF_Int',	default = true},
 	{type = 'checkbox', text = 'Polymorph (Interrupt)',														key = 'Pol_Int',	default = false},
-	{type = 'checkbox', text = 'Use Trinket #1', 																	key = 'trinket1',	default = true},
-	{type = 'checkbox', text = 'Use Trinket #2', 																	key = 'trinket2', default = true,	desc = Zylla.ClassColor..'Trinkets will be used whenever possible!|r'},
+	{type = 'checkbox', text = 'Use Trinket #1', 																	key = 'trinket1',	default = false},
+	{type = 'checkbox', text = 'Use Trinket #2', 																	key = 'trinket2', default = false,	desc = Zylla.ClassColor..'Trinkets will be used whenever possible!|r'},
 	{type = 'spacer'},
 	{type = 'checkspin', 	text = 'Kil\'Jaeden\'s Burning Wish - Units', 					key = 'kj', 			align = 'left', width = 55, step = 1, spin = 4, max = 20, min = 1, check = true, desc = Zylla.ClassColor..'Legendary will be used only on selected amount of units!|r'},
 	{type = 'ruler'},	{type = 'spacer'},
@@ -88,10 +91,10 @@ local Cooldowns = {
 	{'Blood Fury'},
 	{'Berserking', 'toggle(xTimeWarp)'},
 	{'Time Warp', 'toggle(xTimeWarp)'},
-	{'#144259', 'UI(kj_check)&target.range<41&target.area(10).enemies>=UI(kj_spin)&equipped(144259)'}, -- Kil'jaeden's Burning Wish / AoE Trinket
+	{'#144259', 'UI(kj_check)&range<41&area(10).enemies>=UI(kj_spin)&equipped(144259)', 'target'}, --XXX: Kil'jaeden's Burning Wish (Legendary)
 	{'#trinket1', 'UI(trinket1)'},
 	{'#trinket2', 'UI(trinket2)'},
-	{'Light\'s Judgment', 'UI(LJ_check)&range<61&area(15).enemies>=UI(LJ_spin)', 'enemies.ground'}
+	{'Light\'s Judgment', 'UI(LJ_check)&range<61&area(15).enemies>=UI(LJ_spin)', 'enemies.ground'} --XXX: Argus World Spell
 }
 
 local Survival = {

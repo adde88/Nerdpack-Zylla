@@ -1,4 +1,7 @@
 local _, Zylla = ...
+local unpack = _G.unpack
+local NeP = _G.NeP
+local Mythic_Plus = _G.Mythic_Plus
 
 local GUI = {
 	unpack(Zylla.Logo_GUI),
@@ -25,8 +28,8 @@ local GUI = {
 	{type = 'spacer'},
 	{type = 'checkspin',text = 'Comet Storm - Units',																			key = 'cstorm',		min = 1,	spin = 4,	step = 1,	max = 20,	check = true,		desc = Zylla.ClassColor..'How many units to hit with Comet Storm.|r'},
 	{type = 'spacer'},
-	{type = 'checkbox', text = 'Use Trinket #1', 																					key = 'trinket1',	default = true},
-	{type = 'checkbox', text = 'Use Trinket #2', 																					key = 'trinket2', default = true,	desc = Zylla.ClassColor..'Trinkets will be used whenever possible!|r'},
+	{type = 'checkbox', text = 'Use Trinket #1', 																					key = 'trinket1',	default = false},
+	{type = 'checkbox', text = 'Use Trinket #2', 																					key = 'trinket2', default = false,	desc = Zylla.ClassColor..'Trinkets will be used whenever possible!|r'},
 	{type = 'spacer'},
 	{type = 'checkspin',text = 'Light\'s Judgment - Units', 															key = 'LJ',				min = 1,	spin = 4,	step = 1,	max = 20,	check = true,		desc = Zylla.ClassColor..'World Spell usable on Argus.|r'},
 	{type = 'spacer'},

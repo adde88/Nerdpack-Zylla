@@ -1,15 +1,17 @@
 local _, Zylla = ...
+local _G = _G
+local NeP = _G.NeP
 
 NeP.Listener:Add('Zylla.SA', 'COMBAT_LOG_EVENT_UNFILTERED', function(_,combatevent,_,sourceGUID,_,_,_,destGUID,_,_,_,spellid,_,_,_,_,_,_,_,_,_,_,_,_,_)
   if Zylla.class == 5 then
-    local CurrentTime = GetTime()
+    local CurrentTime = _G.GetTime()
     Zylla.SA_NUM_UNITS = Zylla.SA_NUM_UNITS or 0
     Zylla.SA_TOTAL     = Zylla.SA_TOTAL or 0
     -- Stats buffer
     Zylla.SA_STATS     = Zylla.SA_STATS or {}
     Zylla.SA_DEAD      = Zylla.SA_DEAD or {}
-    Zylla.LAST_CONTINUITY_CHECK = Zylla.LAST_CONTINUITY_CHECK or GetTime()
-    if sourceGUID == UnitGUID("player") then
+    Zylla.LAST_CONTINUITY_CHECK = Zylla.LAST_CONTINUITY_CHECK or _G.GetTime()
+    if sourceGUID == _G.UnitGUID("player") then
       if spellid == 147193 and combatevent == "SPELL_CAST_SUCCESS" then -- Shadowy Apparition Spawned
         if not Zylla.SA_STATS[destGUID] or Zylla.SA_STATS[destGUID] == nil then
           Zylla.SA_STATS[destGUID]       = {}
@@ -49,7 +51,7 @@ NeP.Listener:Add('Zylla.SA', 'COMBAT_LOG_EVENT_UNFILTERED', function(_,combateve
       Zylla.SA_Cleanup(destGUID)
     end
 
-    if UnitIsDeadOrGhost("player") or not UnitAffectingCombat("player") then -- We died, or, exited combat, go ahead and purge the list
+    if _G.UnitIsDeadOrGhost("player") or not _G.UnitAffectingCombat("player") then -- We died, or, exited combat, go ahead and purge the list
       for guid,_ in pairs(Zylla.SA_STATS) do
         Zylla.SA_Cleanup(guid)
     end
@@ -68,7 +70,7 @@ NeP.Listener:Add('Zylla.SA', 'COMBAT_LOG_EVENT_UNFILTERED', function(_,combateve
     if Zylla.SA_NUM_UNITS > 0 then
       local totalSAs = 0
       for guid,_ in pairs(Zylla.SA_STATS) do
-        if Zylla.SA_STATS[guid].Count <= 0 or (UnitIsDeadOrGhost(guid)) then
+        if Zylla.SA_STATS[guid].Count <= 0 or (_G.UnitIsDeadOrGhost(guid)) then
           Zylla.SA_DEAD[guid] = true
         else
           totalSAs = totalSAs + Zylla.SA_STATS[guid].Count
@@ -84,7 +86,7 @@ end)
 
 NeP.Listener:Add('Zylla_VF_S2M', 'COMBAT_LOG_EVENT_UNFILTERED', function(_,combatevent,_,sourceGUID,_,_,_,destGUID,_,_,_,spellid,_,_,_,_,_,_,_,_,_,_,_,_,_)
   if Zylla.class == 5 then
-    local CurrentTime = GetTime()
+    local CurrentTime = _G.GetTime()
     Zylla.Voidform_Total_Stacks        = Zylla.Voidform_Total_Stacks or 0
     Zylla.Voidform_Previous_Stack_Time = Zylla.Voidform_Previous_Stack_Time or 0
     Zylla.Voidform_Drain_Stacks        = Zylla.Voidform_Drain_Stacks or 0
@@ -107,7 +109,7 @@ NeP.Listener:Add('Zylla_VF_S2M', 'COMBAT_LOG_EVENT_UNFILTERED', function(_,comba
         end
       end
     end
-    if sourceGUID == UnitGUID("player") then
+    if sourceGUID == _G.UnitGUID("player") then
       if spellid == 194249 then
         if combatevent == "SPELL_AURA_APPLIED" then -- Entered Voidform
           Zylla.Voidform_Previous_Stack_Time = CurrentTime
@@ -178,7 +180,7 @@ NeP.Listener:Add('Zylla_VF_S2M', 'COMBAT_LOG_EVENT_UNFILTERED', function(_,comba
         end
       end
 
-    elseif destGUID == UnitGUID("player") and (combatevent == "UNIT_DIED" or combatevent == "UNIT_DESTROYED" or combatevent == "SPELL_INSTAKILL") and Zylla.Voidform_S2M_Activated == true then
+    elseif destGUID == _G.UnitGUID("player") and (combatevent == "UNIT_DIED" or combatevent == "UNIT_DESTROYED" or combatevent == "SPELL_INSTAKILL") and Zylla.Voidform_S2M_Activated == true then
       Zylla.Voidform_S2M_Activated = false
       if Zylla.S2M_Summary == true then
         print("Surrender to Madness Info:")
@@ -259,8 +261,8 @@ NeP.Listener:Add('Zylla_f_Snapshot', 'COMBAT_LOG_EVENT_UNFILTERED', function(_, 
         end
 
         if spellName then
-          Zylla.f_buffs[spellName] = GetTime() + dur
-          Zylla.f_nextUpdateDmg    = GetTime() + dur + 0.01
+          Zylla.f_buffs[spellName] = _G.GetTime() + dur
+          Zylla.f_nextUpdateDmg    = _G.GetTime() + dur + 0.01
           return
         end
       end
@@ -328,13 +330,13 @@ NeP.Listener:Add('Zylla_InCombat', 'PLAYER_REGEN_DISABLED', function()
     --2. Check for and cancel scheduled cleanup when combat starts
     Zylla.f_cancelCleanUp()
 
-    C_Timer.NewTicker(1.5, (function()
+    _G.C_Timer.NewTicker(1.5, (function()
       --This trigger runs the update function if there have been no updates recently
       --due to a lack of relevant combat events.
-      if not UnitIsDeadOrGhost("player") and (UnitAffectingCombat("player")) then
-        if GetTime() - Zylla.f_lastUpdate >= 3 then Zylla.f_update() end
-        --if GetTime() - Zylla.lastDmgUpdate >= 0.045 then Zylla.f_updateDmg() end
-        if Zylla.f_nextUpdateDmg and GetTime() > Zylla.f_nextUpdateDmg then
+      if not _G.UnitIsDeadOrGhost("player") and (_G.UnitAffectingCombat("player")) then
+        if _G.GetTime() - Zylla.f_lastUpdate >= 3 then Zylla.f_update() end
+        --if _G.GetTime() - Zylla.lastDmgUpdate >= 0.045 then Zylla.f_updateDmg() end
+        if Zylla.f_nextUpdateDmg and _G.GetTime() > Zylla.f_nextUpdateDmg then
           Zylla.f_nextUpdateDmg = nil
           Zylla.f_updateDmg()
         end

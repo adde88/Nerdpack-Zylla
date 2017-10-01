@@ -1,6 +1,8 @@
 local _, Zylla = ...
+local _G = _G
+local NeP = _G.NeP
 
-Zylla.Version = '2.2'
+Zylla.Version = '2.3'
 Zylla.Branch = 'RELEASE'
 Zylla.Name = 'NerdPack - Zylla\'s Rotations'
 Zylla.Author = 'Zylla'
@@ -10,17 +12,17 @@ Zylla.wow_ver = '7.3.0'
 Zylla.nep_ver = '1.10'
 Zylla.spell_timers = {}
 Zylla.isAFK = false;
-Zylla.Class = select(3,UnitClass("player"))
+Zylla.Class = select(3,_G.UnitClass("player"))
 Zylla.timer = {}
 Zylla.DonateURL = 'https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=23HX4QKDAD4YG'
 
 local Parse = NeP.DSL.Parse
-local Zframe = CreateFrame('GameTooltip', 'Zylla_ScanningTooltip', UIParent, 'GameTooltipTemplate')
+local Zframe = _G.CreateFrame('GameTooltip', 'Zylla_ScanningTooltip', _G.UIParent, 'GameTooltipTemplate')
 
 function Zylla.timer:useTimer(timerName, interval)
     if self[timerName] == nil then self[timerName] = 0 end
-    if GetTime()-self[timerName] >= interval then
-        self[timerName] = GetTime()
+    if _G.GetTime()-self[timerName] >= interval then
+        self[timerName] = _G.GetTime()
         return true
     else
         return false
@@ -28,17 +30,17 @@ function Zylla.timer:useTimer(timerName, interval)
 end
 
 function Zylla.onFlagChange()	--XXX: Toggles off the CR if the player becomes AFK. And toggle back on when player is un-AFKed.
-  if (UnitIsAFK("player") and not Zylla.isAFK) then	--XXX: Player has become AFK
-    if (C_PetBattles.IsInBattle()==false) then
+  if (_G.UnitIsAFK("player") and not Zylla.isAFK) then	--XXX: Player has become AFK
+    if (_G.C_PetBattles.IsInBattle()==false) then
       --XXX: Contains the stuff to be executed when the player is flagged as AFK
       NeP.Interface:toggleToggle('mastertoggle')
     end
-    DEFAULT_CHAT_FRAME:AddMessage("|cffC41F3BPlayer is AFK! Stopping Zylla's Combat Routine.|r");
+    _G.DEFAULT_CHAT_FRAME:AddMessage("|cffC41F3BPlayer is AFK! Stopping Zylla's Combat Routine.|r");
     Zylla.isAFK = true;
-  elseif (not UnitIsAFK("player") and Zylla.isAFK) then	--XXX: Player has been flagged un-AFK
+  elseif (not _G.UnitIsAFK("player") and Zylla.isAFK) then	--XXX: Player has been flagged un-AFK
     --XXX: Contains the stuff to be executed when the player is flagged as NOT AFK
     NeP.Interface:toggleToggle('mastertoggle')
-    DEFAULT_CHAT_FRAME:AddMessage("|cffFFFB2FPlayer is unAFK! Restarting Zylla's Combat Routine.|r")
+    _G.DEFAULT_CHAT_FRAME:AddMessage("|cffFFFB2FPlayer is unAFK! Restarting Zylla's Combat Routine.|r")
     Zylla.isAFK = false;
   -- else
   --XXX: Player's flag change concerned DND, not becoming AFK or un-AFK
@@ -46,10 +48,17 @@ function Zylla.onFlagChange()	--XXX: Toggles off the CR if the player becomes AF
 end
 
 function Zylla.AFKCheck()
-  local frame = CreateFrame("FRAME", "AfkFrame");
+  local frame = _G.CreateFrame("FRAME", "AfkFrame");
   frame:RegisterEvent("PLAYER_FLAGS_CHANGED"); --XXX: "PLAYER_FLAGS_CHANGED" This will trigger when the player becomes unAFK and unDND
   frame:SetScript("OnEvent", Zylla.onFlagChange);
 end
+
+Zylla.GuiSettings = {
+  title='Zylla\'s Combat Routines',
+  width='256',
+  height='960',
+  color='A330C9'
+}
 
 function Zylla.ExeOnLoad()
   print('|cffFFFB2F ----------------------------------------------------------------------|r')
@@ -69,7 +78,7 @@ function Zylla.ExeOnUnload()
 end
 
 function Zylla.Donate()
-	OpenURL(Zylla.DonateURL)
+	_G.OpenURL(Zylla.DonateURL)
 end
 
 function Zylla.Round(num, idp)
@@ -108,25 +117,25 @@ end
 
 function Zylla.AutoDoT(debuff,spellx)
   for _, Obj in pairs(NeP.OM:Get('Enemy')) do
-    if UnitExists(Obj.key) then
+    if _G.UnitExists(Obj.key) then
       if (NeP.DSL:Get('combat')(Obj.key) or Obj.isdummy) then
         local objRange = NeP.DSL:Get('range')(Obj.key)
-        local _,_,_, cast_time_ms, minRange, maxRange = GetSpellInfo(spellx)
+        local _,_,_, cast_time_ms, minRange, maxRange = _G.GetSpellInfo(spellx)
         local cast_time_sec = cast_time_ms / 1000
         if maxRange == 0 then maxRange = 5 end
         --print('spell: '..spellx..' skill range: '..minRange..', '..maxRange..' obj range: '..objRange)
         if (NeP.DSL:Get('infront')(Obj.key) and objRange >= minRange and objRange <= maxRange) then
           local Travel_Times = Zylla.Round((NeP.DSL:Get('travel_time')(Obj.key, spellx)), 3)
-          local _, _, _, lagWorld = GetNetStas()
+          local _, _, _, lagWorld = _G.GetNetStats()
           local latency = ((((lagWorld / 1000) * 1.1) + (Travel_Times * 1.25)))
           local debuffDuration = NeP.DSL:Get('debuff.duration')(Obj.key, debuff)
           if (debuffDuration < (NeP.DSL:Get('gcd')() + latency + cast_time_sec)) then
             --print('debuff: '..debuff..' key: '..Obj.key..' duration: '..debuffDuration)
             --print(' lag: '..(lagWorld / 1000)..' traveltime: '..Travel_Times..' latency: '..latency)
-            C_Timer.After(latency, function ()
+            _G.C_Timer.After(latency, function ()
               if (debuffDuration < (NeP.DSL:Get('gcd')() + cast_time_sec)) then
                 --print('/run CastSpellByName("'..spellx..'","'..Obj.key..'")')
-                RunMacroText('/run CastSpellByName("'..spellx..'","'..Obj.key..'")')
+                _G.RunMacroText('/run CastSpellByName("'..spellx..'","'..Obj.key..'")')
                 --NeP:Queue(debuff, Obj.key)
                 return true
               end
@@ -140,17 +149,17 @@ end
 
 function Zylla.AutoDoT2(debuff)
 	for _, Obj in pairs(NeP.OM:Get('Enemy')) do
-		if UnitExists(Obj.key) then
+		if _G.UnitExists(Obj.key) then
 			if (NeP.DSL:Get('combat')(Obj.key) or Obj.isdummy) then
 				local objRange = NeP.DSL:Get('range')(Obj.key)
-				local _,_,_,_, minRange, maxRange = GetSpellInfo(debuff)
+				local _,_,_,_, minRange, maxRange = _G.GetSpellInfo(debuff)
 				if (NeP.DSL:Get('infront')(Obj.key) and objRange >= minRange and objRange <= maxRange) then
 					if (NeP.DSL:Get('debuff.duration')(Obj.key, debuff) < NeP.DSL:Get('gcd')()) then
-						local _, _, _, lagWorld = GetNetStas()
+						local _, _, _, lagWorld = _G.GetNetStats()
 						local latency = lagWorld / 1000
-						C_Timer.After(latency, function ()
+						_G.C_Timer.After(latency, function ()
 							if (NeP.DSL:Get('debuff.duration')(Obj.key, debuff) < NeP.DSL:Get('gcd')()) then
-								RunMacroText('/run CastSpellByName("'..debuff..'","'..Obj.key..'")')
+								_G.RunMacroText('/run CastSpellByName("'..debuff..'","'..Obj.key..'")')
 								--NeP:Queue(debuff, Obj.key)
 								return true
 							end
@@ -167,7 +176,7 @@ end
 --/dump Zylla.Scan_SpellCost('Rake')
 function Zylla.Scan_SpellCost(spell)
   local spellID = NeP.Core:GetSpellID(spell)
-  Zframe:SetOwner(UIParent, 'ANCHOR_NONE')
+  Zframe:SetOwner(_G.UIParent, 'ANCHOR_NONE')
   Zframe:SetSpellByID(spellID)
   for i = 2, Zframe:NumLines() do
     local tooltipText = _G['Zylla_ScanningTooltipTextLeft' .. i]:GetText()
@@ -179,13 +188,13 @@ end
 --/dump Zylla.Scan_IgnorePain()
 function Zylla.Scan_IgnorePain()
   for i = 1, 40 do
-    local debuff = select(11,UnitBuff('player', i))
+    local debuff = select(11,_G.UnitBuff('player', i))
     if debuff == 190456 then
-      Zframe:SetOwner(UIParent, 'ANCHOR_NONE')
+      Zframe:SetOwner(_G.UIParent, 'ANCHOR_NONE')
       Zframe:SetUnitBuff('player', i)
       local tooltipText = _G['Zylla_ScanningTooltipTextLeft2']:GetText()
       local match = tooltipText:lower():match('of the next.-$')
-      return gsub(match, '%D', '') + 0
+      return _G.gsub(match, '%D', '') + 0
     end
   end
   return false
@@ -212,11 +221,11 @@ if tonumber(spell) then
   local go, i = true, 0
   while i <= 40 and go do
     i = i + 1
-    name,_,_,count,_,_,expires,caster,_,_,spellID = _G['UnitBuff'](target, i)
+    name,_,_,count,_,_,expires,caster,_,_,spellID = _G['_G.UnitBuff'](target, i)
     go = Zylla.oFilter(owner, spell, spellID, caster)
   end
 else
-  name,_,_,count,_,_,expires,caster = _G['UnitBuff'](target, spell)
+  name,_,_,count,_,_,expires,caster = _G['_G.UnitBuff'](target, spell)
 end
 return name, count, expires, caster	-- This adds some random factor
 end
@@ -243,35 +252,35 @@ function Zylla.getIgnorePain()
   --output
   local matchTooltip = false
   --Rage
-  local curRage = UnitPower('player')
-  local costs = GetSpellPowerCost(190456)
+  local curRage = _G.UnitPower('player')
+  local costs = _G.GetSpellPowerCost(190456)
   local minRage = costs[1].minCost or 20
   local maxRage = costs[1].cost or 60
   local calcRage = math.max(minRage, math.min(maxRage, curRage))
 
   --attack power
-  local apBase, apPos, apNeg = UnitAttackPower('player')
+  local apBase, apPos, apNeg = _G.UnitAttackPower('player')
 
   --Versatility rating
-  local vers = 1 + ((GetCombatRatingBonus(29) + GetVersatilityBonus(30)) / 100)
+  local vers = 1 + ((_G.GetCombatRatingBonus(29) + _G.GetVersatilityBonus(30)) / 100)
 
   --Dragon Scales
-  local scales = UnitBuff('player', GetSpellInfo(203581)) and 1.6 or 1
+  local scales = _G.UnitBuff('player', _G.GetSpellInfo(203581)) and 1.6 or 1
 
   --Never Surrender
-  local curHP = UnitHealth('player')
-  local maxHP = UnitHealthMax('player')
+  local curHP = _G.UnitHealth('player')
+  local maxHP = _G.UnitHealthMax('player')
   local misPerc = (maxHP - curHP) / maxHP
-  local nevSur = select(4, GetTalentInfo(5, 2, 1))
+  local nevSur = select(4, _G.GetTalentInfo(5, 2, 1))
   local nevSurPerc = nevSur and (1 + 0.75 * misPerc) or 1
 
   --Indomitable
-  local indom = select(4, GetTalentInfo(5, 3, 1)) and 1.25 or 1
+  local indom = select(4, _G.GetTalentInfo(5, 3, 1)) and 1.25 or 1
 
   --T18
-  local t18 = UnitBuff("player", GetSpellInfo(12975)) and Zylla.GetNumberSetPieces("T18") >= 4 and 2 or 1
+  local t18 = _G.UnitBuff("player", _G.GetSpellInfo(12975)) and Zylla.GetNumberSetPieces("T18") >= 4 and 2 or 1
 
-  local curIP = select(17, UnitBuff('player', GetSpellInfo(190456))) or 0
+  local curIP = select(17, _G.UnitBuff('player', _G.GetSpellInfo(190456))) or 0
   if matchTooltip then
     curIP = curIP / 0.9 --get the tooltip value instead of the absorb
   end
@@ -523,11 +532,11 @@ Zylla.setsTable = {
 --set bonuses
 --/dump Zylla.GetNumberSetPieces('T18', 'WARRIOR')
 function Zylla.GetNumberSetPieces(set, class)
-  class = class or select(2, UnitClass("player"))
+  class = class or select(2, _G.UnitClass("player"))
   local pieces = Zylla.setsTable[class][set] or {}
   local counter = 0
   for _, itemID in ipairs(pieces) do
-    if IsEquippedItem(itemID) then
+    if _G.IsEquippedItem(itemID) then
       counter = counter + 1
     end
   end
@@ -561,7 +570,7 @@ end
 
 --XXX: Druid
 
-Zylla.f_pguid = UnitGUID("player")
+Zylla.f_pguid = _G.UnitGUID("player")
 Zylla.f_cp = 0
 Zylla.f_cleanUpTimer = nil
 Zylla.f_lastUpdate = 0
@@ -613,38 +622,38 @@ Zylla.f_Snapshots = {
 
 --Create localization strings
 Zylla.f_strings = {
-  ["tigersFury"]  = GetSpellInfo(5217) or "Tiger's Fury",
-  ["savageRoar"]  = GetSpellInfo(52610) or "Savage Roar",
-  ["bloodtalons"] = GetSpellInfo(145152) or "Bloodtalons",
-  ["incarnation"] = GetSpellInfo(102543) or "Incarnation: King of the Jungle",
-  ["prowl"]       = GetSpellInfo(5215) or "Prowl",
-  ["shadowmeld"]  = GetSpellInfo(58984) or "Shadowmeld",
+  ["tigersFury"]  = _G.GetSpellInfo(5217) or "Tiger's Fury",
+  ["savageRoar"]  = _G.GetSpellInfo(52610) or "Savage Roar",
+  ["bloodtalons"] = _G.GetSpellInfo(145152) or "Bloodtalons",
+  ["incarnation"] = _G.GetSpellInfo(102543) or "Incarnation: King of the Jungle",
+  ["prowl"]       = _G.GetSpellInfo(5215) or "Prowl",
+  ["shadowmeld"]  = _G.GetSpellInfo(58984) or "Shadowmeld",
 }
 
 --Create update function for checking for buffs
 function Zylla.f_update()
   local b = Zylla.f_buffs
   local s = Zylla.f_strings
-  local now = GetTime()
+  local now = _G.GetTime()
   Zylla.f_lastUpdate = now
 
-  b.tigersFury  = select(7,UnitBuff("player", s.tigersFury)) or b.tigersFury
-  b.savageRoar  = select(7,UnitBuff("player", s.savageRoar)) or b.savageRoar
-  b.bloodtalons = select(7,UnitBuff("player", s.bloodtalons)) or b.bloodtalons
-  b.incarnation = select(7,UnitBuff("player", s.incarnation)) or b.incarnation
-  b.prowl       = select(7,UnitBuff("player", s.prowl)) or b.prowl
-  b.shadowmeld  = select(7,UnitBuff("player", s.shadowmeld)) or b.shadowmeld
+  b.tigersFury  = select(7,_G.UnitBuff("player", s.tigersFury)) or b.tigersFury
+  b.savageRoar  = select(7,_G.UnitBuff("player", s.savageRoar)) or b.savageRoar
+  b.bloodtalons = select(7,_G.UnitBuff("player", s.bloodtalons)) or b.bloodtalons
+  b.incarnation = select(7,_G.UnitBuff("player", s.incarnation)) or b.incarnation
+  b.prowl       = select(7,_G.UnitBuff("player", s.prowl)) or b.prowl
+  b.shadowmeld  = select(7,_G.UnitBuff("player", s.shadowmeld)) or b.shadowmeld
   Zylla.f_updateDmg()
 end
 
 --Create update function for calculating current snapshot strength
 function Zylla.f_updateDmg()
   local b = Zylla.f_buffs
-  local now = GetTime()
+  local now = _G.GetTime()
   local dmgMulti = 1
   local rakeMulti = 1
   local bloodtalonsMulti = 1
-  local currentCP = UnitPower("player",4)
+  local currentCP = _G.UnitPower("player",4)
   if currentCP ~= 0 then
     Zylla.f_cp = currentCP
   end
@@ -664,9 +673,9 @@ end
 function Zylla.f_cleanUp()
   --Cancel existing scheduled cleanup first if there is one
   if Zylla.f_cleanUpTimer then Zylla.f_cancelCleanUp() end
-  Zylla.f_cleanUpTimer = C_Timer.NewTimer(30,function()
-    if UnitIsDeadOrGhost("player") or not UnitAffectingCombat("player") then
-    --if not UnitAffectingCombat("player") then
+  Zylla.f_cleanUpTimer = _G.C_Timer.NewTimer(30,function()
+    if _G.UnitIsDeadOrGhost("player") or not _G.UnitAffectingCombat("player") then
+    --if not _G.UnitAffectingCombat("player") then
       Zylla.f_Snapshots = {
         ["rake"]     = {},
         ["rip"]      = {},
@@ -735,14 +744,14 @@ function Zylla.dynEval(condition, spell)
 end
 
 function Zylla.GetPredictedHealth(unit)
-  return UnitHealth(unit)-(UnitGetTotalHealAbsorbs(unit) or 0)+(UnitGetIncomingHeals(unit) or 0)
+  return _G.UnitHealth(unit)-(_G.UnitGetTotalHealAbsorbs(unit) or 0)+(_G.UnitGetIncomingHeals(unit) or 0)
 end
 
 function Zylla.NrHealsAroundFriendly(healthp, distance, unit)
   local health = healthp
   local range = distance
   local total = 0
-  if not UnitExists(unit) then return total end
+  if not _G.UnitExists(unit) then return total end
   for _, Obj in pairs(NeP.OM:Get('Roster')) do
     if NeP.Protected.Distance(unit, Obj.key) <= tonumber(range) and Obj.health < health then
       total = total +1
@@ -752,13 +761,13 @@ function Zylla.NrHealsAroundFriendly(healthp, distance, unit)
 end
 
 function Zylla.tt()
-  if NeP.Unlocked and UnitAffectingCombat('player') and not NeP.DSL:Get('casting')('player', 'Fists of Fury') then
+  if NeP.Unlocked and _G.UnitAffectingCombat('player') and not NeP.DSL:Get('casting')('player', 'Fists of Fury') then
     NeP:Queue('Transcendence: Transfer', 'player')
   end
 end
 
 function Zylla.ts()
-  if NeP.Unlocked and UnitAffectingCombat('player') and not NeP.DSL:Get('casting')('player', 'Fists of Fury') then
+  if NeP.Unlocked and _G.UnitAffectingCombat('player') and not NeP.DSL:Get('casting')('player', 'Fists of Fury') then
     NeP:Queue('Transcendence', 'player')
   end
 end

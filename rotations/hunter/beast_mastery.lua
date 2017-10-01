@@ -1,4 +1,7 @@
 local _, Zylla = ...
+local unpack = _G.unpack
+local NeP = _G.NeP
+local Mythic_Plus = _G.Mythic_Plus
 
 local GUI = {
 	unpack(Zylla.Logo_GUI),
@@ -9,7 +12,7 @@ local GUI = {
 	{type = 'checkbox',	text = 'Left Alt: '..Zylla.ClassColor..'Binding Shot|r',	align = 'left', 			key = 'lalt', 		default = true},
 	{type = 'checkbox',	text = 'Right Alt: '..Zylla.ClassColor..'Freezing Trap|r',align = 'left', 			key = 'ralt', 		default = true},
 	{type = 'checkbox', size = 10, text = Zylla.ClassColor..'Use Call Pet                                  Select Pet: |r',		align = 'right', 	key = 'epets', 		default = true},
-	{type = 'combo',		default = "1",																						key = "pets", 				list = Zylla.pets, 	width = 50},
+	{type = 'combo',		default = '1',																						key = 'pets', 				list = Zylla.pets, 	width = 50},
 	{type = 'spacer'},	{type = 'spacer'},
 --{type = 'checkbox', text = 'Enable Chatoverlay', 															key = 'chat', 				width = 55, 			default = true, desc = Zylla.ClassColor..'This will enable some messages as an overlay!|r'},
 	unpack(Zylla.PayPal_GUI),
@@ -20,7 +23,7 @@ local GUI = {
 	{type = 'header', 	size = 16, text = 'Class Settings',												align = 'center'},
 	{type = 'checkbox', text = 'Enable DBM Integration',													key = 'kDBM', 				default = true},
 	{type = 'checkbox', text = 'Enable \'pre-potting\' and Flasks',								key = 'prepot', 			default = false},
-	{type = 'combo',		default = "1",																						key = "list", 				list = Zylla.prepots, 	width = 175},
+	{type = 'combo',		default = '1',																						key = 'list', 				list = Zylla.prepots, 	width = 175},
 	{type = 'spacer'},	{type = 'spacer'},
 	{type = 'checkspin',text = 'Light\'s Judgment - Units', 											key = 'LJ',						spin = 4,	step = 1,	max = 20, min = 1,	check = true,	desc = Zylla.ClassColor..'World Spell usable on Argus.|r'},
 	{type = 'checkbox', text = 'Barrage Enabled',							 										key = 'kBarrage', 		default = false},
@@ -28,8 +31,8 @@ local GUI = {
 	{type = 'checkbox', text = 'Misdirect Focus/Pet',															key = 'kMisdirect', 	default = true},
 	{type = 'checkbox', text = 'Freezing Trap (Interrupt)' ,											key = 'FT_Int', 			default = false},
 	{type = 'checkbox', text = 'Tarnished Sentinel Medallion',										key = 'e_TSM', 				default = true},
-	{type = 'checkbox', text = 'Use Trinket #1', 																	key = 'trinket1',			default = true},
-	{type = 'checkbox', text = 'Use Trinket #2', 																	key = 'trinket2', 		default = true, desc = Zylla.ClassColor..'Trinkets will be used whenever possible!|r'},
+	{type = 'checkbox', text = 'Use Trinket #1', 																	key = 'trinket1',			default = false},
+	{type = 'checkbox', text = 'Use Trinket #2', 																	key = 'trinket2', 		default = false, desc = Zylla.ClassColor..'Trinkets will be used whenever possible!|r'},
 	{type = 'spacer'},
 	{type = 'checkspin', 	text = 'Kil\'Jaeden\'s Burning Wish - Units', 					key = 'kj', 			align = 'left', width = 55, step = 1, spin = 4, max = 20, min = 1, check = true, desc = Zylla.ClassColor..'Legendary will be used only on selected amount of units!|r'},
 	{type = 'ruler'},	  {type = 'spacer'},
@@ -72,23 +75,23 @@ local exeOnLoad = function()
 end
 
 local CallPet = {
-	{'Call Pet 1', '!pet.exists&UI(pets)==1'},
-	{'Call Pet 2', '!pet.exists&UI(pets)==2'},
-	{'Call Pet 3', '!pet.exists&UI(pets)==3'},
-	{'Call Pet 4', '!pet.exists&UI(pets)==4'},
-	{'Call Pet 5', '!pet.exists&UI(pets)==5'}
+	{'Call Pet 1', 'UI(pets)==1'},
+	{'Call Pet 2', 'UI(pets)==2'},
+	{'Call Pet 3', 'UI(pets)==3'},
+	{'Call Pet 4', 'UI(pets)==4'},
+	{'Call Pet 5', 'UI(pets)==5'}
 }
 
 local PreCombat = {
-	{CallPet},
-	{'Volley', '{UI(kVolley)&toggle(aoe)&!buff}||{{buff&{!toggle(aoe)||!UI(kVolley)}}}', 'player'},
+	{CallPet, '!pet.exists'},
+	{'Volley', '{UI(kVolley)&toggle(aoe)&!buff}||{{buff&{!toggle(aoe)||!UI(kVolley)}}}'},
 	{'%pause', 'player.buff(Feign Death)'},
 	-- Pots
-	{'#127844', 'UI(list)==1&item(127844).usable&item(127844).count>0&UI(kDBM)&UI(prepot)&!buff(Potion of the Old War)&dbm(pull in)<3', 'player'}, 	--XXX: Potion of the Old War
-	{'#127843', 'UI(list)==2&item(127843).usable&item(127843).count>0&UI(kDBM)&UI(prepot)&!buff(Potion of Deadly Grace)&dbm(pull in)<3', 'player'}, 	--XXX: Potion of Deadly Grace
-	{'#142117', 'UI(list)==3&item(142117).usable&item(142117).count>0&UI(kDBM)&UI(prepot)&!buff(Potion of Prolonged Power)&dbm(pull in)<3', 'player'}, 	--XXX: Potion of Prolonged Power
+	{'#127844', 'UI(list)==1&item(127844).usable&item(127844).count>0&UI(kDBM)&UI(prepot)&!buff(Potion of the Old War)&dbm(pull in)<3'}, 	--XXX: Potion of the Old War
+	{'#127843', 'UI(list)==2&item(127843).usable&item(127843).count>0&UI(kDBM)&UI(prepot)&!buff(Potion of Deadly Grace)&dbm(pull in)<3'}, 	--XXX: Potion of Deadly Grace
+	{'#142117', 'UI(list)==3&item(142117).usable&item(142117).count>0&UI(kDBM)&UI(prepot)&!buff(Potion of Prolonged Power)&dbm(pull in)<3'}, 	--XXX: Potion of Prolonged Power
 	-- Flasks
-	{'#127848', 'item(127848).usable&item(127848).count>0&UI(prepot)&!buff(Flask of the Seventh Demon)', 'player'},	--XXX: Flask of the Seventh Demon
+	{'#127848', 'item(127848).usable&item(127848).count>0&UI(prepot)&!buff(Flask of the Seventh Demon)'},	--XXX: Flask of the Seventh Demon
 }
 
 local Keybinds = {
@@ -100,63 +103,58 @@ local Keybinds = {
 
 local Survival = {
 	{'Exhilaration', 'player.health<=UI(E_HP_spin)&UI(E_HP_check)'},
-	{'#152615', 'item(152615).usable&item(152615).count>0&health<=UI(AHP_spin)&UI(AHP_check)', 'player'}, 													--XXX: Astral Healing Potion
-	{'#127834', 'item(152615).count==0&item(127834).usable&item(127834).count>0&health<=UI(AHP_spin)&UI(AHP_check)', 'player'}, 		--XXX: Ancient Healing Potion
-	{'#5512', 'item(5512).usable&item(5512).count>0&health<=UI(HS_spin)&UI(HS_check)', 'player'}, 																	--XXX: Health Stone
-	{'Aspect of the Turtle', 'health<=UI(AotT_spin)&UI(AotT_check)', 'player'},
-	{'Feign Death', 'health<=UI(FD_spin)&UI(FD_check)&equipped(137064)', 'player'},
+	{'#152615', 'item(152615).usable&item(152615).count>0&health<=UI(AHP_spin)&UI(AHP_check)'}, 													--XXX: Astral Healing Potion
+	{'#127834', 'item(152615).count==0&item(127834).usable&item(127834).count>0&health<=UI(AHP_spin)&UI(AHP_check)'}, 		--XXX: Ancient Healing Potion
+	{'#5512', 'item(5512).usable&item(5512).count>0&health<=UI(HS_spin)&UI(HS_check)'}, 																	--XXX: Health Stone
+	{'Aspect of the Turtle', 'health<=UI(AotT_spin)&UI(AotT_check)'},
+	{'Feign Death', 'health<=UI(FD_spin)&UI(FD_check)&equipped(137064)'},
 	{'%pause', 'player.buff(Feign Death)'},
 }
 
 local Cooldowns = {
-	{'#147017', 'UI(e_TSM)&equipped(147017)'},	-- Tarnished Sentinel Medallion
+	{'#147017', 'UI(e_TSM)&equipped(147017)', 'target'},	--XXX: Tarnished Sentinel Medallion
 	{'!Bestial Wrath', nil, 'player'},
 	{'Titan\'s Thunder', '{buff(Bestial Wrath)||spell(Dire Beast).cooldown>35}||{spell(Dire Beast).cooldown>2||{buff(Bestial Wrath)&buff(Dire Beast)}}', 'player'},
 	{'Aspect of the Wild', 'buff(Bestial Wrath)||target.ttd<12', 'player'},
-	{'Blood Fury'},
-	{'Berserking'},
-	{'#trinket1', 'UI(trinket1)'},
-	{'#trinket2', 'UI(trinket2)'},
-	{'Light\'s Judgment', 'UI(LJ_check)&range<61&area(15).enemies>=UI(LJ_spin)', 'enemies.ground'},
+	{'Blood Fury', nil, 'player'},
+	{'Berserking', nil, 'player'},
+	{'#trinket1', 'UI(trinket1)', {'target', 'player'}},
+	{'#trinket2', 'UI(trinket2)', {'target', 'player'}},
+	{'Light\'s Judgment', 'advanced&UI(LJ_check)&range<61&area(15).enemies>=UI(LJ_spin)', 'enemies.ground'},
 	{'#144259', 'UI(kj_check)&range<41&area(10).enemies>=UI(kj_spin)&equipped(144259)', 'target'}, --XXX: Kil'jaeden's Burning Wish (Legendary)
 }
 
 local Interrupts = {
-	{'!Counter Shot', nil, 'target'},
-	{'!Intimidation', 'player.spell(Counter Shot).cooldown>gcd&!lastcast(Counter Shot)', 'target'},
-	{'!Freezing Trap', 'UI(FT_Int)&player.spell(Counter Shot).cooldown>gcd&!lastcast(Counter Shot)', 'target.ground'},
-}
-
-local Interrupts_Random = {
-	{'!Counter Shot', 'interruptAt(70)&toggle(xIntRandom)&toggle(Interrupts)&inFront&range<41', 'enemies'},
-	{'!Intimidation', 'interruptAt(70)&toggle(xIntRandom)&toggle(Interrupts)&player.spell(Counter Shot).cooldown>gcd&!lastcast(Counter Shot)&inFront&range<41', 'enemies'},
-	{'!Freezing Trap', 'interruptAt(5)&UI(FT_Int)&toggle(xIntRandom)&toggle(Interrupts)&player.spell(Counter Shot).cooldown>gcd&!lastcast(Counter Shot)&range<41', 'enemies.ground'},
+	{'!Counter Shot', 'inFront'},
+	{'!Intimidation', 'spell(Counter Shot).cooldown>gcd&!player.lastcast(Counter Shot)&inFront'},
+	{'!Freezing Trap', 'advanded&UI(FT_Int)&spell(Counter Shot).cooldown>gcd&!player.lastcast(Counter Shot)', 'target.ground'},
+	{'!Freezing Trap', 'advanced&toggle(xIntRandom)&interruptAt(5)&UI(FT_Int)&spell(Counter Shot).cooldown>gcd&!player.lastcast(Counter Shot)', 'enemies.ground'},
 }
 
 local xCombat = {
-	{'A Murder of Crows', 'inFront', 'target'},
-	{'Stampede', 'inFront&{{player.buff(Bloodlust)||player.buff(Bestial Wrath)||player.spell(Bestial Wrath).cooldown<3}||ttd<24}', 'target'},
-	{'Dire Beast', 'player.spell(Bestial Wrath).cooldown>3', 'target'},
-	{'Dire Frenzy', '{pet.buff(Dire Frenzy).duration<=gcd.max*1.2}||player.spell(Dire Frenzy).charges>0.8||target.ttd<9'},
-	{'Barrage', 'toggle(aoe)&UI(kBarrage)&{player.area(15).enemies.infront>1||{player.area(15).enemies.infront==1&player.focus>90}}', 'target'},
-	{'Multi-Shot', 'inFront&toggle(aoe)&area(10).enemies>=5&{pet.buff(Beast Cleave).duration<gcd.max||!pet.buff(Beast Cleave)}', 'target'},
-	{'Multi-Shot', 'inFront&toggle(aoe)&area(10).enemies>=2&{pet.buff(Beast Cleave).duration<gcd.max*2||!pet.buff(Beast Cleave)}', 'target'},
+	{'A Murder of Crows', 'inFront'},
+	{'Stampede', 'inFront&{{player.buff(Bloodlust)||player.buff(Bestial Wrath)||spell(Bestial Wrath).cooldown<3}||ttd<24}'},
+	{'Dire Beast', 'spell(Bestial Wrath).cooldown>3'},
+	{'Dire Frenzy', '{pet.buff(Dire Frenzy).duration<=gcd.max*1.2}||spell(Dire Frenzy).charges>0.8||ttd<9'},
+	{'Barrage', 'toggle(aoe)&UI(kBarrage)&{player.area(15).enemies.infront>1||{player.area(15).enemies.inFront==1&player.focus>90}}'},
+	{'Multi-Shot', 'inFront&toggle(aoe)&area(10).enemies>=5&{pet.buff(Beast Cleave).duration<gcd.max||!pet.buff(Beast Cleave)}'},
+	{'Multi-Shot', 'inFront&toggle(aoe)&area(10).enemies>=2&{pet.buff(Beast Cleave).duration<gcd.max*2||!pet.buff(Beast Cleave)}'},
 	{'Chimaera Shot', 'inFront&player.focus<90'},
-	{'Cobra Shot', 'inFront&{{player.spell(Kill Command).cooldown>focus.time_to_max&player.spell(Bestial Wrath).cooldown>focus.time_to_max}||{player.buff(Bestial Wrath)&focus.regen*player.spell(Kill Command).cooldown>action(Kill Command).cost}||ttd<player.spell(Kill Command).cooldown||{equipped(Parsel\'s Tongue)&player.buff(Parsel\'s Tongue).duration<=gcd.max*2}}', 'target'}
+	{'Cobra Shot', 'inFront&{{spell(Kill Command).cooldown>focus.time_to_max&spell(Bestial Wrath).cooldown>focus.time_to_max}||{player.buff(Bestial Wrath)&focus.regen*spell(Kill Command).cooldown>action(Kill Command).cost}||ttd<spell(Kill Command).cooldown||{equipped(Parsel\'s Tongue)&player.buff(Parsel\'s Tongue).duration<=gcd.max*2}}'}
 }
 
 local xPet = {
-	{CallPet},
+	{CallPet, '!pet.exists'},
 	{'Mend Pet', 'pet.alive&pet.health<=UI(P_HP_spin)&UI(P_HP_check)&!pet.buff(Mend Pet)'},
 		{{ 																			 																			--XXX: Pet Dead
 			{'Heart of the Phoenix', '!player.debuff(Weakened Heart)&player.combat'}, 	--XXX: Heart of the Phoenix
 			{'Revive Pet'} 																															--XXX: Revive Pet
 	}, {'pet.dead', 'UI(kPet)'}},
-	{'&Kill Command', 'alive&combat&pet.exists&pet.alive&petrange<10', 'target'},
-	{'/cast [@focus, help] [@pet, nodead, exists] Misdirection', 'player.spell(Misdirection).cooldown<gcd&UI(kDBM)&toggle(xMisdirect)&{player.combat||{!player.combat&dbm(pull in)<3}}'},
-	{'/cast [@focus, help] [@pet, nodead, exists] Misdirection', 'player.spell(Misdirection).cooldown<gcd&!UI(kDBM)&toggle(xMisdirect)&player.combat'},
-	--{'/cast [@focus, help] [@pet, nodead, exists] Misdirection', 'focus.casting(Fel Burst)&player.spell(Misdirection).cooldown<gcd&{player.spell(Counter Shot).cooldown>gcd||player.spell(Intimidation).cooldown>gcd}'},
-	--{'&26064', 'focus.casting(Fel Burst)&{player.spell(Counter Shot).cooldown>gcd||player.spell(Intimidation).cooldown>gcd}'}, --XXX: Shell Shield for Tugar Bloodtotem Encounter
+	{'&Kill Command', 'alive&combat&pet.exists&pet.alive&petrange<12', 'target'},
+	{'/cast [@focus, help] [@pet, nodead, exists] Misdirection', 'spell(Misdirection).cooldown<gcd&UI(kDBM)&toggle(xMisdirect)&{player.combat||{!player.combat&dbm(pull in)<3}}'},
+	{'/cast [@focus, help] [@pet, nodead, exists] Misdirection', 'spell(Misdirection).cooldown<gcd&!UI(kDBM)&toggle(xMisdirect)&player.combat'},
+	--{'/cast [@focus, help] [@pet, nodead, exists] Misdirection', 'focus.casting(Fel Burst)&spell(Misdirection).cooldown<gcd&{spell(Counter Shot).cooldown>gcd||spell(Intimidation).cooldown>gcd}'},
+	--{'&26064', 'focus.casting(Fel Burst)&{spell(Counter Shot).cooldown>gcd||spell(Intimidation).cooldown>gcd}'}, --XXX: Shell Shield for Tugar Bloodtotem Encounter
 }
 
 local xPvP = {
@@ -165,20 +163,20 @@ local xPvP = {
 	{'Viper Sting', 'range<41&health<80', 'target'},
 	{'Scorpid Sting', 'inMelee', 'target'},
 	{'Spider Sting', 'range<41', 'target'},
-	{'Dire Beast: Hawk', 'range<41', 'target.ground'},
-	{'Dire Beast: Basilisk', 'range<41', 'target.ground'},
+	{'Dire Beast: Hawk', 'advanced&range<41', 'target.ground'},
+	{'Dire Beast: Basilisk', 'advanced&range<41', 'target.ground'},
 	{'Interlope', 'range<41'},
 }
 
 local inCombat = {
 	{'Volley', '{UI(kVolley)&toggle(aoe)&!buff}||{{buff&{!toggle(aoe)||!UI(kVolley)}}}', 'player'},
 	{Keybinds},
-	{Survival},
-	{Interrupts_Random},
-	{Interrupts, 'interruptAt(70)&toggle(Interrupts)&inFront&range<41'},
+	{Survival, nil, 'player'},
+	{Interrupts, 'interruptAt(70)&toggle(Interrupts)&toggle(xIntRandom)&range<41', 'enemies'},
+	{Interrupts, 'interruptAt(70)&toggle(Interrupts)&range<41', 'target'},
 	{Cooldowns, 'toggle(Cooldowns)'},
 	{Mythic_Plus, 'range<41'},
-	{xCombat, 'range<41'},
+	{xCombat, 'range<41', 'target'},
 	{xPet},
 	{xPvP},
 }
@@ -186,9 +184,7 @@ local inCombat = {
 local outCombat = {
 	{xPet},
 	{Keybinds},
-	{PreCombat},
-	{Interrupts_Random},
-	{Interrupts, 'interruptAt(70)&toggle(Interrupts)&inFront&range<41'},
+	{PreCombat, nil, 'player'},
 }
 
 NeP.CR:Add(253, {
@@ -197,7 +193,7 @@ NeP.CR:Add(253, {
 	ic = inCombat,
 	ooc = outCombat,
 	gui = GUI,
-	gui_st = {title='Zylla\'s Combat Routines', width='256', height='760', color='A330C9'},
+	gui_st = Zylla.GuiSettings,
 	ids = Zylla.SpellIDs[Zylla.Class],
 	wow_ver = Zylla.wow_ver,
 	nep_ver = Zylla.nep_ver,

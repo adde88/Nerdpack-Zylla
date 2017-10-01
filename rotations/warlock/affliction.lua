@@ -1,4 +1,7 @@
 local _, Zylla = ...
+local unpack = _G.unpack
+local NeP = _G.NeP
+local Mythic_Plus = _G.Mythic_Plus
 
 local GUI = {
 	unpack(Zylla.Logo_GUI),
@@ -24,8 +27,7 @@ local GUI = {
 	{type = 'spacer'},
 	{type = 'spinner', 	text = 'Soul Harvest - Agony (Units)', 										key = 'SH_units', 		align = 'left', width = 55, step = 1, default = 3, max = 20},
 	{type = 'spacer'},
-	{type = 'spinner', 	text = 'Reap Souls - Agony (Stacks)', 										key = 'rs', 					align = 'left', width = 55, step = 1, default = 5, max = 20},
-	{type = 'spinner', 	text = 'Reap Souls - Tormented Souls (Stacks)', 					key = 'rs_ts',				align = 'left', width = 55, step = 1, default = 5, max = 20},
+	{type = 'spinner', 		text = 'Reap Souls - Tormented Souls (Stacks)', 				key = 'rs_ts',				align = 'left', width = 55, step = 1, default = 5, max = 12},
 	{type = 'spacer'},
 	{type = 'text', 		text = 'Grimoire of Supremacy/Sacrifice', 								align = 'center'},
 	{type = 'checkbox', text = 'Use Doomguard as Pet', 														key = 'kDG',					default = false},
@@ -128,7 +130,7 @@ local xCombat = {
 	{'Haunt', 'range<41&!player.moving&combat&alive&{ttd<=10||ttd>=45}', 'enemies'},
 	{'Seed of Corruption', 'range<41&player.soulshards>=1&!player.moving&toggle(AoE)&area(8).enemies>2&ttd>8&combat&alive', 'enemies'},
 	{'Siphon Life', 'count(Agony).enemies.debuffs>0&count(Corruption).enemies.debuffs>0&count(Unstable Affliction).enemies.debuffs>0', 'target'},
-	{'Reap Souls', 'player.soulshards>=3&{player.buff(Tormented Souls).count>UI(rs_ts)&target.debuff(Agony).count>UI(rs)}', 'player'},
+	{'Reap Souls', 'soulshards>=3&buff(Tormented Souls).count>=UI(rs_ts)', 'player'},
 }
 
 local inCombat = {

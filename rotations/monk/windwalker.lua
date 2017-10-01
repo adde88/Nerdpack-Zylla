@@ -1,4 +1,7 @@
 local _, Zylla = ...
+local unpack = _G.unpack
+local NeP = _G.NeP
+local Mythic_Plus = _G.Mythic_Plus
 
 local GUI = {
 	unpack(Zylla.Logo_GUI),
@@ -20,8 +23,8 @@ local GUI = {
 	{type = 'checkspin',text = 'Light\'s Judgment - Units', 																		key = 'LJ',						spin = 4, step = 1, max = 20, check = true,	desc = Zylla.ClassColor..'World Spell usable on Argus.|r'},
 	{type = 'checkbox',	text = 'Automatic Res',																									key = 'auto_res',			default = true},
 	{type = 'checkbox',	text = '5 min DPS test', 																								key = 'dpstest',			default = false},
-	{type = 'checkbox', text = 'Use Trinket #1', 																								key = 'trinket1',			default = true},
-	{type = 'checkbox', text = 'Use Trinket #2', 																								key = 'trinket2', 		default = true, 	desc = Zylla.ClassColor..'Trinkets will be used in sync with \'Serenity\' or \'Storm, Earth, and Fire\'!|r'},
+	{type = 'checkbox', text = 'Use Trinket #1', 																								key = 'trinket1',			default = false},
+	{type = 'checkbox', text = 'Use Trinket #2', 																								key = 'trinket2', 		default = false, 	desc = Zylla.ClassColor..'Trinkets will be used in sync with \'Serenity\' or \'Storm, Earth, and Fire\'!|r'},
 	-- Survival
 	{type = 'spacer'},		{type = 'rule'},
 	{type = 'header',			text = 'Survival:', 																									align = 'center'},

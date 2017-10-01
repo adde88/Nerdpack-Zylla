@@ -1,4 +1,7 @@
 local _, Zylla = ...
+local unpack = _G.unpack
+local NeP = _G.NeP
+local Mythic_Plus = _G.Mythic_Plus
 
 local GUI = {
 	unpack(Zylla.Logo_GUI),
@@ -112,9 +115,9 @@ local Stealth_Cooldowns = {
 }
 
 local Stealthed = {
-	{'Symbols of Death', '!player.buff(Shadowmeld)&{{player.buff(Symbols of Death).remains<target.time_to_die-4&player.buff(Symbols of Death).remains<=player.buff(Symbols of Death).duration*0.3}||{xequipped(137032)&energy.time_to_max<0.25}}'},
+	{'Symbols of Death', '!player.buff(Shadowmeld)&{{player.buff(Symbols of Death).remains<target.time_to_die-4&player.buff(Symbols of Death).remains<=player.buff(Symbols of Death).duration*0.3}||{equipped(137032)&energy.time_to_max<0.25}}'},
 	{Finishers, 'combo_points>4'},
-	{'Shuriken Storm', '!player.buff(Shadowmeld)&{{combo_points.deficit>2&player.area(10).enemies>1+talent(6,1).enabled+xequipped(137032)}||player.buff(The Dreadlord\'s Deceit).stack>19}'},
+	{'Shuriken Storm', '!player.buff(Shadowmeld)&{{combo_points.deficit>2&player.area(10).enemies>1+talent(6,1).enabled+equipped(137032)}||player.buff(The Dreadlord\'s Deceit).stack>19}'},
 	{'Shadowstrike'},
 }
 
@@ -147,7 +150,7 @@ NeP.CR:Add(261, {
 	ic = inCombat,
 	ooc = outCombat,
 	gui = GUI,
-	gui_st = {title='Zylla\'s Combat Routines', width='256', height='520', color='A330C9'},
+	gui_st = Zylla.GuiSettings,
 	ids = Zylla.SpellIDs[Zylla.Class],
 	wow_ver = Zylla.wow_ver,
 	nep_ver = Zylla.nep_ver,
