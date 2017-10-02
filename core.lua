@@ -9,7 +9,7 @@ Zylla.Author = 'Zylla'
 Zylla.addonColor = '8801C0'
 Zylla.ClassColor = '|cff'..NeP.Core:ClassColor('player', 'hex')..''
 Zylla.wow_ver = '7.3.0'
-Zylla.nep_ver = '1.10'
+Zylla.nep_ver = '1.11'
 Zylla.spell_timers = {}
 Zylla.isAFK = false;
 Zylla.Class = select(3,_G.UnitClass("player"))
@@ -20,28 +20,28 @@ local Parse = NeP.DSL.Parse
 local Zframe = _G.CreateFrame('GameTooltip', 'Zylla_ScanningTooltip', _G.UIParent, 'GameTooltipTemplate')
 
 function Zylla.timer:useTimer(timerName, interval)
-    if self[timerName] == nil then self[timerName] = 0 end
-    if _G.GetTime()-self[timerName] >= interval then
-        self[timerName] = _G.GetTime()
-        return true
-    else
-        return false
-    end
+	 if self[timerName] == nil then self[timerName] = 0 end
+	 if _G.GetTime()-self[timerName] >= interval then
+		  self[timerName] = _G.GetTime()
+		  return true
+	 else
+		  return false
+	 end
 end
 
 function Zylla.onFlagChange()	--XXX: Toggles off the CR if the player becomes AFK. And toggle back on when player is un-AFKed.
   if (_G.UnitIsAFK("player") and not Zylla.isAFK) then	--XXX: Player has become AFK
-    if (_G.C_PetBattles.IsInBattle()==false) then
-      --XXX: Contains the stuff to be executed when the player is flagged as AFK
-      NeP.Interface:toggleToggle('mastertoggle')
-    end
-    _G.DEFAULT_CHAT_FRAME:AddMessage("|cffC41F3BPlayer is AFK! Stopping Zylla's Combat Routine.|r");
-    Zylla.isAFK = true;
+	 if (_G.C_PetBattles.IsInBattle()==false) then
+		--XXX: Contains the stuff to be executed when the player is flagged as AFK
+		NeP.Interface:toggleToggle('mastertoggle')
+	 end
+	 _G.DEFAULT_CHAT_FRAME:AddMessage("|cffC41F3BPlayer is AFK! Stopping Zylla's Combat Routine.|r");
+	 Zylla.isAFK = true;
   elseif (not _G.UnitIsAFK("player") and Zylla.isAFK) then	--XXX: Player has been flagged un-AFK
-    --XXX: Contains the stuff to be executed when the player is flagged as NOT AFK
-    NeP.Interface:toggleToggle('mastertoggle')
-    _G.DEFAULT_CHAT_FRAME:AddMessage("|cffFFFB2FPlayer is unAFK! Restarting Zylla's Combat Routine.|r")
-    Zylla.isAFK = false;
+	 --XXX: Contains the stuff to be executed when the player is flagged as NOT AFK
+	 NeP.Interface:toggleToggle('mastertoggle')
+	 _G.DEFAULT_CHAT_FRAME:AddMessage("|cffFFFB2FPlayer is unAFK! Restarting Zylla's Combat Routine.|r")
+	 Zylla.isAFK = false;
   -- else
   --XXX: Player's flag change concerned DND, not becoming AFK or un-AFK
   end
@@ -83,10 +83,10 @@ end
 
 function Zylla.Round(num, idp)
   if num then
-    local mult = 10^(idp or 0)
-    return math.floor(num * mult + 0.5) / mult
+	 local mult = 10^(idp or 0)
+	 return math.floor(num * mult + 0.5) / mult
   else
-    return 0
+	 return 0
   end
 end
 
@@ -96,19 +96,19 @@ function Zylla.ShortNumber(number)
   local dec = 0
   local num1 = math.abs(number)
   while num1 >= 1000 and affix < #affixes do
-    num1 = num1 / 1000
-    affix = affix + 1
+	 num1 = num1 / 1000
+	 affix = affix + 1
   end
   if affix > 1 then
-    dec = 2
-    local num2 = num1
-    while num2 >= 10 do
-      num2 = num2 / 10
-      dec = dec - 1
-    end
+	 dec = 2
+	 local num2 = num1
+	 while num2 >= 10 do
+		num2 = num2 / 10
+		dec = dec - 1
+	 end
   end
   if number < 0 then
-    num1 = - num1
+	 num1 = - num1
   end
   return string.format("%."..dec.."f"..affixes[affix], num1)
 end
@@ -117,33 +117,33 @@ end
 
 function Zylla.AutoDoT(debuff,spellx)
   for _, Obj in pairs(NeP.OM:Get('Enemy')) do
-    if _G.UnitExists(Obj.key) then
-      if (NeP.DSL:Get('combat')(Obj.key) or Obj.isdummy) then
-        local objRange = NeP.DSL:Get('range')(Obj.key)
-        local _,_,_, cast_time_ms, minRange, maxRange = _G.GetSpellInfo(spellx)
-        local cast_time_sec = cast_time_ms / 1000
-        if maxRange == 0 then maxRange = 5 end
-        --print('spell: '..spellx..' skill range: '..minRange..', '..maxRange..' obj range: '..objRange)
-        if (NeP.DSL:Get('infront')(Obj.key) and objRange >= minRange and objRange <= maxRange) then
-          local Travel_Times = Zylla.Round((NeP.DSL:Get('travel_time')(Obj.key, spellx)), 3)
-          local _, _, _, lagWorld = _G.GetNetStats()
-          local latency = ((((lagWorld / 1000) * 1.1) + (Travel_Times * 1.25)))
-          local debuffDuration = NeP.DSL:Get('debuff.duration')(Obj.key, debuff)
-          if (debuffDuration < (NeP.DSL:Get('gcd')() + latency + cast_time_sec)) then
-            --print('debuff: '..debuff..' key: '..Obj.key..' duration: '..debuffDuration)
-            --print(' lag: '..(lagWorld / 1000)..' traveltime: '..Travel_Times..' latency: '..latency)
-            _G.C_Timer.After(latency, function ()
-              if (debuffDuration < (NeP.DSL:Get('gcd')() + cast_time_sec)) then
-                --print('/run CastSpellByName("'..spellx..'","'..Obj.key..'")')
-                _G.RunMacroText('/run CastSpellByName("'..spellx..'","'..Obj.key..'")')
-                --NeP:Queue(debuff, Obj.key)
-                return true
-              end
-            end)
-          end
-        end
-      end
-    end
+	 if _G.UnitExists(Obj.key) then
+		if (NeP.DSL:Get('combat')(Obj.key) or Obj.isdummy) then
+		  local objRange = NeP.DSL:Get('range')(Obj.key)
+		  local _,_,_, cast_time_ms, minRange, maxRange = _G.GetSpellInfo(spellx)
+		  local cast_time_sec = cast_time_ms / 1000
+		  if maxRange == 0 then maxRange = 5 end
+		  --print('spell: '..spellx..' skill range: '..minRange..', '..maxRange..' obj range: '..objRange)
+		  if (NeP.DSL:Get('infront')(Obj.key) and objRange >= minRange and objRange <= maxRange) then
+			 local Travel_Times = Zylla.Round((NeP.DSL:Get('travel_time')(Obj.key, spellx)), 3)
+			 local _, _, _, lagWorld = _G.GetNetStats()
+			 local latency = ((((lagWorld / 1000) * 1.1) + (Travel_Times * 1.25)))
+			 local debuffDuration = NeP.DSL:Get('debuff.duration')(Obj.key, debuff)
+			 if (debuffDuration < (NeP.DSL:Get('gcd')() + latency + cast_time_sec)) then
+				--print('debuff: '..debuff..' key: '..Obj.key..' duration: '..debuffDuration)
+				--print(' lag: '..(lagWorld / 1000)..' traveltime: '..Travel_Times..' latency: '..latency)
+				_G.C_Timer.After(latency, function ()
+				  if (debuffDuration < (NeP.DSL:Get('gcd')() + cast_time_sec)) then
+					 --print('/run CastSpellByName("'..spellx..'","'..Obj.key..'")')
+					 _G.RunMacroText('/run CastSpellByName("'..spellx..'","'..Obj.key..'")')
+					 --NeP:Queue(debuff, Obj.key)
+					 return true
+				  end
+				end)
+			 end
+		  end
+		end
+	 end
   end
 end
 
@@ -179,8 +179,8 @@ function Zylla.Scan_SpellCost(spell)
   Zframe:SetOwner(_G.UIParent, 'ANCHOR_NONE')
   Zframe:SetSpellByID(spellID)
   for i = 2, Zframe:NumLines() do
-    local tooltipText = _G['Zylla_ScanningTooltipTextLeft' .. i]:GetText()
-    if tooltipText then return tooltipText end
+	 local tooltipText = _G['Zylla_ScanningTooltipTextLeft' .. i]:GetText()
+	 if tooltipText then return tooltipText end
   end
   return false
 end
@@ -188,46 +188,46 @@ end
 --/dump Zylla.Scan_IgnorePain()
 function Zylla.Scan_IgnorePain()
   for i = 1, 40 do
-    local debuff = select(11,_G.UnitBuff('player', i))
-    if debuff == 190456 then
-      Zframe:SetOwner(_G.UIParent, 'ANCHOR_NONE')
-      Zframe:SetUnitBuff('player', i)
-      local tooltipText = _G['Zylla_ScanningTooltipTextLeft2']:GetText()
-      local match = tooltipText:lower():match('of the next.-$')
-      return _G.gsub(match, '%D', '') + 0
-    end
+	 local debuff = select(11,_G.UnitBuff('player', i))
+	 if debuff == 190456 then
+		Zframe:SetOwner(_G.UIParent, 'ANCHOR_NONE')
+		Zframe:SetUnitBuff('player', i)
+		local tooltipText = _G['Zylla_ScanningTooltipTextLeft2']:GetText()
+		local match = tooltipText:lower():match('of the next.-$')
+		return _G.gsub(match, '%D', '') + 0
+	 end
   end
   return false
 end
 
 --XXX: NeP HoT / DoT API
 
-function Zylla.oFilter(owner, spell, spellID, caster)
+local function oFilter(owner, spell, spellID, caster)
   if not owner then
-    if spellID == tonumber(spell) and (caster == 'player' or caster == 'pet') then
-      return false
-    end
+	 if spellID == tonumber(spell) and (caster == 'player' or caster == 'pet') then
+		return false
+	 end
   elseif owner == 'any' then
-    if spellID == tonumber(spell) then
-      return false
-    end
+	 if spellID == tonumber(spell) then
+		return false
+	 end
   end
   return true
 end
 
 function Zylla.UnitHot(target, spell, owner)
-local name, count, caster, expires, spellID
-if tonumber(spell) then
-  local go, i = true, 0
-  while i <= 40 and go do
-    i = i + 1
-    name,_,_,count,_,_,expires,caster,_,_,spellID = _G['_G.UnitBuff'](target, i)
-    go = Zylla.oFilter(owner, spell, spellID, caster)
-  end
-else
-  name,_,_,count,_,_,expires,caster = _G['_G.UnitBuff'](target, spell)
-end
-return name, count, expires, caster	-- This adds some random factor
+	local name, count, caster, expires, spellID
+	if tonumber(spell) then
+		local go, i = true, 0
+		while i <= 40 and go do
+			i = i + 1
+			name,_,_,count,_,_,expires,caster,_,_,spellID = _G['_G.UnitBuff'](target, i)
+			go = oFilter(owner, spell, spellID, caster)
+		end
+	else
+		name,_,_,count,_,_,expires,caster = _G['_G.UnitBuff'](target, spell)
+	end
+	return name, count, expires, caster	 -- This adds some random factor
 end
 
 function Zylla.UnitDot(target, spell, owner)
@@ -235,79 +235,57 @@ local name, count, caster, expires, spellID, power, duration
 if tonumber(spell) then
   local go, i = true, 0
   while i <= 40 and go do
-    i = i + 1
-    name,_,_,count,_,duration,expires,caster,_,_,spellID,_,_,_,power = _G['UnitDebuff'](target, i)
-    go = Zylla.oFilter(owner, spell, spellID, caster)
+	 i = i + 1
+	 name,_,_,count,_,duration,expires,caster,_,_,spellID,_,_,_,power = _G['UnitDebuff'](target, i)
+	 go = oFilter(owner, spell, spellID, caster)
   end
 else
   name,_,_,count,_,duration,expires,caster = _G['UnitDebuff'](target, spell)
 end
-return name, count, duration, expires, caster, power	-- This adds some random factor
+return name, count, duration, expires, caster, power	 -- This adds some random factor
 end
 
 --XXX: Warrior
 
 --/dump Zylla.getIgnorePain()
 function Zylla.getIgnorePain()
-  --output
-  local matchTooltip = false
-  --Rage
-  local curRage = _G.UnitPower('player')
-  local costs = _G.GetSpellPowerCost(190456)
-  local minRage = costs[1].minCost or 20
-  local maxRage = costs[1].cost or 60
-  local calcRage = math.max(minRage, math.min(maxRage, curRage))
-
-  --attack power
-  local apBase, apPos, apNeg = _G.UnitAttackPower('player')
-
-  --Versatility rating
-  local vers = 1 + ((_G.GetCombatRatingBonus(29) + _G.GetVersatilityBonus(30)) / 100)
-
-  --Dragon Scales
-  local scales = _G.UnitBuff('player', _G.GetSpellInfo(203581)) and 1.6 or 1
-
-  --Never Surrender
-  local curHP = _G.UnitHealth('player')
-  local maxHP = _G.UnitHealthMax('player')
-  local misPerc = (maxHP - curHP) / maxHP
-  local nevSur = select(4, _G.GetTalentInfo(5, 2, 1))
-  local nevSurPerc = nevSur and (1 + 0.75 * misPerc) or 1
-
-  --Indomitable
-  local indom = select(4, _G.GetTalentInfo(5, 3, 1)) and 1.25 or 1
-
-  --T18
-  local t18 = _G.UnitBuff("player", _G.GetSpellInfo(12975)) and Zylla.GetNumberSetPieces("T18") >= 4 and 2 or 1
-
-  local curIP = select(17, _G.UnitBuff('player', _G.GetSpellInfo(190456))) or 0
-  if matchTooltip then
-    curIP = curIP / 0.9 --get the tooltip value instead of the absorb
-  end
-
-  local maxIP = (apBase + apPos + apNeg) * 18.6 * vers * indom * scales
-  if not matchTooltip then --some TODO notes so i wont forget fix it:
-    --maxIP = Zylla.Round(maxIP * 0.9) - missing dragon skin arti passive -> * trait!!! missing 0.02-0.06
-    maxIP = Zylla.Round(maxIP * 1.04) -- tooltip value my test with 2/3 dragon skin
-    --maxIP = Zylla.Round((maxIP * 0.9) * trait) -- need enable after got arti lib again
-  end
-
-  local newIP = Zylla.Round(maxIP * (calcRage / maxRage) * 1 * nevSurPerc * t18) --*t18 *trait instead 1
-
-  local cap = Zylla.Round(maxIP * 3)
-  if nevSur then
-    cap = cap * 1.75
-  end
-
-  local diff = cap - curIP
-
-  local castIP = math.min(diff, newIP)
-
-  local castPerc = Zylla.Round((castIP / cap) * 100)
-  local curPerc = Zylla.Round((curIP / cap) * 100)
-
-  return cap, diff, curIP, curPerc, castIP, castPerc, maxIP, newIP, minRage, maxRage, calcRage
-    --maxIP = 268634.7
+	local matchTooltip = false
+	local curRage = _G.UnitPower('player')
+	local costs = _G.GetSpellPowerCost(190456)
+	local minRage = costs[1].minCost or 20
+	local maxRage = costs[1].cost or 60
+	local calcRage = math.max(minRage, math.min(maxRage, curRage))
+	local apBase, apPos, apNeg = _G.UnitAttackPower('player')
+	local vers = 1 + ((_G.GetCombatRatingBonus(29) + _G.GetVersatilityBonus(30)) / 100)
+	local scales = _G.UnitBuff('player', _G.GetSpellInfo(203581)) and 1.6 or 1
+	local curHP = _G.UnitHealth('player')
+	local maxHP = _G.UnitHealthMax('player')
+	local misPerc = (maxHP - curHP) / maxHP
+	local nevSur = select(4, _G.GetTalentInfo(5, 2, 1))
+	local nevSurPerc = nevSur and (1 + 0.75 * misPerc) or 1
+	local indom = select(4, _G.GetTalentInfo(5, 3, 1)) and 1.25 or 1
+	local t18 = _G.UnitBuff("player", _G.GetSpellInfo(12975)) and Zylla.GetNumberSetPieces("T18") >= 4 and 2 or 1
+	local curIP = select(17, _G.UnitBuff('player', _G.GetSpellInfo(190456))) or 0
+	if matchTooltip then
+		curIP = curIP / 0.9 --get the tooltip value instead of the absorb
+	end
+	local maxIP = (apBase + apPos + apNeg) * 18.6 * vers * indom * scales
+	if not matchTooltip then --some TODO notes so i wont forget fix it:
+		--maxIP = Zylla.Round(maxIP * 0.9) - missing dragon skin arti passive -> * trait!!! missing 0.02-0.06
+		maxIP = Zylla.Round(maxIP * 1.04) -- tooltip value my test with 2/3 dragon skin
+		--maxIP = Zylla.Round((maxIP * 0.9) * trait) -- need enable after got arti lib again
+	end
+	local newIP = Zylla.Round(maxIP * (calcRage / maxRage) * 1 * nevSurPerc * t18) --*t18 *trait instead 1
+	local cap = Zylla.Round(maxIP * 3)
+	if nevSur then
+		cap = cap * 1.75
+	end
+	local diff = cap - curIP
+	local castIP = math.min(diff, newIP)
+	local castPerc = Zylla.Round((castIP / cap) * 100)
+	local curPerc = Zylla.Round((curIP / cap) * 100)
+	return cap, diff, curIP, curPerc, castIP, castPerc, maxIP, newIP, minRage, maxRage, calcRage
+	--maxIP = 268634.7
 end
 
 Zylla.setsTable = {
@@ -536,9 +514,9 @@ function Zylla.GetNumberSetPieces(set, class)
   local pieces = Zylla.setsTable[class][set] or {}
   local counter = 0
   for _, itemID in ipairs(pieces) do
-    if _G.IsEquippedItem(itemID) then
-      counter = counter + 1
-    end
+	 if _G.IsEquippedItem(itemID) then
+		counter = counter + 1
+	 end
   end
   return counter
 end
@@ -548,23 +526,23 @@ end
 Zylla.Voidform_Summary = true
 Zylla.S2M_Summary = true
 
-Zylla.Voidform_Drain_Stacks = 0
-Zylla.Voidform_Current_Drain_Rate = 0
-Zylla.SA_TOTAL = 0
+--Zylla.Voidform_Drain_Stacks = 0
+--Zylla.Voidform_Current_Drain_Rate = 0
+--Zylla.SA_TOTAL = 0
 
 function Zylla.SA_Cleanup(guid)
-  if Zylla.SA_STATS[guid] then
-    Zylla.SA_TOTAL = Zylla.SA_TOTAL - Zylla.SA_STATS[guid].Count
-    if Zylla.SA_TOTAL < 0 then
-      Zylla.SA_TOTAL = 0
-    end
-    Zylla.SA_STATS[guid].Count = nil
-    Zylla.SA_STATS[guid].LastUpdate = nil
-    Zylla.SA_STATS[guid] = nil
-    Zylla.SA_NUM_UNITS = Zylla.SA_NUM_UNITS - 1
-    if Zylla.SA_NUM_UNITS < 0 then
-      Zylla.SA_NUM_UNITS = 0
-    end
+  if _G.Zylla_SA_STATS[guid] then
+	 _G.Zylla.SA_TOTAL = _G.Zylla.SA_TOTAL - _G.Zylla_SA_STATS[guid].Count
+	 if Zylla.SA_TOTAL < 0 then
+		Zylla.SA_TOTAL = 0
+	 end
+	 _G.Zylla_SA_STATS[guid].Count = nil
+	 _G.Zylla_SA_STATS[guid].LastUpdate = nil
+	 _G.Zylla_SA_STATS[guid] = nil
+	 _G.Zylla_SA_NUM_UNITS = _G.Zylla_SA_NUM_UNITS - 1
+	 if _G.Zylla_SA_NUM_UNITS < 0 then
+		_G.Zylla_SA_NUM_UNITS = 0
+	 end
   end
 end
 
@@ -581,7 +559,7 @@ Zylla.f_buffs = {
   ["savageRoar"]  = 0,
   ["bloodtalons"] = 0,
   ["incarnation"] = 0,
-  ["prowl"]       = 1,
+  ["prowl"]		 = 1,
   ["shadowmeld"]  = 1,
 }
 
@@ -590,23 +568,23 @@ Zylla.f_events = {
   ["SPELL_AURA_REFRESH"] = true,
   ["SPELL_AURA_REMOVED"] = true,
   ["SPELL_CAST_SUCCESS"] = true,
-  ["SPELL_MISSED"]       = true,
+  ["SPELL_MISSED"]		 = true,
 }
 
 Zylla.f_buffID = {
-  [5217]   = "tigersFury",
+  [5217]	= "tigersFury",
   [52610]  = "savageRoar",
   [145152] = "bloodtalons",
   [102543] = "incarnation",
-  [5215]   = "prowl",
+  [5215]	= "prowl",
   [102547] = "prowl",
   [58984]  = "shadowmeld",
 }
 
 Zylla.f_debuffID = {
   [163505] = "rake", --stun effect
-  [1822]   = "rake", --initial dmg
-  [1079]   = "rip",
+  [1822]	= "rake", --initial dmg
+  [1079]	= "rip",
   [106830] = "thrash",
   [155722] = "rake", --dot
   [155625] = "moonfire",
@@ -614,9 +592,9 @@ Zylla.f_debuffID = {
 
 --Initialize tables to hold all snapshot data
 Zylla.f_Snapshots = {
-  ["rake"]     = {},
-  ["rip"]      = {},
-  ["thrash"]   = {},
+  ["rake"]	  = {},
+  ["rip"]		= {},
+  ["thrash"]	= {},
   ["moonfire"] = {},
 }
 
@@ -626,7 +604,7 @@ Zylla.f_strings = {
   ["savageRoar"]  = _G.GetSpellInfo(52610) or "Savage Roar",
   ["bloodtalons"] = _G.GetSpellInfo(145152) or "Bloodtalons",
   ["incarnation"] = _G.GetSpellInfo(102543) or "Incarnation: King of the Jungle",
-  ["prowl"]       = _G.GetSpellInfo(5215) or "Prowl",
+  ["prowl"]		 = _G.GetSpellInfo(5215) or "Prowl",
   ["shadowmeld"]  = _G.GetSpellInfo(58984) or "Shadowmeld",
 }
 
@@ -641,7 +619,7 @@ function Zylla.f_update()
   b.savageRoar  = select(7,_G.UnitBuff("player", s.savageRoar)) or b.savageRoar
   b.bloodtalons = select(7,_G.UnitBuff("player", s.bloodtalons)) or b.bloodtalons
   b.incarnation = select(7,_G.UnitBuff("player", s.incarnation)) or b.incarnation
-  b.prowl       = select(7,_G.UnitBuff("player", s.prowl)) or b.prowl
+  b.prowl		 = select(7,_G.UnitBuff("player", s.prowl)) or b.prowl
   b.shadowmeld  = select(7,_G.UnitBuff("player", s.shadowmeld)) or b.shadowmeld
   Zylla.f_updateDmg()
 end
@@ -655,17 +633,17 @@ function Zylla.f_updateDmg()
   local bloodtalonsMulti = 1
   local currentCP = _G.UnitPower("player",4)
   if currentCP ~= 0 then
-    Zylla.f_cp = currentCP
+	 Zylla.f_cp = currentCP
   end
   if b.tigersFury > now then dmgMulti = dmgMulti * 1.15 end
   if b.savageRoar > now then dmgMulti = dmgMulti * 1.25 end
   if b.bloodtalons > now then bloodtalonsMulti = 1.5 end
   if b.incarnation > now or b.prowl > now or b.shadowmeld > now then rakeMulti=2
   elseif b.prowl == 0 or b.shadowmeld == 0 then rakeMulti=2 end
-  Zylla.f_Snapshots.rip.current      = dmgMulti*bloodtalonsMulti*Zylla.f_cp
-  Zylla.f_Snapshots.rip.current5CP   = dmgMulti*bloodtalonsMulti*5
-  Zylla.f_Snapshots.rake.current     = dmgMulti*bloodtalonsMulti*rakeMulti
-  Zylla.f_Snapshots.thrash.current   = dmgMulti*bloodtalonsMulti
+  Zylla.f_Snapshots.rip.current		= dmgMulti*bloodtalonsMulti*Zylla.f_cp
+  Zylla.f_Snapshots.rip.current5CP	= dmgMulti*bloodtalonsMulti*5
+  Zylla.f_Snapshots.rake.current	  = dmgMulti*bloodtalonsMulti*rakeMulti
+  Zylla.f_Snapshots.thrash.current	= dmgMulti*bloodtalonsMulti
   Zylla.f_Snapshots.moonfire.current = dmgMulti
 end
 
@@ -674,23 +652,23 @@ function Zylla.f_cleanUp()
   --Cancel existing scheduled cleanup first if there is one
   if Zylla.f_cleanUpTimer then Zylla.f_cancelCleanUp() end
   Zylla.f_cleanUpTimer = _G.C_Timer.NewTimer(30,function()
-    if _G.UnitIsDeadOrGhost("player") or not _G.UnitAffectingCombat("player") then
-    --if not _G.UnitAffectingCombat("player") then
-      Zylla.f_Snapshots = {
-        ["rake"]     = {},
-        ["rip"]      = {},
-        ["thrash"]   = {},
-        ["moonfire"] = {}
-      }
-    end
+	 if _G.UnitIsDeadOrGhost("player") or not _G.UnitAffectingCombat("player") then
+	 --if not _G.UnitAffectingCombat("player") then
+		Zylla.f_Snapshots = {
+		  ["rake"]	  = {},
+		  ["rip"]		= {},
+		  ["thrash"]	= {},
+		  ["moonfire"] = {}
+		}
+	 end
   end)
 end
 
 --Create clean up function
 function Zylla.f_cancelCleanUp()
   if Zylla.f_cleanUpTimer then
-    Zylla.f_cleanUpTimer:Cancel()
-    Zylla.f_cleanUpTimer = nil
+	 Zylla.f_cleanUpTimer:Cancel()
+	 Zylla.f_cleanUpTimer = nil
   end
 end
 
@@ -700,17 +678,17 @@ end
 -- To recover travel speed, open up /eventtrace, calculate difference between SPELL_CAST_SUCCESS and SPELL_DAMAGE events
 
 Zylla.Travel_Times = {
-  [116]    = 23.174,  -- Frostbolt
+  [116]	 = 23.174,  -- Frostbolt
   [228597] = 23.174,  -- Frostbolt
-  [133]    = 45.805,  -- Fireball
-  [11366]  = 52,      -- Pyroblast
-  [29722]  = 18,      -- Incinerate
+  [133]	 = 45.805,  -- Fireball
+  [11366]  = 52,		-- Pyroblast
+  [29722]  = 18,		-- Incinerate
   [30455]  = 33.264,  -- Ice Lance
-  [105174] = 33,      -- Hand of Gul'dan
-  [120644] = 10,      -- Halo
-  [122121] = 25,      -- Divine Star
-  [127632] = 19,      -- Cascade
-  [210714] = 38,      -- Icefury
+  [105174] = 33,		-- Hand of Gul'dan
+  [120644] = 10,		-- Halo
+  [122121] = 25,		-- Divine Star
+  [127632] = 19,		-- Cascade
+  [210714] = 38,		-- Icefury
   [51505]  = 38.090,  -- Lava Burst
   [205181] = 32.737,  -- Shadowflame
 }
@@ -719,24 +697,24 @@ Zylla.Travel_Times = {
 function Zylla.TravelTime(unit, spell)
   local spellID = NeP.Core:GetSpellID(spell)
   if Zylla.Travel_Times[spellID] then
-    local Travel_Speed = Zylla.Travel_Times[spellID]
-    return NeP.DSL:Get("distance")(unit) / Travel_Speed
+	 local Travel_Speed = Zylla.Travel_Times[spellID]
+	 return NeP.DSL:Get("distance")(unit) / Travel_Speed
   else
-    return 0
+	 return 0
   end
 end
 
 Zylla.flySpells = {
-	 [0]    =  90267,  -- Eastern Kingdoms = Flight Master's License
-	 [1]    =  90267,  -- Kalimdor         = Flight Master's License
-	 [646]  =  90267,  -- Deepholm         = Flight Master's License
-	 [571]  =  54197,  -- Northrend        = Cold Weather Flying
-	 [870]  = 115913,  -- Pandaria         = Wisdom of the Four Winds
-	 [1116] = 191645,  -- Draenor          = Draenor Pathfinder
-	 [1464] = 191645,  -- Tanaan Jungle    = Draenor Pathfinder
-	 [1191] = -1,      -- Ashran - World PvP
-	 [1265] = -1,      -- Tanaan Jungle Intro
-	 [1220] = 233368,  -- Broken Isles     = Broken Isles Pathfinder Rank 2
+	 [0]	 =  90267,  -- Eastern Kingdoms = Flight Master's License
+	 [1]	 =  90267,  -- Kalimdor			= Flight Master's License
+	 [646]  =  90267,  -- Deepholm			= Flight Master's License
+	 [571]  =  54197,  -- Northrend		  = Cold Weather Flying
+	 [870]  = 115913,  -- Pandaria			= Wisdom of the Four Winds
+	 [1116] = 191645,  -- Draenor			 = Draenor Pathfinder
+	 [1464] = 191645,  -- Tanaan Jungle	 = Draenor Pathfinder
+	 [1191] = -1,		-- Ashran - World PvP
+	 [1265] = -1,		-- Tanaan Jungle Intro
+	 [1220] = 233368,  -- Broken Isles	  = Broken Isles Pathfinder Rank 2
 }
 
 function Zylla.dynEval(condition, spell)
@@ -753,21 +731,21 @@ function Zylla.NrHealsAroundFriendly(healthp, distance, unit)
   local total = 0
   if not _G.UnitExists(unit) then return total end
   for _, Obj in pairs(NeP.OM:Get('Roster')) do
-    if NeP.Protected.Distance(unit, Obj.key) <= tonumber(range) and Obj.health < health then
-      total = total +1
-    end
+	 if NeP.Protected.Distance(unit, Obj.key) <= tonumber(range) and Obj.health < health then
+		total = total +1
+	 end
   end
   return total
 end
 
 function Zylla.tt()
   if NeP.Unlocked and _G.UnitAffectingCombat('player') and not NeP.DSL:Get('casting')('player', 'Fists of Fury') then
-    NeP:Queue('Transcendence: Transfer', 'player')
+	 NeP:Queue('Transcendence: Transfer', 'player')
   end
 end
 
 function Zylla.ts()
   if NeP.Unlocked and _G.UnitAffectingCombat('player') and not NeP.DSL:Get('casting')('player', 'Fists of Fury') then
-    NeP:Queue('Transcendence', 'player')
+	 NeP:Queue('Transcendence', 'player')
   end
 end
