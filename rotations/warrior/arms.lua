@@ -57,25 +57,6 @@ local Cooldowns = {
 	{'Avatar', 'talent(3,3)&{player.buff(Bloodlust)||xtime>0}'},
 }
 
-local Opener = {
-	{'Charge'},
-	{'Focused Rage'},
-	{'Colossus Smash'},
-	{'Focused Rage'},
-	{'Battle Cry'},
-	{'Avatar'},
-	{'Mortal Strike'},
-	{'Focused Rage'},
-	{'Colossus Smash'},
-	{'Slam'},
-	{'Focused Rage'},
-	{'Colossus Smash'},
-	{'Slam'},
-	{'Focused Rage'},
-	{'Mortal Strike'},
-	{'Slam'},
-}
-
 local Etc = {
 	{Cooldowns, 'toggle(Cooldowns)'},
 	--{'Hamstring', 'player.buff(Battle Cry)&talent(6,1)&!target.debuff(Hamstring)'},	--waste of player.rage i would say unless ... it's PvP, maybe?
