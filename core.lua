@@ -16,6 +16,10 @@ Zylla.Class = select(3,_G.UnitClass("player"))
 Zylla.timer = {}
 Zylla.DonateURL = 'https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=23HX4QKDAD4YG'
 
+--XXX: Lets try going global.
+--TODO: Just testing speed improvement stuff.
+Zylla = _G.Zylla
+
 local Parse = NeP.DSL.Parse
 local Zframe = _G.CreateFrame('GameTooltip', 'Zylla_ScanningTooltip', _G.UIParent, 'GameTooltipTemplate')
 
@@ -549,6 +553,7 @@ end
 --XXX: Druid
 
 Zylla.f_pguid = _G.UnitGUID("player")
+Zylla.f_tguid = _G.UnitGUID("target")
 Zylla.f_cp = 0
 Zylla.f_cleanUpTimer = nil
 Zylla.f_lastUpdate = 0
@@ -559,7 +564,7 @@ Zylla.f_buffs = {
   ["savageRoar"]  = 0,
   ["bloodtalons"] = 0,
   ["incarnation"] = 0,
-  ["prowl"]		 = 1,
+  ["prowl"]		 		= 1,
   ["shadowmeld"]  = 1,
 }
 
@@ -572,30 +577,30 @@ Zylla.f_events = {
 }
 
 Zylla.f_buffID = {
-  [5217]	= "tigersFury",
-  [52610]  = "savageRoar",
-  [145152] = "bloodtalons",
-  [102543] = "incarnation",
-  [5215]	= "prowl",
-  [102547] = "prowl",
-  [58984]  = "shadowmeld",
+  [5217]		= "tigersFury",
+  [52610]  	= "savageRoar",
+  [145152] 	= "bloodtalons",
+  [102543] 	= "incarnation",
+  [5215]		= "prowl",
+  [102547] 	= "prowl",
+  [58984]  	= "shadowmeld",
 }
 
 Zylla.f_debuffID = {
-  [163505] = "rake", --stun effect
-  [1822]	= "rake", --initial dmg
-  [1079]	= "rip",
-  [106830] = "thrash",
-  [155722] = "rake", --dot
-  [155625] = "moonfire",
+  [163505] 	= "rake", --stun effect
+  [1822]		= "rake", --initial dmg
+  [1079]		= "rip",
+  [106830] 	= "thrash",
+  [155722] 	= "rake", --dot
+  [155625] 	= "moonfire",
 }
 
 --Initialize tables to hold all snapshot data
 Zylla.f_Snapshots = {
-  ["rake"]	  = {},
-  ["rip"]		= {},
-  ["thrash"]	= {},
-  ["moonfire"] = {},
+  ["rake"]	  	= {},
+  ["rip"]				= {},
+  ["thrash"]		= {},
+  ["moonfire"] 	= {},
 }
 
 --Create localization strings
@@ -626,25 +631,25 @@ end
 
 --Create update function for calculating current snapshot strength
 function Zylla.f_updateDmg()
-  local b = Zylla.f_buffs
-  local now = _G.GetTime()
-  local dmgMulti = 1
-  local rakeMulti = 1
-  local bloodtalonsMulti = 1
-  local currentCP = _G.UnitPower("player",4)
-  if currentCP ~= 0 then
+  local b 								= Zylla.f_buffs
+  local now 							= _G.GetTime()
+  local dmgMulti 					= 1
+  local rakeMulti 				= 1
+  local bloodtalonsMulti 	= 1
+  local currentCP 				= _G.UnitPower("player",4)
+  if currentCP 						~= 0 then
 	 Zylla.f_cp = currentCP
   end
-  if b.tigersFury > now then dmgMulti = dmgMulti * 1.15 end
-  if b.savageRoar > now then dmgMulti = dmgMulti * 1.25 end
-  if b.bloodtalons > now then bloodtalonsMulti = 1.5 end
-  if b.incarnation > now or b.prowl > now or b.shadowmeld > now then rakeMulti=2
-  elseif b.prowl == 0 or b.shadowmeld == 0 then rakeMulti=2 end
-  Zylla.f_Snapshots.rip.current		= dmgMulti*bloodtalonsMulti*Zylla.f_cp
-  Zylla.f_Snapshots.rip.current5CP	= dmgMulti*bloodtalonsMulti*5
-  Zylla.f_Snapshots.rake.current	  = dmgMulti*bloodtalonsMulti*rakeMulti
-  Zylla.f_Snapshots.thrash.current	= dmgMulti*bloodtalonsMulti
-  Zylla.f_Snapshots.moonfire.current = dmgMulti
+  if b.tigersFury 	> now then dmgMulti 				= dmgMulti * 1.15 end
+  if b.savageRoar 	> now then dmgMulti 				= dmgMulti * 1.25 end
+  if b.bloodtalons 	> now then bloodtalonsMulti = 1.5 end
+  if b.incarnation 	> now or b.prowl 						> now or b.shadowmeld > now then rakeMulti = 2
+  elseif b.prowl 		== 0 or b.shadowmeld 				== 0 then rakeMulti = 2 end
+  Zylla.f_Snapshots.rip.current				= dmgMulti*bloodtalonsMulti*Zylla.f_cp
+  Zylla.f_Snapshots.rip.current5CP		= dmgMulti*bloodtalonsMulti*5
+  Zylla.f_Snapshots.rake.current	  	= dmgMulti*bloodtalonsMulti*rakeMulti
+  Zylla.f_Snapshots.thrash.current		= dmgMulti*bloodtalonsMulti
+  Zylla.f_Snapshots.moonfire.current 	= dmgMulti
 end
 
 --Create function for handling clean up of the snapshot table
@@ -655,10 +660,10 @@ function Zylla.f_cleanUp()
 	 if _G.UnitIsDeadOrGhost("player") or not _G.UnitAffectingCombat("player") then
 	 --if not _G.UnitAffectingCombat("player") then
 		Zylla.f_Snapshots = {
-		  ["rake"]	  = {},
-		  ["rip"]		= {},
-		  ["thrash"]	= {},
-		  ["moonfire"] = {}
+		  ["rake"]	  	= {},
+		  ["rip"]				= {},
+		  ["thrash"]		= {},
+		  ["moonfire"] 	= {}
 		}
 	 end
   end)
@@ -722,7 +727,7 @@ function Zylla.dynEval(condition, spell)
 end
 
 function Zylla.GetPredictedHealth(unit)
-  return _G.UnitHealth(unit)-(_G.UnitGetTotalHealAbsorbs(unit) or 0)+(_G.UnitGetIncomingHeals(unit) or 0)
+  return _G.UnitHealth(unit) - (_G.UnitGetTotalHealAbsorbs(unit) or 0) + (_G.UnitGetIncomingHeals(unit) or 0)
 end
 
 function Zylla.NrHealsAroundFriendly(healthp, distance, unit)
