@@ -85,10 +85,10 @@ local CallPet = {
 local PreCombat = {
 	{CallPet, '!pet.exists'},
 	{'Volley', '{UI(kVolley)&toggle(aoe)&!buff}||{{buff&{!toggle(aoe)||!UI(kVolley)}}}'},
-	{'%pause', 'player.buff(Feign Death)'},
+	{'%pause', 'player.buff(Feign Death)||player.buff(Shadowmeld)'},
 	-- Pots
-	{'#127844', 'UI(list)==1&item(127844).usable&item(127844).count>0&UI(kDBM)&UI(prepot)&!buff(Potion of the Old War)&dbm(pull in)<3'}, 	--XXX: Potion of the Old War
-	{'#127843', 'UI(list)==2&item(127843).usable&item(127843).count>0&UI(kDBM)&UI(prepot)&!buff(Potion of Deadly Grace)&dbm(pull in)<3'}, 	--XXX: Potion of Deadly Grace
+	{'#127844', 'UI(list)==1&item(127844).usable&item(127844).count>0&UI(kDBM)&UI(prepot)&!buff(Potion of the Old War)&dbm(pull in)<3'}, 			--XXX: Potion of the Old War
+	{'#127843', 'UI(list)==2&item(127843).usable&item(127843).count>0&UI(kDBM)&UI(prepot)&!buff(Potion of Deadly Grace)&dbm(pull in)<3'}, 		--XXX: Potion of Deadly Grace
 	{'#142117', 'UI(list)==3&item(142117).usable&item(142117).count>0&UI(kDBM)&UI(prepot)&!buff(Potion of Prolonged Power)&dbm(pull in)<3'}, 	--XXX: Potion of Prolonged Power
 	-- Flasks
 	{'#127848', 'item(127848).usable&item(127848).count>0&UI(prepot)&!buff(Flask of the Seventh Demon)'},	--XXX: Flask of the Seventh Demon
@@ -108,18 +108,18 @@ local Survival = {
 	{'#5512', 'item(5512).usable&item(5512).count>0&health<=UI(HS_spin)&UI(HS_check)'}, 																	--XXX: Health Stone
 	{'Aspect of the Turtle', 'health<=UI(AotT_spin)&UI(AotT_check)'},
 	{'Feign Death', 'health<=UI(FD_spin)&UI(FD_check)&equipped(137064)'},
-	{'%pause', 'player.buff(Feign Death)'},
+	{'%pause', 'player.buff(Feign Death)||player.buff(Shadowmeld)'},
 }
 
 local Cooldowns = {
 	{'#147017', 'UI(e_TSM)&equipped(147017)', 'target'},	--XXX: Tarnished Sentinel Medallion
 	{'!Bestial Wrath', nil, 'player'},
 	{'Titan\'s Thunder', '{buff(Bestial Wrath)||spell(Dire Beast).cooldown>35}||{spell(Dire Beast).cooldown>2||{buff(Bestial Wrath)&buff(Dire Beast)}}', 'player'},
-	{'Aspect of the Wild', 'buff(Bestial Wrath)||target.ttd<12', 'player'},
+	{'Aspect of the Wild', 'buff(Bestial Wrath)&target.ttd>12', 'player'},
 	{'Blood Fury', nil, 'player'},
 	{'Berserking', nil, 'player'},
-	{'#trinket1', 'UI(trinket1)', {'target', 'player'}},
-	{'#trinket2', 'UI(trinket2)', {'target', 'player'}},
+	{'#trinket1', 'UI(trinket1)'},
+	{'#trinket2', 'UI(trinket2)'},
 	{'Light\'s Judgment', 'advanced&UI(LJ_check)&range<61&area(15).enemies>=UI(LJ_spin)', 'enemies.ground'},
 	{'#144259', 'UI(kj_check)&range<41&area(10).enemies>=UI(kj_spin)&equipped(144259)', 'target'}, --XXX: Kil'jaeden's Burning Wish (Legendary)
 }
@@ -127,16 +127,16 @@ local Cooldowns = {
 local Interrupts = {
 	{'!Counter Shot', 'inFront'},
 	{'!Intimidation', 'spell(Counter Shot).cooldown>gcd&!player.lastcast(Counter Shot)&inFront'},
-	{'!Freezing Trap', 'advanded&UI(FT_Int)&spell(Counter Shot).cooldown>gcd&!player.lastcast(Counter Shot)', 'target.ground'},
-	{'!Freezing Trap', 'advanced&toggle(xIntRandom)&interruptAt(5)&UI(FT_Int)&spell(Counter Shot).cooldown>gcd&!player.lastcast(Counter Shot)', 'enemies.ground'},
+	{'!Freezing Trap', 'advanced&UI(FT_Int)&interruptAt(5)&spell(Counter Shot).cooldown>gcd&!player.lastcast(Counter Shot)', 'target.ground'},
+	{'!Freezing Trap', 'advanced&toggle(xIntRandom)&UI(FT_Int)&interruptAt(5)&spell(Counter Shot).cooldown>gcd&!player.lastcast(Counter Shot)', 'enemies.ground'},
 }
 
 local xCombat = {
 	{'A Murder of Crows', 'inFront'},
-	{'Stampede', 'inFront&{{player.buff(Bloodlust)||player.buff(Bestial Wrath)||spell(Bestial Wrath).cooldown<3}||ttd<24}'},
+	{'Stampede', 'inFront&ttd>24&{player.buff(Bloodlust)||player.buff(Bestial Wrath)||spell(Bestial Wrath).cooldown<3}'},
 	{'Dire Beast', 'spell(Bestial Wrath).cooldown>3'},
-	{'Dire Frenzy', '{pet.buff(Dire Frenzy).duration<=gcd.max*1.2}||spell(Dire Frenzy).charges>0.8||ttd<9'},
-	{'Barrage', 'toggle(aoe)&UI(kBarrage)&{player.area(15).enemies.infront>1||{player.area(15).enemies.inFront==1&player.focus>90}}'},
+	{'Dire Frenzy', 'pet.buff(Dire Frenzy).duration<=gcd.max*1.2||spell(Dire Frenzy).charges>0.8'},
+	{'Barrage', 'toggle(aoe)&UI(kBarrage)&{player.area(15).enemies.inFront>=2||{player.area(15).enemies.inFront==1&player.focus>90}}'},
 	{'Multi-Shot', 'inFront&toggle(aoe)&area(10).enemies>=5&{pet.buff(Beast Cleave).duration<gcd.max||!pet.buff(Beast Cleave)}'},
 	{'Multi-Shot', 'inFront&toggle(aoe)&area(10).enemies>=2&{pet.buff(Beast Cleave).duration<gcd.max*2||!pet.buff(Beast Cleave)}'},
 	{'Chimaera Shot', 'inFront&player.focus<90'},
@@ -165,7 +165,7 @@ local xPvP = {
 	{'Spider Sting', 'range<41', 'target'},
 	{'Dire Beast: Hawk', 'advanced&range<41', 'target.ground'},
 	{'Dire Beast: Basilisk', 'advanced&range<41', 'target.ground'},
-	{'Interlope', 'range<41'},
+	{'Interlope', 'range<41&petrange<=10'},
 }
 
 local inCombat = {
