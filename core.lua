@@ -32,27 +32,24 @@ function Zylla.timer:useTimer(timerName, interval)
 	 end
 end
 
-function Zylla.onFlagChange()	--XXX: Toggles off the CR if the player becomes AFK. And toggle back on when player is un-AFKed.
-  if (_G.UnitIsAFK("player") and not Zylla.isAFK) then	--XXX: Player has become AFK
+function Zylla.onFlagChange()
+  if (_G.UnitIsAFK("player") and not Zylla.isAFK) then
 	 if (_G.C_PetBattles.IsInBattle()==false) then
-		--XXX: Contains the stuff to be executed when the player is flagged as AFK
 		NeP.Interface:toggleToggle('mastertoggle')
 	 end
 	 _G.DEFAULT_CHAT_FRAME:AddMessage("|cffC41F3BPlayer is AFK! Stopping Zylla's Combat Routine.|r");
 	 Zylla.isAFK = true;
-  elseif (not _G.UnitIsAFK("player") and Zylla.isAFK) then	--XXX: Player has been flagged un-AFK
-	 --XXX: Contains the stuff to be executed when the player is flagged as NOT AFK
+  elseif (not _G.UnitIsAFK("player") and Zylla.isAFK) then
 	 NeP.Interface:toggleToggle('mastertoggle')
 	 _G.DEFAULT_CHAT_FRAME:AddMessage("|cffFFFB2FPlayer is unAFK! Restarting Zylla's Combat Routine.|r")
 	 Zylla.isAFK = false;
-  -- else
-  --XXX: Player's flag change concerned DND, not becoming AFK or un-AFK
+--else
   end
 end
 
 function Zylla.AFKCheck()
   local frame = _G.CreateFrame("FRAME", "AfkFrame");
-  frame:RegisterEvent("PLAYER_FLAGS_CHANGED"); --XXX: "PLAYER_FLAGS_CHANGED" This will trigger when the player becomes unAFK and unDND
+  frame:RegisterEvent("PLAYER_FLAGS_CHANGED");
   frame:SetScript("OnEvent", Zylla.onFlagChange);
 end
 
@@ -181,9 +178,9 @@ function Zylla.Scan_SpellCost(spell)
   local spellID = NeP.Core:GetSpellID(spell)
   Zframe:SetOwner(_G.UIParent, 'ANCHOR_NONE')
   Zframe:SetSpellByID(spellID)
-  for i = 2, Zframe:NumLines() do
-	 local tooltipText = _G['Zylla_ScanningTooltipTextLeft' .. i]:GetText()
-	 if tooltipText then return tooltipText end
+  for i = 2, Zframe:NumLines() do	-- luacheck: ignore
+    local tooltipText = _G['Zylla_ScanningTooltipTextLeft' .. i]:GetText()
+    return tooltipText
   end
   return false
 end

@@ -63,12 +63,14 @@ local PowerT = {
     [1] = ('^.-Rage'),
     [2] = ('^.-Focus'),
     [3] = ('^.-Energy'),
+		[4] = ('^.-Astral Power'),
+		[5] = ('^.-Runic Power'),
 }
 
 NeP.DSL:Register('action.cost', function(_, spell)
     local costText = Zylla.Scan_SpellCost(spell)
     local numcost = 0
-    for i = 0, 3 do
+    for i = 0, 5 do
         local cost = _G.strmatch(costText, PowerT[i])
         if cost ~= nil then
             numcost = _G.gsub(cost, '%D', '') + 0
