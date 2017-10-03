@@ -16,9 +16,8 @@ Zylla.Class = select(3,_G.UnitClass("player"))
 Zylla.timer = {}
 Zylla.DonateURL = 'https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=23HX4QKDAD4YG'
 
---XXX: Lets try going global.
---TODO: Just testing speed improvement stuff.
-Zylla = _G.Zylla
+-- Lets try the global space
+_G.Zylla = Zylla
 
 local Parse = NeP.DSL.Parse
 local Zframe = _G.CreateFrame('GameTooltip', 'Zylla_ScanningTooltip', _G.UIParent, 'GameTooltipTemplate')
