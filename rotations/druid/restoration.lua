@@ -175,7 +175,7 @@ local Mass_Rejuv = {
 }
 
 local SelfHealing = {
-	{'Lifebloom', 'UI(plb_check)&{buff.duration<5.5||!buff}&group.members==0'},
+	{'Lifebloom', 'UI(plb_check)&group.members==0&{buff.duration<5.5||!buff}'},
 	{'Essence of G\'Hanir', 'UI(peog_check)&group.members==0&!moving&health<=UI(peog_spin)'},
 	{'Rejuvenation', 'UI(prejuv_check)&{!buff||buff.duration<5.5}'},
 	{'Rejuvenation', 'UI(pgerm_check)&talent(6,3)&buff&!buff(Rejuvenation (Germination))&health<=UI(pgerm_spin)'},
@@ -189,7 +189,7 @@ local xHealing = {
 	{Emergency, 'UI(emergency_check)&health<=UI(emergency_spin)&!is(player)', 'lowest'},
 	{Innervate, 'player.buff(Innervate)&!is(player)', 'lowest'},
 	--XXX: Lifebloom on main-tank
-	{'Lifebloom', '{buff.duration<5.5&||!buff}&!is(player)', 'tank'},
+	{'Lifebloom', '{buff.duration<5.5||!buff}&!is(player)', 'tank'},
 	--XXX: Cenarion Ward
 	{'Cenarion Ward', '!buff&!is(player)', {'tank', 'tank2', 'lowest'}},
 	--XXX: AoE Stuff....
