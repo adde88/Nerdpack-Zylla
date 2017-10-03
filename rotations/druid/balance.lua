@@ -5,19 +5,19 @@ local Mythic_Plus = _G.Mythic_Plus
 
 local GUI = {
 	unpack(Zylla.Logo_GUI),
-	-- Header
+--Header
 	{type = 'header',  	size = 16, text = 'Keybinds',	 														align = 'center'},
 	{type = 'checkbox',	text = 'Left Shift: '..Zylla.ClassColor..'Pause|r',				align = 'left', 			key = 'lshift', 	default = true},
 	{type = 'checkbox',	text = 'Left Ctrl: '..Zylla.ClassColor..'|r',							align = 'left', 			key = 'lcontrol',	default = true},
 	{type = 'checkbox',	text = 'Left Alt: '..Zylla.ClassColor..'|r',							align = 'left', 			key = 'lalt', 		default = true},
 	{type = 'checkbox',	text = 'Right Alt: '..Zylla.ClassColor..'|r',							align = 'left', 			key = 'ralt', 		default = true},
 	{type = 'spacer'},
-	--{type = 'checkbox', text = 'Enable Chatoverlay', 															key = 'chat', 				width = 55, 			default = true, desc = Zylla.ClassColor..'This will enable some messages as an overlay!|r'},
+--{type = 'checkbox', text = 'Enable Chatoverlay', 															key = 'chat', 				width = 55, 			default = true, desc = Zylla.ClassColor..'This will enable some messages as an overlay!|r'},
 	unpack(Zylla.PayPal_GUI),
 	{type = 'spacer'},
 	unpack(Zylla.PayPal_IMG),
 	{type = 'ruler'},	 	{type = 'spacer'},
-	-- Settings
+--Settings
 	{type = 'header', 	size = 16, text = 'Class Settings',												align = 'center'},
 	{type = 'checkbox', text = 'Enable DBM Integration',													key = 'kDBM', 				default = true},
 	{type = 'checkbox', text = 'Enable \'pre-potting\' and Flasks',								key = 'prepot', 			default = false},
@@ -25,8 +25,10 @@ local GUI = {
 	{type = 'spacer'},	{type = 'spacer'},
 	{type = 'checkspin',text = 'Light\'s Judgment - Units', 											key = 'LJ',						spin = 4,	step = 1,	max = 20, min = 1,	check = true,	desc = Zylla.ClassColor..'World Spell usable on Argus.|r'},
 	{type = 'ruler'},	{type = 'spacer'},
-	-- Survival
+--Survival
 	{type = 'header', 	size = 16, text = 'Survival',															align = 'center'},
+	{type = 'checkspin',text = 'Swiftmend', 																			key = 'sm',						spin = 70,	step = 5, shiftStep = 10, max = 100, min = 1,	check = false},
+	{type = 'checkspin',text = 'Regrowth', 																				key = 'rg',						spin = 45,	step = 5, shiftStep = 10,	max = 100, min = 1,	check = false},
 	{type = 'ruler'},	{type = 'spacer'},
 	unpack(Zylla.Mythic_GUI),
 }
@@ -37,13 +39,13 @@ local exeOnLoad = function()
 
 	print('|cffADFF2F ----------------------------------------------------------------------|r')
 	print('|cffADFF2F --- |rDRUID |cffADFF2FBalance |r')
-	print('|cffADFF2F --- |rRecommended Talents: 1/3 - 2/2 - 3/X - 4/X - 5/2 - 6/3 - 7/3')
+	print('|cffADFF2F --- |rRecommended Talents: in development....')
 	print('|cffADFF2F ----------------------------------------------------------------------|r')
 
 end
 
 local PreCombat = {
-	{'Moonkin Form', '!buff&!player.buff(Travel Form)'},
+	{'Moonkin Form', '!buff&!buff(Travel Form)'},
 	{'Blessing of the Ancients', '!buff(Blessing of Elune)'},
 	{'%pause', 'buff(Shadowmeld)'},
 	-- Pots
@@ -52,6 +54,7 @@ local PreCombat = {
 	{'#142117', '{buff(Celestial Alignment)||buff(Incarnation: Chosen of Elune)}&UI(list)==3&item(142117).usable&item(142117).count>0&UI(kDBM)&UI(prepot)&!buff(Potion of Prolonged Power)&dbm(pull in)<3'}, 	--XXX: Potion of Prolonged Power
 	-- Flasks
 	{'#127848', 'item(127848).usable&item(127848).count>0&UI(prepot)&!buff(Flask of the Seventh Demon)'},	--XXX: Flask of the Seventh Demon
+	{'#153023', 'item(153023).usable&item(153023).count>0&UI(prepot)&!buff(Defiled Augmentation)'},				--XXX: Lightforged Augment Rune
 }
 
 local MoonkinForm = {
@@ -71,70 +74,74 @@ local Interrupts = {
 
 local Survival = {
 	{'/run CancelShapeshiftForm()', 'form~=0&talent(3,3)&!buff(Rejuvenation)'},
-	{'Rejuvenation', 'talent(3,3)&!player.buff(Rejuvenation)'},
-	{'/run CancelShapeshiftForm()', 'form~=0&talent(3,3)&health<85'},
-	{'Swiftmend', 'talent(3,3)&health<85'},
+	{'Rejuvenation', 'talent(3,3)&!buff(Rejuvenation)'},
+	{'/run CancelShapeshiftForm()', 'UI(sm_check)&form~=0&talent(3,3)&health<=UI(sm_spin)'},
+	{'Swiftmend', 'UI(sm_check)&talent(3,3)&health<UI(sm_spin)'},
+	{'Regrowth', 'UI(rg_check)&health<UI(rg_spin)'},
 }
 
 local Cooldowns = {
-	{'Incarnation: Chosen of Elune', 'astralpower>75&!player.buff(The Emerald Dreamcatcher)'},
-	{'Astral Communion', 'astralpower.deficit>75&player.buff(The Emerald Dreamcatcher)', 'player'},
+	{'Incarnation: Chosen of Elune', 'astralpower>75&!buff(The Emerald Dreamcatcher)'},
+	{'Astral Communion', 'astralpower.deficit>75&buff(The Emerald Dreamcatcher)'},
 	{'Blood Fury', 'player.buff(Celestial Alignment)||player.buff(Incarnation: Chosen of Elune)'},
 	{'Berserking', 'player.buff(Celestial Alignment)||player.buff(Incarnation: Chosen of Elune)'},
-	{'#trinket1', 'UI(trinket1)'},
-	{'#trinket2', 'UI(trinket2)'},
+	{'#trinket1', 'UI(trinket1)', 'target'},
+	{'#trinket2', 'UI(trinket2)', 'target'},
 	{'Light\'s Judgment', 'advanced&UI(LJ_check)&range<61&area(15).enemies>=UI(LJ_spin)', 'enemies.ground'},
 	{'#144259', 'UI(kj_check)&range<41&area(10).enemies>=UI(kj_spin)&equipped(144259)', 'target'}, --XXX: Kil'jaeden's Burning Wish (Legendary)
 }
 
 local Celestial_Alignment = {
-	{'Starfall', 'advanced&{target.area(15).enemies>1&talent(5,3)||target.area(15).enemies>2}&{{talent(7,1)&cooldown(Fury of Elune).remains>12&!player.buff(Fury of Elune)}||!talent(7,1)}', 'target.ground'},
-	{'Starsurge', 'target.area(15).enemies<3'},
-	{'Warrior of Elune', ''},
+	{'Starfall', 'advanced&{area(15).enemies>1&talent(5,3)||area(15).enemies>2}&{{talent(7,1)&cooldown(Fury of Elune).remains>12&!player.buff(Fury of Elune)}||!talent(7,1)}', 'target.ground'},
+	{'Lunar Strike', 'player.buff(Owlkin Frenzy)'},
+	{'Starsurge', 'area(15).enemies<=2'},
+	{'Warrior of Elune', '!lastcast', 'player'},
 	{'Lunar Strike', 'player.buff(Warrior of Elune)&{astralpower.deficit>12||player.buff(Incarnation: Chosen of Elune)}'},
 	{'Solar Wrath', 'player.buff(Solar Empowerment)'},
 	{'Lunar Strike', 'player.buff(Lunar Empowerment)'},
-	{'Solar Wrath', 'talent(7,3)&target.dot(Sunfire).remains<5&action(Solar Wrath).cast_time<target.dot(Sunfire).remains'},
-	{'Lunar Strike', '{talent(7,3)&dot(Moonfire).remains<5&action(Lunar Strike).cast_time<target.dot(Moonfire).remains}||target.area(5).enemies>1'},
+	{'Solar Wrath', 'talent(7,3)&dot(Sunfire).remains<5&action.cast_time<dot(Sunfire).remains'},
+	{'Lunar Strike', '{talent(7,3)&dot(Moonfire).remains<5&action.cast_time<dot(Moonfire).remains}||area(5).enemies>=2'},
 	{'Solar Wrath'},
 }
 
 local Emerald_Dreamcatcher = {
-	{'Celestial Alignment', 'astralpower>75&!player.buff(The Emerald Dreamcatcher)'},
-	{'Starsurge', '{player.buff(The Emerald Dreamcatcher).remains<gcd.max}||astralpower>80||{{player.buff(Celestial Alignment)||player.buff(Incarnation: Chosen of Elune)}&astralpower>75}', 'target'},
-	{'Stellar Flare', 'talent(5,1)&{player.area(30).enemies<4&debuff.remains<7.2&astralpower>05}', 'target'},
-	{'Moonfire', '{talent(7,3)&debuff.remains<3}||{debuff.remains<6.6&!talent(7,3)}', 'target'},
-	{'Sunfire', '{talent(7,3)&debuff.remains<3}||{debuff.remains<5.4&!talent(7,3)}', 'target'},
+	{'Celestial Alignment', 'astralpower>75&!player.buff(The Emerald Dreamcatcher)', 'player'},
+	{'Starsurge', '{player.buff(The Emerald Dreamcatcher).remains<gcd.max}||astralpower>80||{{player.buff(Celestial Alignment)||player.buff(Incarnation: Chosen of Elune)}&astralpower>75}'},
+	{'Stellar Flare', 'talent(5,1)&{player.area(30).enemies<4&debuff.remains<7.2&astralpower>05}'},
+	{'Lunar Strike', 'player.buff(Owlkin Frenzy)'},
+	{'Moonfire', '{talent(7,3)&debuff.remains<3}||{debuff.remains<6.6&!talent(7,3)}'},
+	{'Sunfire', '{talent(7,3)&debuff.remains<3}||{debuff.remains<5.4&!talent(7,3)}'},
 	{'Solar Wrath', 'player.buff(Solar Empowerment)&player.buff(The Emerald Dreamcatcher).remains>action(Solar Wrath).execute_time&astralpower>02&dot(Sunfire).remains<5.4&dot(Moonfire).remains>6.6'},
-	{'Lunar Strike', 'player.buff(Solar Empowerment)&player.buff(The Emerald Dreamcatcher).remains>action(Lunar Strike).execute_time&astralpower>7&{!{player.buff(Celestial Alignment)||player.buff(Incarnation: Chosen of Elune)}||{player.buff(Celestial Alignment)||player.buff(Incarnation: Chosen of Elune)}&astralpower<87}', 'target'},
-	{'New Moon', 'astralpower<100', 'target'},
-	{'Half Moon', 'astralpower<90', 'target'},
-	{'Full Moon', 'astralpower<70', 'target'},
-	{'Solar Wrath', 'player.buff(Solar Empowerment)', 'target'},
-	{'Lunar Strike', 'player.buff(Lunar Empowerment)', 'target'},
-	{'Solar Wrath', 'astralpower<100', 'target'},
+	{'Lunar Strike', 'player.buff(Solar Empowerment)&player.buff(The Emerald Dreamcatcher).remains>action(Lunar Strike).execute_time&astralpower>7&{!{player.buff(Celestial Alignment)||player.buff(Incarnation: Chosen of Elune)}||{player.buff(Celestial Alignment)||player.buff(Incarnation: Chosen of Elune)}&astralpower<87}'},
+	{'New Moon', 'astralpower<100'},
+	{'Half Moon', 'astralpower<90'},
+	{'Full Moon', 'astralpower<70'},
+	{'Solar Wrath', 'player.buff(Solar Empowerment)'},
+	{'Lunar Strike', 'player.buff(Lunar Empowerment)'},
+	{'Solar Wrath', 'astralpower<100'},
 }
 
 local Fury_of_Elune = {
-	{'Incarnation: Chosen of Elune', 'astralpower>85&cooldown(Fury of Elune).remains<=gcd'},
-	{'Fury of Elune', 'astralpower>85'},
+	{'Incarnation: Chosen of Elune', 'astralpower>85&cooldown(Fury of Elune).remains<=gcd', 'player'},
+	{'Fury of Elune', 'advanced&astralpower>85', 'target.ground'},
 	{'New Moon', '{{cooldown(New Moon).charges<3&cooldown(New Moon).recharge_time<5}||cooldown(New Moon).charges==3}&{player.buff(Fury of Elune)||{cooldown(Fury of Elune).remains>gcd*3&astralpower<100}}'},
 	{'Half Moon', '{{cooldown(New Moon).charges<3&cooldown(Half Moon).recharge_time<5}||cooldown(Half Moon).charges==3}&{player.buff(Fury of Elune)||{cooldown(Fury of Elune).remains>gcd*3&astralpower<90}}'},
 	{'Full Moon', '{{cooldown(Full Moon).charges<3&cooldown(Full Moon).recharge_time<5}||cooldown(Full Moon).charges==3}&{player.buff(Fury of Elune)||{cooldown(Fury of Elune).remains>gcd*3&astralpower<70}}'},
 	{'Astral Communion', 'player.buff(Fury of Elune)&astralpower.deficit>75'},
 	{'Warrior of Elune', 'player.buff(Fury of Elune)||{cooldown(Fury of Elune).remains>25&player.buff(Lunar Empowerment)}'},
 	{'Lunar Strike', 'player.buff(Warrior of Elune)&{astralpower.deficit>12||{astralpower.deficit>18&{player.buff(Incarnation: Chosen of Elune)}||player.buff(Celestial Alignment}}'},
-	{'New Moon', 'astralpower.deficit>0&player.buff(Fury of Elune)'},
+	{'Lunar Strike', 'player.buff(Owlkin Frenzy)'},{
+	'New Moon', 'astralpower.deficit>0&player.buff(Fury of Elune)'},
 	{'Half Moon', 'astralpower.deficit>10&player.buff(Fury of Elune)&astralpower>action(Half Moon).cast_time*12'},
 	{'Full Moon', 'astralpower.deficit>30&player.buff(Fury of Elune)&astralpower>action(Full Moon).cast_time*12'},
-	{'Moonfire', '!player.buff(Fury of Elune)&target.dot(Moonfire).remains<7.6'},
-	{'Sunfire', '!player.buff(Fury of Elune)&target.dot(Sunfire).remains<6.4'},
-	{'Stellar Flare', 'target.dot(Stellar Flare).remains<8.2&player.area(40).enemies==1'},
-	{'Starfall', 'advanced&{target.area(15).enemies>1&talent(5,3)||target.area(15).enemies>2}&player.buff(Fury of Elune)&cooldown(Fury of Elune).remains>10', 'target.ground'},
-	{'Starsurge', 'target.area(15).enemies<3&!player.buff(Fury of Elune)&cooldown(Fury of Elune).remains>7'},
+	{'Moonfire', '!player.buff(Fury of Elune)&dot(Moonfire).remains<7.6'},
+	{'Sunfire', '!player.buff(Fury of Elune)&dot(Sunfire).remains<6.4'},
+	{'Stellar Flare', 'dot(Stellar Flare).remains<8.2&player.area(40).enemies==1'},
+	{'Starfall', 'advanced&{area(15).enemies>1&talent(5,3)||area(15).enemies>2}&player.buff(Fury of Elune)&cooldown(Fury of Elune).remains>10', 'ground'},
+	{'Starsurge', 'area(15).enemies<3&!player.buff(Fury of Elune)&cooldown(Fury of Elune).remains>7'},
 	{'Starsurge', '!player.buff(Fury of Elune)&{{astralpower>82&cooldown(Fury of Elune).remains>gcd*3}||{cooldown(Warrior of Elune).remains<6&cooldown(Fury of Elune).remains>25&player.buff(Lunar Empowerment).stack<2}}'},
 	{'Solar Wrath', 'player.buff(Solar Empowerment)'},
-	{'Lunar Strike', 'player.buff(Lunar Empowerment).stack==3||{player.buff(Lunar Empowerment).remains<5&buff(Lunar Empowerment)}||target.area(5).enemies>1'},
+	{'Lunar Strike', 'player.buff(Lunar Empowerment).stack==3||{player.buff(Lunar Empowerment).remains<5&buff(Lunar Empowerment)}||area(5).enemies>1'},
 	{'Solar Wrath'},
 }
 
@@ -142,36 +149,53 @@ local Single_Target = {
 	{'New Moon', 'astralpower.deficit>0'},
 	{'Half Moon', 'astralpower.deficit>10'},
 	{'Full Moon', 'astralpower.deficit>30'},
-	{'Starfall', 'advanced&{target.area(15).enemies>1&talent(5,3)||target.area(15).enemies>2}&{{talent(7,1)&cooldown(Fury of Elune).remains>12&!player.buff(Fury of Elune)}||!talent(7,1)}', 'target.ground'},
+	{'Starfall', 'advanced&{area(15).enemies>1&talent(5,3)||area(15).enemies>2}&{{talent(7,1)&cooldown(Fury of Elune).remains>12&!player.buff(Fury of Elune)}||!talent(7,1)}', 'target.ground'},
 	{'Starsurge', 'player.area(40).enemies<3&{player.buff(Solar Empowerment).stack<3||player.buff(Lunar Empowerment).stack<3}'},
+	{'Lunar Strike', 'player.buff(Owlkin Frenzy)'},
 	{'Warrior of Elune'},
 	{'Lunar Strike', 'player.buff(Warrior of Elune)&{astralpower.deficit>12||{astralpower.deficit>18&{player.buff(Incarnation: Chosen of Elune)}||player.buff(Celestial Alignment}}'},
 	{'Solar Wrath', 'player.buff(Solar Empowerment)&{astralpower.deficit>8||{astralpower.deficit>12&{player.buff(Incarnation: Chosen of Elune)}||player.buff(Celestial Alignment}}'},
 	{'Lunar Strike', 'player.buff(Lunar Empowerment)&{astralpower.deficit>12||{astralpower.deficit>18&{player.buff(Incarnation: Chosen of Elune)}||player.buff(Celestial Alignment}}'},
-	{'Solar Wrath', 'talent(7,3)&target.dot(Sunfire).remains<5&action(Solar Wrath).cast_time<target.dot(Sunfire).remains&{astralpower.deficit>8||{astralpower.deficit>12&{player.buff(Incarnation: Chosen of Elune)}||player.buff(Celestial Alignment}}'},
-	{'Lunar Strike', '{astralpower.deficit>12||{astralpower.deficit>18&{player.buff(Incarnation: Chosen of Elune)}||player.buff(Celestial Alignment}}&{talent(7,3)&dot(Moonfire).remains<5&action(Lunar Strike).cast_time<target.dot(Moonfire).remains}||target.area(5).enemies>1'},
+	{'Solar Wrath', 'talent(7,3)&dot(Sunfire).remains<5&action(Solar Wrath).cast_time<dot(Sunfire).remains&{astralpower.deficit>8||{astralpower.deficit>12&{player.buff(Incarnation: Chosen of Elune)}||player.buff(Celestial Alignment}}'},
+	{'Lunar Strike', '{astralpower.deficit>12||{astralpower.deficit>18&{player.buff(Incarnation: Chosen of Elune)}||player.buff(Celestial Alignment}}&{talent(7,3)&dot(Moonfire).remains<5&action(Lunar Strike).cast_time<dot(Moonfire).remains}||area(5).enemies>1'},
 	{'Solar Wrath'},
+}
+
+local xCombatAoE = {
+	{'Starfall', 'talent(5,1)&!player.buff&astralpower>39', 'target.ground'},
+	{'Starfall', 'talent(5,2)&!player.buff&astralpower>59', 'target.ground'},
+	{'Sunfire', '!debuff'},
+	{'Starsurge', 'astralpower>90'},
+	{'Starsurge', '!player.buff(Fury of Elune)&astralpower>90'},
+	{'Lunar Strike', 'player.buff(Owlkin Frenzy)'},
+	{'Full Moon', 'astralpower<=60'},
+	{'New Moon', 'astralpower<=90'},
+	{'Half Moon', 'astralpower<=80'},
+	{'Sunfire', 'debuff.duration<3', 'target'},
+	{'Lunar Strike'},
+	{'Moonfire', 'debuff.duration<3', 'target'},
 }
 
 local xCombat = {
 	{'Blessing of the Ancients', 'player.area(40).enemies<3&talent(6,3)&!player.buff(Blessing of Elune)', 'player'},
 	{'Blessing of the Ancients', 'player.area(40).enemies>2&talent(6,3)&!player.buff(Blessing of An\'she)', 'player'},
-	{Fury_of_Elune, 'talent(7,1)&cooldown(Fury of Elune).remains<target.ttd'},
+	{Fury_of_Elune, 'talent(7,1)&cooldown(Fury of Elune).remains<ttd'},
 	{Emerald_Dreamcatcher, 'equipped(137062)'},
-	{'New Moon', 'cooldown(New Moon).charges<3&cooldown(New Moon).recharge_time<5}||cooldown(New Moon).charges==3', 'target'},
-	{'Half Moon', 'cooldown(Half Moon).charges<3&cooldown(Half Moon).recharge_time<5}||cooldown(Half Moon).charges==3||{ttd<15&cooldown(Half Moon).charges<3}', 'target'},
-	{'Full Moon', 'cooldown(Full Moon).charges<3&cooldown(Full Moon).recharge_time<5}||cooldown(Full Moon).charges==3||ttd<15', 'target'},
-	{'Stellar Flare', 'talent(5,1)&{player.area(30).enemies<4&target.debuff(Stellar Flare).remains<7.2&astralpower>50}', 'target'},
-	{'Moonfire', '{talent(7,3)&target.debuff(Moonfire).remains<3}||{target.debuff(Moonfire).remains<6.6&!talent(7,3)}', 'target'},
-	{'Sunfire', '{talent(7,3)&target.debuff(Sunfire).remains<3}||{target.debuff(Sunfire).remains<5.4&!talent(7,3)}', 'target'},
+	{'New Moon', 'cooldown.charges<3&cooldown.recharge_time<5}||cooldown.charges==3'},
+	{'Half Moon', 'cooldown.charges<=2&cooldown.recharge_time<5}||cooldown.charges==3||{ttd<15&cooldown.charges<3}'},
+	{'Full Moon', 'cooldown.charges<=2&cooldown.recharge_time<5}||cooldown.charges==3||ttd<15'},
+	{'Stellar Flare', 'talent(5,1)&{player.area(30).enemies<=3&debuff.remains<7.2&astralpower>50}'},
+	{'Lunar Strike', 'player.buff(Owlkin Frenzy)'},
+	{'Moonfire', '{talent(7,3)&debuff.remains<3}||{debuff.remains<6.6&!talent(7,3)}'},
+	{'Sunfire', '{talent(7,3)&debuff.remains<3}||{debuff.remains<5.4&!talent(7,3)}'},
 	{'Astral Communion', 'astralpower.deficit>75', 'player'},
 	{'Incarnation: Chosen of Elune', 'astralpower>30', 'player'},
 	{'Celestial Alignment', 'astralpower>30', 'player'},
 	{'Starfall', 'advanced&player.buff(Oneth\'s Overconfidence)', 'target.ground'},
-	{'Solar Wrath', 'player.buff(Solar Empowerment).stack==3&area(5).enemies', 'target'},
-	{'Lunar Strike', 'player.buff(Lunar Empowerment).stack==3', 'target'},
-	{Celestial_Alignment, 'player.buff(Celestial Alignment)||player.buff(Incarnation: Chosen of Elune)'},
-	{Single_Target},
+	{'Solar Wrath', 'player.buff(Solar Empowerment).stack==3&area(5).enemies'},
+	{'Lunar Strike', 'player.buff(Lunar Empowerment).stack==3'},
+	{Celestial_Alignment, 'player.buff(Celestial Alignment)||player.buff(Incarnation: Chosen of Elune)', 'target'},
+	{Single_Target, nil, 'target'},
 }
 
 local inCombat = {
@@ -180,9 +204,10 @@ local inCombat = {
 	{Interrupts, 'interruptAt(70)&toggle(Interrupts)&inFront&range<40', 'target'},
 	{Interrupts, 'interruptAt(70)&toggle(Interrupts)&toggle(xIntRandom)&inFront&range<40', 'enemies'},
 	{Survival, 'health<100', 'player'},
-	{Cooldowns, 'toggle(Cooldowns)'},
+	{Cooldowns, 'toggle(Cooldowns)', 'player'},
 	{Mythic_Plus, 'range<=40'},
-	{xCombat, 'range<40&inFront'},
+	{xCombatAoE, 'area(15).enemies>=3&range<40&inFront', 'target'},
+	{xCombat, 'area(15).enemies<=2&range<40&inFront', 'target'},
 }
 
 local outCombat = {
