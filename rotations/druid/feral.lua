@@ -31,8 +31,9 @@ local GUI = {
 	{type = 'ruler'},	 	{type = 'spacer'},
 	-- Survival
 	{type = 'header', 	size = 16, text = 'Survival',															align = 'center'},
-	{type = 'checkspin',text = 'Swiftmend', 																			key = 'swiftm', 		spin = 85, step = 5, max = 100, check = true},
-	{type = 'checkspin',text = 'Survival Instincts', 															key = 'sint', 			spin = 50, step = 5, max = 100, check = true},
+	{type = 'checkspin',text = 'Swiftmend', 																			key = 'swiftm', 		spin = 85, step = 5, shiftStep = 10, max = 100, check = true},
+	{type = 'checkspin',text = 'Regrowth', 																				key = 'rghp', 			spin = 45, step = 5, shiftStep = 10, max = 100, check = true},
+	{type = 'checkspin',text = 'Survival Instincts', 															key = 'sint', 			spin = 50, step = 5, shiftStep = 10, max = 100, check = true},
 	{type = 'ruler'},		{type = 'spacer'},
 	unpack(Zylla.Mythic_GUI),
 }
@@ -82,6 +83,7 @@ local PreCombat = {
 	{'#142117', 'UI(list)==3&item(142117).usable&item(142117).count>0&UI(kDBM)&UI(prepot)&!buff(Potion of Prolonged Power)&dbm(pull in)<3', 'player'},	--XXX: Potion of Prolonged Power
 	-- Flasks
 	{'#127848', 'item(127848).usable&item(127848).count>0&UI(prepot)&!buff(Flask of the Seventh Demon)', 'player'},	--XXX: Flask of the Seventh Demon
+	{'#153023', 'item(153023).usable&item(153023).count>0&UI(prepot)&!buff(Defiled Augmentation)'},				--XXX: Lightforged Augment Rune
 }
 
 local Keybinds = {
@@ -106,6 +108,7 @@ local Survival = {
 	--{'Rejuvenation', 'talent(3,3)&!player.buff(Rejuvenation)', 'player'},
 	{'/run CancelShapeshiftForm()', 'cooldown(Swiftmend).up.&form>0&talent(3,3)&player.health<=UI(swiftm_spin)&UI(swiftm_check)'},
 	{'Swiftmend', 'talent(3,3)&health<=UI(swiftm_spin)&UI(swiftm_check)', 'player'},
+	{'!Regrowth', 'UI(rghp_check)&health<=UI(rghp_spin)', 'player'},
 	{'Survival Instincts', 'player.health<=UI(sint_spin)&UI(sint_check)', 'player'},
 	{'#152615', 'item(152615).usable&item(152615).count>0&health<=UI(AHP_spin)&UI(AHP_check)', 'player'}, 													-- Astral Healing Potion
 	{'#127834', 'item(152615).count==0&item(127834).usable&item(127834).count>0&health<=UI(AHP_spin)&UI(AHP_check)', 'player'}, 		-- Ancient Healing Potion

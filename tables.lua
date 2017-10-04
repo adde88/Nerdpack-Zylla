@@ -37,7 +37,7 @@ Zylla.Mythic_Plus = {
 			{'%target', 'id(120651)&inFront', 'enemies'},
 			{'%target', 'id(121499)&inFront', 'enemies'},
 	},	'UI(mythic_fel)'}, 																																				--XXX: Fel Explosives Mythic+ Affix
-	{'!/stopcasting','debuff(Quake).any.duration<gcd&debuff(Quake).any&UI(quaking)', 'player'},		--XXX: Quaking Mythic+ Affix
+	{'&/stopcasting','debuff(Quake).any.duration<gcd&UI(quaking)', 'player'},											--XXX: Quaking Mythic+ Affix
 	{'%pause' , 'player.debuff(200904)||player.debuff(Sapped Soul)'},															--XXX: Vault of the Wardens - Sapped Soul Encounter
 }
 

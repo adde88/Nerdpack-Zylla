@@ -23,7 +23,8 @@ local GUI = {
 	{type = 'checkbox', text = 'Enable \'pre-potting\' and Flasks',														key = 'prepot', 				default = false},
 	{type = 'combo',		default = '1',																												key = 'list', 					list = Zylla.prepots, 	width = 175},
 	{type = 'spacer'},	{type = 'spacer'},
-	{type = 'checkspin',text = 'DPS while the party is above HP%',														key = 'dps',						check = true,	align = 'left', width = 55, step = 5, shiftStep = 10, spin = 90, max = 100},
+	{type = 'checkbox', text = 'Dispel Everyone',																							key = 'dispelall', 			default = true},
+	{type = 'checkspin',text = 'DPS while party is above HP%',																key = 'dps',						check = true,	align = 'left', width = 55, step = 5, shiftStep = 10, spin = 90, max = 100},
 	{type = 'checkspin',text = 'Light\'s Judgment - Units', 																	key = 'LJ',							check = true,	align = 'left', width = 55, step = 1, shiftStep = 5, spin = 4,	max = 20, min = 1,desc = Zylla.ClassColor..'World Spell usable on Argus.|r'},
 	{type = 'checkspin',text = 'Emergency HP',																								key = 'emergency',			check = true, align = 'left', width = 55, step = 5, shiftStep = 10, spin = 33, max = 100},
 	{type = 'spacer'},
@@ -31,15 +32,16 @@ local GUI = {
 	{type = 'spinner', 	text = 'Rejuvenation - health cap:', 																	key = 'massrejuv_hp', 	check = true, align = 'left', width = 55, step = 5, shiftStep = 10, default = 95, max = 100, desc = Zylla.ClassColor..'Select how many units to give Rejuvenation, and set a health-cap!|r'},
 	{type = 'checkbox', text = 'Use Trinket #1', 																							key = 'trinket1',				default = false},
 	{type = 'checkbox', text = 'Use Trinket #2', 																							key = 'trinket2', 			default = false, desc = Zylla.ClassColor..'Trinkets will be used whenever possible!|r'},
-	{type = 'header', 	size = 12, text = 'Tranquility Settings', 														align = 'left'},
+	{type = 'header', 	size = 12, text = 'Tranquility Settings:', 														align = 'left'},
+	{type = 'checkbox', text = 'Enable',																											key = 'tcheck', 				default = true},
 	{type = 'spinner', 	text = 'Health:', 																										key = 'thp', 	 					align = 'left', width = 55, step = 5, shiftStep = 10, default = 75, max = 100},
 	{type = 'spinner', 	text = 'Units:', 																											key = 'tunits', 				align = 'left', width = 55, step = 1, shiftStep = 2, default = 2, max = 10, desc = Zylla.ClassColor..'\'Unit-count\' and \'healt-count\' to trigger Tranquility. (40yd radius!)|r'},
 	{type = 'ruler'},	  {type = 'spacer'},
 	--XXX: PLAYER
-	{type = 'header', 	size = 16, text = 'Self Healing',																			align = 'center'},
+	{type = 'header', 	size = 16, text = 'Self Healing:',																		align = 'center'},
 	{type = 'checkbox', text = 'Dispel Player',																								key = 'dispelself', 		default = true},
-	{type = 'checkspin',text = 'Lifebloom',																										key = 'plb',						check = true, align = 'left', width = 55, step = 1, shiftStep = 5, spin = 99, max = 100},
-	{type = 'checkspin',text = 'Essence of G\'Hanir',																					key = 'peog',						check = true, align = 'left', width = 55, step = 1, shiftStep = 5, spin = 50, max = 100, desc = Zylla.ClassColor..'Lifebloom and Essence of G\'Hanir will NOT be used in party.|r'},
+	{type = 'checkspin',text = 'Essence of G\'Hanir',																					key = 'peog',						check = true, align = 'left', width = 55, step = 1, shiftStep = 5, spin = 50, max = 100},
+	{type = 'checkspin',text = 'Lifebloom',																										key = 'plb',						check = true, align = 'left', width = 55, step = 1, shiftStep = 5, spin = 99, max = 100, desc = Zylla.ClassColor..'Lifebloom and Essence of Gh\'hanir will only be used on yourself when NOT in party!|r'},
 	{type = 'checkspin',text = 'Rejuvenation',																								key = 'prejuv',					check = true, align = 'left', width = 55, step = 1, shiftStep = 5, spin = 99, max = 100},
 	{type = 'checkspin',text = 'Germination',																									key = 'pgerm',					check = true, align = 'left', width = 55, step = 1, shiftStep = 5, spin = 90, max = 100},
 	{type = 'checkspin',text = 'Swiftmend',																										key = 'psm',						check = true, align = 'left', width = 55, step = 1, shiftStep = 5, spin = 80, max = 100},
@@ -50,7 +52,7 @@ local GUI = {
 	{type = 'checkspin',text = 'Barkskin',              																			key = 'bark',          	check = true, align = 'left', width = 55, step = 1, shiftStep = 5, spin = 40, max = 100},
 	{type='ruler'},		{type='spacer'},
 	--XXX: TANK
-	{type = 'header', 	size = 16, text = 'Tank Healing',																			align = 'center'},
+	{type = 'header', 	size = 16, text = 'Tank Healing:',																		align = 'center'},
 	{type = 'checkspin',text = 'Rejuvenation',																								key = 'trejuv',					check = true, align = 'left', width = 55, step = 1, shiftStep = 5, spin = 99, max = 100},
 	{type = 'checkspin',text = 'Germination',																									key = 'tgerm',					check = true, align = 'left', width = 55, step = 1, shiftStep = 5, spin = 90, max = 100},
 	{type = 'checkspin',text = 'Swiftmend',																										key = 'tsm',						check = true, align = 'left', width = 55, step = 1, shiftStep = 5, spin = 80, max = 100},
@@ -60,7 +62,18 @@ local GUI = {
 	{type='ruler'},		{type='spacer'},
 	--XXX: LOWEST
 	{type = 'header', 	size = 16, text = 'Lowest Healing', 																	align = 'center'},
-	{type = 'checkbox', text = 'Dispel Everyone',																							key = 'dispelall', 			default = true},
+	{type = 'header', 	size = 12, text = 'Essence of G\'Hanir Settings:', 										align = 'left'},
+	{type = 'checkbox', text = 'Enable',																											key = 'leog_check', 		default = true},
+	{type = 'spinner', 	text = 'Health:', 																										key = 'leog_hp', 	 			align = 'left', width = 55, step = 5, shiftStep = 10, default = 75, max = 100},
+	{type = 'spinner', 	text = 'Units:', 																											key = 'leog_units', 		align = 'left', width = 55, step = 1, shiftStep = 2, default = 2, max = 10, desc = Zylla.ClassColor..'\'Unit-count\' and \'healt-count\' to trigger Essence of Gh\'hanir. (40yd radius!)|r'},
+	{type = 'header', 	size = 12, text = 'Wild Growth Settings:', 														align = 'left'},
+	{type = 'checkbox', text = 'Enable',																											key = 'wg_check', 			default = true},
+	{type = 'spinner', 	text = 'Health:', 																										key = 'wg_hp', 	 				align = 'left', width = 55, step = 5, shiftStep = 10, default = 75, max = 100},
+	{type = 'spinner', 	text = 'Units:', 																											key = 'wg_units', 			align = 'left', width = 55, step = 1, shiftStep = 2, default = 3, max = 10, desc = Zylla.ClassColor..'\'Unit-count\' and \'healt-count\' to trigger Wild Growth. (30yd radius!)|r'},
+	{type = 'header', 	size = 12, text = 'Efflorescence Settings:', 													align = 'left'},
+	{type = 'checkbox', text = 'Enable',																											key = 'eff_check', 			default = true},
+	{type = 'spinner', 	text = 'Health:', 																										key = 'eff_hp', 	 			align = 'left', width = 55, step = 5, shiftStep = 10, default = 80, max = 100},
+	{type = 'spinner', 	text = 'Units:', 																											key = 'eff_units', 			align = 'left', width = 55, step = 1, shiftStep = 2, default = 3, max = 10, desc = Zylla.ClassColor..'\'Unit-count\' and \'healt-count\' to trigger Efflorescence. (30yd radius!)|r'},
 	{type = 'checkspin',text = 'Flourish', 																										key = 'flourish', 			check = true, align = 'left', width = 55, step = 1, shiftStep = 5, spin = 60, max = 100},
 	{type = 'checkspin',text = 'Rejuvenation', 																								key = 'lrejuv', 				check = true, align = 'left', width = 55, step = 1, shiftStep = 5, spin = 90, max = 100},
 	{type = 'checkspin',text = 'Germination', 																								key = 'lgerm', 					check = true, align = 'left', width = 55, step = 1, shiftStep = 5, spin = 75, max = 100},
@@ -175,9 +188,9 @@ local Mass_Rejuv = {
 }
 
 local SelfHealing = {
-	{'Lifebloom', 'UI(plb_check)&group.members==0&{buff.duration<5.5||!buff}'},
-	{'Essence of G\'Hanir', 'UI(peog_check)&group.members==0&!moving&health<=UI(peog_spin)'},
-	{'Rejuvenation', 'UI(prejuv_check)&{!buff||buff.duration<5.5}'},
+	{'Lifebloom', 'UI(plb_check)&group.members==0&buff.duration<5.5'},
+	{'Essence of G\'Hanir', 'UI(peog_check)&group.members==0&health<=UI(peog_spin)'},
+	{'Rejuvenation', 'UI(prejuv_check)&buff.duration<5.5'},
 	{'Rejuvenation', 'UI(pgerm_check)&talent(6,3)&buff&!buff(Rejuvenation (Germination))&health<=UI(pgerm_spin)'},
 	{'Cenarion Ward', 'UI(pcw_check)&!buff&health<=UI(pcw_spin)'},
 	{'Healing Touch', 'UI(pht_check)&!player.moving&health<=UI(pht_spin)'},
@@ -189,14 +202,14 @@ local xHealing = {
 	{Emergency, 'UI(emergency_check)&health<=UI(emergency_spin)&!is(player)', 'lowest'},
 	{Innervate, 'player.buff(Innervate)&!is(player)', 'lowest'},
 	--XXX: Lifebloom on main-tank
-	{'Lifebloom', '{buff.duration<5.5||!buff}&!is(player)', 'tank'},
+	{'Lifebloom', 'buff.duration<5.5&!is(player)', 'tank'},
 	--XXX: Cenarion Ward
 	{'Cenarion Ward', '!buff&!is(player)', {'tank', 'tank2', 'lowest'}},
 	--XXX: AoE Stuff....
-	{'Wild Growth', '!player.moving&area(30,75).heal>=3', 'lowest'},
-	{'Essence of G\'Hanir', '!moving&area(30,75).heal>=3', 'player'},
-	{'Flourish', 'UI(flourish_check)&lastcast(Wild Growth)&lowest.health<=UI(flourish_spin)', 'player'},
-	{'Efflorescence', 'area(10,80).heal>=3&mushrooms==0', 'lowest.ground'},
+	{'Wild Growth', '!player.moving&UI(wg_check)&@Zylla.areaHeal(30, wg_hp, wg_units)', 'lowest'},	--XXX: Custom Lib to make AoE Heals more customizable. ;)  --Zylla
+	{'Essence of G\'Hanir', 'UI(leog_check)&@Zylla.PareaHeal(30, leog_hp, leog_units)', 'player'},	--XXX: Custom Lib to make AoE Heals more customizable. ;)  --Zylla
+	{'Flourish', 'UI(flourish_check)&player.lastcast(Wild Growth)&health<=UI(flourish_spin)', 'lowest'},
+	{'Efflorescence', 'UI(eff_check)&@Zylla.areaHeal(10, eff_hp, eff_units)&mushrooms==0', 'lowest.ground'},
 	--XXX: Rejuvenation
 	{'Rejuvenation', 'UI(trejuv_check)&health<=UI(trejuv_spin)&!buff&!is(player)', {'tank', 'tank2'}},
 	{'Rejuvenation', 'UI(lrejuv_check)&health<=UI(lrejuv_spin)&!buff&!is(player)', 'lowest'},

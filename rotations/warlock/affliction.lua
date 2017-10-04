@@ -158,7 +158,7 @@ NeP.CR:Add(265, {
 	ic =  {{inCombat, '!player.casting(Summon Succubus)||!player.casting(Summon Voidwalker)||!player.casting(Summon Felhunter)||!player.casting(Summon Imp)||!player.casting(Summon Infernal)||!player.casting(Summon Doomguard)||!player.casting(Unstable Affliction)||!player.channeling(Drain Soul)'}},
 	ooc = outCombat,
 	gui = GUI,
-	gui_st = {title='Zylla\'s Combat Routines', width='256', height='690', color='A330C9'},
+	gui_st = Zylla.GuiSettings,
 	ids = Zylla.SpellIDs[Zylla.Class],
 	wow_ver = Zylla.wow_ver,
 	nep_ver = Zylla.nep_ver,

@@ -164,7 +164,7 @@ NeP.CR:Add(267, {
 	ic =  {{inCombat, '!player.channeling(Channel Demonfire)'}},
 	ooc = outCombat,
 	gui = GUI,
-	gui_st = {title='Zylla\'s Combat Routines', width='256', height='690', color='A330C9'},
+	gui_st = Zylla.GuiSettings,
 	ids = Zylla.SpellIDs[Zylla.Class],
 	wow_ver = Zylla.wow_ver,
 	nep_ver = Zylla.nep_ver,

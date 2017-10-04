@@ -2,23 +2,6 @@ local _, Zylla = ...
 local _G = _G
 local NeP = _G.NeP
 
-Zylla.Version = '2.3'
-Zylla.Branch = 'RELEASE'
-Zylla.Name = 'NerdPack - Zylla\'s Rotations'
-Zylla.Author = 'Zylla'
-Zylla.addonColor = '8801C0'
-Zylla.ClassColor = '|cff'..NeP.Core:ClassColor('player', 'hex')..''
-Zylla.wow_ver = '7.3.0'
-Zylla.nep_ver = '1.11'
-Zylla.spell_timers = {}
-Zylla.isAFK = false;
-Zylla.Class = select(3,_G.UnitClass("player"))
-Zylla.timer = {}
-Zylla.DonateURL = 'https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=23HX4QKDAD4YG'
-
--- Lets try the global space
-_G.Zylla = Zylla
-
 local Parse = NeP.DSL.Parse
 local Zframe = _G.CreateFrame('GameTooltip', 'Zylla_ScanningTooltip', _G.UIParent, 'GameTooltipTemplate')
 
@@ -32,24 +15,27 @@ function Zylla.timer:useTimer(timerName, interval)
 	 end
 end
 
-function Zylla.onFlagChange()
-  if (_G.UnitIsAFK("player") and not Zylla.isAFK) then
+function Zylla.onFlagChange()	--XXX: Toggles off the CR if the player becomes AFK. And toggle back on when player is un-AFKed.
+  if (_G.UnitIsAFK("player") and not Zylla.isAFK) then	--XXX: Player has become AFK
 	 if (_G.C_PetBattles.IsInBattle()==false) then
+		--XXX: Contains the stuff to be executed when the player is flagged as AFK
 		NeP.Interface:toggleToggle('mastertoggle')
 	 end
 	 _G.DEFAULT_CHAT_FRAME:AddMessage("|cffC41F3BPlayer is AFK! Stopping Zylla's Combat Routine.|r");
 	 Zylla.isAFK = true;
-  elseif (not _G.UnitIsAFK("player") and Zylla.isAFK) then
+  elseif (not _G.UnitIsAFK("player") and Zylla.isAFK) then	--XXX: Player has been flagged un-AFK
+	 --XXX: Contains the stuff to be executed when the player is flagged as NOT AFK
 	 NeP.Interface:toggleToggle('mastertoggle')
 	 _G.DEFAULT_CHAT_FRAME:AddMessage("|cffFFFB2FPlayer is unAFK! Restarting Zylla's Combat Routine.|r")
 	 Zylla.isAFK = false;
---else
+  -- else
+  --XXX: Player's flag change concerned DND, not becoming AFK or un-AFK
   end
 end
 
 function Zylla.AFKCheck()
   local frame = _G.CreateFrame("FRAME", "AfkFrame");
-  frame:RegisterEvent("PLAYER_FLAGS_CHANGED");
+  frame:RegisterEvent("PLAYER_FLAGS_CHANGED"); --XXX: "PLAYER_FLAGS_CHANGED" This will trigger when the player becomes unAFK and unDND
   frame:SetScript("OnEvent", Zylla.onFlagChange);
 end
 
@@ -63,10 +49,10 @@ Zylla.GuiSettings = {
 function Zylla.ExeOnLoad()
   print('|cffFFFB2F ----------------------------------------------------------------------|r')
   print('|cffFFFB2F Thank you for selecting Zylla\'s Combat Routines for NerdPack!|r')
-  print('|cffFFFB2F Some routines require tweaking the settings to perform optimal.|r')
-  print('|cffFFFB2F If you encounter errors, bugs, or you simply have a suggestion,|r')
-  print('|cffFFFB2F i recommend that you visit the GitHub repo.|r')
-  print('|cffFFFB2F You can also get support from the NerdPack community on Discord.|r')
+  print('|cffFFFB2F Open|r |cffB30000\'Settings\'|r |cffFFFB2Fto customize your rotation!|r')
+  print('|')
+  print('|cffFFFB2F Please consider donating to support my project!|r |cffB30000<3|r')
+  print('|cffFFFB2F Contact me on Discord or Github to report errors, or get support!.|r')
   print('|cffFFFB2F ----------------------------------------------------------------------|r')
 
 	Zylla.Splash() --XXX: Call the Splash-screen on all CR's...

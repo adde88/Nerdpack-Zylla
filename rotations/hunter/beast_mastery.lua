@@ -22,7 +22,7 @@ local GUI = {
 	-- Settings
 	{type = 'header', 	size = 16, text = 'Class Settings',												align = 'center'},
 	{type = 'checkbox', text = 'Enable DBM Integration',													key = 'kDBM', 				default = true},
-	{type = 'checkbox', text = 'Enable \'pre-potting\' and Flasks',								key = 'prepot', 			default = false},
+	{type = 'checkbox', text = 'Enable \'pre-potting\', flasks and Legion-rune',	key = 'prepot', 			default = false},
 	{type = 'combo',		default = '1',																						key = 'list', 				list = Zylla.prepots, 	width = 175},
 	{type = 'spacer'},	{type = 'spacer'},
 	{type = 'checkspin',text = 'Light\'s Judgment - Units', 											key = 'LJ',						spin = 4,	step = 1,	max = 20, min = 1,	check = true,	desc = Zylla.ClassColor..'World Spell usable on Argus.|r'},
@@ -34,7 +34,7 @@ local GUI = {
 	{type = 'checkbox', text = 'Use Trinket #1', 																	key = 'trinket1',			default = false},
 	{type = 'checkbox', text = 'Use Trinket #2', 																	key = 'trinket2', 		default = false, desc = Zylla.ClassColor..'Trinkets will be used whenever possible!|r'},
 	{type = 'spacer'},
-	{type = 'checkspin', 	text = 'Kil\'Jaeden\'s Burning Wish - Units', 					key = 'kj', 			align = 'left', width = 55, step = 1, spin = 4, max = 20, min = 1, check = true, desc = Zylla.ClassColor..'Legendary will be used only on selected amount of units!|r'},
+	{type = 'checkspin', 	text = 'Kil\'Jaeden\'s Burning Wish - Units', 					key = 'kj', 					align = 'left', width = 55, step = 1, shiftStep = 2, spin = 4, max = 20, min = 1, check = true, desc = Zylla.ClassColor..'Legendary will be used only on selected amount of units!|r'},
 	{type = 'ruler'},	  {type = 'spacer'},
 	-- Survival
 	{type = 'header', 	size = 16, text = 'Survival',															align = 'center'},
@@ -92,6 +92,7 @@ local PreCombat = {
 	{'#142117', 'UI(list)==3&item(142117).usable&item(142117).count>0&UI(kDBM)&UI(prepot)&!buff(Potion of Prolonged Power)&dbm(pull in)<3'}, 	--XXX: Potion of Prolonged Power
 	-- Flasks
 	{'#127848', 'item(127848).usable&item(127848).count>0&UI(prepot)&!buff(Flask of the Seventh Demon)'},	--XXX: Flask of the Seventh Demon
+	{'#153023', 'item(153023).usable&item(153023).count>0&UI(prepot)&!buff(Defiled Augmentation)'},				--XXX: Lightforged Augment Rune
 }
 
 local Keybinds = {

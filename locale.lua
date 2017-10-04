@@ -1335,7 +1335,7 @@ Zylla.SpellIDs[8] = {
   ["Frigid Blast"]                   = 145264,
   ["Flurry"]                         = 228354,
   ["Flamestrike"]                    = 2120,
-  ["Fire Blast"]                     = 231568,
+  ["Fire Blast"]                     = 108853,
 }
 
 --XXX: Warlock Spells

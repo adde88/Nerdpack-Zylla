@@ -1,9 +1,9 @@
-## Title: |r[|cffADFF2FZylla's|r] Combat Routines
+## Title: |r[|cff8801C0Zylla's|r] Combat Routines
 ## Notes: Custom Combat Routines for NerdPack
 ## Interface: 70300
 ## Author: Zylla
-## Version: 2.3-7.3.0-release
+## Version: 2.4-7.3.0-release
 ## Dependencies: NerdPack, NerdPack-Protected
 ## OptionalDeps: NerdPack-CombatHelper, NerdPack-Overlays, NerdPack-CustomKeybinds
 
-Zylla.xml
+NerdPack-Zylla.xml

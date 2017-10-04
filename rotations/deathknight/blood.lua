@@ -18,21 +18,28 @@ local GUI = {
 	unpack(Zylla.PayPal_IMG),
 	{type = 'ruler'},	 	{type = 'spacer'},
 	-- Settings
-	{type = 'header', 		text = 'Class Settings',																				align = 'center',	size = 16},
+	{type = 'header', 	size = 16, text = 'Class Settings',																align = 'center'},
+	{type = 'checkbox', text = 'Enable DBM Integration',																	key = 'kDBM', 		default = true},
+	{type = 'checkbox', text = 'Enable \'pre-potting\', flasks and Legion-rune',					key = 'prepot', 	default = false},
+	{type = 'combo',		default = '1',																										key = 'list', 		list = Zylla.prepots, 	width = 175},
+	{type = 'spacer'},	{type = 'spacer'},
 	{type = 'checkspin',	text = 'Light\'s Judgment - Units', 														key = 'LJ',				spin = 4, step = 1, max = 20, check = true,	desc = Zylla.ClassColor..'World Spell usable on Argus.|r'},
 	{type = 'checkbox', 	text = 'Use Death Grip as backup Interrupt', 										key = 'DGInt', 		default = false},
 	{type = 'checkbox', 	text = 'Use Death Grip as backup Taunt', 												key = 'DGTaunt', 	default = false},
 	{type = 'checkbox', 	text = 'Use Trinket #1', 																				key = 'trinket1',	default = false},
 	{type = 'checkbox', 	text = 'Use Trinket #2', 																				key = 'trinket2', default = false,	desc = Zylla.ClassColor..'Trinkets will be used whenever possible!|r'},
+	{type = 'spacer'},
+	{type = 'checkspin', 	text = 'Kil\'Jaeden\'s Burning Wish - Units', 									key = 'kj', 			align = 'left', width = 55, step = 1, shiftStep = 2, spin = 4, max = 20, min = 1, check = true, desc = Zylla.ClassColor..'Legendary will be used only on selected amount of units!|r'},
 	{type = 'ruler'},			{type = 'spacer'},
 	-- Survival
-	{type = 'header', 		text = 'Survival',																							align = 'center',	size = 16},
-	{type = 'checkspin',	text = 'Death Strike below HP%',																key = 'DSA', 			spin = 70, step = 5, max = 100},
-	{type = 'checkspin',	text = 'Death Strike above RP',																	key = 'DSb', 			spin = 85, step = 5, max = 100},
-	{type = 'checkspin', 	text = 'Icebound Fortitude below HP%',													key = 'IwF', 			spin = 30, step = 5, max = 100},
-	{type = 'checkspin', 	text = 'Vampiric Blood below HP%',															key = 'VB', 			spin = 50, step = 5, max = 100},
-	{type = 'checkspin',	text = 'Healthstone', 																					key = 'HS',	 			spin = 45, step = 5, max = 100},
-	{type = 'checkspin',	text = 'Ancient Healing Potion', 																key = 'AHP',	 		spin = 45, step = 5, max = 100},
+	{type = 'header', 		size = 16, text = 'Survival',																		align = 'center',	size = 16},
+	{type = 'checkspin',	text = 'Dancing Rune Weapon',																		key = 'drw', 			spin = 70, step = 5, shiftStep = 10, max = 100, min = 1},
+	{type = 'checkspin',	text = 'Death Strike - Min. HP%',																key = 'DSA', 			spin = 70, step = 5, shiftStep = 10, max = 100, min = 1},
+	{type = 'checkspin',	text = 'Death Strike - Runic Power cap',												key = 'DSb', 			spin = 85, step = 5, shiftStep = 10, max = 100, min = 1},
+	{type = 'checkspin', 	text = 'Icebound Fortitude',																		key = 'IwF', 			spin = 30, step = 5, shiftStep = 10, max = 100, min = 1},
+	{type = 'checkspin', 	text = 'Vampiric Blood',																				key = 'VB', 			spin = 50, step = 5, shiftStep = 10, max = 100, min = 1},
+	{type = 'checkspin',	text = 'Healthstone', 																					key = 'HS',	 			spin = 45, step = 5, shiftStep = 10, max = 100, min = 1},
+	{type = 'checkspin',	text = 'Ancient Healing Potion', 																key = 'AHP',	 		spin = 45, step = 5, shiftStep = 10, max = 100, min = 1},
 	{type = 'ruler'},	 {type = 'spacer'},
 	unpack(Zylla.Mythic_GUI),
 }
@@ -63,76 +70,80 @@ local exeOnLoad = function()
 
 end
 
+local PreCombat = {
+	{'%pause', 'player.buff(Shadowmeld)'},
+	-- Pots
+	{'#127844', 'UI(list)==1&item(127844).usable&item(127844).count>0&UI(kDBM)&UI(prepot)&!buff(Potion of the Old War)&dbm(pull in)<3'}, 			--XXX: Potion of the Old War
+	{'#127843', 'UI(list)==2&item(127843).usable&item(127843).count>0&UI(kDBM)&UI(prepot)&!buff(Potion of Deadly Grace)&dbm(pull in)<3'}, 		--XXX: Potion of Deadly Grace
+	{'#142117', 'UI(list)==3&item(142117).usable&item(142117).count>0&UI(kDBM)&UI(prepot)&!buff(Potion of Prolonged Power)&dbm(pull in)<3'}, 	--XXX: Potion of Prolonged Power
+	-- Flasks
+	{'#127850', 'item(127850).usable&item(127850).count>0&UI(prepot)&!buff(Flask of Ten Thousand Scars)'},	--XXX: Flask of Ten Thousand Scars
+	{'#153023', 'item(153023).usable&item(153023).count>0&UI(prepot)&!buff(Defiled Augmentation)'},					--XXX: Lightforged Augment Rune
+}
+
 local Survival = {
-	{'Icebound Fortitude', 'UI(IF_check)&health<=(IF_spin)&{{incdmg(2.5)>health.max*0.50}||state(stun)}', 'player'},
-	{'Anti-Magic Shell', 'incdmg(2.5).magic>health.max*0.70', 'player'},
-	{'Wraith Walk', 'state(root)||state(snare)', 'player'},
-	{'#127834', 'item(127834).usable&item(127834).count>0&health<=UI(AHP_spin)&UI(AHP_check)', 'player'}, 		-- Ancient Healing Potion
-	{'#5512', 'item(5512).usable&item(5512).count>0&health<=UI(HS_spin)&UI(HS_check)', 'player'}, 						--Health Stone
+	{'Icebound Fortitude', 'UI(IF_check)&health<=(IF_spin)&{{incdmg(2.5)>health.max*0.50}||state(stun)}'},
+	{'Anti-Magic Shell', 'incdmg(2.5).magic>health.max*0.70'},
+	{'Wraith Walk', 'state(root)||state(snare)'},
+	{'#152615', 'item(152615).usable&item(152615).count>0&health<=UI(AHP_spin)&UI(AHP_check)'}, 													--XXX: Astral Healing Potion
+	{'#127834', 'item(152615).count==0&item(127834).usable&item(127834).count>0&health<=UI(AHP_spin)&UI(AHP_check)'}, 		--XXX: Ancient Healing Potion
+	{'#5512', 'item(5512).usable&item(5512).count>0&health<=UI(HS_spin)&UI(HS_check)'}, 																	--XXX: Health Stone
 }
 
 local Keybinds = {
-	-- Pause
 	{'%pause', 'keybind(lshift)&UI(lshift)'},
-	{'!Death and Decay', 'keybind(lcontrol)', 'cursor.ground'},
+	{'!Death and Decay', 'keybind(lcontrol)&UI(lcontrol)', 'cursor.ground'},
 }
 
 local Cooldowns = {
-	{'Dancing Rune Weapon', 'inFront&inMelee&{{player.incdmg(2.5)>player.health.max*0.50}||{player.health<30}}', 'target'},
+	{'Dancing Rune Weapon', 'inFront&inMelee&UI(drw_check)&{{player.incdmg(2.5)>player.health.max*0.50}||{player.health<=UI(drw_spin)}}', 'target'},
 	{'Vampiric Blood', 'UI(VB_check)&{incdmg(2.5)>health.max*0.50||health<=UI(VB_spin)}', 'player'},
 	{'#trinket1', 'UI(trinket1)'},
 	{'#trinket2', 'UI(trinket2)'},
-	{'Light\'s Judgment', 'UI(LJ_check)&range<61&area(15).enemies>=UI(LJ_spin)', 'enemies.ground'}
+	{'Light\'s Judgment', 'advanced&UI(LJ_check)&range<61&area(15).enemies>=UI(LJ_spin)', 'enemies.ground'},
+	{'#144259', 'UI(kj_check)&range<=40&area(10).enemies>=UI(kj_spin)&equipped(144259)', 'target'}, --XXX: Kil'jaeden's Burning Wish (Legendary)}
 }
 
 local Interrupts = {
-	{'!Mind Freeze', 'inFront&range<=15', 'target'},
-	{'!Asphyxiate', 'range<31&inFront&player.spell(Mind Freeze).cooldown>gcd&!player.lastgcd(Mind Freeze)', 'target'},
-	{'!Death Grip', 'UI(DGInt)&range<31&inFront&player.spell(Mind Freeze).cooldown>gcd&player.spell(Asphyxiate).cooldown>gcd', 'target'},
-	{'!Arcane Torrent', 'inMelee&player.spell(Mind Freeze).cooldown>gcd&!player.lastgcd(Mind Freeze)', 'target'},
-}
-
-local Interrupts_Random = {
-	{'!Mind Freeze', 'inFront&range<=15&combat&alive', 'enemies'},
-	{'!Asphyxiate', 'player.spell(Mind Freeze).cooldown>gcd&!player.lastgcd(Mind Freeze)&inFront&range<21&combat&alive', 'enemies'},
-	{'!Death Grip', 'UI(DGInt)&range<31&player.spell(Mind Freeze).cooldown>gcd&player.spell(Asphyxiate).cooldown>gcd&combat&alive', 'enemies'},
-	{'!Arcane Torrent', 'player.spell(Mind Freeze).cooldown>gcd&player.spell(Asphyxiate).cooldown>gcd&inMelee&combat&alive', 'enemies'},
+	{'!Mind Freeze', 'inFront&range<=15'},
+	{'!Asphyxiate', 'range<=30&inFront&spell(Mind Freeze).cooldown>=gcd&!player.lastgcd(Mind Freeze)'},
+	{'!Death Grip', 'UI(DGInt)&range<=30&inFront&spell(Mind Freeze).cooldown>=gcd&spell(Asphyxiate).cooldown>=gcd'},
+	{'!Arcane Torrent', 'inMelee&spell(Mind Freeze).cooldown>=gcd&!player.lastgcd(Mind Freeze)'},
 }
 
 local xTaunts = {
-	{'Dark Command', 'player.area(30).enemies>=1&combat&alive&threat<100', 'enemies'},
-	{'Death Grip', 'UI(DGTaunt)&player.area(30).enemies>0&combat&alive&threat<100&player.spell(Dark Command).cooldown>gcd&!player.lastgcd(Dark Command)', 'enemies'},
+	{'Dark Command', 'inMelee&combat&alive&threat<100'},
+	{'Death Grip', 'UI(DGTaunt)&range<=30&combat&alive&threat<100&spell(Dark Command).cooldown>=gcd&!player.lastgcd(Dark Command)'},
 }
 
 local xCombat = {
-	{'Death Strike', 'inFront&inMelee&player.runicpower>65&player.health<=UI(DSA_spin)&UI(DSA_check)', 'target'},
-	{'Death Strike', 'inFront&inMelee&player.runicpower>=UI(DSb_spin)&UI(DSb_check)', 'target'},
-	{'Death\'s Caress', 'range<41&debuff(Blood Plague).remains<3', 'target'},
-	{'Marrowrend', 'player.buff(Bone Shield).duration<4&inFront&inMelee', 'target'},
-	{'Marrowrend', 'player.buff(Bone Shield).count<7&talent(3,1)&inFront&inMelee', 'target'},
-	{'Blood Boil', 'target.range<11'},
-	{'Death and Decay', 'range<31&{{talent(2,1)&player.buff(Crimson Scourge)}||{player.area(10).enemies>1&player.buff(Crimson Scourge}}', 'target.ground'},
-	{'Death and Decay', 'range<31&{{talent(2,1)&player.runes>2}||{player.area(10).enemies>2}}', 'target.ground'},
-	{'Death and Decay', '!talent(2,1)&range<31&target.area(10).enemies==1&player.buff(Crimson Scourge)', 'target.ground'},
-	{'Heart Strike', 'inFront&inMelee&{player.runes>2||player.buff(Death and Decay)}', 'target'},
-	{'Consumption', 'inFront&inMelee', 'target'},
+	{'Death Strike', 'inFront&inMelee&player.runicpower>65&player.health<=UI(DSA_spin)&UI(DSA_check)'},
+	{'Death Strike', 'inFront&inMelee&player.runicpower>=UI(DSb_spin)&UI(DSb_check)'},
+	{'Death\'s Caress', 'range<=40&debuff(Blood Plague).remains<3'},
+	{'Marrowrend', 'player.buff(Bone Shield).duration<4&inFront&inMelee'},
+	{'Marrowrend', 'player.buff(Bone Shield).count<7&talent(3,1)&inFront&inMelee'},
+	{'Blood Boil', 'range<=10'},
+	{'Death and Decay', 'advanced&range<=30&{{talent(2,1)&player.buff(Crimson Scourge)}||{area(10).enemies>=2&player.buff(Crimson Scourge}}', 'target.ground'},
+	{'Death and Decay', 'advanced&range<=30&{{talent(2,1)&player.runes>=3}||{area(10).enemies>=3}}', 'target.ground'},
+	{'Death and Decay', 'advanced&!talent(2,1)&range<=30&area(10).enemies==1&player.buff(Crimson Scourge)', 'target.ground'},
+	{'Heart Strike', 'inFront&inMelee&{player.runes>=3||player.buff(Death and Decay)}'},
+	{'Consumption', 'inFront&inMelee'},
 }
 
 local inCombat = {
 	{Keybinds},
-	{Interrupts, 'toggle(Interrupts)&interruptAt(70)'},
-	{Interrupts_Random, 'toggle(xIntRandom)&interruptAt(70)'},
-	{Survival},
+	{Interrupts, 'toggle(Interrupts)&interruptAt(70)', 'target'},
+	{Interrupts, 'toggle(Interrupts)&toggle(xIntRandom)&interruptAt(70)', 'enemies'},
+	{Survival, nil, 'player'},
 	{Cooldowns, 'toggle(Cooldowns)'},
 	{Mythic_Plus, 'inMelee'},
-	{xCombat},
+	{xCombat, nil, 'target'},
 	{xTaunts, 'toggle(super_taunt)'},
 }
 
 local outCombat = {
 	{Keybinds},
-	{Interrupts, 'toggle(Interrupts)&interruptAt(70)'},
-	{Interrupts_Random, 'toggle(xIntRandom)&interruptAt(70)'},
+	{PreCombat}
 }
 
 NeP.CR:Add(250, {
