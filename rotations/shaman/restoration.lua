@@ -18,8 +18,13 @@ local GUI = {
 	unpack(Zylla.PayPal_IMG),
 	{type = 'ruler'},	 	{type = 'spacer'},
 	--XXX: Settings
-	{type = 'header', 	size = 16, text = 'Survival', 																		align = 'center'},
-	{type = 'spinner', 	text = 'Interrupt at % cast',             												key = 'k_inter', default = 70, step = 5, max = 100, min = 1},
+	{type = 'header', 	size = 16, text = 'Class Settings',																align = 'center'},
+	{type = 'checkbox', text = 'Enable DBM Integration',																	key = 'kDBM', 				default = true},
+	{type = 'checkbox', text = 'Enable \'pre-potting\', flasks and Legion-rune',					key = 'prepot', 			default = false},
+	{type = 'checkbox', text = 'Force Pet Assist',																				key = 'passist', 			default = true},
+	{type = 'combo',		default = '3',																										key = 'list', 				list = Zylla.prepots, 	width = 175},
+	{type = 'spacer'},	{type = 'spacer'},
+	{type = 'checkbox', text = 'Ghost Wolf',             																	key = 'gwolf', 				default = true},
 	{type = 'checkspin',text = 'Light\'s Judgment - Units', 															key = 'LJ', spin = 4,	step = 1,	max = 20, min = 1, check = true,	desc = Zylla.ClassColor..'World Spell usable on Argus.|r'},
 	{type = 'checkspin',text = 'Astral Shift', 																						key = 'S_AS', spin = 40, step = 5, max = 100, min = 1, check = true},
 	{type = 'checkspin',text = 'Gift of the Naaru', 																			key = 'S_GOTN', spin = 40, step = 5, max = 100, min = 1, check = true},
@@ -106,107 +111,107 @@ NeP.Interface:AddToggle({
 
 end
 
+local PreCombat = {
+	-- Pots
+	{'#127844', 'UI(list)==1&item(127844).usable&item(127844).count>0&UI(kDBM)&UI(prepot)&!buff(Potion of the Old War)&dbm(pull in)<3'}, 			--XXX: Potion of the Old War
+	{'#127843', 'UI(list)==2&item(127843).usable&item(127843).count>0&UI(kDBM)&UI(prepot)&!buff(Potion of Deadly Grace)&dbm(pull in)<3'}, 		--XXX: Potion of Deadly Grace
+	{'#142117', 'UI(list)==3&item(142117).usable&item(142117).count>0&UI(kDBM)&UI(prepot)&!buff(Potion of Prolonged Power)&dbm(pull in)<3'}, 	--XXX: Potion of Prolonged Power
+	-- Flasks
+	{'#127847', 'item(127847).usable&item(127847).count>0&UI(prepot)&!buff(Flask of the Whispered Pact)'},	--XXX: Flask of the Whispered Pact
+	{'#153023', 'item(153023).usable&item(153023).count>0&UI(prepot)&!buff(Defiled Augmentation)'},					--XXX: Lightforged Augment Rune
+}
+
 local Survival = {
-	{'!Astral Shift', 'UI(S_AS_check)&health<=UI(S_AS_spin)', 'player'},
-	{'!Gift of the Naaru', 'UI(S_GOTN_check)&health<=UI(S_GOTN_spin)', 'player'},
-	{'#152615', 'item(152615).usable&item(152615).count>0&health<=UI(AHP_spin)&UI(AHP_check)', 'player'}, 													--XXX: Astral Healing Potion
-	{'#127834', 'item(152615).count==0&item(127834).usable&item(127834).count>0&health<=UI(AHP_spin)&UI(AHP_check)', 'player'}, 		--XXX: Ancient Healing Potion
-	{'#5512', 'item(5512).usable&item(5512).count>0&health<=UI(HS_spin)&UI(HS_check)', 'player'}, 																	--XXX: Health Stone
-	{'!Ancestral Guidance', 'area(40,60).heal>=3', 'player'},
+	{'!Astral Shift', 'UI(S_AS_check)&health<=UI(S_AS_spin)'},
+	{'!Gift of the Naaru', 'UI(S_GOTN_check)&health<=UI(S_GOTN_spin)'},
+	{'#152615', 'item(152615).usable&item(152615).count>0&health<=UI(AHP_spin)&UI(AHP_check)'}, 													--XXX: Astral Healing Potion
+	{'#127834', 'item(152615).count==0&item(127834).usable&item(127834).count>0&health<=UI(AHP_spin)&UI(AHP_check)'}, 		--XXX: Ancient Healing Potion
+	{'#5512', 'item(5512).usable&item(5512).count>0&health<=UI(HS_spin)&UI(HS_check)'}, 																	--XXX: Health Stone
+	{'!Ancestral Guidance', 'area(40,60).heal>=3'},
 }
 
 local Keybinds = {
-	{'!Healing Rain', 'UI(lshift)&keybind(lshift)', 'cursor.ground'},
-	{'!Lightning Surge Totem', 'UI(lcontrol)&keybind(lcontrol)', 'cursor.ground'},
-	{'!Cloudburst Totem', 'UI(lalt)&keybind(lalt)', 'cursor.ground'},
+	{'!Healing Rain', 'UI(lshift)&keybind(lshift)'},
+	{'!Lightning Surge Totem', 'UI(lcontrol)&keybind(lcontrol)'},
+	{'!Cloudburst Totem', 'UI(lalt)&keybind(lalt)'},
 }
 
 local Totems = {
-	{'Healing Stream Totem', 'UI(To_HSTE)&@Zylla.areaHeal(40,80,1)', 'player'},
-	{'Earthen Shield Totem', 'advanced&UI(To_ESTE)&range<41&@Zylla.areaHeal(10,90,1)', 'lowest.ground'},
-	{'Ancestral Protection Totem', 'advanced&UI(To_APTE)&range<41&@Zylla.areaHeal(20,40,2)', 'lowest.ground'},
+	{'Healing Stream Totem', 'UI(To_HSTE)&area(40,80).heal>=1', 'player'},
+	{'Earthen Shield Totem', 'advanced&UI(To_ESTE)&range<=40&area(10,90).heal>=1', 'lowest.ground'},
+	{'Ancestral Protection Totem', 'advanced&UI(To_APTE)&range<=40&area(20,40).heal>=2', 'lowest.ground'},
 }
 
 local Emergency = {
-	{'!Riptide', 'UI(E_RT_check)&health<=UI(E_RT_spin)', 'lowest'},
-	{'!Healing Surge', '!player.moving&UI(E_HSG_check)&health<=UI(E_HSG_spin)', 'lowest'},
+	{'!Riptide', 'UI(E_RT_check)&health<=UI(E_RT_spin)'},
+	{'!Healing Surge', '!player.moving&UI(E_HSG_check)&health<=UI(E_HSG_spin)'},
 }
 
 local Interrupts = {
-	{'!Wind Shear', 'range<31&casting.percent>=UI(k_inter)', 'target'},
-	{'!Lightning Surge Totem', 'advanced&interruptAt(1)&range<31&player.spell(Wind Shear).cooldown>gcd&!player.lastgcd(Wind Shear)', 'target.ground'},
-}
-
-local Interrupts_Random = {
-	{'!Wind Shear', 'casting.percent>=UI(k_inter)&toggle(xIntRandom)&toggle(Interrupts)&range<31', 'enemies'},
-	{'!Lightning Surge Totem', 'advanced&interruptAt(5)&toggle(xIntRandom)&toggle(Interrupts)&player.spell(Wind Shear).cooldown>gcd&!player.lastgcd(Wind Shear)&inFront&range<31', 'enemies.ground'},
-}
-
-local Dispel = {
-	{'%dispelall'},
+	{'&Wind Shear', nil, 'target'},
+	{'!Lightning Surge Totem', 'advanced&interruptAt(1)spell(Wind Shear).cooldown>=gcd&!player.lastgcd(Wind Shear)', 'target.ground'},
+	{'!Lightning Surge Totem', 'advanced&toggle(xIntRandom)&interruptAt(1)spell(Wind Shear).cooldown>=gcd&!player.lastgcd(Wind Shear)', 'enemies.ground'},
 }
 
 local DPS = {
-	{'Flame Shock', '!debuff(Flame Shock)', 'target'},
-	{'Lava Burst', '!player.moving&debuff(Flame Shock).duration>player.spell(Lava Burst).casttime', 'target'},
-	{'Chain Lightning', '!player.moving&area(10).enemies>=2', 'target'},
-	{'Lightning Bolt', '!player.moving', 'target'},
+	{'Flame Shock', '!debuff'},
+	{'Lava Burst', '!player.moving&debuff(Flame Shock).duration>=spell(Lava Burst).casttime'},
+	{'Chain Lightning', '!player.moving&area(10).enemies>=2'},
+	{'Lightning Bolt', '!player.moving'},
 	{'#trinket1', 'UI(trinket1)'},
 	{'#trinket2', 'UI(trinket2)'},
 	{'Light\'s Judgment', 'UI(LJ_check)&range<61&area(15).enemies>=UI(LJ_spin)', 'enemies.ground'}
 }
 
 local Tank = {
-	{'Riptide', 'UI(T_FRT_check)&{buff(Riptide).duration<6||health<=UI(T_FRT_spin)}', 'tank'},
+	{'Riptide', 'UI(T_FRT_check)&{buff(Riptide).duration<6||health<=UI(T_FRT_spin)}'},
 	{{ --XXX: Spiritwalker's Grace
-		{'Healing Surge', 'health<=UI(T_HS_spin)', 'tank'},
-		{'Healing Rain', 'advanced&UI(T_HRE)&toggle(AoE)&@Zylla.areaHeal(10,90,1)', 'tank.ground'},
-		{'Chain Heal', 'UI(T_CHE)&toggle(AoE)&@Zylla.areaHeal(40,80,2)', 'tank'},
+		{'Healing Surge', 'health<=UI(T_HS_spin)'},
+		{'Healing Rain', 'advanced&UI(T_HRE)&toggle(AoE)&area(10,90).heal>=1', 'tank.ground'},
+		{'Chain Heal', 'UI(T_CHE)&toggle(AoE)&area(40,80).heal>=2'},
 	}, {'!player.moving||{player.buff(Spiritwalker\'s Grace)&player.moving}'}},
 }
 
 local Player = {
-	{'Riptide', 'UI(P_FRT_check)&{buff(Riptide).duration<6||health<=UI(P_FRT_spin)}', 'player'},
+	{'Riptide', 'UI(P_FRT_check)&{buff(Riptide).duration<6||health<=UI(P_FRT_spin)}'},
 	{{ --XXX: Spiritwalker's Grace
-		{'Healing Surge', 'health<=UI(P_HS)', 'player'},
-		{'Healing Rain', 'advanced&UI(P_HRE)&toggle(AoE)&@Zylla.areaHeal(10,90,1)', 'player.ground'},
-		{'Chain Heal', 'UI(P_CHE)&toggle(AoE)&@Zylla.areaHeal(40,80,2)', 'player'},
+		{'Healing Surge', 'health<=UI(P_HS)'},
+		{'Healing Rain', 'advanced&UI(P_HRE)&toggle(AoE)&area(10,90).heal>=1', 'player.ground'},
+		{'Chain Heal', 'UI(P_CHE)&toggle(AoE)&@area(40,80).heal>=2'},
 	}, {'!player.moving||{player.buff(Spiritwalker\'s Grace)&player.moving}'}},
 }
 
 local Lowest = {
 	{'Riptide', 'UI(L_FRT_check)&{buff(Riptide).duration<6||health<=UI(L_FRT_spin)}', 'lnbuff(Riptide)'},
 	{{ --XXX: Spiritwalker's Grace
-		{'Healing Wave', 'UI(L_HW_check)&health<=UI(L_HW_spin)', 'lowest'},
-		{'Healing Rain', 'advanced&UI(L_HRE)&toggle(AoE)&@Zylla.areaHeal(10,90,1)', 'lowest.ground'},
-		{'Chain Heal', 'UI(L_CHE)&toggle(AoE)&@Zylla.areaHeal(40,80,1)', 'lowest'},
-		{'Healing Surge', 'UI(L_HS_check)&health<=UI(L_HS_spin)', 'lowest'},
+		{'Healing Wave', 'UI(L_HW_check)&health<=UI(L_HW_spin)'},
+		{'Healing Rain', 'advanced&UI(L_HRE)&toggle(AoE)&area(10,90).heal>=1', 'lowest.ground'},
+		{'Chain Heal', 'UI(L_CHE)&toggle(AoE)&area(40,80).heal>=1'},
+		{'Healing Surge', 'UI(L_HS_check)&health<=UI(L_HS_spin)'},
 	}, {'!player.moving||{player.buff(Spiritwalker\'s Grace)&player.moving}'}},
 }
 
 local inCombat = {
-	{Keybinds},
-	{'%dispelall', 'toggle(disp)'},
-	{Survival},
-	{Emergency, 'range<41'},
+	{Keybinds, nil, 'cursor.ground'},
+	{'%dispelall', 'toggle(disp)&spell(Purify Spirit).cooldown<=gcd'},
+	{Survival, nil, 'player'},
+	{Emergency, 'range<=40', 'lowest'},
 	{Totems},
-	{Mythic_Plus, 'ui(mythic_fel)&range<41'},
-	{Tank, 'range<41&tank.exists&tank.health<100'},
-	{Lowest, 'range<41&&lowest.health<100'},
-	{Player, 'range<41&player.health<100'},
-	{Interrupts_Random},
-	{Interrupts, 'toggle(Interrupts)&target.range<41'},
-	{DPS, 'toggle(zyDPS)&range<41&inFront'},
-	{'Ghost Wolf', 'player.movingfor>0.5&target.range>=30&!player.buff(Ghost Wolf)'},
+	{Mythic_Plus, 'range<=40'},
+	{Tank, 'range<=40&health<=99&!is(player)', 'tank'},
+	{Lowest, 'range<=40&&health<=99&!is(player)', 'lowest'},
+	{Player, 'range<=40&health<=99', 'player'},
+	{Interrupts, 'toggle(Interrupts)&interruptAt(70)&range<=30', 'target'},
+	{Interrupts, 'toggle(Interrupts)&toggle(xIntRandom)&interruptAt(70)&range<=30', 'enemies'},
+	{DPS, 'toggle(zyDPS)&range<=40&inFront', 'target'},
+	{'Ghost Wolf', 'UI(gwolf)&player.movingfor>0.5&target.range>=30&!buff', 'player'},
 }
 
 local outCombat = {
-	{Dispel, 'toggle(zyDISP)&player.spell(Purify Spirit).cooldown<gcd'},
-	{Interrupts_Random},
-	{Interrupts, 'toggle(Interrupts)&target.range<41'},
-	{'Riptide', 'health<100', 'lnbuff(Riptide)'},
-	{Lowest, 'lowest.health<100'},
-	{'Ghost Wolf', 'player.movingfor>0.25&!player.buff(Ghost Wolf)'},
+	{'%dispelall', 'toggle(disp)&spell(Purify Spirit).cooldown<=gcd'},
+	{Lowest, 'range<=40&&health<=99', 'lowest'},
+	{'Riptide', 'health<=99', 'lnbuff(Riptide)'},
+	{'Ghost Wolf', 'UI(gwolf)&movingfor>0.5&!buff', 'player'},
 }
 
 NeP.CR:Add(264, {
