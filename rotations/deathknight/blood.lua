@@ -16,30 +16,37 @@ local GUI = {
 	unpack(Zylla.PayPal_GUI),
 	{type = 'spacer'},
 	unpack(Zylla.PayPal_IMG),
-	{type = 'ruler'},	 	{type = 'spacer'},
+	{type = 'spacer'},	{type = 'ruler'},	 	{type = 'spacer'},
+	--TODO: Targetting: Use, or NOT use?! We'll see....
+	{type = 'header', 	size = 16, text = 'Targetting:',																	align = 'center'},
+	{type = 'combo',		default = 'normal',																								key = 'target', 					list = Zylla.faketarget, 	width = 75},
+	{type = 'spacer'},
+	{type = 'text', 		text = Zylla.ClassColor..'Only one can be enabled.\nChose between normal targetting, or hitting the highest/lowest enemy.|r'},
+	{type = 'spacer'},	{type = 'ruler'},	 	{type = 'spacer'},
 	-- Settings
 	{type = 'header', 	size = 16, text = 'Class Settings',																align = 'center'},
-	{type = 'checkbox', text = 'Enable DBM Integration',																	key = 'kDBM', 		default = true},
-	{type = 'checkbox', text = 'Enable \'pre-potting\', flasks and Legion-rune',					key = 'prepot', 	default = false},
-	{type = 'combo',		default = '1',																										key = 'list', 		list = Zylla.prepots, 	width = 175},
+	{type = 'spinner',	size = 11, text = 'Interrupt at percentage:', 										key = 'intat',				default = 60,	step = 5, shiftStep = 10,	max = 100, min = 1},
+	{type = 'checkbox', text = 'Enable DBM Integration',																	key = 'kDBM', 				default = true},
+	{type = 'checkbox', text = 'Enable \'pre-potting\', flasks and Legion-rune',					key = 'prepot', 			default = false},
+	{type = 'combo',		default = '3',																										key = 'list', 				list = Zylla.prepots, 	width = 175},
 	{type = 'spacer'},	{type = 'spacer'},
-	{type = 'checkspin',	text = 'Light\'s Judgment - Units', 														key = 'LJ',				spin = 4, step = 1, max = 20, check = true,	desc = Zylla.ClassColor..'World Spell usable on Argus.|r'},
-	{type = 'checkbox', 	text = 'Use Death Grip as backup Interrupt', 										key = 'DGInt', 		default = false},
-	{type = 'checkbox', 	text = 'Use Death Grip as backup Taunt', 												key = 'DGTaunt', 	default = false},
-	{type = 'checkbox', 	text = 'Use Trinket #1', 																				key = 'trinket1',	default = false},
-	{type = 'checkbox', 	text = 'Use Trinket #2', 																				key = 'trinket2', default = false,	desc = Zylla.ClassColor..'Trinkets will be used whenever possible!|r'},
+	{type = 'checkspin',text = 'Light\'s Judgment - Units', 															key = 'LJ',						spin = 4,	step = 1,	max = 20, min = 1,	check = true,	desc = Zylla.ClassColor..'World Spell usable on Argus.|r'},
+	{type = 'checkbox', text = 'Death Grip as backup Interrupt', 													key = 'DGInt', 				default = false},
+	{type = 'checkbox', text = 'Death Grip as backup Taunt', 															key = 'DGTaunt', 			default = false},
+	{type = 'checkbox', text = 'Use Trinket #1', 																					key = 'trinket1',			default = false},
+	{type = 'checkbox', text = 'Use Trinket #2', 																					key = 'trinket2', 		default = false,	desc = Zylla.ClassColor..'Trinkets will be used whenever possible!|r'},
 	{type = 'spacer'},
-	{type = 'checkspin', 	text = 'Kil\'Jaeden\'s Burning Wish - Units', 									key = 'kj', 			align = 'left', width = 55, step = 1, shiftStep = 2, spin = 4, max = 20, min = 1, check = true, desc = Zylla.ClassColor..'Legendary will be used only on selected amount of units!|r'},
-	{type = 'ruler'},			{type = 'spacer'},
+	{type = 'checkspin',text = 'Kil\'Jaeden\'s Burning Wish - Units', 										key = 'kj', 					align = 'left', width = 55, step = 1, shiftStep = 2, spin = 4, max = 20, min = 1, check = true, desc = Zylla.ClassColor..'Legendary will be used only on selected amount of units!|r'},
+	{type = 'ruler'},		{type = 'spacer'},
 	-- Survival
-	{type = 'header', 		size = 16, text = 'Survival',																		align = 'center',	size = 16},
-	{type = 'checkspin',	text = 'Dancing Rune Weapon',																		key = 'drw', 			spin = 70, step = 5, shiftStep = 10, max = 100, min = 1},
-	{type = 'checkspin',	text = 'Death Strike - Min. HP%',																key = 'DSA', 			spin = 70, step = 5, shiftStep = 10, max = 100, min = 1},
-	{type = 'checkspin',	text = 'Death Strike - Runic Power cap',												key = 'DSb', 			spin = 85, step = 5, shiftStep = 10, max = 100, min = 1},
-	{type = 'checkspin', 	text = 'Icebound Fortitude',																		key = 'IwF', 			spin = 30, step = 5, shiftStep = 10, max = 100, min = 1},
-	{type = 'checkspin', 	text = 'Vampiric Blood',																				key = 'VB', 			spin = 50, step = 5, shiftStep = 10, max = 100, min = 1},
-	{type = 'checkspin',	text = 'Healthstone', 																					key = 'HS',	 			spin = 45, step = 5, shiftStep = 10, max = 100, min = 1},
-	{type = 'checkspin',	text = 'Ancient Healing Potion', 																key = 'AHP',	 		spin = 45, step = 5, shiftStep = 10, max = 100, min = 1},
+	{type = 'header', 	size = 16, text = 'Survival',																			align = 'center',			size = 16},
+	{type = 'checkspin',text = 'Dancing Rune Weapon',																			key = 'drw', 					spin = 70, step = 5, shiftStep = 10, max = 100, min = 1},
+	{type = 'checkspin',text = 'Death Strike - Min. HP%',																	key = 'DSA', 					spin = 70, step = 5, shiftStep = 10, max = 100, min = 1},
+	{type = 'checkspin',text = 'Death Strike - Runic Power cap',													key = 'DSb', 					spin = 85, step = 5, shiftStep = 10, max = 100, min = 1},
+	{type = 'checkspin',text = 'Icebound Fortitude',																			key = 'IwF', 					spin = 30, step = 5, shiftStep = 10, max = 100, min = 1},
+	{type = 'checkspin',text = 'Vampiric Blood',																					key = 'VB', 					spin = 50, step = 5, shiftStep = 10, max = 100, min = 1},
+	{type = 'checkspin',text = 'Healthstone', 																						key = 'HS',	 					spin = 45, step = 5, shiftStep = 10, max = 100, min = 1},
+	{type = 'checkspin',text = 'Ancient Healing Potion', 																	key = 'AHP',	 				spin = 45, step = 5, shiftStep = 10, max = 100, min = 1},
 	{type = 'ruler'},	 {type = 'spacer'},
 	unpack(Zylla.Mythic_GUI),
 }
@@ -71,7 +78,7 @@ local exeOnLoad = function()
 end
 
 local PreCombat = {
-	{'%pause', 'player.buff(Shadowmeld)'},
+	{'%pause', 'buff(Shadowmeld)'},
 	-- Pots
 	{'#127844', 'UI(list)==1&item(127844).usable&item(127844).count>0&UI(kDBM)&UI(prepot)&!buff(Potion of the Old War)&dbm(pull in)<3'}, 			--XXX: Potion of the Old War
 	{'#127843', 'UI(list)==2&item(127843).usable&item(127843).count>0&UI(kDBM)&UI(prepot)&!buff(Potion of Deadly Grace)&dbm(pull in)<3'}, 		--XXX: Potion of Deadly Grace
@@ -96,16 +103,16 @@ local Keybinds = {
 }
 
 local Cooldowns = {
-	{'Dancing Rune Weapon', 'inFront&inMelee&UI(drw_check)&{{player.incdmg(2.5)>player.health.max*0.50}||{player.health<=UI(drw_spin)}}', 'target'},
+	{'Dancing Rune Weapon', 'inFront&inMelee&UI(drw_check)&{{player.incdmg(2.5)>player.health.max*0.50}||{player.health<=UI(drw_spin)}}'},
 	{'Vampiric Blood', 'UI(VB_check)&{incdmg(2.5)>health.max*0.50||health<=UI(VB_spin)}', 'player'},
 	{'#trinket1', 'UI(trinket1)'},
 	{'#trinket2', 'UI(trinket2)'},
 	{'Light\'s Judgment', 'advanced&UI(LJ_check)&range<61&area(15).enemies>=UI(LJ_spin)', 'enemies.ground'},
-	{'#144259', 'UI(kj_check)&range<=40&area(10).enemies>=UI(kj_spin)&equipped(144259)', 'target'}, --XXX: Kil'jaeden's Burning Wish (Legendary)}
+	{'&#144259', 'UI(kj_check)&range<=40&area(10).enemies>=UI(kj_spin)&equipped(144259)'}, --XXX: Kil'jaeden's Burning Wish (Legendary)}
 }
 
 local Interrupts = {
-	{'!Mind Freeze', 'inFront&range<=15'},
+	{'&Mind Freeze', 'inFront&range<=15'},
 	{'!Asphyxiate', 'range<=30&inFront&spell(Mind Freeze).cooldown>=gcd&!player.lastgcd(Mind Freeze)'},
 	{'!Death Grip', 'UI(DGInt)&range<=30&inFront&spell(Mind Freeze).cooldown>=gcd&spell(Asphyxiate).cooldown>=gcd'},
 	{'!Arcane Torrent', 'inMelee&spell(Mind Freeze).cooldown>=gcd&!player.lastgcd(Mind Freeze)'},
@@ -117,6 +124,7 @@ local xTaunts = {
 }
 
 local xCombat = {
+	{Cooldowns, 'toggle(Cooldowns)'},
 	{'Death Strike', 'inFront&inMelee&player.runicpower>65&player.health<=UI(DSA_spin)&UI(DSA_check)'},
 	{'Death Strike', 'inFront&inMelee&player.runicpower>=UI(DSb_spin)&UI(DSb_check)'},
 	{'Death\'s Caress', 'range<=40&debuff(Blood Plague).remains<3'},
@@ -132,18 +140,22 @@ local xCombat = {
 
 local inCombat = {
 	{Keybinds},
-	{Interrupts, 'toggle(Interrupts)&interruptAt(70)', 'target'},
-	{Interrupts, 'toggle(Interrupts)&toggle(xIntRandom)&interruptAt(70)', 'enemies'},
+	{Interrupts, 'toggle(Interrupts)&@Zylla.InterruptAt(intat)', 'target'},
+	{Interrupts, 'toggle(Interrupts)&toggle(xIntRandom)&@Zylla.InterruptAt(intat)', 'enemies'},
 	{Survival, nil, 'player'},
-	{Cooldowns, 'toggle(Cooldowns)'},
 	{Mythic_Plus, 'inMelee'},
-	{xCombat, nil, 'target'},
-	{xTaunts, 'toggle(super_taunt)'},
+	{xTaunts, 'toggle(super_taunt)', 'enemies'},
+	{xCombat, 'UI(target)==normal', 'target'},
+	{xCombat, 'UI(target)==lowest', 'lowestenemy'},
+	{xCombat, 'UI(target)==highest', 'highestenemy'},
+	{xCombat, 'UI(target)==nearest', 'nearestenemy'},
+	{xCombat, 'UI(target)==furthest', 'furthestenemy'},
+
 }
 
 local outCombat = {
 	{Keybinds},
-	{PreCombat}
+	{PreCombat, nil, 'player'}
 }
 
 NeP.CR:Add(250, {
