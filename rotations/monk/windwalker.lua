@@ -16,9 +16,16 @@ local GUI = {
 	unpack(Zylla.PayPal_GUI),
 	{type = 'spacer'},
 	unpack(Zylla.PayPal_IMG),
-	{type = 'ruler'},	 	{type = 'spacer'},
+	{type = 'spacer'},		{type = 'ruler'},	 	{type = 'spacer'},
+	--TODO: Targetting: Use, or NOT use?! We'll see....
+	{type = 'header', 	size = 16, text = 'Targetting:',																				align = 'center'},
+	{type = 'combo',		default = 'normal',																											key = 'target', 					list = Zylla.faketarget, 	width = 75},
+	{type = 'spacer'},
+	{type = 'text', 		text = Zylla.ClassColor..'Only one can be enabled.\nChose between normal targetting, or hitting the highest/lowest enemy.|r'},
+	{type = 'spacer'},		{type = 'ruler'},	 	{type = 'spacer'},
 	-- Settings
 	{type = 'header', 	size = 16, text = 'Class Settings',																			align = 'center'},
+	{type = 'spinner',	size = 11, text = 'Interrupt at percentage:', 													key = 'intat',				default = 60,	step = 5, shiftStep = 10,	max = 100, min = 1},
 	{type = 'checkbox', text = 'Enable DBM Integration',																				key = 'kDBM', 				default = true},
 	{type = 'checkbox', text = 'Enable \'pre-potting\', flasks and Legion-rune',								key = 'prepot', 			default = false},
 	{type = 'combo',		default = '1',																													key = 'list', 				list = Zylla.prepots, 	width = 175},
@@ -96,18 +103,18 @@ local Keybinds = {
 }
 
 local Cooldowns = {
-	{'Touch of Death', 'inMelee&!talent(7,3)&spell(Strike of the Windlord).cooldown<8&spell(Fists of Fury).cooldown<5&spell(Rising Sun Kick).cooldown<7&player.chi>1', 'target'},
-	{'Touch of Death', 'inMelee&talent(7,3)&spell(Strike of the Windlord).cooldown<8&spell(Fists of Fury).cooldown<5&spell(Rising Sun Kick).cooldown<7', 'target'},
-	{'Lifeblood'},
-	{'Berserking'},
-	{'Blood Fury'},
+	{'Touch of Death', 'inMelee&!talent(7,3)&spell(Strike of the Windlord).cooldown<8&spell(Fists of Fury).cooldown<5&spell(Rising Sun Kick).cooldown<7&player.chi>1'},
+	{'Touch of Death', 'inMelee&talent(7,3)&spell(Strike of the Windlord).cooldown<8&spell(Fists of Fury).cooldown<5&spell(Rising Sun Kick).cooldown<7'},
+	{'Lifeblood', 'player.buff(Serenity)||player.buff(Storm, Earth, and Fire)', 'player'},
+	{'Berserking', 'player.buff(Serenity)||player.buff(Storm, Earth, and Fire)', 'player'},
+	{'Blood Fury', 'player.buff(Serenity)||player.buff(Storm, Earth, and Fire)', 'player'},
 	{'#trinket1', 'UI(trinket1)&{player.buff(Serenity)||player.buff(Storm, Earth, and Fire)}'},
 	{'#trinket2', 'UI(trinket2)&{player.buff(Serenity)||player.buff(Storm, Earth, and Fire)}'},
 	{'Invoke Xuen, the White Tiger', 'player.hashero||{player.buff(Serenity)||player.buff(Storm, Earth, and Fire)}'},
-	{'Touch of Karma', 'UI(tok_check)&{player.health<=UI(tok_spin)||player.incdmg(5)>player.health.max*0.20}', 'target'},
+	{'Touch of Karma', 'UI(tok_check)&{player.health<=UI(tok_spin)||player.incdmg(3)>player.health.max*0.20}'},
 	{'Serenity', nil, 'player'},
 	{'Light\'s Judgment', 'advanced&UI(LJ_check)&range<61&area(15).enemies>=UI(LJ_spin)', 'enemies.ground'},
-	{'#144259', 'UI(kj_check)&range<41&area(10).enemies>=UI(kj_spin)&equipped(144259)', 'target'}, --XXX: Kil'jaeden's Burning Wish (Legendary)
+	{'&#144259', 'UI(kj_check)&range<41&area(10).enemies>=UI(kj_spin)&equipped(144259)'}, --XXX: Kil'jaeden's Burning Wish (Legendary)
 }
 
 local Dispel = {
@@ -116,9 +123,9 @@ local Dispel = {
 }
 
 local Survival = {
-	{'Healing Elixir', 'health<=UI(Healing Elixir)'},
-	{'!Effuse', 'energy>50&!moving&UI(eff_check)&health<=UI(eff_spin)'}, 												--XXX: Self  healing. Toggle and HP% in Settings
-	{'!Effuse', 'energy>50&!moving&UI(effp_check)&health<=UI(effp_spin)', 'lowest'},			--XXX: Party healing. Toggle and HP% in Settings
+	{'Healing Elixir', 'UI(he_check)&health<=UI(he_spin)'},
+	{'!Effuse', 'energy>50&!moving&UI(eff_check)&health<=UI(eff_spin)'}, 																									--XXX: Self  healing. Toggle and HP% in Settings
+	{'!Effuse', 'energy>50&!moving&UI(effp_check)&health<=UI(effp_spin)', 'lowest'},																			--XXX: Party healing. Toggle and HP% in Settings
 	{'#152615', 'item(152615).usable&item(152615).count>0&health<=UI(AHP_spin)&UI(AHP_check)'}, 													--XXX: Astral Healing Potion
 	{'#127834', 'item(152615).count==0&item(127834).usable&item(127834).count>0&health<=UI(AHP_spin)&UI(AHP_check)'}, 		--XXX: Ancient Healing Potion
 	{'#5512', 'item(5512).usable&item(5512).count>0&health<=UI(HS_spin)&UI(HS_check)'}, 																	--XXX: Health Stone
@@ -126,7 +133,7 @@ local Survival = {
 
 local Interrupts = {
 	{'&Spear Hand Strike', 'inMelee&inFront'},
-	{'!Paralysis', 'UI(para)&interruptAt(60)&!immune(incapacitate)&range<21&inFront&spell(Spear Hand Strike).cooldown>=gcd&!player.lastcast(Spear Hand Strike)'},
+	{'!Paralysis', 'UI(para)&range<21&inFront&spell(Spear Hand Strike).cooldown>=gcd&!player.lastcast(Spear Hand Strike)'},
 	{'!Ring of Peace', 'interruptAt(5)&advanced&range<=40&spell(Spear Hand Strike).cooldown>=gcd&!player.lastgcd(Spear Hand Strike)', 'target.ground'},
 	{'!Ring of Peace', 'toggle(xIntRandom)&interruptAt(5)&advanced&range<=40&spell(Spear Hand Strike).cooldown>=gcd&!player.lastgcd(Spear Hand Strike)', 'enemies.ground'},
 	{'!Leg Sweep', '!immune(stun)&inMelee&spell(Spear Hand Strike).cooldown>=gcd&!player.lastgcd(Spear Hand Strike)'},
@@ -165,6 +172,8 @@ local Serenity = {
 }
 
 local Melee = {
+	{Serenity, 'player.buff(Serenity)'},
+	{SEF, 'UI(sef_toggle)&!talent(7,3)&spell(Strike of the Windlord).cooldown<24&spell(Fists of Fury).cooldown<7&spell(Rising Sun Kick).cooldown<7'},
 	{'Energizing Elixir', 'energydiff>0&chi<2', 'player'},
 	{'Strike of the Windlord', 'player.chi>=2&toggle(aoe)&player.area(9).enemies>0'},
 	{'Fists of Fury', 'player.chi>=3&toggle(aoe)&player.area(6).enemies.infront>=2'},
@@ -185,23 +194,28 @@ local Melee = {
 			{'Tiger Palm', 'UI(auto_dot)', 'Zylla_sck(Mark of the Crane)'},
 			{'Tiger Palm'},
 	}, 'player.energy>50&!player.lastcast(Tiger Palm)&@Zylla.hitcombo(Tiger Palm)'},
-	{'Blackout Kick', 'player.chi==1&!player.buff(Hit Combo)'},	-- Last resort BoK when we only have 1 chi and no hit combo
+	{'Blackout Kick', 'player.chi==1&!player.buff(Hit Combo)'},	--XXX: Last resort BoK when we only have 1 chi and no hit combo
 	{'Tiger Palm', 'player.combat.time<4&player.energydiff==0&player.chi<2&!player.lastcast(Tiger Palm)&@Zylla.hitcombo(Tiger Palm)'},
-	{'Tiger Palm', '!player.buff(Hit Combo)'},	-- Last resort TP when we don't have hit combo up
+	{'Tiger Palm', '!player.buff(Hit Combo)'},									--XXX: Last resort TP when we don't have hit combo up
 	{'Tiger Palm', 'player.energy>100'}
+}
+
+local xCombat = {
+	{Melee, 'inMelee&inFront'},
+	{Ranged, '!inMelee&inFront'}
 }
 
 local inCombat = {
 	{Dispel, 'spell(Detox).cooldown<=gcd'},
-	{Survival, 'health<100', 'player'},
-	{Interrupts, 'toggle(Interrupts)&interruptAt(70)', 'target'},
-	{Interrupts, 'toggle(Interrupts)&toggle(xIntRandom)&interruptAt(70)', 'enemies'},
+	{Survival, nil, 'player'},
+	{Interrupts, 'toggle(Interrupts)&@Zylla.InterruptAt(intat)', 'target'},
+	{Interrupts, 'toggle(Interrupts)&toggle(xIntRandom)&@Zylla.InterruptAt(intat)', 'enemies'},
 	{Cooldowns, 'toggle(cooldowns)&target.ttd>10'},
-	{Serenity, 'player.buff(Serenity)&inMelee', 'target'},
-	{SEF, 'inMelee&UI(sef_toggle)&!talent(7,3)&spell(Strike of the Windlord).cooldown<24&spell(Fists of Fury).cooldown<7&spell(Rising Sun Kick).cooldown<7', 'target'},
 	{Mythic_Plus, 'inMelee'},
-	{Melee, 'inMelee&inFront', 'target'},
-	{Ranged, '!inMelee&inRanged' ,'target'}
+	{xCombat, 'UI(target)==normal', 'target'},
+	{xCombat, 'combat&alive&UI(target)==lowest', 'lowestenemy'},
+	{xCombat, 'combat&alive&UI(target)==highest', 'highestenemy'},
+	{xCombat, 'combat&alive&UI(target)==nearest', 'nearestenemy'},
 }
 
 local outCombat = {
