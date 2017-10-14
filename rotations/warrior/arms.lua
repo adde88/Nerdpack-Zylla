@@ -12,12 +12,32 @@ local GUI = {
 	{type = 'checkbox',	text = 'Left Alt: '..Zylla.ClassColor..'|r',									align = 'left', 			key = 'lalt', 		default = true},
 	{type = 'checkbox',	text = 'Right Alt: '..Zylla.ClassColor..'|r',									align = 'left', 			key = 'ralt', 		default = true},
 	{type = 'spacer'},
-	--{type = 'checkbox', text = 'Enable Chatoverlay', 																key = 'chat', 				width = 55, 			default = true, desc = Zylla.ClassColor..'This will enable some messages as an overlay!|r'},
+	{type = 'checkbox', text = 'Enable Chatoverlay', 																		key = 'chat', 				width = 55, 			default = true, desc = Zylla.ClassColor..'This will enable some messages as an overlay!|r'},
 	unpack(Zylla.PayPal_GUI),
 	{type = 'spacer'},
 	unpack(Zylla.PayPal_IMG),
-	{type = 'ruler'},	 	{type = 'spacer'},
+	{type = 'spacer'},		{type = 'ruler'},	 	{type = 'spacer'},
+	--TODO: Targetting: Use, or NOT use?! We'll see....
+	{type = 'header', 	size = 16, text = 'Targetting:',																align = 'center'},
+	{type = 'combo',		default = 'normal',																							key = 'target', 					list = Zylla.faketarget, 	width = 75},
+	{type = 'spacer'},
+	{type = 'text', 		text = Zylla.ClassColor..'Only one can be enabled.\nChose between normal targetting, or hitting the highest/lowest enemy.|r'},
+	{type = 'spacer'},	{type = 'ruler'},	 	{type = 'spacer'},
 	-- Settings
+	{type = 'header', 	size = 16, text = 'Class Settings',															align = 'center'},
+	{type = 'spinner',	size = 11, text = 'Interrupt at percentage:', 									key = 'intat',				default = 60,	step = 5, shiftStep = 10,	max = 100, min = 1},
+	{type = 'checkbox', text = 'Enable DBM Integration',																key = 'kDBM', 				default = true},
+	{type = 'checkbox', text = 'Enable \'pre-potting\', flasks and Legion-rune',				key = 'prepot', 			default = false},
+	{type = 'combo',		default = '1',																									key = 'list', 				list = Zylla.prepots, 	width = 175},
+	{type = 'spacer'},	{type = 'spacer'},
+	{type = 'checkspin',text = 'Light\'s Judgment - Units', 														key = 'LJ',						spin = 4,	step = 1,	max = 20,	check = true,	desc = Zylla.ClassColor..'World Spell usable on Argus.|r'},
+	{type = 'checkbox', text = 'Use Trinket #1', 																				key = 'trinket1',			default = false},
+	{type = 'checkbox', text = 'Use Trinket #2', 																				key = 'trinket2', 		default = false, desc = Zylla.ClassColor..'Trinkets will be used whenever possible!|r'},
+	{type = 'spacer'},
+	{type = 'checkspin', 	text = 'Kil\'Jaeden\'s Burning Wish - Units', 								key = 'kj', 					align = 'left', width = 55, step = 1, shiftStep = 2, spin = 4, max = 20, min = 1, check = true, desc = Zylla.ClassColor..'Legendary will be used only on selected amount of units!|r'},
+	{type = 'ruler'},	  {type = 'spacer'},
+	-- Survival
+	{type = 'header', 		size = 16, text = 'Survival',																	align = 'center'},
 	unpack(Zylla.Mythic_GUI),
 }
 
@@ -30,9 +50,25 @@ local exeOnLoad = function()
 	print('|cffADFF2F --- |rRecommended Talents: 1/1 - 2/3 - 3/3 - 4/2 - 5/3 - 6/1 - 7/1')
 	print('|cffADFF2F ----------------------------------------------------------------------|r')
 
+	NeP.Interface:AddToggle({
+		key = 'xIntRandom',
+		name = 'Interrupt Anyone',
+		text = 'Interrupt all nearby enemies, without targeting them.',
+		icon = 'Interface\\Icons\\inv_ammo_arrow_04',
+	})
+
 end
 
-local PreCombat = {}
+local PreCombat = {
+	-- Pots
+	{'#127844', 'UI(list)==1&item(127844).usable&item(127844).count>0&UI(kDBM)&UI(prepot)&!buff(Potion of the Old War)&dbm(pull in)<3'}, 			--XXX: Potion of the Old War
+	{'#127843', 'UI(list)==2&item(127843).usable&item(127843).count>0&UI(kDBM)&UI(prepot)&!buff(Potion of Deadly Grace)&dbm(pull in)<3'}, 		--XXX: Potion of Deadly Grace
+	{'#142117', 'UI(list)==3&item(142117).usable&item(142117).count>0&UI(kDBM)&UI(prepot)&!buff(Potion of Prolonged Power)&dbm(pull in)<3'}, 	--XXX: Potion of Prolonged Power
+	-- Flasks
+	{'#127850', 'ingroup&item(127850).usable&item(127850).count>0&UI(prepot)&!buff(Flask of Ten Thousand Scars)'},														--XXX: Flask of Ten Thousand Scars
+	{'#127849', 'item(127850).count==0&ingroup&item(127849).usable&item(127849).count>0&UI(prepot)&!buff(Flask of the Countless Armies)'},		--XXX: Flask of the Countless Armies (IF WE DON'T HAVE THOUSAND SCARS FLASKS)
+	{'#153023', 'ingroup&item(153023).usable&item(153023).count>0&UI(prepot)&!buff(Defiled Augmentation)'},																		--XXX: Lightforged Augment Rune
+}
 
 local Keybinds = {
 	-- Pause
@@ -42,19 +78,23 @@ local Keybinds = {
 
 local Interrupts = {
 	{'!Pummel'},
-	{'!Arcane Torrent', 'target.inMelee&cooldown(Pummel).remains>gcd&!prev_gcd(Pummel)'},
+	{'!Arcane Torrent', 'inMelee&cooldown(Pummel).remains>gcd&!player.lastgcd(Pummel)'},
 }
 
 local Survival = {
-	{'Victory Rush', 'player.health<80'},
+	{'Victory Rush', 'player.health<UI(vr_spin)&UI(vr_check)'},
 }
 
 local Cooldowns = {
-	{'Blood Fury', 'player.buff(Battle Cry)'},
-	{'Berserking', 'player.buff(Battle Cry)'},
-	{'Arcane Torrent', 'player.buff(Battle Cry)&talent(6,1)&rage.deficit>40'},
-	{'Battle Cry', '{player.buff(Bloodlust)||xtime>0}&gcd.remains<0.5&{player.buff(Shattered Defenses)||{cooldown(Colossus Smash).remains>gcd&cooldown(Warbreaker).remains>gcd}}'},
-	{'Avatar', 'talent(3,3)&{player.buff(Bloodlust)||xtime>0}'},
+	{'Blood Fury', 'buff(Battle Cry)', 'player'},
+	{'Berserking', 'buff(Battle Cry)', 'player'},
+	{'Arcane Torrent', 'buff(Battle Cry)&talent(6,1)&rage.deficit>40', 'player'},
+	{'Battle Cry', '{player.buff(Bloodlust)||xtime>0}&gcd.remains<0.5&{player.buff(Shattered Defenses)||{cooldown(Colossus Smash).remains>gcd&cooldown(Warbreaker).remains>gcd}}', 'player'},
+	{'Avatar', 'talent(3,3)&{buff(Bloodlust)||xtime>0}', 'player'},
+	{'#trinket1', 'UI(trinket1)'},
+	{'#trinket2', 'UI(trinket2)'},
+	{'Light\'s Judgment', 'advanced&UI(LJ_check)&range<61&area(15).enemies>=UI(LJ_spin)', 'enemies.ground'},
+	{'&#144259', 'UI(kj_check)&range<=40&area(10).enemies>=UI(kj_spin)&equipped(144259)'}, 	--XXX: Kil'jaeden's Burning Wish (Legendary)
 }
 
 local Etc = {
@@ -130,23 +170,31 @@ local ST = {
 	{'Bladestorm'},
 }
 
-local inCombat = {
-	{Keybinds},
-	{Interrupts, 'target.interruptAt(70)&toggle(Interrupts)&target.inFront&target.inMelee'},
-	{Survival, 'player.health<100'},
-	{Cooldowns, 'toggle(Cooldowns)&target.inMelee'},
-	{Etc, 'target.inMelee&target.inFront'},
+local xCombat = {
+	{Interrupts, '@Zylla.InterruptAt(intat)&toggle(interrupts)'},
+	{Interrupts, '@Zylla.InterruptAt(intat)&toggle(interrupts)&toggle(xIntRandom)', 'enemies'},
+	{Cooldowns, 'toggle(Cooldowns)&inMelee'},
+	{Etc, 'inMelee&inFront'},
 	{Cleave, 'toggle(aoe)&player.area(8).enemies>1&talent(1,3)'},
 	{AoE, 'toggle(aoe)&player.area(8).enemies>4&!talent(1,3)'},
-	{Execute, 'target.inMelee&target.inFront&target.health<30&player.area(8).enemies<5'},
-	{ST, 'target.inMelee&target.inFront&target.health>20'},
-	{Mythic_Plus, 'inMelee'}
+	{Execute, 'inMelee&inFront&health<30&player.area(8).enemies<5'},
+	{ST, 'inMelee&inFront&health>20'},
+}
+
+local inCombat = {
+	{Keybinds},
+	{Survival, nil, 'player'},
+	{xCombat, 'UI(target)==normal', 'target'},
+	{xCombat, 'combat&alive&UI(target)==lowest', 'lowestenemy'},
+	{xCombat, 'combat&alive&UI(target)==highest', 'highestenemy'},
+	{xCombat, 'combat&alive&UI(target)==nearest', 'nearestenemy'},
+	{xCombat, 'combat&alive&UI(target)==furthest', 'furthestenemy'},
+	{Mythic_Plus, 'inMelee'},
 }
 
 local outCombat = {
 	{Keybinds},
-	{PreCombat},
-	{Interrupts, 'target.interruptAt(70)&toggle(Interrupts)&target.inFront&target.inMelee'},
+	{PreCombat, nil, 'player'},
 }
 
 NeP.CR:Add(71, {
