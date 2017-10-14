@@ -17,10 +17,17 @@ local GUI = {
 	{type = 'spacer'},
 	unpack(Zylla.PayPal_IMG),
 	{type = 'ruler'},	 	{type = 'spacer'},
+	--TODO: Targetting: Use, or NOT use?! We'll see....
+	{type = 'header', 	size = 16, text = 'Targetting:',													align = 'center'},
+	{type = 'combo',		default = 'normal',																				key = 'target', 					list = Zylla.faketarget, 	width = 75},
+	{type = 'text', 		text = Zylla.ClassColor..'Only one can be enabled.\nChose between normal targetting, or hitting the highest/lowest enemy.|r'},
+	{type = 'spacer'},	{type = 'spacer'},
 	-- Settings
 	{type = 'header', 	size = 16, text = 'Class Settings',												align = 'center'},
+	{type = 'spinner',	size = 11, text = 'Interrupt at percentage:', 						key = 'intat',				default = 60,	step = 5, shiftStep = 10,	max = 100, min = 1},
 	{type = 'checkbox', text = 'Enable DBM Integration',													key = 'kDBM', 		default = true},
 	{type = 'checkbox', text = 'Enable \'pre-potting\' and Flasks',								key = 'prepot', 	default = false},
+	{type = 'checkbox', text = 'Enable \'pre-cast Pyroblast\'',										key = 'precast', 	default = false},
 	{type = 'combo',		default = '3',																						key = 'list', 		list = Zylla.prepots, 	width = 175},
 	{type = 'spacer'},	{type = 'spacer'},
 	{type = 'checkspin',text = 'Light\'s Judgment - Units', 											key = 'LJ',				spin = 4, step = 1, max = 20, check = true,	desc = Zylla.ClassColor..'World Spell usable on Argus.|r'},
@@ -34,9 +41,9 @@ local GUI = {
 	-- Survival
 	{type = 'header', 		size = 16, text = 'Survival',									 	 				align = 'center'},
 	{type = 'checkbox', 	text = 'Blazing Barrier', 															key = 'bb', 			default = true},
-	{type = 'checkspin',	text = 'Healthstone',																		key = 'HS',				spin = 45, check = true},
-	{type = 'checkspin',	text = 'Healing Potion',																key = 'AHP',			spin = 45, check = true},
-	{type = 'checkspin', 	text = 'Ice Block', 																		key = 'ib', 			spin = 20, check = true},
+	{type = 'checkspin',	text = 'Healthstone',																		key = 'HS',				align = 'left', width = 55, step = 5, shiftStep = 10, spin = 45, max = 100, min = 1, check = true},
+	{type = 'checkspin',	text = 'Healing Potion',																key = 'AHP',			align = 'left', width = 55, step = 5, shiftStep = 10, spin = 45, max = 100, min = 1, check = true},
+	{type = 'checkspin', 	text = 'Ice Block', 																		key = 'ib', 			align = 'left', width = 55, step = 5, shiftStep = 10, spin = 20, max = 100, min = 1, check = true},
 	{type = 'ruler'},		 {type = 'spacer'},
 	unpack(Zylla.Mythic_GUI),
 }
@@ -46,7 +53,8 @@ local exeOnLoad = function()
 	Zylla.AFKCheck()
 
 	print('|cffADFF2F ----------------------------------------------------------------------|r')
-	print('|cffADFF2F --- |rMage |cffADFF2FFire |r')
+	print('|cffADFF2F --- |rMage |cffADFF2FFire|r')
+	print('|cffADFF2F --- |rBased on SimCraft T20 Fire Mage.r')
 	print('|cffADFF2F ----------------------------------------------------------------------|r')
   print('|cffFFFB2F Configuration: |rRight-click MasterToggle and go to Combat Routines Settings!|r')
 
@@ -66,112 +74,131 @@ local exeOnLoad = function()
 
 end
 
+local Cumbustion ={
+	{'&Combustion', 'target.ttd>12&{player.buff(Rune of Power)||casting(Rune of Power).percent>80}||{player.buff(Incanter\'s Flow).count>3}'}
+}
+
 local Keybinds = {
-	{'%pause', '{keybind(lshift)&UI(lshift)}||{player.buff(Ice Block)||player.buff(Shadowmeld)}'},
-	{'!Rune of Power', 'keybind(lalt)&UI(lalt)'},
+	{'%pause', '{keybind(lshift)&UI(lshift)}||{player.buff(Ice Block)||player.buff(Shadowmeld)||player.buff(Ice Block)}'},
+	{'!Rune of Power', 'keybind(lalt)&UI(lalt)', 'player'},
 	{'!Flamestrike', 'keybind(lcontrol)&UI(lcontrol)', 'cursor.ground'}
 }
 
 local PreCombat = {
 	{'Blazing Barrier' , '!buff&area(50).enemies>0&UI(bb)'},
 	-- Pots
-	{'#127844', 'UI(list)==1&item(127844).usable&item(127844).count>0&UI(kDBM)&UI(prepot)&!buff(Potion of the Old War)&dbm(pull in)<3'}, 			--XXX: Potion of the Old War
-	{'#127843', 'UI(list)==2&item(127843).usable&item(127843).count>0&UI(kDBM)&UI(prepot)&!buff(Potion of Deadly Grace)&dbm(pull in)<3'}, 		--XXX: Potion of Deadly Grace
-	{'#142117', 'UI(list)==3&item(142117).usable&item(142117).count>0&UI(kDBM)&UI(prepot)&!buff(Potion of Prolonged Power)&dbm(pull in)<3'}, 	--XXX: Potion of Prolonged Power
+	{'#127844', 'UI(list)==1&item(127844).usable&item(127844).count>0&UI(kDBM)&UI(prepot)&!buff(Potion of the Old War)&dbm(pull in)<5'}, 			--XXX: Potion of the Old War
+	{'#127843', 'UI(list)==2&item(127843).usable&item(127843).count>0&UI(kDBM)&UI(prepot)&!buff(Potion of Deadly Grace)&dbm(pull in)<5'}, 		--XXX: Potion of Deadly Grace
+	{'#142117', 'UI(list)==3&item(142117).usable&item(142117).count>0&UI(kDBM)&UI(prepot)&!buff(Potion of Prolonged Power)&dbm(pull in)<5'}, 	--XXX: Potion of Prolonged Power
 	-- Flasks
 	{'#127847', 'item(127847).usable&item(127847).count>0&UI(prepot)&!buff(Flask of the Whispered Pact)'},	--XXX:  Flask of the Whispered Pact
+	{'#153023', 'item(153023).usable&item(153023).count>0&UI(prepot)&!buff(Defiled Augmentation)'},					--XXX: Lightforged Augment Rune
+	{'Pyroblast', 'UI(precast)&UI(kDBM)&dbm(pull in)<=spell(11366).casttime+gcd', 'target'}	--TODO: Fix SpellID issue (spell.casttime)
 }
 
 local Interrupts = {
 	{'!Counterspell'},
-	{'!Arcane Torrent', 'inMelee&inFront&spell(Counterspell).cooldown>gcd&!player.lastgcd(Counterspell)'},
-	{'!Dragon\'s Breath', 'spell(Counterspell).cooldown>gcd&!player.lastgcd(Counterspell)&player.area(12).enemies.inFront>0'},
-	{'!Ring of Frost', 'interruptAt(5)&advanced&!player.moving&UI(RoF_Int)&spell(Counterspell).cooldown>gcd&!player.lastgcd(Counterspell)&range<=30', 'target.ground'},
-	{'!Ring of Frost', 'interruptAt(5)&toggle(xIntRandom)&advanced&!player.moving&UI(RoF_Int)&spell(Counterspell).cooldown>gcd&!player.lastgcd(Counterspell)&range<=30', 'enemies.ground'},
-	{'!Polymorph', 'interruptAt(5)&!player.moving&UI(Pol_Int)&spell(Counterspell).cooldown>gcd&!player.lastgcd(Counterspell)&range<=30'},
+	{'!Arcane Torrent', 'inMelee&inFront&spell(Counterspell).cooldown>=gcd&!player.lastgcd(Counterspell)'},
+	{'!Dragon\'s Breath', 'spell(Counterspell).cooldown>=gcd&!player.lastgcd(Counterspell)&player.area(12).enemies.inFront>0'},
+	{'!Ring of Frost', 'interruptAt(5)&advanced&!player.moving&UI(RoF_Int)&spell(Counterspell).cooldown>=gcd&!player.lastgcd(Counterspell)&range<=30', 'target.ground'},
+	{'!Ring of Frost', 'interruptAt(5)&toggle(xIntRandom)&advanced&!player.moving&UI(RoF_Int)&spell(Counterspell).cooldown>=gcd&!player.lastgcd(Counterspell)&range<=30', 'enemies.ground'},
+	{'!Polymorph', 'interruptAt(5)&!player.moving&UI(Pol_Int)&spell(Counterspell).cooldown>=gcd&!player.lastgcd(Counterspell)&range<=30'},
 }
 
 local Cooldowns = {
-	{'Blood Fury'},
-	{'Berserking', 'toggle(xTimeWarp)'},
-	{'Time Warp', 'toggle(xTimeWarp)'},
-	{'#144259', 'UI(kj_check)&range<=40&area(10).enemies>=UI(kj_spin)&equipped(144259)', 'target'}, --XXX: Kil'jaeden's Burning Wish (Legendary)
+	{'Mirror Image', '!buff(Combustion)', 'player'},
+	{'Blood Fury', nil, 'player'},
+	{'Berserking', 'toggle(xTimeWarp)', 'player'},
+	{'Time Warp', 'toggle(xTimeWarp)', 'player'},
+	{'&#144259', 'UI(kj_check)&range<=40&area(10).enemies>=UI(kj_spin)&equipped(144259)', 'target'}, 	--XXX: Kil'jaeden's Burning Wish (Legendary)
 	{'#trinket1', 'UI(trinket1)'},
 	{'#trinket2', 'UI(trinket2)'},
-	{'Light\'s Judgment', 'UI(LJ_check)&range<61&area(15).enemies>=UI(LJ_spin)', 'enemies.ground'} --XXX: Argus World Spell
+	{'Light\'s Judgment', 'UI(LJ_check)&range<61&area(15).enemies>=UI(LJ_spin)', 'enemies.ground'} 		--XXX: Argus World Spell
 }
 
 local Survival = {
+	{'Blazing Barrier' , '!buff&UI(bb)'},
 	{'!Ice Block', 'UI(ib_check)&{health<UI(ib_spin)||debuff(Cauterize)}'},
-	{'Blazing Barrier' , 'player.buff(Blazing Barrier).duration<gcd'},
 	{'#152615', 'item(152615).usable&item(152615).count>0&health<=UI(AHP_spin)&UI(AHP_check)'}, 													--XXX: Astral Healing Potion
 	{'#127834', 'item(152615).count==0&item(127834).usable&item(127834).count>0&health<=UI(AHP_spin)&UI(AHP_check)'}, 		--XXX: Ancient Healing Potion
 	{'#5512', 'item(5512).usable&item(5512).count>0&health<=UI(HS_spin)&UI(HS_check)'}, 																	--XXX: Health Stone
 }
 
 local Talents = {
-	{'Blast Wave', '!player.buff(Combustion)||{player.buff(Combustion)&action(Fire Blast).charges<1&action(Phoenix\'s Flames).charges<1}'},
-	{'Meteor', 'spell(Combustion).cooldown>30||{{spell(Combustion).cooldown>ttd}||player.buff(Rune of Power)||player.buff(Incanter\'s Flow).stack>3}', 'target.ground'},
-	{'Cinderstorm', 'spell(Combustion).cooldown<action(Cinderstorm).cast_time&{{player.buff(Rune of Power)||!talent(3,2)}||spell(Combustion).cooldown>10*spell_haste&!player.buff(Combustion)}'},
-	{'Dragon\'s Breath', 'equipped(132863)'},	--XXX: Legendary Dragon's Breath Usage
-	{'Living Bomb', '!debuff&area(10).enemies>=2&!player.buff(Combustion)'}
+	{'Blast Wave', '{!player.buff(Combustion)}||{player.buff(Combustion)&action(Fire Blast).charges<1&action(Phoenix\'s Flames).charges<1}'},
+	{'Meteor', 'advanced&{cooldown(Combustion).remains>40||{cooldown(Combustion).remains>target.ttd}||player.buff(Rune of Power)||player.buff(Firestarter)}', 'target.ground'},
+	{'Cinderstorm', 'cooldown(Combustion).remains<spell(198929).casttime&{player.buff(Rune of Power)||!talent(3,2)}||cooldown(Combustion).remains>10*spell_haste&!player.buff(Combustion)'},	--TODO: Fix SpellID issue (spell.casttime)
+	{'Dragons Breath', 'equipped(132863)||{talent(4,1)&!player.buff(Hot Streak!)}'},
+	{'Living Bomb', 'area(10).enemies>1&!player.buff(Combustion)'},
 }
 
-local Combustion = {
+local Combustion_Phase = {
 	{'Rune of Power', '!buff(Combustion)', 'player'},
-	{'&Pyroblast', '!player.buff(Kael\'thas\'s Ultimate Ability)&player.buff(Hot Streak!)&{player.buff(Combustion)||player.buff(Incanter\'s Flow).stack>3}'},
-	{'Phoenix\'s Flames', 'action(Phoenix\'s Flames).charges>2.7&player.buff(Combustion)&!player.buff(Hot Streak!)'},
-	{'&Fire Blast', 'player.buff(Heating Up)&!player.lastcast(Fire Blast)&player.buff(Combustion)'},
-	{'Scorch', 'player.buff(Combustion).duration>action(Scorch).cast_time||player.buff(Incanter\'s Flow).stack>3'},
+	{Talents},
+	{Cooldowns, 'toggle(cooldowns)'},
+	{'&Flamestrike', 'advanced&!player.moving&{{talent(6,3)&area(10).enemies>2||area(10).enemies>4}&player.buff(Hot Streak!)}', 'target.ground'},
+	{'Pyroblast', '!player.moving&player.buff(Kael\'thas\'s Ultimate Ability)&player.buff(Combustion).remains>execute_time'},
+	{'&Pyroblast', 'player.buff(Hot Streak!)'},
+	{'&Fire Blast', 'player.buff(Heating Up)'},
+	{'Phoenix\'s Flames'},
+	{'Scorch', 'player.buff(Combustion).remains>spell(2948).casttime'}, --TODO: Fix SpellID issue (spell.casttime)
+	{'Dragon\'s Breath', '!player.buff(Hot Streak!)&action(Fire Blast).charges<1&action(Phoenix\'s Flames).charges<1'},
+	{'Scorch', 'health<=30&equipped(132454)'},
 }
 
-local RoP_with_IDA = {
-	{'Pyroblast', 'player.buff(Kael\'thas\'s Ultimate Ability)&!player.buff(Hot Streak!)'},
-	{'&Fire Blast', '!player.buff(Kael\'thas\'s Ultimate Ability)&player.buff(Heating Up)&!player.lastcast(Fire Blast)&!player.lastcast(Phoenix\'s Flames)'},
+local Rop_Phase = {
+	{'Rune of Power', '!player.moving', 'player'},
+	{'Flamestrike', 'advanced&!player.moving&{{(talent(6,3)&area(10).enemies>1}||area(10).enemies>3}&player.buff(Hot Streak!)}', 'target.ground'},
+	{'&Pyroblast', 'player.buff(Hot Streak!)'},
+	{Talents},
+	{'Pyroblast', '!player.moving&player.buff(Kael\'thas\'s Ultimate Ability)&execute_time<buff(Kael\'thas\'s Ultimate Ability).remains'},
+	{'&Fire Blast', '!player.lastcast(Fire Blast)&player.buff(Heating Up)&player.buff(Firestarter)&spell(Fire Blast).charges>1.7'},
+	{'Phoenix\'s Flames', '!player.lastgcd(Phoenix\'s Flames)&spell(Phoenix\'s Flames).charges>2.7&player.buff(Firestarter)'},
+	{'&Fire Blast', '!player.lastcast(Fire Blast)&!player.buff(Firestarter)'},
 	{'Phoenix\'s Flames', '!player.lastgcd(Phoenix\'s Flames)'},
-	{'Scorch', 'target.health<35&equipped(132454)'},
-	{'Fireball'}
+	{'Scorch', 'target.health<=30&equipped(132454)'},
+	{'Dragon\'s Breath', 'area(12).enemies.inFront>2'},
+	{'Flamestrike', 'advanced&!player.moving&{{talent(6,3)&area(10).enemies>2}||area(10).enemies>5}', 'target.ground'},
+	{'Fireball', '!player.moving'},
 }
 
 local MainRotation = {
-	{'Pyroblast', '!player.buff(Kael\'thas\'s Ultimate Ability)&player.buff(Hot Streak!)&player.buff(Hot Streak!).duration<action(Fireball).execute_time'},
-	{'Phoenix\'s Flames', 'action(Phoenix\'s Flames).charges>2.7&area(8).enemies>=3'},
-	{'Flamestrike', 'advanced&range<=40&combat&alive&talent(6,3)&area(10).enemies>=3&player.buff(Hot Streak!)', 'target.ground'},
-	{'&Pyroblast', '!player.buff(Kael\'thas\'s Ultimate Ability)&player.buff(Hot Streak!)&!player.lastgcd(Pyroblast)&{player.casting(Fireball).percent>90||player.lastcast(Fireball)}'},
-	{'Pyroblast', 'player.buff(Hot Streak!)&target.health<=25&equipped(132454)'},
-	{'Pyroblast', 'player.buff(Kael\'thas\'s Ultimate Ability)&!player.buff(Hot Streak!)'},
-	{'&Fire Blast', 'player.buff(Heating Up)&!player.lastcast(Fire Blast)&action.charges>0&spell(Combustion).cooldown<action.cooldown_to_max'},
-	{'&Fire Blast', 'player.casting(Fireball).percent>40&xtime>3&!talent(7,1)&player.buff(Heating Up)&!player.lastcast(Fire Blast)&{!talent(3,2)||action(Fire Blast).charges>1.4||spell(Combustion).cooldown<40}&(3-action(Fire Blast).charges)*(12*spell_haste)<=spell(Combustion).cooldown+3'},
-	{'&Fire Blast', 'player.casting(Fireball).percent>40&xtime>3&talent(7,1)&player.buff(Heating Up)&!player.lastcast(Fire Blast)&{!talent(3,2)||action(Fire Blast).charges>1.5||spell(Combustion).cooldown<40}&{3-action(Fire Blast).charges}*{18*spell_haste}<=spell(Combustion).cooldown+3'},
-	{'Phoenix\'s Flames', '{player.buff(Combustion)||player.buff(Rune of Power)||player.buff(Incanter\'s Flow).stack>3||talent(3,1)}&{{4-action.charges}*13<spell(Combustion).cooldown+5||ttd<10}'},
-	{'Phoenix\'s Flames', '{player.buff(Combustion)||player.buff(Rune of Power)||player.buff(Incanter\'s Flow).stack>3}&{4-action.charges}*30<spell(Combustion).cooldown+5'},
-	{'Scorch', 'health<35&equipped(132454)'},
-	{'Ice Floes', 'gcd.remains<0.5&movingfor>0.75&!lastcast&!buff', 'player'},
-	{'Fireball', '!player.moving||{player.moving&player.buff(Ice Floes)}'},
-	{'Ice Barrier', '!buff&!buff(Combustion)&!buff(Rune of Power)', 'player'},
-	{'Scorch', 'player.moving&!player.buff(Ice Floes)'},
-	{'Dragon\'s Breath', 'player.area(12).enemies.inFront>=3'},
+	{'&Flamestrike', 'advanced&!player.moving&{{{talent(6,3)&area(10).enemies>1}||area(10).enemies>3}&player.buff(Hot Streak!)}', 'target.ground'},
+	{'&Pyroblast', 'player.buff(Hot Streak!)&player.buff(Hot Streak!).remains<action(Fireball).execute_time'},
+	{'&Pyroblast', 'player.buff(Hot Streak!)&player.buff(Firestarter)&!talent(3,2)'},
+	{'Phoenix\'s Flames', 'spell(Phoenix\'s Flames).charges>2.7&area(10).enemies>2'},
+	{'&Pyroblast', 'player.buff(Hot Streak!)&!player.lastgcd(Pyroblast)'},
+	{'&Pyroblast', 'player.buff(Hot Streak!)&target.health<=30&equipped(132454)'},
+	{'Pyroblast', '!player.moving&player.buff(Kael\'thas\'s Ultimate Ability)&execute_time<buff(Kael\'thas\'s Ultimate Ability).remains'},
+	{Talents},
+	{'&Fire Blast', '!talent(7,1)&player.buff(Heating Up)&{!talent(3,2)||spell(Fire Blast).charges>1.4||cooldown(Combustion).remains<40}&{3-spell(Fire Blast).charges}*{12*spell_haste}<cooldown(Combustion).remains+3||target.ttd<4'},
+	{'&Fire Blast', 'talent(7,1)&player.buff(Heating Up)&{!talent(3,2)||spell(Fire Blast).charges>1.5||cooldown(Combustion).remains<40}&{3-spell(Fire Blast).charges}*{18*spell_haste}<cooldown(Combustion).remains+3||target.ttd<4'},
+	{'Phoenix\'s Flames', '{player.buff(Combustion)||player.buff(Rune of Power)||player.buff(Incanter\'s Flow).stack>3||talent(3,1)}&artifact(Phoenix Reborn).enabled&{4-spell(Phoenix\'s Flames).charges}*13<cooldown(Combustion).remains+5||target.ttd<10'},
+	{'Phoenix\'s Flames', '{player.buff(Combustion)||player.buff(Rune of Power)}&{4-spell(Phoenix\'s Flames).charges}*30<cooldown(Combustion).remains+5'},
+	{'Phoenix\'s Flames', 'spell(Phoenix\'s Flames).charges>2.5&cooldown(Combustion).remains>23'},
+	{'Flamestrike', 'advanced&!player.moving&{{talent(6,3)&area(10).enemies>3}||area(10).enemies>5}', 'target.ground'},
+	{'Scorch', '!player.moving&health<=30&equipped(132454)'},
+	{'Fireball', '!player.moving'},
 }
 
 local xCombat = {
-	{'Rune of Power', '!moving&toggle(cooldowns)&{{spell(Combustion).cooldown>40}&{!buff(Combustion)&&!talent(7,1)||target.ttd<11||talent(7,1)&{action(Rune of Power).charges>1.8||xtime<40}&{spell(Combustion).cooldown>40)}}}', 'player'},
-	{Combustions, 'toggle(cooldowns)&!player.moving&{spell(Combustion).cooldown<=action(Rune of Power).cast_time+gcd||player.buff(Combustion)}', 'target'},
-	{RoP_with_IDA, '!player.moving&player.buff(Rune of Power)&!player.buff(Combustion)', 'target'},
-	{MainRotation, nil, 'target'},
-}
-
-local Cumbustion ={
-	{'&Combustion', 'target.ttd>12&{buff(Rune of Power)||casting(Rune of Power).percent>80}||{player.buff(Incanter\'s Flow).stack>3}'}
+	{'Rune of Power', 'player.buff(Firestarter)&action(Rune of Power).charges==2||cooldown(Combustion).remains>40&!player.buff(Combustion)&!talent(7,1)||target.ttd<11||talent(7,1)&{spell(Rune of Power).charges>1.8||time<40}&cooldown(Combustion).remains>40'},
+	{'Rune of Power', '{player.buff(Kael\'thas\'s Ultimate Ability)&{cooldown(Combustion).remains>40||action(Rune of Power).charges>1}}||{player.buff(Erupting Infernal Core)&{cooldown(Combustion).remains>40||action(Rune of Power).charges>1}}'},
+	{Combustion_Phase, 'cooldown(Combustion).remains<=action(116011).cast_time+{!talent(7,1)*gcd}&{!talent(1,3)||!player.buff(Firestarter)||area(10).enemies>=4||area(10).enemies>=2&talent(6,3)}||player.buff(Combustion)'},	--TODO: Fix SpellID issue (spell.casttime)
+	{Rop_Phase, 'player.buff(Rune of Power)&!player.buff(Combustion)'},
+	{MainRotation},
+	{'Scorch', 'player.moving'},
 }
 
 local inCombat = {
 	{Keybinds},
-	{Interrupts, 'toggle(interrupts)&inFront&range<=40', 'target'},
-	{Interrupts, 'toggle(interrupts)&toggle(xIntRandom)&inFront&range<=40', 'enemies'},
+	{Interrupts, 'toggle(interrupts)&@Zylla.InterruptAt(intat)&inFront&range<=40', 'target'},
+	{Interrupts, 'toggle(interrupts)&@Zylla.InterruptAt(intat)&toggle(xIntRandom)&inFront&range<=40', 'enemies'},
 	{Cooldowns, 'toggle(cooldowns)'},
 	{Survival, nil, 'player'},
-	{Talents, nil, 'target'},
-	{xCombat, 'range<=40&inFront'},
+	{xCombat, 'range<=40&inFront&UI(target)==normal', 'target'},
+	{xCombat, 'combat&alive&range<=40&inFront&UI(target)==highest', 'highestenemy'},
+	{xCombat, 'combat&alive&range<=40&inFront&UI(target)==lowest', 'lowestenemy'},
 	{Mythic_Plus, 'range<=40'},
 }
 
