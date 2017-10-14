@@ -12,13 +12,26 @@ local GUI = {
 	{type = 'checkbox',	text = 'Left Alt: '..Zylla.ClassColor..'Black Ox Statue|r',							align = 'left', 					key = 'lalt', 		default = true},
 	{type = 'checkbox',	text = 'Right Alt: '..Zylla.ClassColor..'|r',														align = 'left', 					key = 'ralt', 		default = true},
 	{type = 'spacer'},
---{type = 'checkbox', text = 'Enable Chatoverlay', 																						key = 'chat', 						width = 55, 			default = true, desc = Zylla.ClassColor..'This will enable some messages as an overlay!|r'},
+	{type = 'checkbox', text = 'Enable Chatoverlay', 																						key = 'chat', 				width = 55, 			default = true, desc = Zylla.ClassColor..'This will enable some messages as an overlay!|r'},
 	unpack(Zylla.PayPal_GUI),
 	{type = 'spacer'},
 	unpack(Zylla.PayPal_IMG),
-	{type = 'ruler'},	 	{type = 'spacer'},
+	{type = 'spacer'},	{type = 'ruler'},	 	{type = 'spacer'},
+	--TODO: Targetting: Use, or NOT use?! We'll see....
+	{type = 'header', 	size = 16, text = 'Targetting:',																				align = 'center'},
+	{type = 'combo',		default = 'normal',																											key = 'target', 					list = Zylla.faketarget, 	width = 75},
+	{type = 'spacer'},
+	{type = 'text', 		text = Zylla.ClassColor..'Only one can be enabled.\nChose between normal targetting, or hitting the highest/lowest enemy.|r'},
+	{type = 'spacer'},	{type = 'ruler'},	 	{type = 'spacer'},
 	-- Settings
-	{type = 'header', 	text = 'General', 																											align = 'center'},
+	{type = 'header', 	size = 16, text = 'Class Settings',																			align = 'center'},
+	{type = 'spinner',	size = 11, text = 'Interrupt at percentage:', 													key = 'intat',				default = 60,	step = 5, shiftStep = 10,	max = 100, min = 1},
+	{type = 'checkbox', text = 'Enable DBM Integration',																				key = 'kDBM', 				default = true},
+	{type = 'checkbox', text = 'Enable \'pre-potting\', flasks and Legion-rune',								key = 'prepot', 			default = false},
+	{type = 'checkbox', text = 'Force Pet Assist',																							key = 'passist', 			default = true},
+	{type = 'combo',		default = '1',																													key = 'list', 				list = Zylla.prepots, 	width = 175},
+	{type = 'spacer'},	{type = 'spacer'},
+	{type = 'checkspin',text = 'Light\'s Judgment - Units', 																		key = 'LJ',						spin = 4,	step = 1,	max = 20, min = 1,	check = true,	desc = Zylla.ClassColor..'World Spell usable on Argus.|r'},
 	{type = 'checkbox', text = 'Automatic Ressurect', 																					key = 'auto_res', 				default = true},
 	{type = 'checkbox',	text = 'Use: Crackling Jade Lightning',																	key = 'e_cjl',						default = false},
 	{type = 'ruler'},	{type = 'spacer'},
@@ -47,7 +60,6 @@ local exeOnLoad=function()
   print('|cffFFFB2F Configuration: |rRight-click MasterToggle and go to Combat Routines Settings!|r')
 
 	NeP.Interface:AddToggle({
-		-- Dispels
 		key = 'dispels',
 		name = 'Detox',
 		text = 'Enable/Disable: Automatic Removal of Poison and Diseases',
@@ -70,16 +82,26 @@ local exeOnLoad=function()
 
 end
 
+local PreCombat = {
+	-- Pots
+	{'#127844', 'UI(list)==1&item(127844).usable&item(127844).count>0&UI(kDBM)&UI(prepot)&!buff(Potion of the Old War)&dbm(pull in)<3'}, 			--XXX: Potion of the Old War
+	{'#127843', 'UI(list)==2&item(127843).usable&item(127843).count>0&UI(kDBM)&UI(prepot)&!buff(Potion of Deadly Grace)&dbm(pull in)<3'}, 		--XXX: Potion of Deadly Grace
+	{'#142117', 'UI(list)==3&item(142117).usable&item(142117).count>0&UI(kDBM)&UI(prepot)&!buff(Potion of Prolonged Power)&dbm(pull in)<3'}, 	--XXX: Potion of Prolonged Power
+	-- Flasks
+	{'#127848', 'ingroup&item(127848).usable&item(127848).count>0&UI(prepot)&!buff(Flask of the Seventh Demon)'},	--XXX: Flask of the Seventh Demon
+	{'#153023', 'ingroup&item(153023).usable&item(153023).count>0&UI(prepot)&!buff(Defiled Augmentation)'},				--XXX: Lightforged Augment Rune
+}
+
 local TransferBack = {
-    {'!Transcendence: Transfer'},
-    {'!/cancelaura Transcendence', 'lastcast(Transcendence: Transfer)'},
+  {'!Transcendence: Transfer'},
+  {'&/cancelaura Transcendence', 'lastcast(Transcendence: Transfer)'},
 }
 
 local Keybinds = {
 	{'%pause', 'keybind(lshift)&UI(lshift)'},
 	{'!Summon Black Ox Statue', 'talent(4,2)&keybind(lalt)', 'cursor.ground'},
-    {'!Transcendence', 'keybind(lcontrol)&!player.buff(Transcendence)'},
-    {TransferBack, 'keybind(lcontrol)&player.buff(Transcendence)'},
+  {'!Transcendence', 'keybind(lcontrol)&!buff(Transcendence)', 'player'},
+  {TransferBack, 'keybind(lcontrol)&buff(Transcendence)', 'player'},
 }
 
 local Dispel = {
@@ -88,91 +110,89 @@ local Dispel = {
 }
 
 local Snares = {
-	{'Nimble Brew', 'spell.exists(213664)&{player.state(disorient)||player.state(stun)||player.state(fear)||player.state(horror)}'},
-	{'Tiger\'s Lust', 'talent(2,2)&{player.state(disorient)||player.state(stun)||player.state(root)||player.state(snare)}'},
+	{'Nimble Brew', 'spell.exists(213664)&{state(disorient)||state(stun)||state(fear)||state(horror)}'},
+	{'Tiger\'s Lust', 'talent(2,2)&{state(disorient)||state(stun)||state(root)||state(snare)}'},
 }
 
 local Cooldowns = {
-	{'Fortifying Brew', 'player.health<=UI(Fortifying Brew)'},
+	{'Fortifying Brew', 'health<=UI(Fortifying Brew)'},
 }
 
 local Mitigations = {
-	{'Black Ox Brew', 'player.spell(Purifying Brew).charges<1&player.spell(purifying brew).recharge>2'},
-	{'Purifying Brew', '@Zylla.staggered&player.spell(Purifying Brew).charges>0'},
-	{'Ironskin Brew', 'player.health<=UI(Ironskin Brew)&player.spell(Purifying Brew).charges>1&!player.buff(Ironskin Brew)'},
-	{'Ironskin Brew', '@Zylla.purifyingCapped&player.health<100&!player.buff(Ironskin Brew)'},
+	{'Black Ox Brew', 'spell(Purifying Brew).charges<1&spell(purifying brew).recharge>2'},
+	{'Purifying Brew', '@Zylla.staggered&spell(Purifying Brew).charges>0'},
+	{'Ironskin Brew', 'health<=UI(Ironskin Brew)&spell(Purifying Brew).charges>1&!buff'},
+	{'Ironskin Brew', '@Zylla.purifyingCapped&health<100&!buff'},
 }
 
 local Survival = {
-	{'Healing Elixir', '{player.spell(Healing Elixir).charges>1||{player.spell(Healing Elixir).charges==1&player.spell(Healing Elixir).cooldown<3&!lastcast(Healing Elixir)}}&player.health<=UI(Healing Elixir)', 'player'},
-	{'#127834', 'item(127834).count>0&player.health<UI(hs_hp)'},        -- Ancient Healing Potion
-  {'#5512', 'item(5512).count>0&player.health<UI(ahp_hp)', 'player'},  --Health Stone
-	{'Expel Harm', 'player.health<=UI(Expel Harm)&player.spell(Expel Harm).count>0', 'player'},
-	{'Effuse', 'player.health<=UI(E_HP)&player.lastmoved>0&UI(kEffuse)', 'player'},
+	{'Healing Elixir', '{spell(Healing Elixir).charges>1||{spell(Healing Elixir).charges==1&spell(Healing Elixir).cooldown<3&!lastcast(Healing Elixir)}}&player.health<=UI(Healing Elixir)'},
+	{'#152615', 'item(152615).usable&item(152615).count>0&health<=UI(AHP_spin)&UI(AHP_check)'}, 													--XXX: Astral Healing Potion
+	{'#127834', 'item(152615).count==0&item(127834).usable&item(127834).count>0&health<=UI(AHP_spin)&UI(AHP_check)'}, 		--XXX: Ancient Healing Potion
+	{'#5512', 'item(5512).usable&item(5512).count>0&health<=UI(HS_spin)&UI(HS_check)'}, 																	--XXX: Health Stone
+	{'Expel Harm', 'player.health<=UI(Expel Harm)&spell(Expel Harm).count>0'},
+	{'Effuse', 'player.health<=UI(E_HP)&player.lastmoved>0&UI(kEffuse)'},
 }
 
 local Interrupts = {
-	{'!Spear Hand Strike', 'interruptAt(70)&inMelee&inFront', 'target'},
-	{'!Paralysis', 'interruptAt(70)&!immune(incapacitate)&range<21&player.energy>19&player.spell(Spear Hand Strike).cooldown>gcd&!player.lastcast(Spear Hand Strike)', 'target'},
-	{'!Ring of Peace', 'interruptAt(5)&advanced&range<40&player.spell(Spear Hand Strike).cooldown>gcd&!player.lastgcd(Spear Hand Strike)', 'target.ground'},
-	{'!Leg Sweep', 'interruptAt(70)&!immune(stun)&inMelee&player.spell(Spear Hand Strike).cooldown>gcd&!player.lastcast(Spear Hand Strike)', 'target'},
-	{'!Quaking Palm', 'interruptAt(70)&!immune(incapacitate)&inMelee&inFront&player.spell(Spear Hand Strike).cooldown>gcd&!player.lastcast(Spear Hand Strike)', 'target'},
-}
-
-local Interrupts_Random = {
-	{'!Spear Hand Strike', 'interruptAt(70)&inFront&inMelee', 'enemies'},
-	{'!Paralysis', 'interruptAt(70)&!immune(incapacitate)&range<21&player.energy>19&player.area(20).enemies>1&player.spell(Spear Hand Strike).cooldown>gcd&!player.lastgcd(Spear Hand Strike)', 'enemies'},
-	{'!Ring of Peace', 'interruptAt(5)&advanced&range<40&player.spell(Spear Hand Strike).cooldown>gcd&!player.lastcast(Spear Hand Strike)', 'enemies.ground'},
-	{'!Leg Sweep', 'interruptAt(70)&!immune(stun)&inMelee&player.spell(Spear Hand Strike).cooldown>gcd&!player.lastgcd(Spear Hand Strike)', 'enemies'},
-	{'!Quaking Palm', 'interruptAt(70)&!immune(incapacitate)&inMelee&inFront&player.spell(Spear Hand Strike).cooldown>gcd&!player.lastcast(Spear Hand Strike)', 'enemies'},
+	{'!Spear Hand Strike', 'interruptAt(70)&inMelee&inFront'},
+	{'!Paralysis', 'interruptAt(70)&!immune(incapacitate)&range<21&player.energy>19&spell(Spear Hand Strike).cooldown>gcd&!player.lastcast(Spear Hand Strike)'},
+	{'!Ring of Peace', 'interruptAt(5)&advanced&range<40&spell(Spear Hand Strike).cooldown>gcd&!player.lastgcd(Spear Hand Strike)', 'target.ground'},
+	{'!Leg Sweep', 'interruptAt(70)&!immune(stun)&inMelee&spell(Spear Hand Strike).cooldown>gcd&!player.lastcast(Spear Hand Strike)'},
+	{'!Quaking Palm', 'interruptAt(70)&!immune(incapacitate)&inMelee&inFront&spell(Spear Hand Strike).cooldown>gcd&!player.lastcast(Spear Hand Strike)'},
 }
 
 local Artifact = {
-	{'Exploding Keg', 'advanced&target.range<50&{{target.area(8).enemies>2}||{player.incdmg(5)>=health.max*0.70}}', 'target.ground'},
+	{'Exploding Keg', 'advanced&range<50&{{area(8).enemies>2}||{player.incdmg(5)>=health.max*0.70}}', 'target.ground'},
 }
 
 local Crackle = {
-	{'Crackling Jade Lightning', '!player.moving&UI(e_cjl)&!target.inMelee'},
+	{'Crackling Jade Lightning', '!player.moving&UI(e_cjl)&!inMelee'},
 }
 
 local xCombat = {
-	{'Blackout Strike', 'target.inMelee&target.inFront&talent(7,2)&!player.buff(Blackout Combo)&{player.spell(Keg Smash).cooldown>3||player.spell(Keg Smash).cooldown<1.5}'},
-	{'Keg Smash', 'target.range<25&target.inFront&talent(7,2)&{player.buff(Blackout Combo)||@Zylla.purifyingCapped}'},
-	{'Keg Smash', 'target.range<25&target.inFront&!talent(7,2)'},
+	{Interrupts, 'toggle(Interrupts)&@Zylla.InterruptAt(intat)'},
+	{Interrupts, 'toggle(Interrupts)&toggle(xIntRandom)&@Zylla.InterruptAt(intat)', 'enemies'},
+	{Cooldowns, 'toggle(Cooldowns)', 'player'},
+	{Mitigations, 'inMelee&{!talent(7,2)||!buff(Blackout Combo)||spell(Keg Smash).cooldown>gcd}', 'player'},
+	{Crackle, '!inMelee&range<=40&inFront'},
+	{'Blackout Strike', 'inMelee&inFront&talent(7,2)&!player.buff(Blackout Combo)&{spell(Keg Smash).cooldown>3||spell(Keg Smash).cooldown<1.5}'},
+	{'Keg Smash', 'range<25&inFront&talent(7,2)&{player.buff(Blackout Combo)||@Zylla.purifyingCapped}'},
+	{'Keg Smash', 'range<25&inFront&!talent(7,2)'},
 	{{
-		{'Blackout Strike', 'target.inMelee&target.inFront&!player.buff(Blackout Combo)&talent(7,2)&player.area(10).enemies>0'},
-		{'Breath of Fire', 'target.range<22&target.inFront&player.buff(Blackout Combo)&talent(7,2)&player.area(10).enemies>0'},
-		{'Blackout Strike', 'target.inMelee&talent(7,2)&!player.buff(Blackout Combo)&{player.energy>35||player.spell(Keg Smash).cooldown>3}'},
-		{'Tiger Palm', 'target.inMelee&target.inFront&talent(7,2)&player.buff(Blackout Combo)'},
-		{'Blackout Strike', 'target.inMelee&target.inFront&'},
-		{'Breath of Fire', 'target.range<22&target.inFront&target.debuff(Keg Smash)&!talent(7,2)&player.area(10).enemies>0'},
-		{'Chi Burst', 'talent(1,1)&target.inFront&player.area(40).enemies>0'},
-		{'Chi Wave', 'target.range<50&target.inFront&player.area(10).enemies>1', 'target.enemy'},
+		{'Blackout Strike', 'inMelee&inFront&!player.buff(Blackout Combo)&talent(7,2)&player.area(10).enemies>0'},
+		{'Breath of Fire', 'range<22&inFront&player.buff(Blackout Combo)&talent(7,2)&player.area(10).enemies>0'},
+		{'Blackout Strike', 'inMelee&talent(7,2)&!player.buff(Blackout Combo)&{player.energy>35||spell(Keg Smash).cooldown>3}'},
+		{'Tiger Palm', 'inMelee&inFront&talent(7,2)&player.buff(Blackout Combo)'},
+		{'Blackout Strike', 'inMelee&inFront&'},
+		{'Breath of Fire', 'range<22&inFront&debuff(Keg Smash)&!talent(7,2)&player.area(10).enemies>0'},
+		{'Chi Burst', 'talent(1,1)&inFront&player.area(40).enemies>0'},
+		{'Chi Wave', 'range<50&inFront&player.area(10).enemies>1&enemy'},
 		{'Rushing Jade Wind', 'talent(6,1)&player.area(8).enemies>1'},
-		{'Tiger Palm', 'target.inMelee&target.inFront&!talent(7,2)||{target.inMelee&target.inFront&player.energy>60&{player.energy>45||player.spell(Keg Smash).cooldown>3}}'},
-	},	{'player.spell(Keg Smash).cooldown>=0.5||{!talent(7,2)&!player.buff(Blackout Combo)&player.spell(Keg Smash).cooldown>1&@Zylla.purifyingCapped}'}},
+		{'Tiger Palm', 'inMelee&inFront&!talent(7,2)||{inMelee&inFront&player.energy>60&{player.energy>45||spell(Keg Smash).cooldown>3}}'},
+	},	'spell(Keg Smash).cooldown>=0.5||{!talent(7,2)&!player.buff(Blackout Combo)&spell(Keg Smash).cooldown>gcd&@Zylla.purifyingCapped}'},
 }
 
 local inCombat = {
+	{'Provoke', 'range<45&combat&alive&threat<100&toggle(xTaunt)', 'enemies'},
 	{Artifact},
 	{Keybinds},
-	{Snares},
-	{Dispel, 'toggle(dispels)&!player.spell(Detox).cooldown'},
-	{Survival},
-	{Interrupts, 'toggle(Interrupts)'},
-	{Interrupts_Random, 'toggle(xIntRandom)&toggle(Interrupts)'},
-	{Mitigations, 'target.inMelee&{!talent(7,2)||!player.buff(Blackout Combo)||player.spell(Keg Smash).cooldown>gcd}'},
-	{Cooldowns, 'toggle(Cooldowns)'},
-	{xCombat},
+	{Dispel, 'toggle(dispels)&spell(Detox).cooldown<gcd'},
+	{Snares, nil, 'player'},
+	{Survival, nil, 'player'},
+	{xCombat, 'UI(target)==normal', 'target'},
+	{xCombat, 'UI(target)==lowest', 'lowestenemy'},
+	{xCombat, 'UI(target)==highest', 'highestenemy'},
+	{xCombat, 'UI(target)==nearest', 'nearestenemy'},
+	{xCombat, 'UI(target)==furthest', 'furthestenemy'},
 	{Mythic_Plus, 'inMelee'},
-	{Crackle, '!target.inMelee&target.range<41&target.inFront'},
-	{'Provoke', 'target.range<45&target.combat&target.threat<100&toggle(xTaunt)'},
 }
 
-local outCombat={
+local outCombat = {
+	{PreCombat, nil, 'player'},
 	{Keybinds},
-	{'%ressdead(Resuscitate)', 'UI(auto_res)'},
-	{'Effuse', 'UI(kEffuse)&player.health<90&player.lastmoved>0', 'player'},
+	{'%ressdead(Resuscitate)&UI(auto_res)'},
+	{'Effuse', 'UI(kEffuse)&health<90&lastmoved>0.25', 'player'},
 }
 
 NeP.CR:Add(268, {
