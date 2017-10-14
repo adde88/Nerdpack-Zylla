@@ -78,8 +78,15 @@ local Keybinds = {
 }
 
 local PreCombat = {
-	{'Life Tap', 'talent(2,3)&buff(Empowered Life Tap).duration<gcd&health>=95', 'player'},
-	{'Grimoire of Sacfifice', 'talent(6,3)&pet.exists'}
+	{'Life Tap', 'talent(2,3)&buff(Empowered Life Tap).duration<gcd&health>=95'},
+	{'Grimoire of Sacfifice', 'talent(6,3)&pet.exists'},
+	-- Pots
+	{'#127844', 'UI(list)==1&item(127844).usable&item(127844).count>0&UI(kDBM)&UI(prepot)&!buff(Potion of the Old War)&dbm(pull in)<5'}, 			--XXX: Potion of the Old War
+	{'#127843', 'UI(list)==2&item(127843).usable&item(127843).count>0&UI(kDBM)&UI(prepot)&!buff(Potion of Deadly Grace)&dbm(pull in)<5'}, 		--XXX: Potion of Deadly Grace
+	{'#142117', 'UI(list)==3&item(142117).usable&item(142117).count>0&UI(kDBM)&UI(prepot)&!buff(Potion of Prolonged Power)&dbm(pull in)<5'}, 	--XXX: Potion of Prolonged Power
+	-- Flasks
+	{'#127847', 'item(127847).usable&item(127847).count>0&UI(prepot)&!buff(Flask of the Whispered Pact)'},	--XXX:  Flask of the Whispered Pact
+	{'#153023', 'item(153023).usable&item(153023).count>0&UI(prepot)&!buff(Defiled Augmentation)'},					--XXX: Lightforged Augment Rune
 }
 
 local Pets = {
@@ -94,10 +101,10 @@ local Survival = {
 	{'Unending Resolve', 'player.health<=UI(UR_HP_spin)&UI(UR_HP_check)'},
 	{'Dark Pact', 'player.health<UI(DP_PHP)&pet.health>=UI(DP_PETHP)'},
 	{'Drain Life', 'player.health<=UI(k_DLHP)'},
-	{'Health Funnel', 'pet.health<=UI(k_HFHP)&player.health>=UI(k_HFHP2)'},
-	{'&119899', 'pet.exists&player.health<=UI(CM_HP_spin)&UI(CM_HP_check)'},																		-- Cauterize Master
-	{'#127834', 'item(127834).usable&item(127834).count>0&player.health<UI(AHP_HP_spin)&UI(AHP_HP_check)'},     -- Ancient Healing Potion
-  {'#5512', 'item(5512).usable&item(5512).count==3&player.health<UI(HS_HP_spin)&UI(HS_HP_check)', 'player'},  -- Health Stone
+	{'Health Funnel', 'pet.health<=UI(k_HFHP)&player.health>=UI(k_HFHP2)', 'pet'},
+	{'#152615', 'item(152615).usable&item(152615).count>0&health<=UI(AHP_spin)&UI(AHP_check)'}, 													--XXX: Astral Healing Potion
+	{'#127834', 'item(152615).count==0&item(127834).usable&item(127834).count>0&health<=UI(AHP_spin)&UI(AHP_check)'}, 		--XXX: Ancient Healing Potion
+	{'#5512', 'item(5512).usable&item(5512).count>0&health<=UI(HS_spin)&UI(HS_check)'}, 																	--XXX: Health Stone
 }
 
 local Cooldowns = {
@@ -150,7 +157,7 @@ local inCombat = {
 }
 
 local outCombat = {
-	{PreCombat},
+	{PreCombat, nil, 'player'},
 	{Keybinds},
 	{Interrupts, 'toggle(interrupts)'},
 	{Interrupts_Random, 'toggle(xIntRandom)'},
