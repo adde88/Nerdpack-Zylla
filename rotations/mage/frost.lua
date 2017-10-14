@@ -6,7 +6,7 @@ local Mythic_Plus = _G.Mythic_Plus
 local GUI = {
 	unpack(Zylla.Logo_GUI),
 	-- Header
-	{type = 'header',  	size = 16, text = 'Keybinds',	 																		align = 'center'},
+	{type = 'header',  	size = 16, text = 'Keybinds:',	 																	align = 'center'},
 	{type = 'checkbox',	text = 'Left Shift: '..Zylla.ClassColor..'Pause|r',								align = 'left', 			key = 'lshift', 	default = true},
 	{type = 'checkbox',	text = 'Left Ctrl: '..Zylla.ClassColor..'Blizzard|r',							align = 'left', 			key = 'lcontrol',	default = true},
 	{type = 'checkbox',	text = 'Left Alt: '..Zylla.ClassColor..'Frost Nova|r',						align = 'left', 			key = 'lalt', 		default = true},
@@ -16,31 +16,38 @@ local GUI = {
 	unpack(Zylla.PayPal_GUI),
 	{type = 'spacer'},
 	unpack(Zylla.PayPal_IMG),
-	{type = 'ruler'},	 	{type = 'spacer'},
+	{type = 'spacer'},	{type = 'ruler'},	 	{type = 'spacer'},
+	--TODO: Targetting: Use, or NOT use?! We'll see....
+	{type = 'header', 	size = 16, text = 'Targetting:',																	align = 'center'},
+	{type = 'combo',		default = 'normal',																								key = 'target', 					list = Zylla.faketarget, 	width = 75},
+	{type = 'spacer'},
+	{type = 'text', 		text = Zylla.ClassColor..'Only one can be enabled.\nChose between normal targetting, or hitting the highest/lowest enemy.|r'},
+	{type = 'spacer'},	{type = 'ruler'},	 	{type = 'spacer'},
 	-- Settings
-	{type = 'header', 	size = 16, text = 'Class Settings',																align = 'center'},
+	{type = 'header', 	size = 16, text = 'Class Settings:',															align = 'center'},
+	{type = 'spinner',	size = 11, text = 'Interrupt at percentage:', 										key = 'intat',				default = 60,	step = 5, shiftStep = 10,	max = 100, min = 1},
 	{type = 'checkbox', text = 'Enable DBM Integration',																	key = 'kDBM', 		default = true},
 	{type = 'checkbox', text = 'Enable \'pre-potting\', flasks and Legion-rune',					key = 'prepot', 	default = false},
-	{type = 'combo',		default = '1',																										key = 'list', 		list = Zylla.prepots, 	width = 175},
+	{type = 'checkbox', text = 'Enable \'pre-cast Flurry\'',															key = 'precast', 	default = false},
+	{type = 'combo',		default = '3',																										key = 'list', 		list = Zylla.prepots, 	width = 175},
 	{type = 'spacer'},	{type = 'spacer'},
 	{type = 'checkbox',	text = 'Use Timewarp',																						key = 'kTW', 			default = false},
 	{type = 'checkbox',	text = 'Stop Casting Ray of Frost (Target in Melee range)',				key = 'RoFstop', 	default = true},
 	{type = 'checkbox',	text = 'Polymorph (Backup Interrupt)',														key = 'Pol_Int',	default = false},
 	{type = 'spacer'},
-	{type = 'checkspin',text = 'Blizzard + Arctic Gale - Units',													key = 'blizze',		min = 1,	spin = 2,	step = 1,	max = 20,	check = false,	desc = Zylla.ClassColor..'How many units to hit with Blizzard + Arctic Gale.|r'},
 	{type = 'checkspin',text = 'Blizzard (normal) - Units',																key = 'blizz',		min = 1,	spin = 3,	step = 1,	max = 20,	check = true,		desc = Zylla.ClassColor..'How many units to hit with normal Blizzard.|r'},
+	{type = 'checkspin',text = 'Blizzard + Arctic Gale - Units',													key = 'blizze',		min = 1,	spin = 2,	step = 1,	max = 20,	check = false,	desc = Zylla.ClassColor..'How many units to hit with Blizzard + Arctic Gale.|r'},
 	{type = 'spacer'},
 	{type = 'checkspin',text = 'Comet Storm - Units',																			key = 'cstorm',		min = 1,	spin = 4,	step = 1,	max = 20,	check = true,		desc = Zylla.ClassColor..'How many units to hit with Comet Storm.|r'},
 	{type = 'spacer'},
 	{type = 'checkbox', text = 'Use Trinket #1', 																					key = 'trinket1',	default = false},
 	{type = 'checkbox', text = 'Use Trinket #2', 																					key = 'trinket2', default = false,	desc = Zylla.ClassColor..'Trinkets will be used whenever possible!|r'},
-	{type = 'spacer'},
 	{type = 'checkspin',text = 'Light\'s Judgment - Units', 															key = 'LJ',				min = 1,	spin = 4,	step = 1,	max = 20,	check = true,		desc = Zylla.ClassColor..'World Spell usable on Argus.|r'},
 	{type = 'spacer'},
 	{type = 'checkspin', 	text = 'Kil\'Jaeden\'s Burning Wish - Units', 									key = 'kj', 			align = 'left', width = 55, step = 1, spin = 4, max = 20, min = 1, check = true, desc = Zylla.ClassColor..'Legendary will be used only on selected amount of units!|r'},
 	{type = 'ruler'},		{type = 'spacer'},
 	-- Survival
-	{type = 'header',		size = 16, text = 'Survival',									 	 									align = 'center'},
+	{type = 'header',		size = 16, text = 'Survival:',									 	 								align = 'center'},
 	{type = 'checkbox',	text = 'Ice Barrier',																							key = 'ibarr',		default = true},
 	{type = 'checkspin',text = 'Healthstone',																							key = 'HS',				spin = 45, check = true},
 	{type = 'checkspin',text = 'Healing Potion',																					key = 'AHP',			spin = 45, check = true},
@@ -55,14 +62,16 @@ local exeOnLoad = function()
 
 	print('|cffADFF2F ----------------------------------------------------------------------|r')
 	print('|cffADFF2F --- |rMage |cffADFF2FFrost |r')
-	print('|cffADFF2F ----------------------------------------------------------------------|r')
-	print('|cffADFF2F --- |cffC41F3BVersion: 1 - RoF+IN+CS|r')
-	print('|cffADFF2F --- |rRecommended Talents: 1/1 - 2/1 - 3/2 - 4/1 - 5/1 - 6/1 - 7/3')
-	print('|cffADFF2F ----------------------------------------------------------------------|r')
-	print('|cffADFF2F --- |cffC41F3BVersion: 2 - BC+FT+TV |r')
-	print('|cffADFF2F --- |rRecommended Talents: 1/3 - 2/1 - 3/2 - 4/2 - 5/1 - 6/1 - 7/1')
+	print('|cffADFF2F --- |rRecommended Talents: in development...|r')
 	print('|cffADFF2F ----------------------------------------------------------------------|r')
 	print('|cffFFFB2F Configuration: |rRight-click MasterToggle and go to Combat Routines Settings!|r')
+
+	NeP.Interface:AddToggle({
+		key = 'xTimeWarp',
+		name = 'Time Warp',
+		text = 'Automatically use Time Warp.',
+		icon = 'Interface\\Icons\\ability_mage_timewarp',
+	})
 
 	NeP.Interface:AddToggle({
 		key = 'xIntRandom',
@@ -76,12 +85,13 @@ end
 local PreCombat = {
 	{'Summon Water Elemental', '!talent(1,2)&{!pet.exists||!pet.alive}'},
 	-- Pots
-	{'#127844', 'UI(list)==1&item(127844).usable&item(127844).count>0&UI(kDBM)&UI(prepot)&!buff(Potion of the Old War)&dbm(pull in)<3'}, 			--XXX: Potion of the Old War
-	{'#127843', 'UI(list)==2&item(127843).usable&item(127843).count>0&UI(kDBM)&UI(prepot)&!buff(Potion of Deadly Grace)&dbm(pull in)<3'}, 		--XXX: Potion of Deadly Grace
-	{'#142117', 'UI(list)==3&item(142117).usable&item(142117).count>0&UI(kDBM)&UI(prepot)&!buff(Potion of Prolonged Power)&dbm(pull in)<3'}, 	--XXX: Potion of Prolonged Power
+	{'#127844', 'UI(list)==1&item(127844).usable&item(127844).count>0&UI(kDBM)&UI(prepot)&!buff(Potion of the Old War)&dbm(pull in)<5'}, 			--XXX: Potion of the Old War
+	{'#127843', 'UI(list)==2&item(127843).usable&item(127843).count>0&UI(kDBM)&UI(prepot)&!buff(Potion of Deadly Grace)&dbm(pull in)<5'}, 		--XXX: Potion of Deadly Grace
+	{'#142117', 'UI(list)==3&item(142117).usable&item(142117).count>0&UI(kDBM)&UI(prepot)&!buff(Potion of Prolonged Power)&dbm(pull in)<5'}, 	--XXX: Potion of Prolonged Power
 	-- Flasks
-	{'#127847', 'item(127847).usable&item(127847).count>0&UI(prepot)&!buff(Flask of the Whispered Pact)'},	--XXX: Flask of the Whispered Pact
-	{'#153023', 'item(153023).usable&item(153023).count>0&UI(prepot)&!buff(Defiled Augmentation)'},				--XXX: Lightforged Augment Rune
+	{'#127847', 'item(127847).usable&item(127847).count>0&UI(prepot)&!buff(Flask of the Whispered Pact)'},	--XXX:  Flask of the Whispered Pact
+	{'#153023', 'item(153023).usable&item(153023).count>0&UI(prepot)&!buff(Defiled Augmentation)'},					--XXX: Lightforged Augment Rune
+	{'Flurry', 'UI(precast)&UI(kDBM)&dbm(pull in)<=spell(228354).casttime+gcd', 'target'}	--TODO: Fix SpellID issue (spell.casttime)
 }
 
 local Keybinds = {
@@ -92,7 +102,7 @@ local Keybinds = {
 }
 
 local Interrupts = {
-	{'!Counterspell'},
+	{'&Counterspell'},
 	{'!Ring of Frost', 'advanced&!player.moving&UI(RoF_Int)&interruptAt(5)&toggle(Interrupts)&spell(Counterspell).cooldown>gcd&!player.lastgcd(Counterspell)&range<31', 'target.ground'},
 	{'!Ring of Frost', 'advanced&!player.moving&UI(RoF_Int)&interruptAt(5)&toggle(Interrupts)&toggle(xIntRandom)&spell(Counterspell).cooldown>gcd&!player.lastgcd(Counterspell)&range<31', 'enemies.ground'},
 	{'!Arcane Torrent', 'inMelee&spell(Counterspell).cooldown>gcd&!player.lastgcd(Counterspell)'},
@@ -108,7 +118,7 @@ local Survival = {
 }
 
 local RoF = {
-	{'!/stopcasting', 'UI(RoFstop)&target.movingfor>0.75&target.inMelee'},	--XXX: Interrupt Ray of Frost Channeling
+	{'&/stopcasting', 'UI(RoFstop)&target.movingfor>0.75&target.inMelee'},	--XXX: Interrupt Ray of Frost Channeling
 }
 
 local xPvP = {
@@ -119,27 +129,25 @@ local xPvP = {
 }
 
 local Cooldowns = {
-	{'Rune of Power', '!buff&{{cooldown(Icy Veins).remains<cooldown.cast_time}||{cooldown.charges<1.9&cooldown(Icy Veins).remains>10}||buff(Icy Veins)||{target.ttd+5<cooldown.charges*10}}', 'player'},
+	{'Rune of Power', '!buff&{{cooldown(Icy Veins).remains<spell(116011).cast_time}||{cooldown.charges<1.9&cooldown(Icy Veins).remains>10}||buff(Icy Veins)||{target.ttd+5<cooldown.charges*10}}', 'player'},	--TODO: Fix SpellID issue (spell.casttime)
 	{'Icy Veins', '!buff', 'player'},
-	{'Mirror Image'},
-	{'Blood Fury'},
-	{'Berserking'},
+	{'Mirror Image', nil, 'player'},
+	{'Blood Fury', nil, 'player'},
+	{'Berserking', nil, 'player'},
 	{'#trinket1', 'UI(trinket1)'},
 	{'#trinket2', 'UI(trinket2)'},
 	{'Light\'s Judgment', 'UI(LJ_check)&range<61&area(15).enemies>=UI(LJ_spin)', 'enemies.ground'},
-	{'#144259', 'UI(kj_check)&range<41&area(10).enemies>=UI(kj_spin)&equipped(144259)', 'target'}, --XXX: Kil'jaeden's Burning Wish (Legendary)
-}
-
-local Fillers = {
-	{'Glacial Spike'},
-	{'Ice Nova'},
+	{'&#144259', 'UI(kj_check)&range<41&area(10).enemies>=UI(kj_spin)&equipped(144259)'}, --XXX: Kil'jaeden's Burning Wish (Legendary)
 }
 
 local xCombat = {
+	{Cooldowns, 'toggle(Cooldowns)'},
+	{Interrupts, 'toggle(Interrupts)&@Zylla.InterruptAt(intat)&inFront&range<41'},
+	{Interrupts, 'toggle(Interrupts)&@Zylla.InterruptAt(intat)&inFront&range<41', 'enemies'},
 	{'Ice Lance', '!player.buff(Fingers of Frost)&player.lastcast(Flurry)'},
 	{'Blizzard', 'advanced&{{UI(blizze_check)||UI(blizz_check)}&player.buff(Potion of Deadly Grace)&!debuff(Water Jet)}', 'target.ground'},
 	{'!Ice Nova', 'debuff(Winter\'s Chill)'},
-	{'Frostbolt', 'debuff(Water Jet).remains>action(Frostbolt).cast_time&player.buff(Fingers of Frost).stack<2'},
+	{'Frostbolt', 'debuff(Water Jet).remains>action(228597).cast_time&player.buff(Fingers of Frost).stack<2'},
 	{'&Water Jet', 'pet.exists&petrange<46&!talent(1,2)&player.lastcast(Frostbolt)&player.buff(Fingers of Frost).stack<{2+artifact(Icy Hand).zenabled}&!player.buff(Brain Freeze)'},
 	{'Ray of Frost', 'player.buff(Icy Veins)||{cooldown(Icy Veins).remains>action(Ray of Frost).cooldown&!player.buff(Rune of Power)}'},
 	{'Flurry', 'player.buff(Brain Freeze)&!player.buff(Fingers of Frost)&!player.lastcast(Flurry)'},
@@ -153,20 +161,23 @@ local xCombat = {
 	{'Ebonbolt', 'player.buff(Fingers of Frost).stack<={0+artifact(Icy Hand).zenabled}'},
 	{'Ice Barrier', '!buff&!buff(Rune of Power)', 'player'},
 	{'Ice Floes', 'gcd.remains<0.2&movingfor>0.75&!lastcast(Ice Floes)&!buff', 'player'},
-	{'Summon Water Elemental', '!talent(1,2)&{!pet.exists||!pet.alive}', 'player'},
 	{'Frostbolt', '!player.moving||player.buff(Ice Floes)'},
+	{'Glacial Spike'},
+	{'Ice Nova'},
 }
 
 local inCombat = {
+	{'Summon  Water Elemental', '!talent(1,2)&{!pet.exists||!pet.alive}', 'player'},
 	{'Time Warp', 'UI(kTW)&!hashero', 'player'},
 	{Keybinds},
-	{Interrupts, 'toggle(Interrupts)&interruptAt(70)&inFront&range<41', 'target'},
-	{Interrupts, 'toggle(Interrupts)&interruptAt(70)&inFront&range<41', 'enemies'},
 	{Survival, nil, 'player'},
-	{xCombat, 'range<41&inFront', 'target'},
-	{Cooldowns, 'toggle(Cooldowns)'},
+	{xCombat, 'range<41&inFront&UI(target)==normal', 'target'},
+	{xCombat, 'combat&alive&range<41&inFront&combat&alive&UI(target)==lowest', 'lowestenemy'},
+	{xCombat, 'combat&alive&range<41&inFrontcombat&alive&UI(target)==highest', 'highestenemy'},
+	{xCombat, 'combat&alive&range<41&inFrontcombat&alive&UI(target)==nearest', 'nearestenemy'},
+	{xCombat, 'combat&alive&range<41&inFrontcombat&alive&UI(target)==furthest', 'furthestenemy'},
 	{Mythic_Plus, 'range<41'},
-	{Fillers, 'range<41&inFront', 'target'}
+	{xPvP},
 }
 
 local outCombat = {
