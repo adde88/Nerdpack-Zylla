@@ -37,8 +37,8 @@ Zylla.Mythic_Plus = {
 			{'%target', 'id(120651)&inFront', 'enemies'},
 			{'%target', 'id(121499)&inFront', 'enemies'},
 	},	'UI(mythic_fel)'}, 																																				--XXX: Fel Explosives Mythic+ Affix
-	{'&/stopcasting','debuff(Quake).any.duration<gcd&UI(quaking)', 'player'},											--XXX: Quaking Mythic+ Affix
-	{'%pause' , 'player.debuff(200904)||player.debuff(Sapped Soul)'},															--XXX: Vault of the Wardens - Sapped Soul Encounter
+	{'&/stopcasting', 'debuff(Quake).any.duration<gcd&UI(quaking)', 'player'},										--XXX: Quaking Mythic+ Affix
+	{'%pause', 'player.debuff(200904)||player.debuff(Sapped Soul)'},															--XXX: Vault of the Wardens - Sapped Soul Encounter
 }
 
 Zylla.KilJaedenTrinket ={
@@ -48,7 +48,7 @@ Zylla.KilJaedenTrinket ={
 Zylla.prepots = {
 	{key = '1', text = 'Potion of the Old War'},
 	{key = '2', text = 'Potion of Deadly Grace'},
-	{key = '3', text = 'Potion of Prolonged Power'},
+	{key = '3', text = 'Potion of Prolonged Power'}
 }
 
 Zylla.pets = {
@@ -56,5 +56,23 @@ Zylla.pets = {
 	{key = '2', text = 'Pet 2'},
 	{key = '3', text = 'Pet 3'},
 	{key = '4', text = 'Pet 4'},
-	{key = '5', text = 'Pet 5'},
+	{key = '5', text = 'Pet 5'}
+}
+
+Zylla.wpets = {
+	{key = '1', text = 'Felhunter'},
+	{key = '2', text = 'Doomguard'},
+	{key = '3', text = 'Infernal'},
+	{key = '4', text = 'Felguard'},
+	{key = '5', text = 'Succubus'},
+	{key = '6', text = 'Imp'}
+
+}
+
+Zylla.faketarget = {
+	{key = 'normal', text = 'Normal'},
+	{key = 'lowest', text = 'Lowest'},
+	{key = 'highest', text = 'Highest'},
+	{key = 'nearest', text = 'Nearest'},
+	{key = 'furthest', text = 'Furthest'}
 }
