@@ -92,8 +92,8 @@ local Keybinds = {
 
 local Interrupts = {
 	{'&Skull Bash', 'player.form~=0&range<14'},
-	{'!Typhoon', 'player.spell(Skull Bash).cooldown>gcd&range<16!player.lastgcd(Skull Bash)'},
-	{'!Mighty Bash', 'inMelee&player.spell(Skull Bash).cooldown>gcd&!player.lastgcd(Skull Bash)'}
+	{'!Typhoon', 'spell(Skull Bash).cooldown>gcd&range<16!player.lastgcd(Skull Bash)'},
+	{'!Mighty Bash', 'inMelee&spell(Skull Bash).cooldown>gcd&!player.lastgcd(Skull Bash)'}
 }
 
 local Survival = {

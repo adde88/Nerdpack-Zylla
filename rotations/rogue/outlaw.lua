@@ -118,7 +118,7 @@ local Keybinds = {
 
 local Interrupts = {
 	{'&Kick', 'inMelee&inFront'},
-	{'!Between the Eyes', 'range<21&inFront&player.spell(Kick).cooldown>=gcd&player.combopoints>0&!player.lastgcd(Kick)'},
+	{'!Between the Eyes', 'range<21&inFront&spell(Kick).cooldown>=gcd&player.combopoints>0&!player.lastgcd(Kick)'},
 	{'!Cloak of Shadows', 'spell(Kick).cooldown>=gcd&spell(Between the Eyes).cooldown>=gcd'},
 }
 

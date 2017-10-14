@@ -118,8 +118,8 @@ local Keybinds = {
 
 local Interrupts = {
 	{'!Skull Bash', 'player.form~=0&range<14'},
-	{'!Typhoon', 'interruptAt(60)&player.spell(Skull Bash).cooldown>gcd&range<16'},
-	{'!Mighty Bash', 'inMelee&player.spell(Skull Bash).cooldown>gcd'}
+	{'!Typhoon', 'interruptAt(60)&spell(Skull Bash).cooldown>gcd&range<16'},
+	{'!Mighty Bash', 'inMelee&spell(Skull Bash).cooldown>gcd'}
 }
 
 local Bear_Healing = {
@@ -162,10 +162,10 @@ local Finisher = {
 	{'Savage Roar', '{!buff(Savage Roar)&{combopoints==5||talent(6,2)&action(Brutal Slash).charges>0}}', 'player'},
 	{'Savage Roar', '{{{buff(Savage Roar).duration<20.5&talent(5,3)}||{buff(Savage Roar).duration<8.2&!talent(5,3)}}&combopoints==5&{energy.time_to_max<1||buff(Berserk)||buff(Incarnation: King of the Jungle)||spell(Tiger\'s Fury).cooldown<3||buff(Clearcasting)||talent(5,1)||!target.debuff(Rip)||{target.debuff(Rake).duration<1.5&area(8).enemies<6}}}', 'player'},
 	{'Thrash', 'debuff(Thrash).duration<=dot(Thrash).duration*0.3&player.area(8).enemies>4'},
-	{'Swipe', 'player.combopoints==5&{player.area(8).enemies>5||{player.area(8).enemies>2&!talent(7,2)}}&player.combopoints==5&{energy.time_to_max<1||player.buff(Berserk)||player.buff(Incarnation: King of the Jungle)||player.spell(Tiger\'s Fury).cooldown<3||{talent(7,3)&player.buff(Clearcasting)}}'},
+	{'Swipe', 'player.combopoints==5&{player.area(8).enemies>5||{player.area(8).enemies>2&!talent(7,2)}}&player.combopoints==5&{energy.time_to_max<1||player.buff(Berserk)||player.buff(Incarnation: King of the Jungle)||spell(Tiger\'s Fury).cooldown<3||{talent(7,3)&player.buff(Clearcasting)}}'},
 	{'Swipe', 'player.area(8).enemies>7'},
-	{'Rip', '{!debuff(Rip)||{debuff(Rip).duration<8&health>25&!talent(6,1)}||persistent_multiplier>dot(Rip).pmultiplier}&{debuff(Rip).duration>dot(Rip).tick_time*4&player.combopoints==5}&{energy.time_to_max<1||player.buff(Berserk)||player.buff(Incarnation: King of the Jungle)||player.spell(Tiger\'s Fury).cooldown<3||{talent(6,2)&player.buff(Clearcasting)}||talent(5,1)||!debuff(Rip)||{debuff(Rake).duration<1.5&player.area(8).enemies<6}}'},
-	{'Ferocious Bite', '	player.combopoints==5&{energy.time_to_max<1||player.buff(Berserk)||player.buff(Incarnation: King of the Jungle)||player.spell(Tiger\'s Fury).cooldown<3||{talent(7,3)&player.buff(Clearcasting)}}'},
+	{'Rip', '{!debuff(Rip)||{debuff(Rip).duration<8&health>25&!talent(6,1)}||persistent_multiplier>dot(Rip).pmultiplier}&{debuff(Rip).duration>dot(Rip).tick_time*4&player.combopoints==5}&{energy.time_to_max<1||player.buff(Berserk)||player.buff(Incarnation: King of the Jungle)||spell(Tiger\'s Fury).cooldown<3||{talent(6,2)&player.buff(Clearcasting)}||talent(5,1)||!debuff(Rip)||{debuff(Rake).duration<1.5&player.area(8).enemies<6}}'},
+	{'Ferocious Bite', '	player.combopoints==5&{energy.time_to_max<1||player.buff(Berserk)||player.buff(Incarnation: King of the Jungle)||spell(Tiger\'s Fury).cooldown<3||{talent(7,3)&player.buff(Clearcasting)}}'},
 	{'Ferocious Bite', 'player.combopoints>0&debuff(Rip)&debuff(Rip).duration<3&ttd>3&{health<25||talent(6,1)}'},
 }
 

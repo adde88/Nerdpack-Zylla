@@ -120,7 +120,7 @@ local Non_Patient_Sniper = {
 	{'Sidewinders', 'toggle(aoe)&{{{player.buff(Marking Targets)||player.buff(Trueshot)}&focus.deficit>70}||action(Sidewinders).charges>0.9}'},
 	{'Arcane Shot', '!variable.use_multishot&{player.buff(Marking Targets)||{talent(1,2)&{!player.buff(Steady Focus)||player.buff(Steady Focus).remains<2}}}'},
 	{'Multi-Shot', 'variable.use_multishot&{player.buff(Marking Targets)||{talent(1,2)&{!player.buff(Steady Focus)||player.buff(Steady Focus).remains<2}}}'},
-	{'Aimed Shot', '!moving&!talent(7,2)||{talent(7,2)&player.spell(Piercing Shot).cooldown>3}'},
+	{'Aimed Shot', '!moving&!talent(7,2)||{talent(7,2)&spell(Piercing Shot).cooldown>3}'},
 	{'Arcane Shot', '!variable.use_multishot'},
 	{'Multi-Shot', 'variable.use_multishot'},
 }
@@ -154,22 +154,22 @@ local Patient_Sniper = {
 	{'Marked Shot', 'player.buff(Trueshot)&!talent(7,1)'},
 	{'Arcane Shot', 'player.buff(Trueshot)'},
 	{'Aimed Shot', '!moving&!target.debuff(Hunter\'s Mark)&target.debuff(Vulnerable).remains>action(Aimed Shot).execute_time'},
-	{'Aimed Shot', '!moving&talent(7,1)&target.debuff(Hunter\'s Mark).remains>action(Aimed Shot).execute_time&target.debuff(Vulnerable).remains>action(Aimed Shot).execute_time&{player.buff(Lock and Load)||{player.focus+target.debuff(Hunter\'s Mark).remains*focus.regen>70&player.focus+focus.regen*target.debuff(Vulnerable).remains>70}}&{!talent(7,2)||{talent(7,2)&player.spell(Piercing Shot).cooldown>5}||player.focus>120}'},
-	{'Aimed Shot', '!moving&!talent(7,1)&target.debuff(Hunter\'s Mark).remains>action(Aimed Shot).execute_time&target.debuff(Vulnerable).remains>action(Aimed Shot).execute_time&{player.buff(Lock and Load)||{player.buff(Trueshot)&player.focus>70}||{!player.buff(Trueshot)&player.focus+target.debuff(Hunter\'s Mark).remains*focus.regen>70&player.focus+focus.regen*target.debuff(Vulnerable).remains>70}}&{!talent(7,2)||{talent(7,2)&player.spell(Piercing Shot).cooldown>5}||player.focus>120}'},
+	{'Aimed Shot', '!moving&talent(7,1)&target.debuff(Hunter\'s Mark).remains>action(Aimed Shot).execute_time&target.debuff(Vulnerable).remains>action(Aimed Shot).execute_time&{player.buff(Lock and Load)||{player.focus+target.debuff(Hunter\'s Mark).remains*focus.regen>70&player.focus+focus.regen*target.debuff(Vulnerable).remains>70}}&{!talent(7,2)||{talent(7,2)&spell(Piercing Shot).cooldown>5}||player.focus>120}'},
+	{'Aimed Shot', '!moving&!talent(7,1)&target.debuff(Hunter\'s Mark).remains>action(Aimed Shot).execute_time&target.debuff(Vulnerable).remains>action(Aimed Shot).execute_time&{player.buff(Lock and Load)||{player.buff(Trueshot)&player.focus>70}||{!player.buff(Trueshot)&player.focus+target.debuff(Hunter\'s Mark).remains*focus.regen>70&player.focus+focus.regen*target.debuff(Vulnerable).remains>70}}&{!talent(7,2)||{talent(7,2)&spell(Piercing Shot).cooldown>5}||player.focus>120}'},
 	{'Windburst', '!moving&!talent(7,1)&player.focus>80{!target.debuff(Hunter\'s Mark)||{target.debuff(Hunter\'s Mark).remains>action(Windburst).execute_time&focus+{focus.regen*target.debuff(Hunter\'s Mark).remains}>40}}'},
-	{'Marked Shot', '{talent(7,1)&player.area(50).enemies.inFront>1}||focus.deficit<50||player.buff(Trueshot)||{player.buff(Marking Targets)&{!talent(7,1)||player.spell(Sidewinders).charges>0.2}}'},
+	{'Marked Shot', '{talent(7,1)&player.area(50).enemies.inFront>1}||focus.deficit<50||player.buff(Trueshot)||{player.buff(Marking Targets)&{!talent(7,1)||spell(Sidewinders).charges>0.2}}'},
 	{'Piercing Shot', 'player.focus>80&target.area(8).enemies>2&target.debuff(Vulnerable).duration<3'},
 	{'Sidewinders', 'toggle(aoe)&variable.safe_to_build&{{player.buff(Trueshot)&focus.deficit>70}||action(Sidewinders).charges>0.9}'},
-	{'Sidewinders', 'toggle(aoe)&{player.buff(Marking Targets)&!target.debuff(Hunter\'s Mark)&!player.buff(Trueshot)}||{player.spell(Sidewinders).charges>1&target.time_to_die<11}'},
+	{'Sidewinders', 'toggle(aoe)&{player.buff(Marking Targets)&!target.debuff(Hunter\'s Mark)&!player.buff(Trueshot)}||{spell(Sidewinders).charges>1&target.time_to_die<11}'},
 	{'Arcane Shot', 'variable.safe_to_build&!variable.use_multishot&focus.deficit>5+gcd*focus.regen'},
 	{'Multi-Shot', 'toggle(aoe)&variable.safe_to_build&variable.use_multishot&focus.deficit>2*target.area(8).enemies+gcd*focus.regen'},
-	{'Aimed Shot', '!moving&!target.debuff(Vulnerable)&focus>80&player.spell(Windburst).cooldown>focus.time_to_max'},
+	{'Aimed Shot', '!moving&!target.debuff(Vulnerable)&focus>80&spell(Windburst).cooldown>focus.time_to_max'},
 }
 
  local xCombat = {
 	{'Volley', '{toggle(aoe)&!player.buff(Volley)}||{player.buff(Volley)&!toggle(aoe)}'},
 	{'Aimed Shot', 'moving&player.buff(Gyroscopic Stabilization)'},
-	{'Arcane Torrent', 'focus.deficit>30&{!talent(7,1)||player.spell(Sidewinders).charges<2}'},
+	{'Arcane Torrent', 'focus.deficit>30&{!talent(7,1)||spell(Sidewinders).charges<2}'},
 	{Opener, 'player.area(50).enemies==1&xtime<25'},
 	{'A Murder of Crows', '{target.time_to_die>65||target.health<20&target.boss}&{!target.debuff(Hunter\'s Mark)||{target.debuff(Hunter\'s Mark).remains>action(A Murder of Crows).execute_time&target.debuff(Vulnerable).remains>target.action(A Murder of Crows).execute_time&focus+{focus.regen*target.debuff(Vulnerable).remains}>50&focus+{focus.regen*target.debuff(Hunter\'s Mark).remains}>50}}'},
 	{Cooldowns, 'toggle(Cooldowns)'},
@@ -186,7 +186,7 @@ local xPetCombat = {
 	{'Heart of the Phoenix', '!player.debuff(Weakened Heart)&pet.dead&UI(kPet)'},
 	{'Revive Pet', 'pet.dead&UI(kPet)'},
 	{'/cast Call Pet 1', '!pet.exists&UI(kPet)'},
-	{'/cast [@focus, help] [@pet, nodead, exists] Misdirection', 'player.spell(Misdirection).cooldown<=gcd&toggle(xMisdirect)'},
+	{'/cast [@focus, help] [@pet, nodead, exists] Misdirection', 'spell(Misdirection).cooldown<=gcd&toggle(xMisdirect)'},
 }
 
 local inCombat = {

@@ -138,7 +138,7 @@ local ST = {
 	{'Execute', '{!player.buff(Juggernaut)||player.buff(Juggernaut).remains<2}}||player.buff(Stone Heart)'},
 	{'Rampage', 'player.rage>=100&{health>20||{health<20&!talent(5,1)}||{player.buff(Massacre)&player.buff(Enrage).remains<gcd}}'},
 	{'Berserker Rage', 'talent(3,2)&spell(Odyn\'s Fury).cooldown<gcd&!buff(Enrage)', 'player'},
-	{'Dragon Roar', 'player.spell(Odyn\'s Fury).cooldown>20||player.spell(Odyn\'s Fury).cooldown<3'},
+	{'Dragon Roar', 'spell(Odyn\'s Fury).cooldown>20||spell(Odyn\'s Fury).cooldown<3'},
 	{'Odyn\'s Fury', 'player.buff(Battle Cry)&player.buff(Enrage)'},
 	{'Rampage', '!player.buff(Enrage)&!player.buff(Juggernaut)'},
 	{'Furious Slash', 'talent(6,2)&{!player.buff(Frenzy)||player.buff(Frenzy).stack<4}'},

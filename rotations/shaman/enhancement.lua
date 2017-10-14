@@ -118,11 +118,11 @@ local Party = {
 
 local Cooldowns = {
 	{'Astral Shift', 'player.health<=(AS_HP)', 'player'},
-	{'Feral Spirit', 'area(8).enemies.inFront>0&{player.buff(Ascendance)||player.spell(Ascendance).cooldown>=gcd}', 'player'},
+	{'Feral Spirit', 'area(8).enemies.inFront>0&{player.buff(Ascendance)||spell(Ascendance).cooldown>=gcd}', 'player'},
 	{'Berserking', 'player.buff(Ascendance)||player.buff(Feral Spirit).duration>5||player.level<110', 'player'},
 	{'Blood Fury', 'player.buff(Ascendance)||player.buff(Feral Spirit).duration>5||player.level<110', 'player'},
-	{'Doom Winds', 'area(8).enemies.inFront>0&{{player.spell(Flametongue).cooldown<=gcd}||{talent(4,3)&player.spell(Frostbrand).cooldown<=gcd}}', 'player'},
-	{'Ascendance', 'area(8).enemies.inFront>0&player.spell(Feral Spirit).cooldown<=gcd', 'player'},
+	{'Doom Winds', 'area(8).enemies.inFront>0&{{spell(Flametongue).cooldown<=gcd}||{talent(4,3)&spell(Frostbrand).cooldown<=gcd}}', 'player'},
+	{'Ascendance', 'area(8).enemies.inFront>0&spell(Feral Spirit).cooldown<=gcd', 'player'},
 	{'#trinket1', 'UI(trinket1)'},
 	{'#trinket2', 'UI(trinket2)'},
 	{'Light\'s Judgment', 'UI(LJ_check)&range<61&area(15).enemies>=UI(LJ_spin)', 'enemies.ground'},
@@ -131,8 +131,8 @@ local Cooldowns = {
 
 local Interrupts = {
 	{'&Wind Shear'},
-	{'!Lightning Surge Totem', 'advanced&interruptAt(5)&player.spell(Wind Shear).cooldown>=gcd&!player.lastgcd(Wind Shear)', 'target.ground'},
-	{'!Lightning Surge Totem', 'toggle(xIntRandom)&advanced&interruptAt(5)&player.spell(Wind Shear).cooldown>=gcd&!player.lastgcd(Wind Shear)', 'enemies.ground'},
+	{'!Lightning Surge Totem', 'advanced&interruptAt(5)&spell(Wind Shear).cooldown>=gcd&!player.lastgcd(Wind Shear)', 'target.ground'},
+	{'!Lightning Surge Totem', 'toggle(xIntRandom)&advanced&interruptAt(5)&spell(Wind Shear).cooldown>=gcd&!player.lastgcd(Wind Shear)', 'enemies.ground'},
 }
 
 local xCombat = {

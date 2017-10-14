@@ -97,12 +97,12 @@ local Survival = {
 
 local Interrupts = {
 	{'!Consume Magic'},
-	{'!Chaos Nova', 'UI(chaos_check)&player.spell(Consume Magic).cooldown>gcd&!player.lastgcd(Consume Magic)'}
+	{'!Chaos Nova', 'UI(chaos_check)&spell(Consume Magic).cooldown>gcd&!player.lastgcd(Consume Magic)'}
 }
 
 local Cooldowns = {
 	{'Metamorphosis', 'inMelee&combat&area(8).enemies>=UI(meta_spin)&UI(meta_check)', 'target.ground'},
-	{'Nemesis', 'player.spell(Chaos Blades).cooldown<=gcd'},
+	{'Nemesis', 'spell(Chaos Blades).cooldown<=gcd'},
 	{'Chaos Nova', 'player.area(8).enemies>UI(chaos_spin)&UI(chaos_check)'},
 	{'#trinket1', 'UI(trinket1)'},
 	{'#trinket2', 'UI(trinket2)'},

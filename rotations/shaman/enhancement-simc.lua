@@ -130,8 +130,8 @@ local Cooldowns = {
 
 local Interrupts = {
 	{'&Wind Shear'},
-	{'!Lightning Surge Totem', 'advanced&interruptAt(5)&player.spell(Wind Shear).cooldown>=gcd&!player.lastgcd(Wind Shear)', 'target.ground'},
-	{'!Lightning Surge Totem', 'toggle(xIntRandom)&advanced&interruptAt(5)&player.spell(Wind Shear).cooldown>=gcd&!player.lastgcd(Wind Shear)', 'enemies.ground'},
+	{'!Lightning Surge Totem', 'advanced&interruptAt(5)&spell(Wind Shear).cooldown>=gcd&!player.lastgcd(Wind Shear)', 'target.ground'},
+	{'!Lightning Surge Totem', 'toggle(xIntRandom)&advanced&interruptAt(5)&spell(Wind Shear).cooldown>=gcd&!player.lastgcd(Wind Shear)', 'enemies.ground'},
 }
 
 local xCombat = {
