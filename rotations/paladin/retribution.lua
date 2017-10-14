@@ -12,18 +12,24 @@ local GUI = {
 	{type = 'checkbox',	text = 'Left Alt: '..Zylla.ClassColor..'|r',													align = 'left', 		key = 'lalt', 		default = true},
 	{type = 'checkbox',	text = 'Right Alt: '..Zylla.ClassColor..'|r',													align = 'left', 		key = 'ralt', 		default = true},
 	{type = 'spacer'},
---{type = 'checkbox', text = 'Enable Chatoverlay', 																					key = 'chat', 			width = 55, 			default = true, desc = Zylla.ClassColor..'This will enable some messages as an overlay!|r'},
+	{type = 'checkbox', text = 'Enable Chatoverlay', 																					key = 'chat', 				width = 55, 			default = true, desc = Zylla.ClassColor..'This will enable some messages as an overlay!|r'},
 	unpack(Zylla.PayPal_GUI),
 	{type = 'spacer'},
 	unpack(Zylla.PayPal_IMG),
-	{type = 'ruler'},	 	{type = 'spacer'},
+	{type = 'spacer'},		{type = 'ruler'},	 	{type = 'spacer'},
+	--TODO: Targetting: Use, or NOT use?! We'll see....
+	{type = 'header', 	size = 16, text = 'Targetting:',																			align = 'center'},
+	{type = 'combo',		default = 'normal',																										key = 'target', 					list = Zylla.faketarget, 	width = 75},
+	{type = 'spacer'},
+	{type = 'text', 		text = Zylla.ClassColor..'Only one can be enabled.\nChose between normal targetting, or hitting the highest/lowest enemy.|r'},
+	{type = 'spacer'},		{type = 'ruler'},	 	{type = 'spacer'},
 	-- Settings
 	{type = 'header', 	size = 16, text = 'Class Settings',																		align = 'center'},
 	{type = 'checkbox', text = 'Enable DBM Integration',																			key = 'kDBM', 			default = true},
 	{type = 'checkbox', text = 'Enable \'pre-potting\', flasks and Legion-rune',							key = 'prepot', 		default = false},
 	{type = 'combo',		default = '1',																												key = 'list', 			list = Zylla.prepots, 	width = 175},
 	{type = 'spacer'},	{type = 'spacer'},
-	{type = 'checkspin',text = 'Light\'s Judgment - Units', 																	key = 'LJ',					spin = 4, step = 1, max = 20, check = true,	desc = Zylla.ClassColor..'World Spell usable on Argus.|r'},
+	{type = 'checkspin',text = 'Light\'s Judgment - Units', 																	key = 'LJ',					spin = 4, step = 1, shiftStep = 2, max = 20, min = 1, check = true,	desc = Zylla.ClassColor..'World Spell usable on Argus.|r'},
 	{type = 'checkbox', text = 'Blessing of Kings', 																					key = 'BoK', 				default = true},
 	{type = 'checkbox', text = 'Blessing of Wisdom', 																					key = 'BoW', 				default = true, desc = Zylla.ClassColor..'Check to Enable Blessings on yourself.|r'},
 	{type = 'checkbox', text = 'Use Every Man for Himself', 																	key = 'EMfH', 			default = true},
@@ -35,21 +41,21 @@ local GUI = {
 	{type = 'ruler'},	  {type = 'spacer'},
 	-- Survival
 	{type = 'header', 	size = 16, text = 'Survival', 																				align = 'center'},
-	{type = 'checkspin',text = 'Use Gift of the Naaru', 																			key = 'GotN', 			spin = 40, step = 5, max = 100, check = true},
-	{type = 'checkspin',text = 'Use Lay on Hands', 																						key = 'LoH', 				spin = 10, step = 5, max = 100, check = true},
-	{type = 'checkspin',text = 'Use Flash of Light', 																					key = 'FoL', 				spin = 40, step = 5, max = 100, check = true},
-	{type = 'checkspin',text = 'Use Shield of Vengeance', 																		key = 'SoV', 				spin = 75, step = 5, max = 100, check = true},
-	{type = 'checkspin',text = 'Enable Eye for an Eye', 																			key = 'EfaE', 			spin = 90, step = 5, max = 100, check = true},
-	{type = 'checkspin',text = 'Healthstone',																									key = 'HS',					spin = 45, step = 5, max = 100, check = true},
-	{type = 'checkspin',text = 'Healing Potion',																							key = 'AHP',				spin = 45, step = 5, max = 100, check = true},
+	{type = 'checkspin',text = 'Gift of the Naaru', 																					key = 'GotN', 			spin = 40, step = 5, shiftStep = 10, max = 100, min = 1, check = true},
+	{type = 'checkspin',text = 'Lay on Hands', 																								key = 'LoH', 				spin = 5,  step = 5, shiftStep = 10, max = 100, min = 1, check = true},
+	{type = 'checkspin',text = 'Flash of Light', 																							key = 'FoL', 				spin = 40, step = 5, shiftStep = 10, max = 100, min = 1, check = true},
+	{type = 'checkspin',text = 'Shield of Vengeance', 																				key = 'SoV', 				spin = 75, step = 5, shiftStep = 10, max = 100, min = 1, check = true},
+	{type = 'checkspin',text = 'Eye for an Eye', 																							key = 'EfaE', 			spin = 90, step = 5, shiftStep = 10, max = 100, min = 1, check = true},
+	{type = 'checkspin',text = 'Healthstone',																									key = 'HS',					spin = 45, step = 5, shiftStep = 10, max = 100, min = 1, check = true},
+	{type = 'checkspin',text = 'Healing Potion',																							key = 'AHP',				spin = 45, step = 5, shiftStep = 10, max = 100, min = 1, check = true},
 	{type = 'ruler'},		{type = 'spacer'},
 	-- Group Assistance
 	{type = 'header', 	size = 16, text = 'Emergency Group Assistance', 											align = 'center'},
-	{type = 'checkspin',text = 'Flash of Light', 																							key = 'G_FoL', 		spin = 35, step = 5, max = 100, check = false},
-	{type = 'checkspin',text = 'Lay on Hands', 																								key = 'G_LoH', 		spin = 10, step = 5, max = 100, check = false},
-	{type = 'checkspin',text = 'Blessing of Protection', 																			key = 'G_BoP', 		spin = 10, step = 5, max = 100, check = false},
-	{type = 'checkbox',	text = 'Dispel Party Members',																				key = 'disAll', 	default = true},
-	{type = 'checkbox', text = 'Use Blessing of Freedom', 																		key = 'G_BoF', 		default = false},
+	{type = 'checkspin',text = 'Flash of Light', 																							key = 'G_FoL', 			spin = 35, step = 5, shiftStep = 10, max = 100, min = 1, check = false},
+	{type = 'checkspin',text = 'Lay on Hands', 																								key = 'G_LoH', 			spin = 5,  step = 5, shiftStep = 10, max = 100, min = 1, check = false},
+	{type = 'checkspin',text = 'Blessing of Protection', 																			key = 'G_BoP', 			spin = 5,  step = 5, shiftStep = 10, max = 100, min = 1, check = false},
+	{type = 'checkbox',	text = 'Dispel Party Members',																				key = 'disAll', 		default = true},
+	{type = 'checkbox', text = 'Use Blessing of Freedom', 																		key = 'G_BoF', 			default = false},
 	{type = 'ruler'},		{type = 'spacer'},
 	unpack(Zylla.Mythic_GUI),
 }
@@ -108,9 +114,9 @@ local Survival = {
 	{'!Lay on Hands', 'UI(LoH_check)&health<=UI(LoH_spin)'},
 	{'!Shield of Vengeance', 'UI(SoV_check)&health<=UI(SoV_spin)'},
 	{'Eye for an Eye', 'UI(EfaE_check)&health<=UI(EfaE_spin)'},
-	{'&Every Man for Himself', 'UI(EMfH)&state(stun)'},
 	{'!Blessing of Freedom', 'UI(BoF)&{state(root)||state(snare)}'},
 	{'&Gift of the Naaru', 'UI(GotN_check)&health<=UI(GotN_spin)'},
+	{'&Every Man for Himself', 'UI(EMfH)&state(stun)'},
 	{'#152615', 'item(152615).usable&item(152615).count>0&health<=UI(AHP_spin)&UI(AHP_check)'}, 													--XXX: Astral Healing Potion
 	{'#127834', 'item(152615).count==0&item(127834).usable&item(127834).count>0&health<=UI(AHP_spin)&UI(AHP_check)'}, 		--XXX: Ancient Healing Potion
 	{'#5512', 'item(5512).usable&item(5512).count>0&health<=UI(HS_spin)&UI(HS_check)'}, 																	--XXX: Health Stone
@@ -120,11 +126,11 @@ local Group = {
 	{'!Flash of Light', 'UI(G_FoL_check)&health<=UI(G_FoL_spin)'},
 	{'!Lay on Hands', 'UI(G_LoH_check)&health<=UI(G_LoH_spin)'},
 	{'!Blessing of Protection', 'UI(G_BoP_check)&health<=UI(G_BoP_spin)'},
-	{'!Blessing of Freedom', 'player.ingroup&ingroup&range<=40&UI(G_BoF)&{state(root)||state(snare)}', 'friendly'},
+	{'!Blessing of Freedom', 'player.ingroup&ingroup&inMelee&UI(G_BoF)&{state(root)||state(snare)}', 'friendly'},
 }
 
 local Interrupts = {
-	{'!Rebuke', 'inFront&inMelee'},
+	{'&Rebuke', 'inFront&inMelee'},
 	{'!Hammer of Justice', '!equipped(137065)&range<=20&spell(Rebuke).cooldown>=gcd&!player.lastgcd(Rebuke)'},
 	{'!Hammer of Justice', 'equipped(137065)&health>=75&range<=20&spell(Rebuke).cooldown>=gcd&!player.lastgcd(Rebuke)'},
 	{'!Blinding Light', 'range<=20&spell(Rebuke).cooldown>=gcd&!player.lastgcd(Rebuke)'},
@@ -148,7 +154,8 @@ local Cooldowns = {
 	{'&Crusade', 'holypower>=5&!equipped(137048)||{{equipped(137048)||race(Blood Elf)}&holypower>=2}', 'player'},
 	{'#trinket1', 'UI(trinket1)'},
 	{'#trinket2', 'UI(trinket2)'},
-	{'Light\'s Judgment', 'UI(LJ_check)&range<61&area(15).enemies>=UI(LJ_spin)', 'enemies.ground'}
+	{'Light\'s Judgment', 'UI(LJ_check)&range<61&area(15).enemies>=UI(LJ_spin)', 'enemies.ground'},
+	{'&#144259', 'UI(kj_check)&inMelee&area(10).enemies>=UI(kj_spin)&equipped(144259)'}, 	--XXX: Kil'jaeden's Burning Wish (Legendary)
 }
 
 local DS_Castable = {
@@ -199,26 +206,32 @@ local Opener = {
 	{'Wake of Ashes', 'toggle(aoe)&inMelee&inFront'}
 }
 
+local xCombat = {
+	{Interrupts, 'toggle(interrupts)&@Zylla.interruptAt(intat)'},
+	{Interrupts, 'toggle(interrupts)&toggle(xIntRandom)&@Zylla.interruptAt(intat)', 'enemies'},
+	{Cooldowns, 'toggle(cooldowns)&inMelee&ttd>10'},
+	{Opener, 'xtime<3&{spell(Judgment).cooldown<=gcd||spell(Blade of Justice).cooldown<=gcd||spell(Wake of Ashes).cooldown<=gcd}'},
+	{Combat, 'inMelee&inFront'},
+}
+
 local inCombat = {
 	{Keybinds},
 	{Dispel, 'toggle(dispels)&spell(Cleanse Toxins).cooldown<=gcd'},
 	{Survival, nil, 'player'},
 	{Blessings, nil, 'player'},
-	{Opener, 'xtime<3&{spell(Judgment).cooldown<=gcd||spell(Blade of Justice).cooldown<=gcd||spell(Wake of Ashes).cooldown<=gcd}', 'target'},
 	{Mythic_Plus, 'inMelee'},
-	{Combat, 'enemy&inMelee&inFront'},
 	{Group, 'player.movingfor<0.75&inGroup&toggle(groupAssist)', 'lowest'},
-	{Interrupts, 'toggle(interrupts)&interruptAt(70)', 'target'},
-	{Interrupts, 'toggle(interrupts)&toggle(xIntRandom)&interruptAt(70)', 'enemies'},
-	{Cooldowns, 'toggle(cooldowns)&inMelee&ttd>10'}
+	{xCombat, 'inMelee&UI(target)==normal', 'target'},
+	{xCombat, 'combat&alive&inMelee&UI(target)==highest', 'highestenemy'},
+	{xCombat, 'combat&alive&inMelee&UI(target)==lowest', 'lowestenemy'},
+	{xCombat, 'combat&alive&inMelee&UI(target)==nearest', 'nearestenemy'},
+	{xCombat, 'combat&alive&inMelee&UI(target)==furthest', 'furthestenemy'},
 }
 
 local outCombat = {
-	{PreCombat},
+	{PreCombat, nil, 'player'},
 	{Keybinds},
 	{Dispel, 'toggle(dispels)&spell(Cleanse Toxins).cooldown<=gcd'},
-	{Interrupts, 'toggle(interrupts)&interruptAt(70)', 'target'},
-	{Interrupts, 'toggle(interrupts)&toggle(xIntRandom)&interruptAt(70)', 'enemies'},
 	{Blessings, nil, 'player'},
 	{Group, 'player.movingfor<0.75&inGroup&toggle(groupAssist)', 'lowest'},
 	{'Flash of Light', 'movingfor<0.75&health<90&UI(FoL_check)', 'player'}
@@ -226,6 +239,7 @@ local outCombat = {
 
 NeP.CR:Add(70, {
 	name = '[|cff'..Zylla.addonColor..'Zylla\'s|r] Paladin - Retribution',
+--pooling = true, --TODO: TEST!!!
 	ic = inCombat,
 	ooc = outCombat,
 	gui = GUI,
