@@ -12,17 +12,35 @@ local GUI = {
 	{type = 'checkbox',	text = 'Left Alt: '..Zylla.ClassColor..'|r',							align = 'left', 			key = 'lalt', 		default = true},
 	{type = 'checkbox',	text = 'Right Alt: '..Zylla.ClassColor..'|r',							align = 'left', 			key = 'ralt', 		default = true},
 	{type = 'spacer'},
---{type = 'checkbox', text = 'Enable Chatoverlay', 															key = 'chat', 				width = 55, 			default = true, desc = Zylla.ClassColor..'This will enable some messages as an overlay!|r'},
+	--{type = 'checkbox', text = 'Enable Chatoverlay', 																						key = 'chat', 				width = 55, 			default = true, desc = Zylla.ClassColor..'This will enable some messages as an overlay!|r'},
 	unpack(Zylla.PayPal_GUI),
 	{type = 'spacer'},
 	unpack(Zylla.PayPal_IMG),
-	{type = 'ruler'},		{type = 'spacer'},
+	{type = 'spacer'},	{type = 'ruler'},	 	{type = 'spacer'},
+		--TODO: Targetting: Use, or NOT use?! We'll see....
+	{type = 'header', 	size = 16, text = 'Targetting:',													align = 'center'},
+	{type = 'combo',		default = 'normal',																				key = 'target', 					list = Zylla.faketarget, 	width = 75},
+	{type = 'spacer'},
+	{type = 'text', 		text = Zylla.ClassColor..'Only one can be enabled.\nChose between normal targetting, or hitting the highest/lowest enemy.|r'},
+	{type = 'spacer'},	{type = 'ruler'},	 	{type = 'spacer'},
 	-- Settings
-	{type = 'header', 	text = 'Class Settings', 																	align = 'center'},
-	{type='spinner', 		text = 'Crimson Vial Below (HP%)', 												key='E_HP', 					default = 60},
-	{type = 'ruler'},		{type = 'spacer'},
+	{type = 'header', 	size = 16, text = 'Class Settings',							 					align = 'center'},
+	{type = 'spinner',	size = 11, text = 'Interrupt at percentage:', 						key = 'intat',				default = 60,	step = 5, shiftStep = 10,	max = 100, min = 1},
+	{type = 'checkbox', text = 'Enable DBM Integration',													key = 'kDBM', 				default = true},
+	{type = 'checkbox', text = 'Enable \'pre-potting\', flasks and Legion-rune',	key = 'prepot', 			default = false},
+	{type = 'combo',		default = '1',																						key = 'list', 				list = Zylla.prepots, 	width = 175},
+	{type = 'spacer'},	{type = 'spacer'},
+	{type = 'checkspin',text = 'Light\'s Judgment - Units', 											key = 'LJ',				spin = 4, step = 1, max = 20, check = true,	desc = Zylla.ClassColor..'World Spell usable on Argus.|r'},
+	{type = 'checkbox', text = 'Ring of Frost as Interrupt',											key = 'RoF_Int',	default = true},
+	{type = 'checkbox', text = 'Polymorph as Interrupt',													key = 'Pol_Int',	default = false},
+	{type = 'checkbox', text = 'Use Trinket #1', 																	key = 'trinket1',	default = false},
+	{type = 'checkbox', text = 'Use Trinket #2', 																	key = 'trinket2', default = false,	desc = Zylla.ClassColor..'Trinkets will be used whenever possible!|r'},
+	{type = 'spacer'},
+	{type = 'checkspin', 	text = 'Kil\'Jaeden\'s Burning Wish - Units', 					key = 'kj', 			align = 'left', width = 55, step = 1, shiftStep = 2, spin = 4, max = 20, min = 0, check = true, desc = Zylla.ClassColor..'Legendary will be used only on selected amount of units!|r'},
+	{type = 'ruler'},	{type = 'spacer'},
 	-- Survival
-	{type = 'header', 	text = 'Survival', 																				align = 'center'},
+	{type = 'header', 	size = 16, text = 'Survival', 														align = 'center'},
+	{type='spinner', 		text = 'Crimson Vial Below (HP%)', 												key='E_HP', 					default = 60},
 	{type = 'checkspin',text = 'Healthstone',																			key = 'HS',						spin = 45, check = true},
 	{type = 'checkspin',text = 'Healing Potion',																	key = 'AHP',					spin = 45, check = true},
 	{type = 'ruler'},		{type = 'spacer'},
@@ -42,8 +60,8 @@ local exeOnLoad = function()
 	 NeP.Interface:AddToggle({
 		 key='opener',
 		 name='Opener',
-		 text = 'If Enabled we will Open with Ambush when Stealthed. If not Cheap Shot will be used.',
-		 icon='Interface\\Icons\\ability_rogue_ambush',
+		 text = 'If Enabled we will Open with Cheap Shot when Stealthed. If not Shadowstrike will be used.',
+		 icon='Interface\\Icons\\ability_cheapshot',
 	 })
 
 	NeP.Interface:AddToggle({
@@ -60,10 +78,27 @@ local exeOnLoad = function()
 		icon='Interface\\Icons\\inv_misc_bag_11',
 	})
 
+	NeP.Interface:AddToggle({
+	 key = 'xIntRandom',
+	 name = 'Interrupt Anyone',
+	 text = 'Interrupt all nearby enemies, without targeting them.',
+	 icon = 'Interface\\Icons\\inv_ammo_arrow_04',
+ })
+
 end
 
 local PreCombat = {
-	{'Shadowstrike', 'stealthed&target.range<25&target.inFront'},
+	{'Stealth', 'toggle(xStealth)&!buff&!buff(Vanish)&!nfly'},
+	{'Shadowstrike', '!toggle(xPickPock)&!toggled(opener)&stealthed&range<25&inFront', 'target'},
+	{'Cheap Shot', '!toggle(xPickPock)&toggled(opener)&stealthed&range<25&inFront', 'target'},
+	{'Pick Pocket', 'toggle(xPickPock)&enemy&alive&!combat&range<=10&player.buff(Stealth)', 'enemies'},
+	-- Pots
+	{'#127844', 'UI(list)==1&item(127844).usable&item(127844).count>0&UI(kDBM)&UI(prepot)&!buff(Potion of the Old War)&dbm(pull in)<3'}, 			--XXX: Potion of the Old War
+	{'#127843', 'UI(list)==2&item(127843).usable&item(127843).count>0&UI(kDBM)&UI(prepot)&!buff(Potion of Deadly Grace)&dbm(pull in)<3'}, 		--XXX: Potion of Deadly Grace
+	{'#142117', 'UI(list)==3&item(142117).usable&item(142117).count>0&UI(kDBM)&UI(prepot)&!buff(Potion of Prolonged Power)&dbm(pull in)<3'}, 	--XXX: Potion of Prolonged Power
+	-- Flasks
+	{'#127848', 'ingroup&item(127848).usable&item(127848).count>0&UI(prepot)&!buff(Flask of the Seventh Demon)'},	--XXX: Flask of the Seventh Demon
+	{'#153023', 'ingroup&item(153023).usable&item(153023).count>0&UI(prepot)&!buff(Defiled Augmentation)'}				--XXX: Lightforged Augment Rune
 }
 
 local Keybinds = {
@@ -72,16 +107,17 @@ local Keybinds = {
 }
 
 local Interrupts = {
-	{'!Kick'},
-	{'!Cheap Shot', 'cooldown(Kick).remains>gcd&player.buff(Stealth)&target.inFront&target.inMelee'},
-	{'!Kidney Shot', 'cooldown(Kick).remains>gcd&combo_points>0&target.inFront&target.inMelee'},
-	{'!Blind', 'cooldown(Kick).remains>gcd&target.inFront&target.range<25&cooldown(Kidney Shot).remains>gcd'},
+	{'&Kick'},
+	{'!Cheap Shot', 'cooldown(Kick).remains>gcd&player.buff(Stealth)&inFront&inMelee'},
+	{'!Kidney Shot', 'cooldown(Kick).remains>gcd&combo_points>0&inFront&inMelee'},
+	{'!Blind', 'cooldown(Kick).remains>gcd&inFront&range<25&cooldown(Kidney Shot).remains>gcd'},
 }
 
 local Survival ={
-	{'Crimson Vial', 'player.health<=UI(k_CVHP)'},
-	{'#127834', 'item(127834).usable&item(127834).count>0&health<=UI(AHP_spin)&UI(AHP_check)', 'player'}, 		-- Ancient Healing Potion
-	{'#5512', 'item(5512).usable&item(5512).count>0&health<=UI(HS_spin)&UI(HS_check)', 'player'}, 						--Health Stone
+	{'Crimson Vial', 'health<=UI(k_CVHP)'},
+	{'#152615', 'item(152615).usable&item(152615).count>0&health<=UI(AHP_spin)&UI(AHP_check)'}, 													--XXX: Astral Healing Potion
+	{'#127834', 'item(152615).count==0&item(127834).usable&item(127834).count>0&health<=UI(AHP_spin)&UI(AHP_check)'}, 		--XXX: Ancient Healing Potion
+	{'#5512', 'item(5512).usable&item(5512).count>0&health<=UI(HS_spin)&UI(HS_check)'} 																		--XXX: Health Stone
 }
 
 local Builders = {
@@ -96,12 +132,16 @@ local Cooldowns ={
 	{'Shadow Blades', '!stealthed||!player.buff(Shadowmeld)'},
 	{'Goremaw\'s Bite', '!player.buff(Shadow Dance)&{{combo_points.deficit>={4-parser_bypass2}*2&energy.deficit>{50+talent(3,3).enabled*25-parser_bypass3}*15}||target.time_to_die<8}'},
 	{'Marked for Death', 'target.time_to_die<combo_points.deficit||combo_points.deficit>4'},
+	{'#trinket1', 'UI(trinket1)'},
+	{'#trinket2', 'UI(trinket2)'},
+	{'Light\'s Judgment', 'advanced&UI(LJ_check)&range<61&area(15).enemies>=UI(LJ_spin)', 'enemies.ground'},
+	{'&#144259', 'UI(kj_check)&range<=40&area(10).enemies>=UI(kj_spin)&equipped(144259)'}, 	--XXX: Kil'jaeden's Burning Wish (Legendary)
 }
 
 local Finishers = {
 	{'Enveloping Shadows', 'player.buff(Enveloping Shadows).remains<target.time_to_die&player.buff(Enveloping Shadows).remains<=combo_points*1.8'},
 	{'Death from Above', 'player.area(8).enemies>5'},
-	{'Nightblade', 'target.time_to_die>8&{{dot.refreshable(Nightblade){!artifact(Finality).enabled||player.buff(Finality: Nightblade)}}||target.dot(Nightblade).remains<target.dot(Nightblade).tick_time}'},
+	{'Nightblade', 'target.time_to_die>8&{{dot.refreshable(Nightblade){player.buff(Finality: Nightblade)}}||target.dot(Nightblade).remains<target.dot(Nightblade).tick_time}'},
 	{'Death from Above'},
 	{'Eviscerate'},
 }
@@ -122,8 +162,9 @@ local Stealthed = {
 }
 
 local xCombat = {
+	{Interrupts, '@Zylla.InterruptAt(intat)&toggle(Interrupts)&inFront&inMelee'},
+	{Interrupts, '@Zylla.InterruptAt(intat)&toggle(Interrupts)&toggle(xIntRandom)&inFront&inMelee', 'enemies'},
 	{Cooldowns, 'toggle(Cooldowns)'},
-	--# Fully switch to the Stealthed Rotation {by doing so, it forces pooling if nothing is available}
 	{Stealthed, 'stealthed||player.buff(Shadowmeld)'},
 	{Finishers, 'combo_points>4||{combo_points>3&player.area(10).enemies>2&player.area(10).enemies<5}'},
 	{Stealth_Cooldowns, 'combo_points.deficit>1+talent(6,1).enabled&{variable.ed_threshold||{cooldown(Shadowmeld).up&!cooldown(Vanish).up&cooldown(Shadow Dance).charges<2}||target.time_to_die<12||player.area(10).enemies>4}'},
@@ -132,17 +173,18 @@ local xCombat = {
 
 local inCombat = {
 	{Keybinds},
-	{Interrupts, 'target.interruptAt(70)&toggle(Interrupts)&target.inFront&target.inMelee'},
-	{Survival, 'player.health<100'},
+	{Survival, nil, 'player'},
 	{Mythic_Plus, 'inMelee'},
-	{xCombat, 'target.inMelee&target.inFront'},
+	{xCombat, 'inMelee&inFront&UI(target)==normal', 'target'},
+	{xCombat, 'inMelee&inFront&combat&alive&UI(target)==lowest', 'lowestenemy'},
+	{xCombat, 'inMelee&inFront&combat&alive&UI(target)==highest', 'highestenemy'},
+	{xCombat, 'inMelee&inFront&combat&alive&UI(target)==nearest', 'nearestenemy'},
+	{xCombat, 'inMelee&inFront&combat&alive&UI(target)==furthest', 'furthestenemy'},
 }
 
 local outCombat = {
 	{Keybinds},
-	{PreCombat, '!toggle(xPickPock)'},
-	{'Stealth', 'toggle(xStealth)&!player.buff&!player.buff(Vanish)&!nfly'},
-	{'Pick Pocket', 'toggle(xPickPock)&enemy&alive&range<=10&player.buff(Stealth)' ,'enemies'},
+	{PreCombat, nil, 'player'},
 }
 
 NeP.CR:Add(261, {
