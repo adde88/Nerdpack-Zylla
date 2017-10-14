@@ -8,83 +8,69 @@ local GUI = {
 	-- Header
 	{type = 'header',  	size = 16, text = 'Keybinds',	 																			align = 'center'},
 	{type = 'checkbox',	text = 'Left Shift: '..Zylla.ClassColor..'Pause|r',									align = 'left', 			key = 'lshift', 	default = true},
-	{type = 'checkbox',	text = 'Left Ctrl: '..Zylla.ClassColor..'Force AoE|r',							align = 'left', 			key = 'lcontrol',	default = true},
-	{type = 'checkbox',	text = 'Left Alt: '..Zylla.ClassColor..'Mass Dispel|r',							align = 'left', 			key = 'lalt', 		default = true},
-	{type = 'checkbox',	text = 'Right Alt: '..Zylla.ClassColor..'SW: Pain @ Mouseover|r',		align = 'left', 			key = 'ralt', 		default = true},
+	{type = 'checkbox',	text = 'Left Ctrl: '..Zylla.ClassColor..'Mass Dispel|r',						align = 'left', 			key = 'lcontrol',	default = true},
+	{type = 'checkbox',	text = 'Left Alt: '..Zylla.ClassColor..'Force AoE Dotting|r',				align = 'left', 			key = 'lalt', 		default = true},
+	{type = 'checkbox',	text = 'Right Alt: '..Zylla.ClassColor..'',													align = 'left', 			key = 'ralt', 		default = true},
 	{type = 'spacer'},
 --{type = 'checkbox', text = 'Enable Chatoverlay', 																				key = 'chat', 				width = 55, 			default = true, desc = Zylla.ClassColor..'This will enable some messages as an overlay!|r'},
 	unpack(Zylla.PayPal_GUI),
 	{type = 'spacer'},
 	unpack(Zylla.PayPal_IMG),
-	{type = 'ruler'},	 	{type = 'spacer'},
+	{type = 'spacer'},		{type = 'ruler'},	 	{type = 'spacer'},
+	--TODO: Targetting: Use, or NOT use?! We'll see....
+	{type = 'header', 	size = 16, text = 'Targetting:',																		align = 'center'},
+	{type = 'combo',		default = 'normal',																									key = 'target', 					list = Zylla.faketarget, 	width = 75},
+	{type = 'spacer'},
+	{type = 'text', 		text = Zylla.ClassColor..'Only one can be enabled.\nChose between normal targetting, or hitting the highest/lowest enemy.|r'},
+	{type = 'spacer'},		{type = 'ruler'},	 	{type = 'spacer'},
 	-- Settings
-	{type = 'header', 	text = 'General', 																									align = 'center'},
+	{type = 'header', 	size = 16, text = 'Class Settings',																	align = 'center'},
+	{type = 'spinner',	size = 11, text = 'Interrupt at percentage:', 											key = 'intat',				default = 60,	step = 5, shiftStep = 10,	max = 100, min = 1},
 	{type = 'checkbox', text = 'Enable DBM Stuff.', 																				key = 'dbm_key', 			align = 'left', width = 55, default = false},
-	{type = 'checkbox', text = 'Potion of Prolonged Power', 																key = 's_pull', 			width = 55, 		default = false},
-	{type = 'checkbox', text = 'Force AOE', 																								key = 'k_AOE', 				width = 55, 		default = true},
-	{type = 'checkbox', text = 'Mass Dispel', 																							key = 'k_MD', 				width = 55, 		default = true},
-	{type = 'checkbox', text = 'Mind Blast', 																								key = 'pull_MB', 			width = 55, 		default = true},
-	{type = 'checkbox', text = 'Body and Soul', 																						key = 'm_Body', 			width = 55, 		default = true},
-	{type = 'spinner', text = 'SW: Pain - Units', 																					key = 'SWP_UNITS', 		align = 'left', width = 55, step = 1, default = 4},
+	{type = 'checkbox', text = 'Enable \'pre-potting\', flasks and Legion-rune',						key = 'prepot', 			default = false},
+	{type = 'checkbox', text = 'Mind Blast - Pre-pull', 																		key = 'precast', 			align = 'left', width = 55, 		default = true},
+	{type = 'combo',		default = '3',																											key = 'list', 				list = Zylla.prepots, 	width = 175},
+	{type = 'spacer'},	{type = 'spacer'},
+	{type = 'checkspin',text = 'Light\'s Judgment - Units', 																key = 'LJ',						spin = 4,	step = 1,	max = 20, min = 1,	check = true,	desc = Zylla.ClassColor..'World Spell usable on Argus.|r'},
+	{type = 'checkbox', text = 'Body and Soul', 																						key = 'm_Body', 			align = 'left', width = 55, 		default = true},
+	{type = 'checkspin',text = 'SW: Pain - Units to dot', 																	key = 'SWP_UNITS', 		align = 'left', width = 55, step = 1, shiftStep = 2, spin = 4, max = 40, min = 1, check = true},
 	{type = 'ruler'}, 	{type = 'spacer'},
 	-- COOLDOWNS
-	{type = 'header', 	text = 'Cooldowns (if Toggled ON)', 																align = 'center'},
-	{type = 'checkbox', text = 'Potion of Prolonged Power', 																key = 's_PP', 				width = 55, default = false},
-	{type = 'checkbox', text = 'Trinket #1', 																								key = 'trinket_1', 		width = 55, default = false},
-	{type = 'checkbox', text = 'Trinket #2', 																								key = 'trinket_2', 		width = 55, default = false},
+	{type = 'header', 	size = 16, text = 'Cooldowns (if Toggled ON)', 											align = 'center'},
+	{type = 'checkspin',text = 'Mindbender - Void Count', 																	key = 'mb_vfc', 			align = 'left', width = 55, step = 1, shiftStep = 2, spin = 5, max = 100, min = 1, check = true},
 	{type = 'spacer'},
-	{type = 'text', 		text = 'Mindbender', 																								align = 'left'},
-	{type = 'spinner', 	text = 'Void Count', 																								key = 'mb_vfc', 			align = 'left', width = 55, step = 1, default = 5, max = 100},
+	{type = 'checkbox', text = 'Power Infusion - Void Count:',															key = 'dps_PI', 			align = 'left', width = 55, default = false},
+	{type = 'spinner', 	text = 'Target <= 45%', 																						key = 'dps_PIspin1', 	align = 'left', width = 55, step = 1, default = 15},
+	{type = 'spinner', 	text = 'Target >= 35%', 																						key = 'dps_PIspin2', 	align = 'left', width = 55, step = 1, default = 15},
 	{type = 'spacer'},
-	{type = 'checkbox', text = 'Power Infusion',																						key = 'dps_PI', 			width = 55, default = false},
-	{type = 'spinner', 	text = 'Target<45% - Void Count', 																	key = 'dps_PIspin1', 	align = 'left', width = 55, step = 1, default = 15},
-	{type = 'spinner', 	text = 'Target>35% - Void Count', 																	key = 'dps_PIspin2', 	align = 'left', width = 55, step = 1, default = 15},
+	{type = 'checkbox', text = 'Dispersion - Void Count:', 																	key = 'dps_D', 				align = 'left', width = 55, default = true},
+	{type = 'spinner', 	text = 'Target <= 45%', 																						key = 'dps_Dspin', 		align = 'left', width = 55, min = 15, max = 50, step = 1, default = 44},
+	{type = 'spinner', 	text = 'Target >= 35%', 																						key = 'dps_D2spin', 	align = 'left', width = 55, min = 15, max = 50, step = 1, default = 30},
 	{type = 'spacer'},
-	{type = 'checkbox', text = 'Dispersion', 																								key = 'dps_D', 				width = 55, default = true},
-	{type = 'spinner', 	text = 'Target<45% - Void Count', 																	key = 'dps_Dspin', 		align = 'left', width = 55, min = 15, max = 50, step = 1, default = 44},
-	{type = 'spinner', 	text = 'Target>35% - Void Count', 																	key = 'dps_D2spin', 	align = 'left', width = 55, min = 15, max = 50, step = 1, default = 30},
+	{type = 'checkspin',text = 'Shadowfiend - Stacks', 																			key = 'dps_fiend', 		align = 'left', width = 55, step = 1, shiftStep = 10, spin = 22, max = 100, min = 1, check = true},
 	{type = 'spacer'},
-	{type = 'checkbox', text = 'Shadowfiend', 																							key = 'dps_fiend', 		width = 55, default = true},
-	{type = 'spinner',	text = 'Shadowfiend Stacks', 																				key = 'dps_SFspin', 	align = 'left', width = 55, step = 1, default = 22},
-	{type = 'spacer'},
-	{type = 'checkbox', text = 'Arcane Torrent', 																						key = 'dps_at', 			width = 55, default = true},
-	{type = 'checkbox', text = 'Void Torrent', 																							key = 'dps_void', 		width = 55, default = true},
-	{type = 'ruler'}, 	{type = 'spacer'},
+	{type = 'checkbox', text = 'Arcane Torrent', 																						key = 'dps_at', 			align = 'left', width = 55, default = true},
+	{type = 'checkbox', text = 'Void Torrent', 																							key = 'dps_void', 		align = 'left', width = 55, default = true},
+	{type = 'checkbox', text = 'Use Trinket #1', 																						key = 'trinket1',			default = false},
+	{type = 'checkbox', text = 'Use Trinket #2', 																						key = 'trinket2', 		default = false, desc = Zylla.ClassColor..'Trinkets will be used whenever possible!|r'},	{type = 'ruler'}, 	{type = 'spacer'},
+	{type = 'checkspin', 	text = 'Kil\'Jaeden\'s Burning Wish - Units', 										key = 'kj', 					align = 'left', width = 55, step = 1, shiftStep = 2, spin = 4, max = 20, min = 1, check = true, desc = Zylla.ClassColor..'Legendary will be used only on selected amount of units!|r'},
+	{type = 'ruler'},	  {type = 'spacer'},
 	-- GUI Survival & Potions
-	{type = 'header', 	text = 'Survival', 																									align = 'center'},
-	{type = 'checkbox', text = 'Self Healing', 																							key = 'k_SH', 				width = 55, default = true},
-	{type = 'spinner', 	text = 'below HP%', 																								key = 'k_SHspin', 		width = 55, default = 66},
-	{type = 'spacer'},
-	{type = 'checkbox', text = 'Power Word: Shield', 																				key = 's_PWS', 				width = 55, default = true},
-	{type = 'spinner', 	text = 'below HP%', 																								key = 's_PWSspin', 		width = 55, default = 75},
-	{type = 'spacer'},
-	{type = 'checkbox', text = 'Fade (when aggro)', 																				key = 's_F', 					width = 55, default = false},
-	{type = 'spacer'},
-	{type = 'checkbox', text = 'Dispersion', 																								key = 's_D', 					width = 55, default = true},
-	{type = 'spinner', 	text = 'below HP%', 																								key = 's_Dspin', 			align = 'left', width = 55, default = 20},
-	{type = 'spacer'},
-	{type = 'checkbox', text = 'Vampiric Embrace', 																					key = 's_VE', 				width = 55, default = true},
-	{type = 'spinner', 	text = 'below HP%', 																								key = 's_VEspin', 		width = 55, default = 35, align = 'left'},
-	{type = 'spacer'},
-	{type = 'checkbox', text = 'Gift of the Naaru', 																				key = 's_GotN', 			width = 55, default = false},
-	{type = 'spinner', 	text = 'below HP%', 																								key = 's_GotNspin', 	width = 55, default = 40},
-	{type = 'spacer'},
-	{type = 'checkbox', text = 'Healthstone', 																							key = 's_HS', 				width = 55, default = false},
-	{type = 'spinner', 	text = 'below HP%', 																								key = 's_HSspin', 		width = 55, default = 20},
-	{type = 'spacer'},
-	{type = 'checkbox', text = 'Ancient Healing Potion', 																		key = 's_AHP',				width = 55, default = false},
-	{type = 'spinner', 	text = 'below HP%', 																								key = 's_AHPspin', 		width = 55, default = 20, align = 'left'},
+	{type = 'header', 	size = 16, text = 'Survival', 																			align = 'center'},
+	{type = 'checkspin',text = 'Self Healing', 																							key = 'k_SH', 				align = 'left', width = 55, step = 5, shiftStep = 10, spin = 66, max = 100, min = 1, check = true},
+	{type = 'checkspin',text = 'Power Word: Shield', 																				key = 's_PWS', 				align = 'left', width = 55, step = 5, shiftStep = 10, spin = 75, max = 100, min = 1, check = true},
+	{type = 'checkbox', text = 'Fade (when aggro, in party)', 															key = 's_F', 					align = 'left', width = 55, default = false},
+	{type = 'checkspin',text = 'Dispersion', 																								key = 's_D', 					align = 'left', width = 55, step = 5, shiftStep = 10, spin = 20, max = 100, min = 1, check = true},
+	{type = 'checkspin',text = 'Vampiric Embrace', 																					key = 's_VE', 				align = 'left', width = 55, step = 5, shiftStep = 10, spin = 35, max = 100, min = 1, check = true},
+	{type = 'checkspin',text = 'Gift of the Naaru', 																				key = 's_GotN', 			align = 'left', width = 55, step = 5, shiftStep = 10, spin = 40, max = 100, min = 1, check = true},
+	{type = 'checkspin',text = 'Healthstone',																								key = 'HS',						align = 'left', width = 55, step = 5, shiftStep = 10, spin = 45, max = 100, min = 1, check = true},
+	{type = 'checkspin',text = 'Healing Potion',																						key = 'AHP',					align = 'left', width = 55, step = 5, shiftStep = 10, spin = 45, max = 100, min = 1, check = true},
 	{type = 'ruler'}, 	{type = 'spacer'},
 	-- GUI Party Support
-	{type = 'header', 	text = 'Party Support', 																						align = 'center'},
-	{type = 'checkbox', text = 'Gift of the Naaru', 																				key = 'sup_GotN', 		width = 55, default = false},
-	{type = 'spinner', 	text = 'below HP%', 																								key = 'sup_GotNspin', width = 55, default = 20},
-	{type = 'spacer'},
-	{type = 'checkbox', text = 'Power Word: Shield', 																				key = 'sup_PWS', 			width = 55, default = true},
-	{type = 'spinner', 	text = 'below HP%', 																								key = 'sup_PWSspin', 	width = 55, default = 20},
-	{type = 'spacer'},
-	{type = 'checkbox', text = 'Heal Party', 																								key = 'k_PH', 				width = 55, default = true},
-	{type = 'spinner', 	text = 'below HP%', 																								key = 'k_PHspin', 		width = 55, default = 30},
+	{type = 'header', 	size = 16, text = 'Party Support', 																	align = 'center'},
+	{type = 'checkspin',text = 'Gift of the Naaru', 																				key = 'sup_GotN', 		align = 'left', width = 55, step = 5, shiftStep = 10, spin = 20, max = 100, min = 1, check = true},
+	{type = 'checkspin',text = 'Power Word: Shield', 																				key = 'sup_PWS', 			align = 'left', width = 55, step = 5, shiftStep = 10, spin = 20, max = 100, min = 1, check = true},
+	{type = 'checkspin',text = 'Heal Party', 																								key = 'k_PH', 				align = 'left', width = 55, step = 5, shiftStep = 10, spin = 30, max = 100, min = 1, check = true},
 	{type = 'ruler'}, 	{type = 'spacer'},
 	unpack(Zylla.Mythic_GUI),
 }
@@ -123,13 +109,6 @@ local exeOnLoad=function()
 	})
 
 	NeP.Interface:AddToggle({
-		key = 'xSWP',
-		name = 'Shadow Word: Pain Mass DoT',
-		text = 'Use Shadow Word: Pain on several mobs. (Changable within settings).',
-		icon = 'Interface\\Icons\\spell_shadow_shadowwordpain',
-	})
-
-	NeP.Interface:AddToggle({
 		key = 'disp',
 		name='Dispel',
 		text = 'ON/OFF Dispel All',
@@ -138,208 +117,216 @@ local exeOnLoad=function()
 
 end
 
+local PreCombat = {
+	-- Pots
+	{'#127844', 'UI(list)==1&item(127844).usable&item(127844).count>0&UI(kDBM)&UI(prepot)&!buff(Potion of the Old War)&dbm(pull in)<5'}, 			--XXX: Potion of the Old War
+	{'#127843', 'UI(list)==2&item(127843).usable&item(127843).count>0&UI(kDBM)&UI(prepot)&!buff(Potion of Deadly Grace)&dbm(pull in)<5'}, 		--XXX: Potion of Deadly Grace
+	{'#142117', 'UI(list)==3&item(142117).usable&item(142117).count>0&UI(kDBM)&UI(prepot)&!buff(Potion of Prolonged Power)&dbm(pull in)<5'}, 	--XXX: Potion of Prolonged Power
+	-- Flasks
+	{'#127847', 'item(127847).usable&item(127847).count>0&UI(prepot)&!buff(Flask of the Whispered Pact)'},	--XXX:  Flask of the Whispered Pact
+	{'#153023', 'item(153023).usable&item(153023).count>0&UI(prepot)&!buff(Defiled Augmentation)'},					--XXX: Lightforged Augment Rune
+	{'Mind Blast', 'UI(precast)&UI(kDBM)&dbm(pull in)<=spell(11366).casttime+gcd', 'target'}								--TODO: Fix SpellID issue (spell.casttime)
+}
+
 local SWP_MASS = {
-	{'Shadow Word: Pain', 'range<41&combat&alive&count.enemies.debuffs<UI(SWP_UNITS)&debuff.duration<3', 'enemies'}
+	{'Shadow Word: Pain', 'range<41&combat&alive&count.enemies.debuffs<UI(SWP_UNITS_spin)&debuff.duration<3'}
 }
 
 local Survival = {
-	{'Fade', 'target.threat>99&UI(s_F)'},
-	{'Power Word: Shield', 'player.health<=UI(s_PWSspin)&UI(s_PWS)', 'player'},
-	{'!Dispersion', 'player.health<=UI(s_Dspin)&UI(s_D)'},
-	{'!Gift of the Naaru', 'player.health<=UI(s_GotNspin)&UI(s_GotN)'},
-	{'!Shadow Mend', 'UI(k_SH)&player.health<=UI(k_SHspin)', 'player'},
-	{'!Vampiric Embrace', 'toggle(cooldowns)&player.health<=UI(s_VEspin)&UI(s_VE)'}
+	{'Fade', 'target.threat>99&UI(s_F)&ingroup'},
+	{'Power Word: Shield', 'health<=UI(s_PWS_spin)&UI(s_PWS_check)'},
+	{'!Dispersion', 'health<=UI(s_D_spin)&UI(s_D_check)'},
+	{'!Gift of the Naaru', 'health<=UI(s_GotN_spin)&UI(s_GotN_check)'},
+	{'!Shadow Mend', 'UI(k_SH_check)&health<=UI(k_SH_spin)', 'player'},
+	{'!Vampiric Embrace', 'toggle(cooldowns)&health<=UI(s_VE_spin)&UI(s_VE_check)'}
 }
 
 local Potions = {
-	{'#142117', 'player.hashero&!player.buff(Potion of Prolonged Power)&UI(s_PP)'},
-	{'#127834', 'item(127834).count>0&player.health<UI(Health Stone)'}, 			-- Ancient Healing Potion
-	{'#5512', 'item(5512).count>0&player.health<UI(Health Stone)', 'player'} 	--Health Stone
+	{'#152615', 'item(152615).usable&item(152615).count>0&health<=UI(AHP_spin)&UI(AHP_check)'}, 													--XXX: Astral Healing Potion
+	{'#127834', 'item(152615).count==0&item(127834).usable&item(127834).count>0&health<=UI(AHP_spin)&UI(AHP_check)'}, 		--XXX: Ancient Healing Potion
+	{'#5512', 'item(5512).usable&item(5512).count>0&health<=UI(HS_spin)&UI(HS_check)'}, 																	--XXX: Health Stone
 }
 
 local Keybinds = {
-	{'!Shadow Word: Pain', 'keybind(lalt)&combat&alive&range<41&debuff.duration<3', 'enemies'},
-	{'!Void Eruption', 'UI(k_AOE)&!player.moving&keybind(lshift)&!player.buff(Voidform)', 'target'},
-	{'!Shadow Crash', 'advanced&keybind(lshift)&!target.moving', 'target.ground'},
-	{'!Shadow Crash', '!advanced&keybind(lshift)&!target.moving', 'cursor.ground'},
-	{'!Shadow Word: Pain', '!target.debuff(Shadow Word: Pain)&UI(k_AOE)&keybind(lshift)', 'target'},
-	{'!Shadow Word: Pain', '!mouseover.debuff(Shadow Word: Pain)&UI(k_AOE)&keybind(lshift)', 'mouseover'},
-	{'!Mind Flay', 'target.debuff(Shadow Word: Pain)&UI(k_AOE)&keybind(lshift)', 'target'},
-	{'!Mass Dispel', 'keybind(lcontrol)&UI(k_MD)', 'cursor.ground'}
+	{'%pause', 'keybind(lshift)&UI(lshift)'},
+	{'!Shadow Word: Pain', 'keybind(lalt)&UI(lalt)&combat&alive&range<41&debuff.duration<3', 'enemies'},
+	{'!Mass Dispel', 'keybind(lcontrol)&UI(lcontrol)', 'cursor.ground'}
 }
 
 local Movement = {
-	{'!Power Word: Shield', 'talent(2,2)&player.movingfor>0.25&UI(m_Body) ', 'player'}
+	{'!Power Word: Shield', 'talent(2,2)&movingfor>0.75&UI(m_Body)'}
 }
 
 local Support = {
-	{'!Gift of the Naaru', 'health<=UI(sup_GotNspin)&UI(sup_GotN)', 'lowest'},
-	{'!Power Word: Shield', 'health<=UI(sup_PWSspin)&UI(sup_PWS)', 'lowest'},
-	{'!Shadow Mend', 'UI(k_PH)&health<=UI(k_PHspin)&range<41', 'lowest'}
+	{'!Gift of the Naaru', 'health<=UI(sup_GotN_spin)&UI(sup_GotN_check)'},
+	{'!Power Word: Shield', 'health<=UI(sup_PWS_spin)&UI(sup_PWS_check)'},
+	{'!Shadow Mend', 'UI(k_PH_check)&health<=UI(k_PH_spin)&range<41'}
 }
 
-local lshiftupts = {
-	{'!Silence'},
-	{'!Arcane Torrent', 'target.inMelee&player.spell(Silence).cooldown>gcd&!lastgcd(Silence)', 'target'}
-}
-
-local lshiftupts_Random = {
-	{'!Silence', 'lshiftuptAt(70)&toggle(xIntRandom)&toggle(lshiftupts)&inFront&range<31', 'enemies'},
-	{'!Arcane Torrent', 'lshiftuptAt(70)&toggle(xIntRandom)&toggle(lshiftupts)&player.spell(Counter Shot).cooldown>gcd&!prev_gcd(Silence)&inFront&range<31', 'enemies'}
+local Interrupts = {
+	{'&Silence'},
+	{'!Arcane Torrent', 'inMelee&spell(Silence).cooldown>=gcd&!player.lastgcd(Silence)'}
 }
 
 local Surrender = {
-	{'!Surrender to Madness', 'talent(7,3)&target.deathin<200&toggle(s2m)&!player.buff(Surrender to Madness)&target.boss&boss.exists'}
+	{'!Surrender to Madness', 'target.ttd<180&toggle(s2m)&!buff&target.boss&boss.exists', 'player'}
 }
 
 local Insight = {
-	{'!Mindblast', 'player.spell(Void Eruption).cooldown>gcd' ,'target'},
+	{'!Mindblast', 'spell(Void Eruption).cooldown>=gcd'},
 }
 
 local Emergency = {
-	{'!Dispersion', 'player.spell(Shadow Word: Death).charges<1&!player.spell(Void Torrent).cooldown>gcd&player.insanity<30&!talent(7,1)&!talent(7,2)&UI(dps_D)'},
-	{'!Arcane Torrent', 'UI(dps_at)&player.insanity<45&{!spell(Shadow Word: Death).cooldown>gcd||!target.health<45}&!player.spell(Dispersion).cooldown>gcd', 'target'},
-	{'!Power Infusion', 'talent(6,1)&player.buff(Voidform).count>70&player.spell(Shadow Word: Death).charges<1&player.insanity<70&UI(dps_PI)'}
+	{'!Dispersion', 'spell(Shadow Word: Death).charges<1&!spell(Void Torrent).cooldown>=gcd&insanity<30&!talent(7,1)&!talent(7,2)&UI(dps_D)'},
+	{'!Arcane Torrent', 'UI(dps_at)&player.insanity<45&{!spell(Shadow Word: Death).cooldown>=gcd||!health<45}&!spell(Dispersion).cooldown>=gcd'},
+	{'!Power Infusion', 'talent(6,1)&buff(Voidform).count>70&spell(Shadow Word: Death).charges<1&insanity<70&UI(dps_PI)'}
 }
 
 local Cooldowns = {
-	{'!Void Torrent', '!player.moving&player.spell(Void Eruption).cooldown>gcd&UI(dps_void)'},
-	{'!Power Infusion', 'talent(6,1)&player.buff(Surrender to Madness)&player.buff(Voidform).count>40&player.insanity>40&player.spell(Void Eruption).cooldown>gcd&player.spell(Void Torrent).cooldown>gcd&player.spell(Dispersion).cooldown>gcd&UI(dps_PI)', 'player'},
-	{'Power Infusion', 'talent(6,1)&!player.buff(Surrender to Madness)&player.buff(Voidform).count>=UI(dps_PIspin1)&target.health<45&UI(dps_PI)', 'player'},
-	{'Power Infusion', 'talent(6,1)&!player.buff(Surrender to Madness)&player.buff(Voidform).count>=UI(dps_PIspin2)&target.health>35&UI(dps_PI)', 'player'},
+	{'!Void Torrent', '!player.moving&spell(Void Eruption).cooldown>=gcd&UI(dps_void)'},
+	{'!Power Infusion', 'talent(6,1)&buff(Surrender to Madness)&buff(Voidform).count>40&insanity>40&spell(Void Eruption).cooldown>=gcd&spell(Void Torrent).cooldown>=gcd&spell(Dispersion).cooldown>=gcd&UI(dps_PI)', 'player'},
+	{'Power Infusion', 'talent(6,1)&!buff(Surrender to Madness)&buff(Voidform).count>=UI(dps_PIspin1)&target.health<45&UI(dps_PI)', 'player'},
+	{'Power Infusion', 'talent(6,1)&!buff(Surrender to Madness)&buff(Voidform).count>=UI(dps_PIspin2)&target.health>35&UI(dps_PI)', 'player'},
 	{'!Mindbender', 'talent(6,3)&player.buff(Surrender to Madness)', 'target'},
-	{'!Mindbender', 'talent(6,3)&!player.buff(Surrender to Madness)&player.buff(Voidform).count>UI(mb_vfc)', 'target'},
-	{'!Shadowfiend', '!talent(6,3)&player.spell(Void Eruption).cooldown>gcd&player.buff(Voidform).count>=UI(dps_SFspin)&!talent(6,1)&UI(dps_fiend)', 'target'},
-	{'!Shadowfiend', 'player.buff(Power Infusion)&player.buff(Voidform).count>=UI(dps_SFspin)&UI(dps_fiend)', 'target'}
+	{'!Mindbender', 'talent(6,3)&!player.buff(Surrender to Madness)&UI(mb_vfc_check)&player.buff(Voidform).count>UI(mb_vfc_spin)'},
+	{'!Shadowfiend', '!talent(6,3)&spell(Void Eruption).cooldown>=gcd&player.buff(Voidform).count>=UI(dps_SF_spin)&!talent(6,1)&UI(dps_SF_check)'},
+	{'!Shadowfiend', 'player.buff(Power Infusion)&player.buff(Voidform).count>=UI(dps_fiend_spin)&UI(dps_fiend_check)'},
+	{'#trinket1', 'UI(trinket1)'},
+	{'#trinket2', 'UI(trinket2)'},
+	{'Light\'s Judgment', 'advanced&UI(LJ_check)&range<61&area(15).enemies>=UI(LJ_spin)', 'enemies.ground'},
+	{'&#144259', 'UI(kj_check)&range<41&area(10).enemies>=UI(kj_spin)&equipped(144259)'}, --XXX: Kil'jaeden's Burning Wish (Legendary)
 }
 
 local AOE = {
-	{'Shadow Crash', '{target.area(8).enemies>1&advanced&toggle(AOE)&player.buff(Voidform)&!target.moving&player.spell(Void Eruption).cooldown>gcd}||{!advanced&toggle(AOE)&player.buff(Voidform)&!target.moving&player.spell(Void Eruption).cooldown>gcd}', 'target.ground'},
+	{'Shadow Crash', '{area(8).enemies>1&advanced&toggle(AOE)&player.buff(Voidform)&!moving&spell(Void Eruption).cooldown>=gcd}||{!advanced&toggle(AOE)&player.buff(Voidform)&!moving&spell(Void Eruption).cooldown>=gcd}', 'target.ground'},
 }
 
 local ST1 = {
-	{'!Void Eruption','!player.moving&target.debuff(Vampiric Touch).duration>13&player.buff(Surrender to Madness)&target.debuff(Vampiric Touch)&target.debuff(Shadow Word: Pain)', 'target'},
-	{'!Void Eruption', '!player.moving&target.debuff(Vampiric Touch).duration>4&!player.buff(Surrender to Madness)&target.debuff(Vampiric Touch)&target.debuff(Shadow Word: Pain)', 'target'},
-	{'!Shadow Word: Death', '{talent(7,1)&!player.insanity>55&!player.channeling(Void Eruption)}||{target.health<45&talent(7,3)||talent(7,2)&!player.insanity==100&!player.channeling(Void Eruption)}', 'target'},
-	{'!Vampiric Touch', '!player.moving&!target.debuff(Shadow Word: Pain)&talent(6,2)', 'target'},
-	{'!Mind Blast', '!player.moving&player.channeling(Mind Flay)', 'target'},
-	{'Mind Blast', '!player.moving&{{talent(6,1)&!player.insanity>55}||{talent(7,3)||talent(7,2)&!player.insanity==100}}', 'target'},
-	{'Shadow Word: Pain', '{target.debuff(Shadow Word: Pain).duration<3&!talent(6,2)}||{!target.debuff(Shadow Word: Pain)&!talent(6,2)}', 'target'},
-	{'!Vampiric Touch', '!player.moving&{{target.debuff(Vampiric Touch).duration<4&!player.lastcast(Vampiric Touch)}||{!target.debuff(Vampiric Touch)&!player.lastcast(Vampiric Touch)}||{{target.debuff(Shadow Word: Pain).duration<2.3||!target.debuff(Shadow Word: Pain)}&talent(6,2)}}', 'target'},
-	{'Mind Flay', '!player.moving&{player.spell(Mind Blast).cooldown>gcd&target.debuff(Shadow Word: Pain)&target.debuff(Vampiric Touch)&{talent(7,1)&!player.insanity>55}||{talent(7,3)||talent(7,2)&!player.insanity==100}}', 'target'}
+	{'!Void Eruption','!player.moving&debuff(Vampiric Touch).duration>13&player.buff(Surrender to Madness)&debuff(Vampiric Touch)&debuff(Shadow Word: Pain)'},
+	{'!Void Eruption', '!player.moving&debuff(Vampiric Touch).duration>4&!player.buff(Surrender to Madness)&debuff(Vampiric Touch)&debuff(Shadow Word: Pain)'},
+	{'!Shadow Word: Death', '{talent(7,1)&!player.insanity>55&!player.channeling(Void Eruption)}||{health<45&talent(7,3)||talent(7,2)&!player.insanity==100&!player.channeling(Void Eruption)}'},
+	{'!Vampiric Touch', '!player.moving&!debuff(Shadow Word: Pain)&talent(6,2)'},
+	{'!Mind Blast', '!player.moving&player.channeling(Mind Flay)'},
+	{'Mind Blast', '!player.moving&{{talent(6,1)&!player.insanity>55}||{talent(7,3)||talent(7,2)&!player.insanity==100}}'},
+	{'Shadow Word: Pain', '{debuff(Shadow Word: Pain).duration<3&!talent(6,2)}||{!debuff(Shadow Word: Pain)&!talent(6,2)}'},
+	{'!Vampiric Touch', '!player.moving&{{debuff(Vampiric Touch).duration<4&!player.lastcast(Vampiric Touch)}||{!debuff(Vampiric Touch)&!player.lastcast(Vampiric Touch)}||{{debuff(Shadow Word: Pain).duration<2.3||!debuff(Shadow Word: Pain)}&talent(6,2)}}'},
+	{'Mind Flay', '!player.moving&{spell(Mind Blast).cooldown>=gcd&debuff(Shadow Word: Pain)&debuff(Vampiric Touch)&{talent(7,1)&!player.insanity>55}||{talent(7,3)||talent(7,2)&!player.insanity==100}}'}
 }
 
 local lotv1 = {
-	{'!Dispersion', 'player.buff(Voidform).count>=UI(dps_Dspin)&UI(dps_D)&spell(Shadow Word: Death).charges<1&player.insanity<40&target.health<45&player.spell(Void Torrent).cooldown>gcd'},
-	{'!Dispersion', 'player.buff(Voidform).count>=UI(dps_D2spin)&UI(dps_D)&!player.buff(Surrender to Madness)&player.insanity<40&target.health>35&player.spell(Void Torrent).cooldown>gcd'},
-	{'!Shadow Word: Death', '{!player.channeling(Mind Blast)&player.spell(Shadow Word: Death).charges>1&player.insanity<80}||{!player.channeling(Mind Blast)&player.insanity<45}', 'target'},
-	{'!Void Eruption', '!player.moving&!player.channeling(Mind Blast)||player.insanity<30', 'target'},
-	{'!Vampiric Touch', '!player.moving&!target.debuff(Shadow Word: Pain)&talent(6,2)', 'target'},
-	{'Mind Blast', '!player.moving&player.spell(Void Eruption).cooldown>gcd', 'target'},
-	{'!Mind Blast', '!player.moving&player.spell(Void Eruption).cooldown>gcd&target.debuff(Vampiric Touch)&target.debuff(Shadow Word: Pain)&player.channeling(Mind Flay)', 'target'},
-	{'Shadow Word: Pain', '{target.debuff(Shadow Word: Pain).duration<3&!talent(6,2)}||{!target.debuff(Shadow Word: Pain)&!talent(6,2)}||{player.moving&!target.debuff(Shadow Word: Pain)}', 'target'},
-	{'!Vampiric Touch', '!player.moving&{{target.debuff(Vampiric Touch).duration<4&!player.lastcast(Vampiric Touch)}||{!target.debuff(Vampiric Touch)&!player.lastcast(Vampiric Touch)}||{{target.debuff(Shadow Word: Pain).duration<2.3||!target.debuff(Shadow Word: Pain)}&talent(6,2)}}', 'target'},
-	{'Mind Flay', '!player.moving&player.spell(Void Eruption).cooldown>gcd&player.spell(Mind Blast).cooldown>gcd&target.debuff(Shadow Word: Pain)&target.debuff(Vampiric Touch)', 'target'}
+	{'!Dispersion', 'player.buff(Voidform).count>=UI(dps_Dspin)&UI(dps_D)&spell(Shadow Word: Death).charges<1&player.insanity<40&health<45&spell(Void Torrent).cooldown>=gcd', 'player'},
+	{'!Dispersion', 'player.buff(Voidform).count>=UI(dps_D2spin)&UI(dps_D)&!player.buff(Surrender to Madness)&player.insanity<40&health>35&spell(Void Torrent).cooldown>=gcd', 'player'},
+	{'!Shadow Word: Death', '{!player.channeling(Mind Blast)&spell(Shadow Word: Death).charges>1&player.insanity<80}||{!player.channeling(Mind Blast)&player.insanity<45}'},
+	{'!Void Eruption', '!player.moving&!player.channeling(Mind Blast)||player.insanity<30'},
+	{'!Vampiric Touch', '!player.moving&!debuff(Shadow Word: Pain)&talent(6,2)'},
+	{'Mind Blast', '!player.moving&spell(Void Eruption).cooldown>=gcd'},
+	{'!Mind Blast', '!player.moving&spell(Void Eruption).cooldown>=gcd&debuff(Vampiric Touch)&debuff(Shadow Word: Pain)&player.channeling(Mind Flay)'},
+	{'Shadow Word: Pain', '{debuff(Shadow Word: Pain).duration<3&!talent(6,2)}||{!debuff(Shadow Word: Pain)&!talent(6,2)}||{player.moving&!debuff(Shadow Word: Pain)}'},
+	{'!Vampiric Touch', '!player.moving&{{debuff(Vampiric Touch).duration<4&!player.lastcast(Vampiric Touch)}||{!debuff(Vampiric Touch)&!player.lastcast(Vampiric Touch)}||{{debuff(Shadow Word: Pain).duration<2.3||!debuff(Shadow Word: Pain)}&talent(6,2)}}'},
+	{'Mind Flay', '!player.moving&spell(Void Eruption).cooldown>=gcd&spell(Mind Blast).cooldown>=gcd&debuff(Shadow Word: Pain)&debuff(Vampiric Touch)'}
 }
 
 local s2m1 = {
-	{'!Dispersion', 'player.buff(Voidform).count>5&player.buff(Voidform).count<10&!player.lastcast(Void Torrent)&UI(dps_D)'},
-	{'!Void Torrent', '!player.moving&UI(dps_void)', 'target'},
-	{'!Shadow Word: Death', 'player.buff(Voidform).count<10&target.debuff(Shadow Word: Pain).duration>6&target.debuff(Vampiric Touch).duration>6', 'target'},
-	{'!Shadow Word: Death', 'player.insanity<30', 'target'},
-	{'!Void Eruption', '!player.moving&{!player.channeling(Mind Blast)||player.insanity<50}', 'target'},
-	{'!Vampiric Touch', '!player.moving&!target.debuff(Shadow Word: Pain)&talent(6,2)', 'target'},
-	{'Mind Blast', '!player.moving&player.spell(Void Eruption).cooldown>gcd', 'target'},
-	{'!Mind Blast', '!player.moving&player.spell(Void Eruption).cooldown>gcd&target.debuff(Vampiric Touch)&target.debuff(Shadow Word: Pain)&player.channeling(Mind Flay)', 'target'},
-	{'!Shadow Word: Pain', 'target.debuff(Shadow Word: Pain).duration<3||!target.debuff(Shadow Word: Pain)', 'target'},
-	{'!Vampiric Touch', '!player.moving&{target.debuff(Vampiric Touch).duration<4||!target.debuff(Vampiric Touch)}', 'target'},
-	{'Mind Flay', '!player.moving&player.spell(Void Eruption).cooldown>gcd&player.spell(Mind Blast).cooldown>gcd&target.debuff(Shadow Word: Pain)&target.debuff(Vampiric Touch)', 'target'}
+	{'!Dispersion', 'player.buff(Voidform).count>5&player.buff(Voidform).count<10&!player.lastcast(Void Torrent)&UI(dps_D)', 'player'},
+	{'!Void Torrent', '!player.moving&UI(dps_void)'},
+	{'!Shadow Word: Death', 'player.buff(Voidform).count<10&debuff(Shadow Word: Pain).duration>6&debuff(Vampiric Touch).duration>6'},
+	{'!Shadow Word: Death', 'player.insanity<30'},
+	{'!Void Eruption', '!player.moving&{!player.channeling(Mind Blast)||player.insanity<50}'},
+	{'!Vampiric Touch', '!player.moving&!debuff(Shadow Word: Pain)&talent(6,2)'},
+	{'Mind Blast', '!player.moving&spell(Void Eruption).cooldown>=gcd'},
+	{'!Mind Blast', '!player.moving&spell(Void Eruption).cooldown>=gcd&debuff(Vampiric Touch)&debuff(Shadow Word: Pain)&player.channeling(Mind Flay)'},
+	{'!Shadow Word: Pain', 'debuff(Shadow Word: Pain).duration<3||!debuff(Shadow Word: Pain)'},
+	{'!Vampiric Touch', '!player.moving&{debuff(Vampiric Touch).duration<4||!debuff(Vampiric Touch)}'},
+	{'Mind Flay', '!player.moving&spell(Void Eruption).cooldown>=gcd&spell(Mind Blast).cooldown>=gcd&debuff(Shadow Word: Pain)&debuff(Vampiric Touch)'}
 }
 
 local ST2 = {
-	{'!Void Eruption','!player.moving&target.debuff(Vampiric Touch).duration>13&player.buff(Surrender to Madness)&target.debuff(Vampiric Touch)&target.debuff(Shadow Word: Pain)', 'target'},
-	{'!Void Eruption', '!player.moving&target.debuff(Vampiric Touch).duration>4&!player.buff(Surrender to Madness)&target.debuff(Vampiric Touch)&target.debuff(Shadow Word: Pain)', 'target'},
-	{'!Shadow Word: Death', '{talent(7,1)&!player.insanity>55&!player.channeling(Void Eruption)}||{target.health<45&talent(7,3)||talent(7,2)&!player.insanity==100&!player.channeling(Void Eruption)}', 'target'},
-	{'!Vampiric Touch', '!player.moving&!target.debuff(Shadow Word: Pain)&talent(6,2)', 'target'},
-	{'!Mind Blast', '!player.moving&player.channeling(Mind Flay)', 'target'},
-	{'Mind Blast', '!player.moving&target.debuff(Shadow Word: Pain)&target.debuff(Vampiric Touch)', 'target'},
-	{'Mind Blast', '!player.moving&!target.debuff(Shadow Word: Pain)&!target.debuff(Vampiric Touch)&!player.lastcast(Mind Blast)&{talent(7,1)&!player.insanity>55}||{talent(7,3)||talent(7,2)&!player.insanity==100}', 'target'},
-	{'Shadow Word: Pain', 'target.debuff(Shadow Word: Pain).duration<3||!target.debuff(Shadow Word: Pain)', 'target'},
-	{'!Vampiric Touch', '!player.moving&{{target.debuff(Vampiric Touch).duration<4&!player.lastcast(Vampiric Touch)}||{!target.debuff(Vampiric Touch)&!player.lastcast(Vampiric Touch)}||{{target.debuff(Shadow Word: Pain).duration<2.3||!target.debuff(Shadow Word: Pain)}&talent(6,2)}}', 'target'},
-	{'Mind Flay', '!player.moving&{!spell(Mind Blast).cooldown==0&target.debuff(Shadow Word: Pain)&target.debuff(Vampiric Touch)&{talent(7,1)&!player.insanity>55}||{talent(7,3)||talent(7,2)&!player.insanity==100}}', 'target'}
+	{'!Void Eruption','!player.moving&debuff(Vampiric Touch).duration>13&player.buff(Surrender to Madness)&debuff(Vampiric Touch)&debuff(Shadow Word: Pain)'},
+	{'!Void Eruption', '!player.moving&debuff(Vampiric Touch).duration>4&!player.buff(Surrender to Madness)&debuff(Vampiric Touch)&debuff(Shadow Word: Pain)'},
+	{'!Shadow Word: Death', '{talent(7,1)&!player.insanity>55&!player.channeling(Void Eruption)}||{health<45&talent(7,3)||talent(7,2)&!player.insanity==100&!player.channeling(Void Eruption)}'},
+	{'!Vampiric Touch', '!player.moving&!debuff(Shadow Word: Pain)&talent(6,2)'},
+	{'!Mind Blast', '!player.moving&player.channeling(Mind Flay)'},
+	{'Mind Blast', '!player.moving&debuff(Shadow Word: Pain)&debuff(Vampiric Touch)'},
+	{'Mind Blast', '!player.moving&!debuff(Shadow Word: Pain)&!debuff(Vampiric Touch)&!player.lastcast(Mind Blast)&{talent(7,1)&!player.insanity>55}||{talent(7,3)||talent(7,2)&!player.insanity==100}'},
+	{'Shadow Word: Pain', 'debuff(Shadow Word: Pain).duration<3||!debuff(Shadow Word: Pain)'},
+	{'!Vampiric Touch', '!player.moving&{{debuff(Vampiric Touch).duration<4&!player.lastcast(Vampiric Touch)}||{!debuff(Vampiric Touch)&!player.lastcast(Vampiric Touch)}||{{debuff(Shadow Word: Pain).duration<2.3||!debuff(Shadow Word: Pain)}&talent(6,2)}}'},
+	{'Mind Flay', '!player.moving&{!spell(Mind Blast).cooldown==0&debuff(Shadow Word: Pain)&debuff(Vampiric Touch)&{talent(7,1)&!player.insanity>55}||{talent(7,3)||talent(7,2)&!player.insanity==100}}'}
 }
 
 local lotv2 = {
-	{'!Dispersion', 'player.buff(Voidform).count>=UI(dps_Dspin)&UI(dps_D)&spell(Shadow Word: Death).charges<1&player.insanity<40&target.health<45'},
-	{'!Dispersion', 'player.buff(Voidform).count>=UI(dps_D2spin)&UI(dps_D)&!player.buff(Surrender to Madness)&player.insanity<40&target.health>35'},
-	{'!Void Torrent', '!player.moving&{{player.buff(Voidform).count>13&spell(Shadow Word: Death).charges<1&player.insanity<40&UI(dps_void)}||{player.buff(Voidform).count>6&!player.buff(Surrender to Madness)&player.insanity<40&target.health>35&UI(dps_void)}}', 'target'},
-	{'!Shadow Word: Death', '{player.insanity<50}||{target.health<45&player.buff(Voidform).count<25&player.insanity<70}', 'target'},
-	{'!Void Eruption', '!player.moving&{!player.channeling(Mind Blast)||player.insanity<50}', 'target'},
-	{'!Vampiric Touch', '!player.moving&!target.debuff(Shadow Word: Pain)&talent(6,2)', 'target'},
-	{'Mind Blast', '!player.moving&player.spell(Void Eruption).cooldown>gcd', 'target'},
-	{'!Mind Blast', '!player.moving&player.spell(Void Eruption).cooldown>gcd&target.debuff(Vampiric Touch)&target.debuff(Shadow Word: Pain)&player.channeling(Mind Flay)', 'target'},
-	{'Shadow Word: Pain', '{target.debuff(Shadow Word: Pain).duration<3&!talent(6,2)}||{!target.debuff(Shadow Word: Pain)&!talent(6,2)}||{player.moving&!target.debuff(Shadow Word: Pain)}', 'target'},
-	{'!Vampiric Touch', '!player.moving&{{target.debuff(Vampiric Touch).duration<4&!player.lastcast(Vampiric Touch)}||{!target.debuff(Vampiric Touch)&!player.lastcast(Vampiric Touch)}||{{target.debuff(Shadow Word: Pain).duration<2.3||!target.debuff(Shadow Word: Pain)}&talent(6,2)}}', 'target'},
-	{'Mind Flay', '!player.moving&player.spell(Void Eruption).cooldown>gcd&player.spell(Mind Blast).cooldown>gcd&target.debuff(Shadow Word: Pain)&target.debuff(Vampiric Touch)', 'target'}
+	{'!Dispersion', 'player.buff(Voidform).count>=UI(dps_Dspin)&UI(dps_D)&spell(Shadow Word: Death).charges<1&player.insanity<40&health<45', 'player'},
+	{'!Dispersion', 'player.buff(Voidform).count>=UI(dps_D2spin)&UI(dps_D)&!player.buff(Surrender to Madness)&player.insanity<40&health>35', 'player'},
+	{'!Void Torrent', '!player.moving&{{player.buff(Voidform).count>13&spell(Shadow Word: Death).charges<1&player.insanity<40&UI(dps_void)}||{player.buff(Voidform).count>6&!player.buff(Surrender to Madness)&player.insanity<40&health>35&UI(dps_void)}}'},
+	{'!Shadow Word: Death', '{player.insanity<50}||{health<45&player.buff(Voidform).count<25&player.insanity<70}'},
+	{'!Void Eruption', '!player.moving&{!player.channeling(Mind Blast)||player.insanity<50}'},
+	{'!Vampiric Touch', '!player.moving&!debuff(Shadow Word: Pain)&talent(6,2)'},
+	{'Mind Blast', '!player.moving&spell(Void Eruption).cooldown>=gcd'},
+	{'!Mind Blast', '!player.moving&spell(Void Eruption).cooldown>=gcd&debuff(Vampiric Touch)&debuff(Shadow Word: Pain)&player.channeling(Mind Flay)'},
+	{'Shadow Word: Pain', '{debuff(Shadow Word: Pain).duration<3&!talent(6,2)}||{!debuff(Shadow Word: Pain)&!talent(6,2)}||{player.moving&!debuff(Shadow Word: Pain)}'},
+	{'!Vampiric Touch', '!player.moving&{{debuff(Vampiric Touch).duration<4&!player.lastcast(Vampiric Touch)}||{!debuff(Vampiric Touch)&!player.lastcast(Vampiric Touch)}||{{debuff(Shadow Word: Pain).duration<2.3||!debuff(Shadow Word: Pain)}&talent(6,2)}}'},
+	{'Mind Flay', '!player.moving&spell(Void Eruption).cooldown>=gcd&spell(Mind Blast).cooldown>=gcd&debuff(Shadow Word: Pain)&debuff(Vampiric Touch)'}
 }
 
 local s2m2 = {
-	{'!Dispersion', 'player.buff(Voidform).count>5&player.buff(Voidform).count<10&!player.lastcast(Void Torrent)&UI(dps_D)'},
-	{'!Void Torrent', '!player.moving&UI(dps_void)', 'target'},
-	{'!Shadow Word: Death', 'player.buff(Voidform).count<10&target.debuff(Shadow Word: Pain).duration>6&target.debuff(Vampiric Touch).duration>6', 'target'},
-	{'!Shadow Word: Death', 'player.insanity<30', 'target'},
-	{'!Void Eruption', '!player.moving&{!player.channeling(Mind Blast)||player.insanity<50}', 'target'},
-	{'!Vampiric Touch', '!player.moving&!target.debuff(Shadow Word: Pain)&talent(6,2)', 'target'},
-	{'Mind Blast', '!player.moving&player.spell(Void Eruption).cooldown>gcd', 'target'},
-	{'!Mind Blast', '!player.moving&player.spell(Void Eruption).cooldown>gcd&target.debuff(Vampiric Touch)&target.debuff(Shadow Word: Pain)&player.channeling(Mind Flay)', 'target'},
-	{'!Shadow Word: Pain', 'target.debuff(Shadow Word: Pain).duration<3||!target.debuff(Shadow Word: Pain)', 'target'},
-	{'!Vampiric Touch', '!player.moving&{target.debuff(Vampiric Touch).duration<4||!target.debuff(Vampiric Touch)}', 'target'},
-	{'Mind Flay', '!player.moving&player.spell(Void Eruption).cooldown>gcd&player.spell(Mind Blast).charges<1&target.debuff(Shadow Word: Pain)&target.debuff(Vampiric Touch)', 'target'}
+	{'!Dispersion', 'player.buff(Voidform).count>5&player.buff(Voidform).count<10&!player.lastcast(Void Torrent)&UI(dps_D)', 'player'},
+	{'!Void Torrent', '!player.moving&UI(dps_void)'},
+	{'!Shadow Word: Death', 'player.buff(Voidform).count<10&debuff(Shadow Word: Pain).duration>6&debuff(Vampiric Touch).duration>6'},
+	{'!Shadow Word: Death', 'player.insanity<30'},
+	{'!Void Eruption', '!player.moving&{!player.channeling(Mind Blast)||player.insanity<50}'},
+	{'!Vampiric Touch', '!player.moving&!debuff(Shadow Word: Pain)&talent(6,2)'},
+	{'Mind Blast', '!player.moving&spell(Void Eruption).cooldown>=gcd'},
+	{'!Mind Blast', '!player.moving&spell(Void Eruption).cooldown>=gcd&debuff(Vampiric Touch)&debuff(Shadow Word: Pain)&player.channeling(Mind Flay)'},
+	{'!Shadow Word: Pain', 'debuff(Shadow Word: Pain).duration<3||!debuff(Shadow Word: Pain)'},
+	{'!Vampiric Touch', '!player.moving&{debuff(Vampiric Touch).duration<4||!debuff(Vampiric Touch)}'},
+	{'Mind Flay', '!player.moving&spell(Void Eruption).cooldown>=gcd&spell(Mind Blast).charges<1&debuff(Shadow Word: Pain)&debuff(Vampiric Touch)'}
 }
 
 local Zek_Support = {
-  {'!Shadow Word: Death', 'equipped(144438)&!player.buff(Voidform)&player.spell(Mind Blast).cooldown>gcd', 'target'},
-  {'!Shadow Word: Death', 'equipped(144438)&player.spell(Void Eruption).cooldown>gcd&player.spell(Mind Blast).cooldown>gcd&player.buff(Voidform)', 'target'},
+  {'!Shadow Word: Death', 'equipped(144438)&!player.buff(Voidform)&spell(Mind Blast).cooldown>=gcd'},
+  {'!Shadow Word: Death', 'equipped(144438)&spell(Void Eruption).cooldown>=gcd&spell(Mind Blast).cooldown>=gcd&player.buff(Voidform)'},
 }
 
-local inCombat = {
-	{SWP_MASS, 'toggle(xSWP)'},
-	{Mythic_Plus, 'range<=40'},
-	{'Shadowform', '!player.buff(Voidform)&!player.buff(Shadowform)'},
-	{Movement, '!player.buff(Voidform)||{player.buff(Voidform)&player.spell(Void Eruption).cooldown>gcd}'},
-	{Surrender},
-	{'Mind Bomb', '{toggle(abc)&target.area(8).enemies>2&!player.buff(Surrender To Madness)&!talent(7,2)}||{toggle(abc)&target.area(8).enemies>2&talent(7,2)&player.spell(Shadow Crash).cooldown==0&player.buff(Voidform)}', 'target'},
-	{Emergency},
-	{Potions},
-	{Survival, 'player.health<100&!player.buff(Surrender to Madness)'},
-	{Support, '!player.buff(Surrender to Madness)'},
+local xCombat= {
+	{SWP_MASS, 'UI(SWP_UNITS_check)', 'enemies'},
+	{'Shadowform', '!buff(Voidform)&!buff', 'player'},
+	{'Mind Bomb', '{toggle(abc)&area(8).enemies>2&!player.buff(Surrender To Madness)&!talent(7,2)}||{toggle(abc)&area(8).enemies>2&talent(7,2)&spell(Shadow Crash).cooldown==0&player.buff(Voidform)}'},
 	{Cooldowns, 'player.buff(Voidform)&toggle(cooldowns)'},
 	{Insight, 'player.buff(Shadowy Insight)&{{talent(7,1)&!player.insanity>55}||{talent(7,3)||talent(7,2)&!player.insanity==100}}||{player.moving&!player.buff(Surrender to Madness)}'},
-	{Keybinds},
-	{lshiftupts, 'toggle(lshiftupts)&target.lshiftuptAt(70)&target.inFront&target.range<40'},
-	{lshiftupts_Random},
-	{AOE, 'talent(7,2)'},
-	{s2m2, 'equipped(132864)&player.buff(Voidform)&player.buff(Surrender to Madness)'}, -- Mangaza's Madness stuff...
+	{s2m2, 'equipped(132864)&player.buff(Voidform)&player.buff(Surrender to Madness)'}, --XXX: Mangaza's Madness stuff...
 	{s2m1, 'player.buff(Voidform)&player.buff(Surrender to Madness)'},
 	{lotv2, '{equipped(132864)&player.buff(Voidform)&talent(7,1)}||{talent(7,3)&!player.buff(Surrender to Madness)&equipped(132864)&player.buff(Voidform)&!player.channeling(Void Torrent)}||{talent(7,2)&!player.buff(Surrender to Madness)&!equipped(132864)&player.buff(Voidform)&!player.channeling(Void Torrent)}'}, -- Mangaza's Madness stuff...
 	{lotv1, '{player.buff(Voidform)&talent(7,1)}||{talent(7,3)&!player.buff(Surrender to Madness)&!equipped(132864)&player.buff(Voidform)}||{talent(7,2)&!player.buff(Surrender to Madness)&!equipped(132864)&player.buff(Voidform)}'},
-	{ST2, 'equipped(132864)&!player.buff(Voidform)'},	-- Mangaza's Madness stuff...
+	{ST2, 'equipped(132864)&!player.buff(Voidform)'},																		--XXX: Mangaza's Madness stuff...
 	{ST1, '!player.buff(Voidform)'},
-	{Zek_Support},	--Shadow Word Death with Zek's Exterminatus
-	{'Mind Flay', '!player.moving', 'target'},
+	{Zek_Support, nil},																																	--XXX: Shadow Word Death with Zek's Exterminatus
+	{AOE, 'talent(7,2)'},
+	{'Mind Flay', '!player.moving'},
+}
+
+local inCombat = {
+	{Mythic_Plus, 'range<=40'},
+	{Movement, '!buff(Voidform)||{buff(Voidform)&spell(Void Eruption).cooldown>=gcd}', 'player'},
+	{Surrender, nil, 'player'},
+	{Emergency, nil, 'player'},
+	{Potions, nil, 'player'},
+	{Survival, 'health<100&!buff(Surrender to Madness)', 'player'},
+	{Support, '!player.buff(Surrender to Madness)', 'lowest'},
+	{Keybinds},
+	{Interrupts, 'toggle(Interrupts)&@Zylla.InterruptAt(intat)&inFront&&range<40', 'target'},
+	{Interrupts, 'toggle(Interrupts)&toggle(xIntRandom)&@Zylla.InterruptAt(intat)&inFront&range<40', 'enemies'},
+	{xCombat, 'UI(target)==normal', 'target'},
+	{xCombat, 'UI(target)==lowest', 'lowestenemy'},
+	{xCombat, 'UI(target)==highest', 'highestenemy'},
+	{xCombat, 'UI(target)==nearest', 'nearestenemy'},
+	{xCombat, 'UI(target)==furthest', 'furthestenemy'},
 	{'%dispelall', 'toggle(disp)'},
 }
 
 local outCombat = {
+	{PreCombat},
 	{Keybinds},
-	-- Potion of Prolonged Power usage before pull if enabled in UI.
-	{'#142117', 'UI(dbm_key)&dbm(pull in)<4&UI(s_pull)'},
-	-- Mind Blast before Pull.
-	{'Mind Blast', 'UI(dbm_key)&dbm(pull in)<2.2&UI(pull_MB)'},
-	{'Shadowform', '!player.buff(Shadowform)'},
-	--No Body and Soul from Class Order Hall.
+	{'Shadowform', '!buff', 'player'},
 	{Movement, '!player.buff(Body and Soul)&!inareaid==1040'},
-	{lshiftupts_Random},
 }
 
 NeP.CR:Add(258, {
