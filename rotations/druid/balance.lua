@@ -12,20 +12,31 @@ local GUI = {
 	{type = 'checkbox',	text = 'Left Alt: '..Zylla.ClassColor..'|r',							align = 'left', 			key = 'lalt', 		default = true},
 	{type = 'checkbox',	text = 'Right Alt: '..Zylla.ClassColor..'|r',							align = 'left', 			key = 'ralt', 		default = true},
 	{type = 'spacer'},
---{type = 'checkbox', text = 'Enable Chatoverlay', 															key = 'chat', 				width = 55, 			default = true, desc = Zylla.ClassColor..'This will enable some messages as an overlay!|r'},
+	{type = 'checkbox', text = 'Enable Chatoverlay', 															key = 'chat', 				width = 55, 			default = true, desc = Zylla.ClassColor..'This will enable some messages as an overlay!|r'},
 	unpack(Zylla.PayPal_GUI),
 	{type = 'spacer'},
 	unpack(Zylla.PayPal_IMG),
-	{type = 'ruler'},	 	{type = 'spacer'},
---Settings
+	{type = 'spacer'},		{type = 'ruler'},	 	{type = 'spacer'},
+	--TODO: Targetting: Use, or NOT use?! We'll see....
+	{type = 'header', 	size = 16, text = 'Targetting:',													align = 'center'},
+	{type = 'combo',		default = 'normal',																				key = 'target', 					list = Zylla.faketarget, 	width = 75},
+	{type = 'spacer'},
+	{type = 'text', 		text = Zylla.ClassColor..'Only one can be enabled.\nChose between normal targetting, or hitting the highest/lowest enemy.|r'},
+	{type = 'spacer'},		{type = 'ruler'},	 	{type = 'spacer'},
+	-- Settings
 	{type = 'header', 	size = 16, text = 'Class Settings',												align = 'center'},
+	{type = 'spinner',	size = 11, text = 'Interrupt at percentage:', 						key = 'intat',				default = 60,	step = 5, shiftStep = 10,	max = 100, min = 1},
 	{type = 'checkbox', text = 'Enable DBM Integration',													key = 'kDBM', 				default = true},
 	{type = 'checkbox', text = 'Enable \'pre-potting\' and Flasks',								key = 'prepot', 			default = false},
 	{type = 'combo',		default = "3",																						key = "list", 				list = Zylla.prepots, 	width = 175},
 	{type = 'spacer'},	{type = 'spacer'},
 	{type = 'checkspin',text = 'Light\'s Judgment - Units', 											key = 'LJ',						spin = 4,	step = 1,	max = 20, min = 1,	check = true,	desc = Zylla.ClassColor..'World Spell usable on Argus.|r'},
-	{type = 'ruler'},	{type = 'spacer'},
---Survival
+	{type = 'checkbox', text = 'Use Trinket #1', 																	key = 'trinket1',			default = false},
+	{type = 'checkbox', text = 'Use Trinket #2', 																	key = 'trinket2', 		default = false, desc = Zylla.ClassColor..'Trinkets will be used whenever possible!|r'},
+	{type = 'spacer'},
+	{type = 'checkspin', 	text = 'Kil\'Jaeden\'s Burning Wish - Units', 					key = 'kj', 					align = 'left', width = 55, step = 1, shiftStep = 2, spin = 4, max = 20, min = 1, check = true, desc = Zylla.ClassColor..'Legendary will be used only on selected amount of units!|r'},
+	{type = 'ruler'},	  {type = 'spacer'},
+	-- Survival
 	{type = 'header', 	size = 16, text = 'Survival',															align = 'center'},
 	{type = 'checkspin',text = 'Swiftmend', 																			key = 'sm',						spin = 70,	step = 5, shiftStep = 10, max = 100, min = 1,	check = false},
 	{type = 'checkspin',text = 'Regrowth', 																				key = 'rg',						spin = 45,	step = 5, shiftStep = 10,	max = 100, min = 1,	check = false},
@@ -42,10 +53,23 @@ local exeOnLoad = function()
 	print('|cffADFF2F --- |rRecommended Talents: in development....')
 	print('|cffADFF2F ----------------------------------------------------------------------|r')
 
+	NeP.Interface:AddToggle({
+		key = 'xFORM',
+		name = 'Handle Forms',
+		text = 'Automatically handle player forms',
+		icon = 'Interface\\Icons\\inv-mount_raven_54',
+	})
+
+	NeP.Interface:AddToggle({
+		key = 'xIntRandom',
+		name = 'Interrupt Anyone',
+		text = 'Interrupt all nearby enemies, without targeting them.',
+		icon = 'Interface\\Icons\\inv_ammo_arrow_04',
+	})
+
 end
 
 local PreCombat = {
-	{'Moonkin Form', '!buff&!buff(Travel Form)'},
 	{'Blessing of the Ancients', '!buff(Blessing of Elune)'},
 	{'%pause', 'buff(Shadowmeld)'},
 	-- Pots
@@ -58,7 +82,7 @@ local PreCombat = {
 }
 
 local MoonkinForm = {
-	{'Moonkin Form', '!buff&!buff(Travel Form)'},
+	{'Moonkin Form', 'toggle(xFORM)&!buff&!buff(Travel Form)'},
 }
 
 local Keybinds = {
@@ -67,28 +91,28 @@ local Keybinds = {
 }
 
 local Interrupts = {
-	{'!Skull Bash', 'player.form~=0&range<14'},
-	{'!Typhoon', 'interruptAt(60)&player.spell(Skull Bash).cooldown>gcd&range<16'},
-	{'!Mighty Bash', 'inMelee&player.spell(Skull Bash).cooldown>gcd'}
+	{'&Skull Bash', 'player.form~=0&range<14'},
+	{'!Typhoon', 'player.spell(Skull Bash).cooldown>gcd&range<16!player.lastgcd(Skull Bash)'},
+	{'!Mighty Bash', 'inMelee&player.spell(Skull Bash).cooldown>gcd&!player.lastgcd(Skull Bash)'}
 }
 
 local Survival = {
-	{'/run CancelShapeshiftForm()', 'form~=0&talent(3,3)&!buff(Rejuvenation)'},
+	{'/run CancelShapeshiftForm()', 'toggle(xFORM)&form~=0&talent(3,3)&!buff(Rejuvenation)'},
 	{'Rejuvenation', 'talent(3,3)&!buff(Rejuvenation)'},
-	{'/run CancelShapeshiftForm()', 'UI(sm_check)&form~=0&talent(3,3)&health<=UI(sm_spin)'},
+	{'/run CancelShapeshiftForm()', 'toggle(xFORM)&UI(sm_check)&form~=0&talent(3,3)&health<=UI(sm_spin)'},
 	{'Swiftmend', 'UI(sm_check)&talent(3,3)&health<UI(sm_spin)'},
 	{'Regrowth', 'UI(rg_check)&health<UI(rg_spin)'},
 }
 
 local Cooldowns = {
-	{'Incarnation: Chosen of Elune', 'astralpower>75&!buff(The Emerald Dreamcatcher)'},
-	{'Astral Communion', 'astralpower.deficit>75&buff(The Emerald Dreamcatcher)'},
-	{'Blood Fury', 'player.buff(Celestial Alignment)||player.buff(Incarnation: Chosen of Elune)'},
-	{'Berserking', 'player.buff(Celestial Alignment)||player.buff(Incarnation: Chosen of Elune)'},
-	{'#trinket1', 'UI(trinket1)', 'target'},
-	{'#trinket2', 'UI(trinket2)', 'target'},
+	{'Incarnation: Chosen of Elune', 'astralpower>75&!buff(The Emerald Dreamcatcher)', 'player'},
+	{'Astral Communion', 'astralpower.deficit>75&buff(The Emerald Dreamcatcher)', 'player'},
+	{'Blood Fury', 'player.buff(Celestial Alignment)||player.buff(Incarnation: Chosen of Elune)', 'player'},
+	{'Berserking', 'player.buff(Celestial Alignment)||player.buff(Incarnation: Chosen of Elune)', 'player'},
+	{'#trinket1', 'UI(trinket1)'},
+	{'#trinket2', 'UI(trinket2)'},
 	{'Light\'s Judgment', 'advanced&UI(LJ_check)&range<61&area(15).enemies>=UI(LJ_spin)', 'enemies.ground'},
-	{'#144259', 'UI(kj_check)&range<41&area(10).enemies>=UI(kj_spin)&equipped(144259)', 'target'}, --XXX: Kil'jaeden's Burning Wish (Legendary)
+	{'&#144259', 'UI(kj_check)&range<41&area(10).enemies>=UI(kj_spin)&equipped(144259)'}, --XXX: Kil'jaeden's Burning Wish (Legendary)
 }
 
 local Celestial_Alignment = {
@@ -137,7 +161,7 @@ local Fury_of_Elune = {
 	{'Moonfire', '!player.buff(Fury of Elune)&dot(Moonfire).remains<7.6'},
 	{'Sunfire', '!player.buff(Fury of Elune)&dot(Sunfire).remains<6.4'},
 	{'Stellar Flare', 'dot(Stellar Flare).remains<8.2&player.area(40).enemies==1'},
-	{'Starfall', 'advanced&{area(15).enemies>1&talent(5,3)||area(15).enemies>2}&player.buff(Fury of Elune)&cooldown(Fury of Elune).remains>10', 'ground'},
+	{'Starfall', 'advanced&{area(15).enemies>1&talent(5,3)||area(15).enemies>2}&player.buff(Fury of Elune)&cooldown(Fury of Elune).remains>10', 'target.ground'},
 	{'Starsurge', 'area(15).enemies<3&!player.buff(Fury of Elune)&cooldown(Fury of Elune).remains>7'},
 	{'Starsurge', '!player.buff(Fury of Elune)&{{astralpower>82&cooldown(Fury of Elune).remains>gcd*3}||{cooldown(Warrior of Elune).remains<6&cooldown(Fury of Elune).remains>25&player.buff(Lunar Empowerment).stack<2}}'},
 	{'Solar Wrath', 'player.buff(Solar Empowerment)'},
@@ -145,7 +169,7 @@ local Fury_of_Elune = {
 	{'Solar Wrath'},
 }
 
-local Single_Target = {
+local ST = {
 	{'New Moon', 'astralpower.deficit>0'},
 	{'Half Moon', 'astralpower.deficit>10'},
 	{'Full Moon', 'astralpower.deficit>30'},
@@ -161,7 +185,7 @@ local Single_Target = {
 	{'Solar Wrath'},
 }
 
-local xCombatAoE = {
+local AoE = {
 	{'Starfall', 'talent(5,1)&!player.buff&astralpower>39', 'target.ground'},
 	{'Starfall', 'talent(5,2)&!player.buff&astralpower>59', 'target.ground'},
 	{'Sunfire', '!debuff'},
@@ -171,14 +195,14 @@ local xCombatAoE = {
 	{'Full Moon', 'astralpower<=60'},
 	{'New Moon', 'astralpower<=90'},
 	{'Half Moon', 'astralpower<=80'},
-	{'Sunfire', 'debuff.duration<3', 'target'},
+	{'Sunfire', 'debuff.duration<3'},
 	{'Lunar Strike'},
-	{'Moonfire', 'debuff.duration<3', 'target'},
+	{'Moonfire', 'debuff.duration<3'},
 }
 
-local xCombat = {
-	{'Blessing of the Ancients', 'player.area(40).enemies<3&talent(6,3)&!player.buff(Blessing of Elune)', 'player'},
-	{'Blessing of the Ancients', 'player.area(40).enemies>2&talent(6,3)&!player.buff(Blessing of An\'she)', 'player'},
+local Normal = {
+	{'Blessing of the Ancients', 'area(40).enemies<3&talent(6,3)&!buff(Blessing of Elune)', 'player'},
+	{'Blessing of the Ancients', 'area(40).enemies>2&talent(6,3)&!buff(Blessing of An\'she)', 'player'},
 	{Fury_of_Elune, 'talent(7,1)&cooldown(Fury of Elune).remains<ttd'},
 	{Emerald_Dreamcatcher, 'equipped(137062)'},
 	{'New Moon', 'cooldown.charges<3&cooldown.recharge_time<5}||cooldown.charges==3'},
@@ -194,20 +218,28 @@ local xCombat = {
 	{'Starfall', 'advanced&player.buff(Oneth\'s Overconfidence)', 'target.ground'},
 	{'Solar Wrath', 'player.buff(Solar Empowerment).stack==3&area(5).enemies'},
 	{'Lunar Strike', 'player.buff(Lunar Empowerment).stack==3'},
-	{Celestial_Alignment, 'player.buff(Celestial Alignment)||player.buff(Incarnation: Chosen of Elune)', 'target'},
-	{Single_Target, nil, 'target'},
+	{Celestial_Alignment, 'player.buff(Celestial Alignment)||player.buff(Incarnation: Chosen of Elune)'},
+	{ST},
+}
+
+local xCombat = {
+	{Interrupts, '@Zylla.interruptAt(intat)&toggle(Interrupts)&inFront&range<40'},
+	{Interrupts, '@Zylla.interruptAt(intat)&toggle(Interrupts)&toggle(xIntRandom)&inFront&range<40', 'enemies'},
+	{Cooldowns, 'toggle(Cooldowns)'},
+	{AoE, 'area(15).enemies>=3&range<40&inFront'},
+	{Normal, 'area(15).enemies<=2&range<40&inFront'},
 }
 
 local inCombat = {
 	{MoonkinForm, nil, 'player'},
 	{Keybinds},
-	{Interrupts, 'interruptAt(70)&toggle(Interrupts)&inFront&range<40', 'target'},
-	{Interrupts, 'interruptAt(70)&toggle(Interrupts)&toggle(xIntRandom)&inFront&range<40', 'enemies'},
-	{Survival, 'health<100', 'player'},
-	{Cooldowns, 'toggle(Cooldowns)', 'player'},
+	{Survival, nil, 'player'},
 	{Mythic_Plus, 'range<=40'},
-	{xCombatAoE, 'area(15).enemies>=3&range<40&inFront', 'target'},
-	{xCombat, 'area(15).enemies<=2&range<40&inFront', 'target'},
+	{xCombat, 'UI(target)==normal', 'target'},
+	{xCombat, 'combat&alive&UI(target)==lowest', 'lowestenemy'},
+	{xCombat, 'combat&alive&UI(target)==highest', 'highestenemy'},
+	{xCombat, 'combat&alive&UI(target)==nearest', 'nearestenemy'},
+	{xCombat, 'combat&alive&UI(target)==furthest', 'furthestenemy'},
 }
 
 local outCombat = {
