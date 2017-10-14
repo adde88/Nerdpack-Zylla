@@ -4,12 +4,13 @@ local NeP = _G.NeP
 
 NeP.Listener:Add('Zylla_SA', 'COMBAT_LOG_EVENT_UNFILTERED', function(_,combatevent,_,sourceGUID,_,_,_,destGUID,_,_,_,spellid,_,_,_,_,_,_,_,_,_,_,_,_,_)
   if Zylla.Class == 5 then
-    local CurrentTime = _G.GetTime()
-    local Zylla_SA_NUM_UNITS = _G.Zylla_SA_NUM_UNITS or 0
-    Zylla.SA_TOTAL     = Zylla.SA_TOTAL or 0
+    local CurrentTime 					= _G.GetTime()
+    local Zylla_SA_NUM_UNITS 		= _G.Zylla_SA_NUM_UNITS or 0
+		_G.Zylla_SA_STATS 					= {}
+    Zylla.SA_TOTAL 							= _G.Zylla.SA_TOTAL or 0
     -- Stats buffer
-    local Zylla_SA_STATS = _G.Zylla_SA_STATS or {}
-    local Zylla_SA_DEAD = _G.Zylla_SA_DEAD or {}
+    local Zylla_SA_STATS 				= _G.Zylla_SA_STATS or {}
+    local Zylla_SA_DEAD 				= _G.Zylla_SA_DEAD or {}
     Zylla.LAST_CONTINUITY_CHECK = Zylla.LAST_CONTINUITY_CHECK or _G.GetTime()
     if sourceGUID == _G.UnitGUID("player") then
       if spellid == 147193 and combatevent == "SPELL_CAST_SUCCESS" then -- Shadowy Apparition Spawned

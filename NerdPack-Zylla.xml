@@ -19,7 +19,6 @@
   <Script file="rotations\deathknight\unholy.lua" />
   <Script file="rotations\deathknight\blood.lua" />
   <Script file="rotations\demonhunter\havoc.lua" />
-	<Script file="rotations\demonhunter\havoc-dk-custom.lua" />
   <Script file="rotations\demonhunter\vengeance.lua" />
   <Script file="rotations\druid\balance.lua" />
   <Script file="rotations\druid\feral.lua" />
@@ -48,6 +47,7 @@
   <Script file="rotations\shaman\enhancement-simc.lua" />
   <Script file="rotations\shaman\restoration.lua" />
   <Script file="rotations\warlock\affliction.lua" />
+	<Script file="rotations\warlock\affliction-dev.lua" />
   <Script file="rotations\warlock\demonology.lua" />
   <Script file="rotations\warlock\destruction.lua" />
   <Script file="rotations\warrior\arms.lua" />

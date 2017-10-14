@@ -124,23 +124,13 @@ NeP.Library:Add('Zylla', {
   end,
 
 	--usage "@Zylla.areaHeal(VAR1, VAR2, VAR3)"
-	areaHeal = function(_, args)
+	areaHeal = function(target, args)
 		args = args:gsub("%s+", "")
 		local a, b, c = _G.strsplit(",", args, 3)
 		a = tonumber(a) or NeP.DSL:Get("ui")(nil, a)	--XXX: Range
 		b = tonumber(b) or NeP.DSL:Get("ui")(nil, b)	--XXX: HP%
 		c = tonumber(c) or NeP.DSL:Get("ui")(nil, c)	--XXX: Units
-		return a and b and c and NeP.DSL:Get("area.heal")("lowest", a..","..b) >= c - 1	--TODO: Make function inherit UNIT from DSL if specified, otherwise resort to lowest/player?
-	end,
-
-	--usage "@Zylla.P.areaHeal(VAR1, VAR2, VAR3)"
-	PareaHeal = function(_, args)
-		args = args:gsub("%s+", "")
-		local a, b, c = _G.strsplit(",", args, 3)
-		a = tonumber(a) or NeP.DSL:Get("ui")(nil, a)	--XXX: Range
-		b = tonumber(b) or NeP.DSL:Get("ui")(nil, b)	--XXX: HP%
-		c = tonumber(c) or NeP.DSL:Get("ui")(nil, c)	--XXX: Units
-		return a and b and c and NeP.DSL:Get("area.heal")("player", a..","..b) >= c - 1	--TODO: Make function inherit UNIT from DSL if specified, otherwise resort to lowest/player?
+		return a and b and c and NeP.DSL:Get("area.heal")(target, a..","..b) >= c - 1	--TODO: Check if it's inheriting unit correctly.
 	end,
 
 	--usage "@Zylla.felExplosive()"
@@ -170,5 +160,14 @@ NeP.Library:Add('Zylla', {
       print('Attacking Fel Explosive!')
     end
   end,
+
+
+	--usage "@Zylla.InterruptAt(VAR1)"
+	InterruptAt = function(target, args)
+		local a = args
+		a = tonumber(a) or NeP.DSL:Get("ui")(nil, a)	--XXX: InterruptAt
+		--print(a and NeP.DSL:Get("interruptAt")(target, a))
+		return a and NeP.DSL:Get("interruptAt")(target, a) --TODO: Test it + Make function inherit UNIT from DSL if specified, otherwise resort to lowest/player?
+	end,
 
 })

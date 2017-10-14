@@ -39,18 +39,11 @@ function Zylla.AFKCheck()
   frame:SetScript("OnEvent", Zylla.onFlagChange);
 end
 
-Zylla.GuiSettings = {
-  title='Zylla\'s Combat Routines',
-  width='256',
-  height='960',
-  color='A330C9'
-}
-
 function Zylla.ExeOnLoad()
   print('|cffFFFB2F ----------------------------------------------------------------------|r')
   print('|cffFFFB2F Thank you for selecting Zylla\'s Combat Routines for NerdPack!|r')
   print('|cffFFFB2F Open|r |cffB30000\'Settings\'|r |cffFFFB2Fto customize your rotation!|r')
-  print('|')
+  print('')
   print('|cffFFFB2F Please consider donating to support my project!|r |cffB30000<3|r')
   print('|cffFFFB2F Contact me on Discord or Github to report errors, or get support!.|r')
   print('|cffFFFB2F ----------------------------------------------------------------------|r')
@@ -511,7 +504,6 @@ end
 
 Zylla.Voidform_Summary = true
 Zylla.S2M_Summary = true
-
 --Zylla.Voidform_Drain_Stacks = 0
 --Zylla.Voidform_Current_Drain_Rate = 0
 --Zylla.SA_TOTAL = 0
