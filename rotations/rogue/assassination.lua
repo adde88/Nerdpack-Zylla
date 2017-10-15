@@ -109,7 +109,7 @@ local Survival = {
 	{'Evasion', 'UI(evasion_check)&health<=UI(evasion_spin)'},
 	{'#152615', 'item(152615).usable&item(152615).count>0&health<=UI(AHP_spin)&UI(AHP_check)'}, 													--XXX: Astral Healing Potion
 	{'#127834', 'item(152615).count==0&item(127834).usable&item(127834).count>0&health<=UI(AHP_spin)&UI(AHP_check)'}, 		--XXX: Ancient Healing Potion
-	{'#5512', 'item(5512).usable&item(5512).count>0&health<=UI(HS_spin)&UI(HS_check)'} 																		--XXX: Health Stone
+	{'#5512', 'item(5512).usable&item(5512).count>0&health<=UI(HS_spin)&UI(HS_check)'},																		--XXX: Health Stone
 	{'Cloak of Shadows', 'incdmg(3).magic>health.max*0.25'},
 }
 
