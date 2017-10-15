@@ -150,7 +150,7 @@ local SBT_Opener = {
 
 local Cooldowns = {
 	{'Berserk', 'buff(Tiger\'s Fury)', 'player'},
-	{'Incarnation: King of the Jungle', '{spell(Tiger\'s Fury).cooldown<gcd||{energy.time_to_max>1&energy>25}}', 'player'},
+	{'Incarnation: King of the Jungle', 'talent(5,2)&{spell(Tiger\'s Fury).cooldown<gcd||{energy.time_to_max>1&energy>25}}', 'player'},
 	{SBT_Opener, 'talent(6,1)&xtime<20'},
 	{'#trinket1', 'UI(trinket1)'},
 	{'#trinket2', 'UI(trinket2)'},
@@ -192,9 +192,9 @@ local xCombat = {
 }
 
 local inCombat = {
+	{Keybinds},
 	{'Cat Form', '!buff(Frenzied Regeneration)&{!buff(Cat Form)&{!buff(Travel Form)||area(8).enemies>0}}', 'player'},
 	{'Rake', 'inMelee&inFront&{player.buff(Prowl)||player.buff(Shadowmeld)}', 'target'},
-	{Keybinds},
 	{Survival, nil, 'player'},
 	{Mythic_Plus, 'inMelee&inFront'},
 	{xCombat, '!player.buff(Frenzied Regeneration)&inFront&UI(target)==normal&{talent(3,1)&range<=10||!talent(3,1)&inMelee}', 'target'},
