@@ -28,7 +28,7 @@ local GUI = {
 	{type = 'spinner',	size = 11, text = 'Interrupt at percentage:', 											key = 'intat',				default = 60,	step = 5, shiftStep = 10,	max = 100, min = 1},
 	{type = 'checkbox', text = 'Enable DBM Integration',																		key = 'kDBM', 				default = true},
 	{type = 'checkbox', text = 'Enable \'pre-potting\', flasks and Legion-rune',						key = 'prepot', 			default = false},
-	{type = 'combo',		default = '1',																											key = 'list', 				list = Zylla.prepots, 	width = 175},
+	{type = 'combo',		default = '3',																											key = 'list', 				list = Zylla.prepots, 	width = 175},
 	{type = 'spacer'},	{type = 'spacer'},
 	{type = 'checkspin',text = 'Light\'s Judgment - Units', 																key = 'LJ',						spin = 4,	step = 1,	max = 20, min = 1,	check = true,	desc = Zylla.ClassColor..'World Spell usable on Argus.|r'},
 	{type = 'checkbox', text = 'Use Trinket #1', 																						key = 'trinket1',			default = false},
@@ -47,7 +47,7 @@ local GUI = {
 	{type = 'ruler'},		{type = 'spacer'},
 	-- GUI Emergency Group Healing
 	{type = 'header', 	text = 'Emergency Group Healing', 																	align = 'center'},
-	{type = 'checkspin', text = 'Healing Surge'																							key = 'hs_p',					spin = 35, check = true},},
+	{type = 'checkspin',text = 'Healing Surge',																							key = 'hs_p',					spin = 35, check = true},
 	{type = 'ruler'},		{type = 'spacer'},
 	unpack(Zylla.Mythic_GUI),
 }
@@ -72,6 +72,16 @@ local exeOnLoad = function()
 	})
 
 end
+
+local PreCombat = {
+	-- Pots
+	{'#127844', 'UI(list)==1&item(127844).usable&item(127844).count>0&UI(kDBM)&UI(prepot)&!buff(Potion of the Old War)&dbm(pull in)<3'}, 			--XXX: Potion of the Old War
+	{'#127843', 'UI(list)==2&item(127843).usable&item(127843).count>0&UI(kDBM)&UI(prepot)&!buff(Potion of Deadly Grace)&dbm(pull in)<3'}, 		--XXX: Potion of Deadly Grace
+	{'#142117', 'UI(list)==3&item(142117).usable&item(142117).count>0&UI(kDBM)&UI(prepot)&!buff(Potion of Prolonged Power)&dbm(pull in)<3'}, 	--XXX: Potion of Prolonged Power
+	-- Flasks
+	{'#127847', 'ingroup&item(127847).usable&item(127847).count>0&UI(prepot)&!buff(Flask of the Whispered Pact)'},	--XXX: Flask of the Whispered Pact
+	{'#153023', 'ingroup&item(153023).usable&item(153023).count>0&UI(prepot)&!buff(Defiled Augmentation)'},				--XXX: Lightforged Augment Rune
+}
 
 local Survival = {
 	{'&Astral Shift', 'UI(AS_check)&health<=UI(AS_spin)'},
@@ -197,7 +207,7 @@ local ASSingle = {
 	{'Flame Shock', '{!moving||moving}&!debuff(Flame Shock)||debuff(Flame Shock).duration<=gcd'},
 	{'Flame Shock', 'player.maelstrom>10&debuff(Flame Shock).duration<=player.buff(Ascendance).duration&spell(Ascendance).cooldown+player.buff(Ascendance).duration<=debuff(Flame Shock).duration'},
 	{'Earthquake', '{!moving||moving}&player.buff(Echoes of the Great Sundering)&!player.buff(Ascendance)&player.maelstrom>76&advanced', 'target.ground'},
- 	{'Earth Shock', '{!moving||moving}&player.maelstrom>82&!player.buff(Ascendance)'},
+	{'Earth Shock', '{!moving||moving}&player.maelstrom>82&!player.buff(Ascendance)'},
 	{'Stormkeeper', '!player.buff(Ascendance)'},
 	{'Elemental Blast', 'talent(5,3)'},
 	--XXX: Lightning Bolt according to Ascendance Rotaion from Storm, Earth and Lava***
@@ -229,20 +239,20 @@ local xCombat ={
 
 local inCombat = {
 	{Keybinds},
-	{Dispel, 'toggle(yuPS)&spell(Cleanse Spirit).cooldown==0'},
+	{Dispel, 'toggle(yuPS)&spell(Cleanse Spirit).cooldown<gcd'},
 	{Survival, nil, 'player'},
 	{Player, '!player.moving', 'player'},
 	{Emergency, '!player.moving', 'lowest'},
-	{xCombat, 'inFront&range<=40&UI(target)==normal', 'target'}
-	{xCombat, 'inFront&range<=40&combat&alive&UI(target)==lowest', 'lowestenemy'}
-	{xCombat, 'inFront&range<=40&combat&alive&UI(target)==highest', 'highestenemy'}
-	{xCombat, 'inFront&range<=40&combat&alive&UI(target)==nearest', 'nearestenemy'}
-	{xCombat, 'inFront&range<=40&combat&alive&UI(target)==furthest', 'furthestenemy'}
+	{xCombat, 'inFront&range<=40&UI(target)==normal', 'target'},
+	{xCombat, 'inFront&range<=40&combat&alive&UI(target)==lowest', 'lowestenemy'},
+	{xCombat, 'inFront&range<=40&combat&alive&UI(target)==highest', 'highestenemy'},
+	{xCombat, 'inFront&range<=40&combat&alive&UI(target)==nearest', 'nearestenemy'},
+	{xCombat, 'inFront&range<=40&combat&alive&UI(target)==furthest', 'furthestenemy'},
 	{Mythic_Plus, 'range<=40'},
 }
 
 local outCombat = {
-	{PreCombat, nil, 'player'}
+	{PreCombat, nil, 'player'},
 	{Dispel, 'toggle(yuPS)&spell(Cleanse Spirit).cooldown<gcd'},
 	{Emergency, '!moving&ingroup', 'lowest'},
 	{'Healing Surge', '!moving&player.health<80', 'player'},
