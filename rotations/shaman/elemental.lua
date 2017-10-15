@@ -47,7 +47,7 @@ local GUI = {
 	{type = 'ruler'},		{type = 'spacer'},
 	-- GUI Emergency Group Healing
 	{type = 'header', 	text = 'Emergency Group Healing', 																	align = 'center'},
-	{type = 'checkspin', text = 'Healing Surge'																							key = 'hs_p',					spin = 35, check = true},},
+	{type = 'checkspin', text = 'Healing Surge',																							key = 'hs_p',					spin = 35, check = true},
 	{type = 'ruler'},		{type = 'spacer'},
 	unpack(Zylla.Mythic_GUI),
 }
@@ -233,16 +233,16 @@ local inCombat = {
 	{Survival, nil, 'player'},
 	{Player, '!player.moving', 'player'},
 	{Emergency, '!player.moving', 'lowest'},
-	{xCombat, 'inFront&range<=40&UI(target)==normal', 'target'}
-	{xCombat, 'inFront&range<=40&combat&alive&UI(target)==lowest', 'lowestenemy'}
-	{xCombat, 'inFront&range<=40&combat&alive&UI(target)==highest', 'highestenemy'}
-	{xCombat, 'inFront&range<=40&combat&alive&UI(target)==nearest', 'nearestenemy'}
-	{xCombat, 'inFront&range<=40&combat&alive&UI(target)==furthest', 'furthestenemy'}
+	{xCombat, 'inFront&range<=40&UI(target)==normal', 'target'},
+	{xCombat, 'inFront&range<=40&combat&alive&UI(target)==lowest', 'lowestenemy'},
+	{xCombat, 'inFront&range<=40&combat&alive&UI(target)==highest', 'highestenemy'},
+	{xCombat, 'inFront&range<=40&combat&alive&UI(target)==nearest', 'nearestenemy'},
+	{xCombat, 'inFront&range<=40&combat&alive&UI(target)==furthest', 'furthestenemy'},
 	{Mythic_Plus, 'range<=40'},
 }
 
 local outCombat = {
-	{PreCombat, nil, 'player'}
+	{PreCombat, nil, 'player'},
 	{Dispel, 'toggle(yuPS)&spell(Cleanse Spirit).cooldown<gcd'},
 	{Emergency, '!moving&ingroup', 'lowest'},
 	{'Healing Surge', '!moving&player.health<80', 'player'},
