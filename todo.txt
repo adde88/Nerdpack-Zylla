@@ -1,0 +1,11 @@
+Instead of using several calls to xCombat like this:
+	{xCombat, 'range<=40&UI(target)==normal', 'target'},
+	{xCombat, 'combat&alive&range<=40&UI(target)==highest', 'highestenemy'},
+	{xCombat, 'combat&alive&range<=40&UI(target)==lowest', 'lowestenemy'},
+	{xCombat, 'combat&alive&range<=40&UI(target)==nearest', 'nearestenemy'},
+	{xCombat, 'combat&alive&range<=40&UI(target)==furthest', 'furthestenemy'},
+
+We will rather use some custom LUA like this to simplify it:
+	{xCombat, 'combat&alive&range<=40', (function() return NeP.DSL:Get("UI")(nil, target) end)},
+
+This requires that the keys to UI(target) is named the same as the fakeunits: "highestenemy", "lowestenemy", "nearestenemy", "furthestenemy"
