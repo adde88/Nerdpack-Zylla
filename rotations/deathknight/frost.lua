@@ -37,6 +37,8 @@ local GUI = {
 	-- Survival
 	{type = 'header', 	size = 16, text = 'Survival',															align = 'center',			size = 16},
 	{type = 'checkspin',text = 'Death Strike',																		key = 'ds', 					align = 'left', width = 55,  spin = 80, step = 5, shiftStep = 10, max = 100, min = 1, check = true},
+	{type = 'checkspin',text = 'Healthstone',																			key = 'HS',						align = 'left', width = 55, step = 5, shiftStep = 10, spin = 45, max = 100, min = 1, check = true},
+	{type = 'checkspin',text = 'Healing Potion',																	key = 'AHP',					align = 'left', width = 55, step = 5, shiftStep = 10, spin = 45, max = 100, min = 1, check = true},
 
 	unpack(Zylla.Mythic_GUI),
 }
@@ -89,7 +91,10 @@ local Interrupts = {
 }
 
 local Survival = {
-	{'Death Strike', 'UI(ds_check)&health<UI(ds_spin)&buff(Dark Succor)'},
+	{'Death Strike', 'UI(ds_check)&health<UI(ds_spin)&buff(Dark Succor)', 'target'},
+	{'#152615', 'item(152615).usable&item(152615).count>0&health<=UI(AHP_spin)&UI(AHP_check)'}, 													--XXX: Astral Healing Potion
+	{'#127834', 'item(152615).count==0&item(127834).usable&item(127834).count>0&health<=UI(AHP_spin)&UI(AHP_check)'}, 		--XXX: Ancient Healing Potion
+	{'#5512', 'item(5512).usable&item(5512).count>0&health<=UI(HS_spin)&UI(HS_check)'}, 																	--XXX: Health Stone
 }
 
 local BoS_check = {
