@@ -11,26 +11,44 @@ local GUI = {
 	{type = 'checkbox',	text = 'Left Ctrl: '..Zylla.ClassColor..'Tar Trap|r',			align = 'left', 			key = 'lcontrol',	default = true},
 	{type = 'checkbox',	text = 'Left Alt: '..Zylla.ClassColor..'Binding Shot|r',	align = 'left', 			key = 'lalt', 		default = true},
 	{type = 'checkbox',	text = 'Right Alt: '..Zylla.ClassColor..'Freezing Trap|r',align = 'left', 			key = 'ralt', 		default = true},
+	{type = 'checkbox', size = 10, text = Zylla.ClassColor..'Use Call Pet                                  Select Pet: |r',		align = 'right', 	key = 'pets', 		default = true},
 	{type = 'spacer'},
---{type = 'checkbox', text = 'Enable Chatoverlay', 															key = 'chat', 				width = 55, 			default = true, desc = Zylla.ClassColor..'This will enable some messages as an overlay!|r'},
+	{type = 'checkbox', text = 'Enable Chatoverlay', 															key = 'chat', 				width = 55, 			default = true, desc = Zylla.ClassColor..'This will enable some messages as an overlay!|r'},
 	unpack(Zylla.PayPal_GUI),
 	{type = 'spacer'},
 	unpack(Zylla.PayPal_IMG),
-	{type = 'ruler'},	 	{type = 'spacer'},
+	{type = 'spacer'},	{type = 'ruler'},	 	{type = 'spacer'},
+	--TODO: Targetting: Use, or NOT use?! We'll see....
+	{type = 'header', 	size = 16, text = 'Targetting:',													align = 'center'},
+	{type = 'combo',		default = 'normal',																				key = 'target', 					list = Zylla.faketarget, 	width = 75},
+	{type = 'spacer'},
+	{type = 'text', 		text = Zylla.ClassColor..'Only one can be enabled.\nChose between normal targetting, or hitting the highest/lowest enemy.|r'},
+	{type = 'spacer'},	{type = 'ruler'},	 	{type = 'spacer'},
 	-- Settings
-	{type = 'header', 	text = 'Class Settings',																	align = 'center'},
+	{type = 'header', 	size = 16, text = 'Class Settings',												align = 'center'},
+	{type = 'spinner',	size = 11, text = 'Interrupt at percentage:', 						key = 'intat',				default = 60,	step = 5, shiftStep = 10,	max = 100, min = 1},
+	{type = 'checkbox', text = 'Enable DBM Integration',													key = 'kDBM', 				default = true},
+	{type = 'checkbox', text = 'Enable \'pre-potting\', flasks and Legion-rune',	key = 'prepot', 			default = false},
+	{type = 'checkbox', text = 'Force Pet Assist',																key = 'passist', 			default = true},
+	{type = 'combo',		default = '1',																						key = 'list', 				list = Zylla.prepots, 	width = 175},
+	{type = 'spacer'},	{type = 'spacer'},
+	{type = 'checkspin',text = 'Light\'s Judgment - Units', 											key = 'LJ',						spin = 4,	step = 1,	max = 20, min = 1,	check = true,	desc = Zylla.ClassColor..'World Spell usable on Argus.|r'},
 	{type = 'checkbox', text = 'Summon Pet',																			key = 'kPet',					default = false},
 	{type = 'checkbox', text = 'Barrage Enabled',																	key = 'kBarrage',			default = false},
-   	{type = 'checkbox', text = 'Volley Enabled',																key = 'kVolley',			default = true},
+  {type = 'checkbox', text = 'Volley Enabled',																	key = 'kVolley',			default = true},
 	{type = 'checkbox', text = 'Misdirect Focus/Pet', 														key = 'kMisdirect',		default = true},
-	{type = 'ruler'},	{type = 'spacer'},
-  	-- Survival
+	{type = 'checkbox', text = 'Use Trinket #1', 																	key = 'trinket1',			default = false},
+	{type = 'checkbox', text = 'Use Trinket #2', 																	key = 'trinket2', 		default = false, desc = Zylla.ClassColor..'Trinkets will be used whenever possible!|r'},
+	{type = 'spacer'},
+	{type = 'checkspin', 	text = 'Kil\'Jaeden\'s Burning Wish - Units', 					key = 'kj', 					align = 'left', width = 55, step = 1, shiftStep = 2, spin = 4, max = 20, min = 1, check = true, desc = Zylla.ClassColor..'Legendary will be used only on selected amount of units!|r'},
+	{type = 'ruler'},	  {type = 'spacer'},
+  -- Survival
 	{type = 'header', 	text = 'Survival',																				align = 'center'},
-	{type = 'spinner', 	text = 'Exhileration below HP%',													key = 'E_HP',					default = 67},
-	{type = 'spinner',	text = 'Healthstone or Healing Potions',									key = 'Health Stone',	default = 45},
-	{type = 'spinner',	text = 'Aspect of the Turtle',														key = 'AotT',         default = 21},
+	{type = 'spinner', 	text = 'Exhileration',																		key = 'E_HP',					default = 67},
+	{type = 'checkspin',text = 'Healthstone',																			key = 'HS',						align = 'left', width = 55, step = 5, shiftStep = 10, spin = 45, max = 100, min = 1, check = true},
+	{type = 'checkspin',text = 'Healing Potion',																	key = 'AHP',					align = 'left', width = 55, step = 5, shiftStep = 10, spin = 45, max = 100, min = 1, check = true},	{type = 'spinner',	text = 'Aspect of the Turtle',														key = 'AotT',         default = 21},
 	{type = 'spinner',	text = 'Feign Death (Legendary Healing) %',								key = 'FD',						default = 16},
-  	{type = 'ruler'},	{type = 'spacer'},
+  {type = 'ruler'},	{type = 'spacer'},
 	unpack(Zylla.Mythic_GUI),
 }
 
@@ -53,12 +71,25 @@ local exeOnLoad = function()
 
 end
 
+local CallPet = {
+	{'Call Pet 1', 'UI(pets)==1'},
+	{'Call Pet 2', 'UI(pets)==2'},
+	{'Call Pet 3', 'UI(pets)==3'},
+	{'Call Pet 4', 'UI(pets)==4'},
+	{'Call Pet 5', 'UI(pets)==5'}
+}
+
 local PreCombat = {
-	{'/cast Call Pet 1', '!pet.exists&UI(kPet)'},
-	{'Heart of the Phoenix', '!player.debuff(Weakened Heart)&pet.dead&UI(kPet)'},
-	{'Revive Pet', 'pet.dead&UI(kPet)'},
-	{'Volley', '{toggle(aoe)&!player.buff(Volley)}||{player.buff(Volley)&!toggle(aoe)}'},
-	{'%pause', 'player.buff(Feign Death)'},
+	{CallPet, '!pet.exists'},
+	{'Volley', '{UI(kVolley)&toggle(aoe)&!buff}||{{buff&{!toggle(aoe)||!UI(kVolley)}}}'},
+	{'%pause', 'player.buff(Feign Death)||player.buff(Shadowmeld)'},
+	-- Pots
+	{'#127844', 'UI(list)==1&item(127844).usable&item(127844).count>0&UI(kDBM)&UI(prepot)&!buff(Potion of the Old War)&dbm(pull in)<3'}, 			--XXX: Potion of the Old War
+	{'#127843', 'UI(list)==2&item(127843).usable&item(127843).count>0&UI(kDBM)&UI(prepot)&!buff(Potion of Deadly Grace)&dbm(pull in)<3'}, 		--XXX: Potion of Deadly Grace
+	{'#142117', 'UI(list)==3&item(142117).usable&item(142117).count>0&UI(kDBM)&UI(prepot)&!buff(Potion of Prolonged Power)&dbm(pull in)<3'}, 	--XXX: Potion of Prolonged Power
+	-- Flasks
+	{'#127848', 'ingroup&item(127848).usable&item(127848).count>0&UI(prepot)&!buff(Flask of the Seventh Demon)'},	--XXX: Flask of the Seventh Demon
+	{'#153023', 'ingroup&item(153023).usable&item(153023).count>0&UI(prepot)&!buff(Defiled Augmentation)'},				--XXX: Lightforged Augment Rune
 }
 
 local Keybinds = {
@@ -70,31 +101,32 @@ local Keybinds = {
 }
 
 local Survival = {
-	{'Exhilaration', 'player.health<UI(E_HP)'},
-	{'#127834', 'item(127834).count>0&player.health<UI(Health Stone)'},        -- Ancient Healing Potion
-	{'#5512', 'item(5512).count>0&player.health<UI(Health Stone)', 'player'},  --Health Stone
-	{'Aspect of the Turtle', 'player.health<UI(AotT)'},
-	{'Feign Death', 'player.health<UI(FD)&equipped(137064)'},
+	{'Exhilaration', 'health<UI(E_HP)'},
+	{'#152615', 'item(152615).usable&item(152615).count>0&health<=UI(AHP_spin)&UI(AHP_check)'}, 													--XXX: Astral Healing Potion
+	{'#127834', 'item(152615).count==0&item(127834).usable&item(127834).count>0&health<=UI(AHP_spin)&UI(AHP_check)'}, 		--XXX: Ancient Healing Potion
+	{'#5512', 'item(5512).usable&item(5512).count>0&health<=UI(HS_spin)&UI(HS_check)'}, 																	--XXX: Health Stone
+	{'Aspect of the Turtle', 'health<UI(AotT)'},
+	{'Feign Death', 'health<UI(FD)&equipped(137064)'},
 }
 
 local Cooldowns = {
-	{'Trueshot', 'xtime<5||player.buff(Bloodlust)||target.time_to_die>={180-artifact(Quick Shot).rank*10+15}||player.buff(Bullseye).stack>25||target.time_to_die<16'},
-	{'Blood Fury', 'player.buff(Trueshot)'},
-	{'Berserking', 'player.buff(Trueshot)'},
+	{'Trueshot', 'xtime<5||buff(Bloodlust)||target.ttd>={180-artifact(Quick Shot).rank*10+15}||buff(Bullseye).stack>25||target.ttd<16'},
+	{'Blood Fury', 'buff(Trueshot)'},
+	{'Berserking', 'buff(Trueshot)'},
+	{'#trinket1', 'UI(trinket1)'},
+	{'#trinket2', 'UI(trinket2)'},
+	{'Light\'s Judgment', 'advanced&UI(LJ_check)&range<61&area(15).enemies>=UI(LJ_spin)', 'enemies.ground'},
+	{'&#144259', 'UI(kj_check)&range<=40&area(10).enemies>=UI(kj_spin)&equipped(144259)', 'target'}, 	--XXX: Kil'jaeden's Burning Wish (Legendary)
 }
 
-local Interrupts_Normal = {
+local Interrupts = {
 	{'!Counter Shot'},
-}
-
-local Interrupts_Random = {
-	{'!Counter Shot', 'interruptAt(70)&toggle(xIntRandom)&toggle(Interrupts)&inFront&range<51', 'enemies'},
 }
 
 local TargetDie = {
 	{'Marked Shot', 'toggle(aoe)'},
 	{'Windburst', '!moving'},
-	{'Aimed Shot', '!moving&target.debuff(Vulnerable).remains>action(Aimed Shot).execute_time&target.time_to_die>action(Aimed Shot).execute_time'},
+	{'Aimed Shot', '!moving&debuff(Vulnerable).remains>action(Aimed Shot).execute_time&ttd>action(Aimed Shot).execute_time'},
 	{'Sidewinders', 'toggle(aoe)'},
 	{'Aimed Shot', '!moving||'},
 	{'Arcane Shot'},
@@ -104,19 +136,19 @@ local TrueshotAoE = {
 	{'Marked Shot', 'toggle(aoe)'},
 	{'Barrage', 'toggle(aoe)&!talent(4,3)&UI(kBarrage)'},
 	{'Piercing Shot', 'toggle(aoe)'},
-	{'Explosive Shot', 'toggle(aoe)&target.area(8).enemies>2&target.range<10'},
-	{'Aimed Shot', '!moving&{!talent(4,3)||talent(7,3)}&target.area(8).enemies==1&player.buff(Lock and Load)&action(Aimed Shot).execute_time<target.debuff(Vulnerable).remains'},
+	{'Explosive Shot', 'toggle(aoe)&area(8).enemies>2&range<10'},
+	{'Aimed Shot', '!moving&{!talent(4,3)||talent(7,3)}&area(8).enemies==1&player.buff(Lock and Load)&action(Aimed Shot).execute_time<debuff(Vulnerable).remains'},
 	{'Multi-Shot', 'toggle(aoe)'},
 }
 
 local Non_Patient_Sniper = {
 	{'Windburst', '!moving'},
-	{'Piercing Shot', 'player.focus>90&target.area(8).enemies>2&target.debuff(Vulnerable).duration<3'},
-	{'Sentinel', '!target.debuff(Hunter\'s Mark)&player.focus>30&!player.buff(Trueshot)'},
-	{'Sidewinders', 'toggle(aoe)&target.debuff(Vulnerable).remains<gcd&xtime>6'},
+	{'Piercing Shot', 'player.focus>90&area(8).enemies>2&debuff(Vulnerable).duration<3'},
+	{'Sentinel', '!debuff(Hunter\'s Mark)&player.focus>30&!player.buff(Trueshot)'},
+	{'Sidewinders', 'toggle(aoe)&debuff(Vulnerable).remains<gcd&xtime>6'},
 	{'Aimed Shot', '!moving&player.buff(Lock and Load)&player.area(50).enemies.inFront<3'},
 	{'Marked Shot', 'toggle(aoe)'},
-	{'Explosive Shot', 'target.area(8).enemies>2&target.range<10'},
+	{'Explosive Shot', 'area(8).enemies>2&range<10'},
 	{'Sidewinders', 'toggle(aoe)&{{{player.buff(Marking Targets)||player.buff(Trueshot)}&focus.deficit>70}||action(Sidewinders).charges>0.9}'},
 	{'Arcane Shot', '!variable.use_multishot&{player.buff(Marking Targets)||{talent(1,2)&{!player.buff(Steady Focus)||player.buff(Steady Focus).remains<2}}}'},
 	{'Multi-Shot', 'variable.use_multishot&{player.buff(Marking Targets)||{talent(1,2)&{!player.buff(Steady Focus)||player.buff(Steady Focus).remains<2}}}'},
@@ -128,16 +160,16 @@ local Non_Patient_Sniper = {
 local Opener = {
 	{'A Murder of Crows'},
 	{'True Shot', 'xtime>5'},
-	{'Piercing Shot', 'target.debuff(Vulnerable).duration<3||target.area(8).enemies>2'},
-	{'Explosive Shot', 'toggle(aoe)&target.area(8).enemies>2&target.range<10'},
+	{'Piercing Shot', 'debuff(Vulnerable).duration<3||area(8).enemies>2'},
+	{'Explosive Shot', 'toggle(aoe)&area(8).enemies>2&range<10'},
 	{'Arcane Shot', 'line_cd(Arcane Shot)>16&!talent(4,3)'},
 	{'Sidewinders', 'toggle(aoe)&{{!player.buff(Marking Targets)&player.buff(Trueshot).remains<2}||{Action(Sidewinders).charges>0.9&player.focus<80}}'},
 	{'Sidewinders', 'toggle(aoe)'},
 	{'Barrage', 'toggle(aoe)&player.buff(Bloodlust)&UI(kBarrage)'},
 	{'Barrage', 'toggle(aoe)&!talent(4,3)&UI(kBarrage)'},
-	{'Aimed Shot', '!moving&{player.buff(Lock and Load)&action(Aimed Shot).execute_time<target.debuff(Vulnerable).remains}||player.focus>90&!talent(4,3)&talent(7,3)'},
-	{'Aimed Shot', '!moving&player.buff(Lock and Load)&action(Aimed Shot).execute_time<target.debuff(Vulnerable).remains'},
-	{'Aimed Shot', '!moving&action(Aimed Shot).execute_time<target.debuff(Vulnerable).remains'},
+	{'Aimed Shot', '!moving&{player.buff(Lock and Load)&action(Aimed Shot).execute_time<debuff(Vulnerable).remains}||player.focus>90&!talent(4,3)&talent(7,3)'},
+	{'Aimed Shot', '!moving&player.buff(Lock and Load)&action(Aimed Shot).execute_time<debuff(Vulnerable).remains'},
+	{'Aimed Shot', '!moving&action(Aimed Shot).execute_time<debuff(Vulnerable).remains'},
 	{'Aimed Shot', '!moving'},
 	{'Black Arrow'},
 	{'Marked Shot', 'toggle(aoe)'},
@@ -146,68 +178,70 @@ local Opener = {
 }
 
 local Patient_Sniper = {
-	{'Marked Shot', '{talent(7,1)&talent(6,2)&player.area(50).enemies.inFront>2}||target.debuff(Hunter\'s Mark).remains<2||{{target.debuff(Vulnerable)||talent(7,1)}&target.debuff(Vulnerable).remains<gcd)}'},
-	{'Windburst', 'talent(7,1)&{!target.debuff(Hunter\'s Mark)||{target.debuff(Hunter\'s Mark).remains>action(Windburst).execute_time&focus+{focus.regen*target.debuff(Hunter\'s Mark).remains}>40}}||player.buff(Trueshot)'},
+	{'Marked Shot', '{talent(7,1)&talent(6,2)&player.area(50).enemies.inFront>2}||debuff(Hunter\'s Mark).remains<2||{{debuff(Vulnerable)||talent(7,1)}&debuff(Vulnerable).remains<gcd)}'},
+	{'Windburst', 'talent(7,1)&{!debuff(Hunter\'s Mark)||{debuff(Hunter\'s Mark).remains>action(Windburst).execute_time&focus+{focus.regen*debuff(Hunter\'s Mark).remains}>40}}||player.buff(Trueshot)'},
 	{'Sidewinders', 'toggle(aoe)&player.buff(Trueshot)&{{!player.buff(Marking Targets&player.buff(Trueshot).remains<2)}||{action(Sidewinders).charges>0.9&{focus.deficit>70||player.area(50).enemies.inFront>1}}}'},
-	{'Multi-Shot', 'toggle(aoe)&player.buff(Marking Targets)&!target.debuff(Hunter\'s Mark)&variable.use_multishot&focus.deficit>2*target.area(8).enemies+gcd*focus.regen'},
-	{'Aimed Shot', '!moving&player.buff(Lock and Load)&player.buff(Trueshot)&target.debuff(Vulnerable).remains>action(Aimed Shot).execute_time'},
+	{'Multi-Shot', 'toggle(aoe)&player.buff(Marking Targets)&!debuff(Hunter\'s Mark)&variable.use_multishot&focus.deficit>2*area(8).enemies+gcd*focus.regen'},
+	{'Aimed Shot', '!moving&player.buff(Lock and Load)&player.buff(Trueshot)&debuff(Vulnerable).remains>action(Aimed Shot).execute_time'},
 	{'Marked Shot', 'player.buff(Trueshot)&!talent(7,1)'},
 	{'Arcane Shot', 'player.buff(Trueshot)'},
-	{'Aimed Shot', '!moving&!target.debuff(Hunter\'s Mark)&target.debuff(Vulnerable).remains>action(Aimed Shot).execute_time'},
-	{'Aimed Shot', '!moving&talent(7,1)&target.debuff(Hunter\'s Mark).remains>action(Aimed Shot).execute_time&target.debuff(Vulnerable).remains>action(Aimed Shot).execute_time&{player.buff(Lock and Load)||{player.focus+target.debuff(Hunter\'s Mark).remains*focus.regen>70&player.focus+focus.regen*target.debuff(Vulnerable).remains>70}}&{!talent(7,2)||{talent(7,2)&spell(Piercing Shot).cooldown>5}||player.focus>120}'},
-	{'Aimed Shot', '!moving&!talent(7,1)&target.debuff(Hunter\'s Mark).remains>action(Aimed Shot).execute_time&target.debuff(Vulnerable).remains>action(Aimed Shot).execute_time&{player.buff(Lock and Load)||{player.buff(Trueshot)&player.focus>70}||{!player.buff(Trueshot)&player.focus+target.debuff(Hunter\'s Mark).remains*focus.regen>70&player.focus+focus.regen*target.debuff(Vulnerable).remains>70}}&{!talent(7,2)||{talent(7,2)&spell(Piercing Shot).cooldown>5}||player.focus>120}'},
-	{'Windburst', '!moving&!talent(7,1)&player.focus>80{!target.debuff(Hunter\'s Mark)||{target.debuff(Hunter\'s Mark).remains>action(Windburst).execute_time&focus+{focus.regen*target.debuff(Hunter\'s Mark).remains}>40}}'},
+	{'Aimed Shot', '!moving&!debuff(Hunter\'s Mark)&debuff(Vulnerable).remains>action(Aimed Shot).execute_time'},
+	{'Aimed Shot', '!moving&talent(7,1)&debuff(Hunter\'s Mark).remains>action(Aimed Shot).execute_time&debuff(Vulnerable).remains>action(Aimed Shot).execute_time&{player.buff(Lock and Load)||{player.focus+debuff(Hunter\'s Mark).remains*focus.regen>70&player.focus+focus.regen*debuff(Vulnerable).remains>70}}&{!talent(7,2)||{talent(7,2)&spell(Piercing Shot).cooldown>5}||player.focus>120}'},
+	{'Aimed Shot', '!moving&!talent(7,1)&debuff(Hunter\'s Mark).remains>action(Aimed Shot).execute_time&debuff(Vulnerable).remains>action(Aimed Shot).execute_time&{player.buff(Lock and Load)||{player.buff(Trueshot)&player.focus>70}||{!player.buff(Trueshot)&player.focus+debuff(Hunter\'s Mark).remains*focus.regen>70&player.focus+focus.regen*debuff(Vulnerable).remains>70}}&{!talent(7,2)||{talent(7,2)&spell(Piercing Shot).cooldown>5}||player.focus>120}'},
+	{'Windburst', '!moving&!talent(7,1)&player.focus>80{!debuff(Hunter\'s Mark)||{debuff(Hunter\'s Mark).remains>action(Windburst).execute_time&focus+{focus.regen*debuff(Hunter\'s Mark).remains}>40}}'},
 	{'Marked Shot', '{talent(7,1)&player.area(50).enemies.inFront>1}||focus.deficit<50||player.buff(Trueshot)||{player.buff(Marking Targets)&{!talent(7,1)||spell(Sidewinders).charges>0.2}}'},
-	{'Piercing Shot', 'player.focus>80&target.area(8).enemies>2&target.debuff(Vulnerable).duration<3'},
+	{'Piercing Shot', 'player.focus>80&area(8).enemies>2&debuff(Vulnerable).duration<3'},
 	{'Sidewinders', 'toggle(aoe)&variable.safe_to_build&{{player.buff(Trueshot)&focus.deficit>70}||action(Sidewinders).charges>0.9}'},
-	{'Sidewinders', 'toggle(aoe)&{player.buff(Marking Targets)&!target.debuff(Hunter\'s Mark)&!player.buff(Trueshot)}||{spell(Sidewinders).charges>1&target.time_to_die<11}'},
+	{'Sidewinders', 'toggle(aoe)&{player.buff(Marking Targets)&!debuff(Hunter\'s Mark)&!player.buff(Trueshot)}||{spell(Sidewinders).charges>1&ttd<11}'},
 	{'Arcane Shot', 'variable.safe_to_build&!variable.use_multishot&focus.deficit>5+gcd*focus.regen'},
-	{'Multi-Shot', 'toggle(aoe)&variable.safe_to_build&variable.use_multishot&focus.deficit>2*target.area(8).enemies+gcd*focus.regen'},
-	{'Aimed Shot', '!moving&!target.debuff(Vulnerable)&focus>80&spell(Windburst).cooldown>focus.time_to_max'},
+	{'Multi-Shot', 'toggle(aoe)&variable.safe_to_build&variable.use_multishot&focus.deficit>2*area(8).enemies+gcd*focus.regen'},
+	{'Aimed Shot', '!moving&!debuff(Vulnerable)&focus>80&spell(Windburst).cooldown>focus.time_to_max'},
 }
 
- local xCombat = {
+local xCombat = {
+	{Interrupts, '@Zylla.InterruptAt(intat)&toggle(Interrupts)&inFront&range<51'},
+	{Interrupts, '@Zylla.InterruptAt(intat)&toggle(Interrupts)&toggle(xIntRandom)&inFront&range<51', 'enemies'},
 	{'Volley', '{toggle(aoe)&!player.buff(Volley)}||{player.buff(Volley)&!toggle(aoe)}'},
 	{'Aimed Shot', 'moving&player.buff(Gyroscopic Stabilization)'},
 	{'Arcane Torrent', 'focus.deficit>30&{!talent(7,1)||spell(Sidewinders).charges<2}'},
 	{Opener, 'player.area(50).enemies==1&xtime<25'},
-	{'A Murder of Crows', '{target.time_to_die>65||target.health<20&target.boss}&{!target.debuff(Hunter\'s Mark)||{target.debuff(Hunter\'s Mark).remains>action(A Murder of Crows).execute_time&target.debuff(Vulnerable).remains>target.action(A Murder of Crows).execute_time&focus+{focus.regen*target.debuff(Vulnerable).remains}>50&focus+{focus.regen*target.debuff(Hunter\'s Mark).remains}>50}}'},
+	{'A Murder of Crows', '{ttd>65||health<20&boss}&{!debuff(Hunter\'s Mark)||{debuff(Hunter\'s Mark).remains>action(A Murder of Crows).execute_time&debuff(Vulnerable).remains>action(A Murder of Crows).execute_time&focus+{focus.regen*debuff(Vulnerable).remains}>50&focus+{focus.regen*debuff(Hunter\'s Mark).remains}>50}}'},
 	{Cooldowns, 'toggle(Cooldowns)'},
-	{TrueshotAoE, '{target.time_to_die>={180-artifact(Quick Shot).rank*10+15}||target.health<20&target.boss}&{!target.debuff(Hunter\'s Mark)||{target.debuff(Hunter\'s Mark).remains>action(A Murder of Crows).execute_time&target.debuff(Vulnerable).remains>target.action(A Murder of Crows).execute_time&focus+{focus.regen*target.debuff(Vulnerable).remains}>50&focus+{focus.regen*target.debuff(Hunter\'s Mark).remains}>50}}'},
-	{'Black Arrow', '!target.debuff(Hunter\'s Mark)||{target.debuff(Hunter\'s Mark).remains>action(Black Arrow).execute_time&target.debuff(Vulnerable).remains>target.action(Black Arrow).execute_time&focus+{focus.regen*target.debuff(Vulnerable).remains}>60&focus+{focus.regen*target.debuff(Hunter\'s Mark).remains}>60}}'},
-	{'Barrage', 'toggle(aoe)&UI(kBarrage)&{target.area(15).enemies>1||{target.area(15).enemies==1&player.focus>90}}'},
+	{TrueshotAoE, '{ttd>={180-artifact(Quick Shot).rank*10+15}||health<20&boss}&{!debuff(Hunter\'s Mark)||{debuff(Hunter\'s Mark).remains>action(A Murder of Crows).execute_time&debuff(Vulnerable).remains>action(A Murder of Crows).execute_time&focus+{focus.regen*debuff(Vulnerable).remains}>50&focus+{focus.regen*debuff(Hunter\'s Mark).remains}>50}}'},
+	{'Black Arrow', '!debuff(Hunter\'s Mark)||{debuff(Hunter\'s Mark).remains>action(Black Arrow).execute_time&debuff(Vulnerable).remains>action(Black Arrow).execute_time&focus+{focus.regen*debuff(Vulnerable).remains}>60&focus+{focus.regen*debuff(Hunter\'s Mark).remains}>60}}'},
+	{'Barrage', 'toggle(aoe)&UI(kBarrage)&{area(15).enemies>1||{area(15).enemies==1&player.focus>90}}'},
 	{TargetDie},
 	{Patient_Sniper, 'talent(4,3)'},
 	{Non_Patient_Sniper, '!talent(4,3)'},
 }
 
-local xPetCombat = {
-	{'Mend Pet', 'pet.exists&pet.alive&pet.health<75&!pet.buff(Mend Pet)'},
-	{'Heart of the Phoenix', '!player.debuff(Weakened Heart)&pet.dead&UI(kPet)'},
-	{'Revive Pet', 'pet.dead&UI(kPet)'},
-	{'/cast Call Pet 1', '!pet.exists&UI(kPet)'},
-	{'/cast [@focus, help] [@pet, nodead, exists] Misdirection', 'spell(Misdirection).cooldown<=gcd&toggle(xMisdirect)'},
+local xPet = {
+	{CallPet, '!pet.exists'},
+	{'Mend Pet', 'pet.alive&pet.health<=UI(P_HP_spin)&UI(P_HP_check)&!pet.buff(Mend Pet)'},
+		{{ 																			 																			--XXX: Pet Dead
+			{'Heart of the Phoenix', '!player.debuff(Weakened Heart)&player.combat'}, 	--XXX: Heart of the Phoenix
+			{'Revive Pet', 'player.debuff(Weakened Heart)'} 														--XXX: Revive Pet
+	}, 'pet.dead&UI(kPet)'},
+	{'&/cast [@focus, help] [@pet, nodead, exists] Misdirection', 'spell(Misdirection).cooldown<gcd&UI(kDBM)&toggle(xMisdirect)&{player.combat||{!player.combat&dbm(pull in)<3}}'},
+	{'&/cast [@focus, help] [@pet, nodead, exists] Misdirection', 'spell(Misdirection).cooldown<gcd&!UI(kDBM)&toggle(xMisdirect)&player.combat'},
 }
 
 local inCombat = {
-	{Util},
-	{Trinkets},
-	{Heirlooms},
 	{Keybinds},
-	{Survival},
-	{Interrupts_Random},
-	{Interrupts_Normal, 'target.interruptAt(70)&toggle(Interrupts)&target.inFront&target.range<51'},
-	{Cooldowns, 'toggle(Cooldowns)'},
+	{Survival, nil, 'player'},
+	{Cooldowns, 'toggle(Cooldowns)', 'player'},
 	{Mythic_Plus, 'range<51'},
-	{xCombat,'target.range<51&target.inFront'},
-	{xPetCombat, 'UI(kPet)&!talent(1,1)'},
+	{xCombat,'range<51&inFront&UI(target)==normal', 'target'},
+	{xCombat,'range<51&inFront&UI(target)==normal', 'lowestenemy'},
+	{xCombat,'range<51&inFront&UI(target)==normal', 'highestenemy'},
+	{xCombat,'range<51&inFront&UI(target)==normal', 'nearestenemy'},
+	{xCombat,'range<51&inFront&UI(target)==normal', 'furthestenemy'},
+	{xPet, 'UI(kPet)&!talent(1,1)'},
 }
 
 local outCombat = {
 	{Keybinds},
-	{PreCombat},
-	{Interrupts_Random},
-	{Interrupts_Normal, 'target.interruptAt(70)&toggle(Interrupts)&target.inFront&target.range<51'},
+	{PreCombat, nil, 'player'},
 }
 
 NeP.CR:Add(254, {
