@@ -109,7 +109,7 @@ local Survival = {
 	{'Evasion', 'UI(evasion_check)&health<=UI(evasion_spin)'},
 	{'#152615', 'item(152615).usable&item(152615).count>0&health<=UI(AHP_spin)&UI(AHP_check)'}, 													--XXX: Astral Healing Potion
 	{'#127834', 'item(152615).count==0&item(127834).usable&item(127834).count>0&health<=UI(AHP_spin)&UI(AHP_check)'}, 		--XXX: Ancient Healing Potion
-	{'#5512', 'item(5512).usable&item(5512).count>0&health<=UI(HS_spin)&UI(HS_check)'} 																		--XXX: Health Stone
+	{'#5512', 'item(5512).usable&item(5512).count>0&health<=UI(HS_spin)&UI(HS_check)'}, 																		--XXX: Health Stone
 	{'Cloak of Shadows', 'incdmg(3).magic>health.max*0.25'},
 }
 
@@ -136,10 +136,10 @@ local Stealthed = {
 }
 
 local Poisons = {
-	{'Deadly Poison', 'duration<70&!player.lastcast&!talent(6,1)'},
-	{'Agonizing Poison', 'duration<70&!player.lastcast&talent(6,1)'},
-	{'Leeching Poison', 'duration<70&!player.lastcast&talent(4,1)'},
-	{'Crippling Poison', 'duration<70&!player.lastcast&!talent(4,1)'},
+	{'Deadly Poison', 'buff.duration<70&!player.lastcast&!talent(6,1)'},
+	{'Agonizing Poison', 'buff.duration<70&!player.lastcast&talent(6,1)'},
+	{'Leeching Poison', 'buff.duration<70&!player.lastcast&talent(4,1)'},
+	{'Crippling Poison', 'buff.duration<70&!player.lastcast&!talent(4,1)'},
 }
 
 local xCombat = {
