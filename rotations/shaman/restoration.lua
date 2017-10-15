@@ -208,6 +208,8 @@ local inCombat = {
 }
 
 local outCombat = {
+	{PreCombat},
+	{Keybinds},
 	{'%dispelall', 'toggle(disp)&spell(Purify Spirit).cooldown<=gcd'},
 	{Lowest, 'range<=40&&health<=99', 'lowest'},
 	{'Riptide', 'health<=99', 'lnbuff(Riptide)'},
