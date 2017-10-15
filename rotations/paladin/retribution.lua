@@ -54,6 +54,7 @@ local GUI = {
 	{type = 'checkspin',text = 'Flash of Light', 																							key = 'G_FoL', 			spin = 35, step = 5, shiftStep = 10, max = 100, min = 1, check = false},
 	{type = 'checkspin',text = 'Lay on Hands', 																								key = 'G_LoH', 			spin = 5,  step = 5, shiftStep = 10, max = 100, min = 1, check = false},
 	{type = 'checkspin',text = 'Blessing of Protection', 																			key = 'G_BoP', 			spin = 5,  step = 5, shiftStep = 10, max = 100, min = 1, check = false},
+	{type = 'checkspin',text = 'Blessing of Protection on TANKS',															key = 'T_BoP', 			spin = 5,  step = 5, shiftStep = 10, max = 100, min = 1, check = false},
 	{type = 'checkbox',	text = 'Dispel Party Members',																				key = 'disAll', 		default = true},
 	{type = 'checkbox', text = 'Use Blessing of Freedom', 																		key = 'G_BoF', 			default = false},
 	{type = 'ruler'},		{type = 'spacer'},
@@ -125,7 +126,8 @@ local Survival = {
 local Group = {
 	{'!Flash of Light', 'UI(G_FoL_check)&health<=UI(G_FoL_spin)'},
 	{'!Lay on Hands', 'UI(G_LoH_check)&health<=UI(G_LoH_spin)'},
-	{'!Blessing of Protection', 'UI(G_BoP_check)&health<=UI(G_BoP_spin)'},
+	{'!Blessing of Protection', 'UI(G_BoP_check)&health<=UI(G_BoP_spin)&!role(tank)'},
+	{'!Blessing of Protection', 'UI(T_BoP_check)&health<=UI(T_BoP_spin)&role(tank)', 'tank'},
 	{'!Blessing of Freedom', 'player.ingroup&ingroup&inMelee&UI(G_BoF)&{state(root)||state(snare)}', 'friendly'},
 }
 
