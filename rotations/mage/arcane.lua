@@ -34,7 +34,7 @@ local GUI = {
 	{type='checkbox', text='Use Trinket #1', 																							key='trinket1',			align='left', default=false},
 	{type='checkbox', text='Use Trinket #2', 																							key='trinket2', 		align='left', default=false, desc=Zylla.ClassColor..'Trinkets will be used whenever possible!|r'},
 	{type='spacer'},
-	{type='checkspin', 	text='Kil\'Jaeden\'s Burning Wish - Units', 											key='kj', 					align='left', width=55, step=1, shiftStep=2, spin==4, max=20, min=1, check=true, desc=Zylla.ClassColor..'Legendary will be used only on selected amount of units!|r'},
+	{type='checkspin', 	text='Kil\'Jaeden\'s Burning Wish - Units', 											key='kj', 					align='left', width=55, step=1, shiftStep=2, spin=4, max=20, min=1, check=true, desc=Zylla.ClassColor..'Legendary will be used only on selected amount of units!|r'},
 	{type='ruler'},	  {type='spacer'},
 	-- Survival
 	{type='header', 	size=16, text='Survival',																						align='center'},
