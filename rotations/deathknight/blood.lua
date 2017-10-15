@@ -39,7 +39,7 @@ local GUI = {
 	{type = 'checkspin',text = 'Kil\'Jaeden\'s Burning Wish - Units', 										key = 'kj', 					align = 'left', width = 55, step = 1, shiftStep = 2, spin = 4, max = 20, min = 1, check = true, desc = Zylla.ClassColor..'Legendary will be used only on selected amount of units!|r'},
 	{type = 'ruler'},		{type = 'spacer'},
 	-- Survival
-	{type = 'header', 	size = 16, text = 'Survival',																			align = 'center',			size = 16},
+	{type = 'header', 	size = 16, text = 'Survival',																			align = 'center'},
 	{type = 'checkspin',text = 'Dancing Rune Weapon',																			key = 'drw', 					spin = 70, step = 5, shiftStep = 10, max = 100, min = 1},
 	{type = 'checkspin',text = 'Death Strike - Min. HP%',																	key = 'DSA', 					spin = 70, step = 5, shiftStep = 10, max = 100, min = 1},
 	{type = 'checkspin',text = 'Death Strike - Runic Power cap',													key = 'DSb', 					spin = 85, step = 5, shiftStep = 10, max = 100, min = 1},
