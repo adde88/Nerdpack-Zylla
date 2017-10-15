@@ -89,7 +89,7 @@ local Interrupts = {
 }
 
 local Survival = {
-	{'Death Strike', 'UI(ds_check)&health<UI(ds_spin)&buff(Dark Succor)'},
+	{'Death Strike', 'UI(ds_check)&player.health<UI(ds_spin)&player.buff(Dark Succor)','target'},
 }
 
 local BoS_check = {
