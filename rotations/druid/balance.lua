@@ -223,8 +223,8 @@ local Normal = {
 }
 
 local xCombat = {
-	{Interrupts, '@Zylla.interruptAt(intat)&toggle(Interrupts)&inFront&range<40'},
-	{Interrupts, '@Zylla.interruptAt(intat)&toggle(Interrupts)&toggle(xIntRandom)&inFront&range<40', 'enemies'},
+	{Interrupts, '@Zylla.InterruptAt(intat)&toggle(Interrupts)&inFront&range<40'},
+	{Interrupts, '@Zylla.InterruptAt(intat)&toggle(Interrupts)&toggle(xIntRandom)&inFront&range<40', 'enemies'},
 	{Cooldowns, 'toggle(Cooldowns)'},
 	{AoE, 'area(15).enemies>=3&range<40&inFront'},
 	{Normal, 'area(15).enemies<=2&range<40&inFront'},

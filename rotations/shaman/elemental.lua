@@ -219,7 +219,7 @@ local Cooldowns = {
 }
 
 local xCombat ={
-	{Interrupts, 'toggle(Interrupts)&@Zylla.interruptAt(intat)&inFront&range<40'},
+	{Interrupts, 'toggle(Interrupts)&@Zylla.InterruptAt(intat)&inFront&range<40'},
 	{Cooldowns, 'toggle(Cooldowns)', 'player'},
 	{AoE, 'toggle(aoe)&player.area(40).enemies>=3'},
 	{ASSingle, 'talent(7,1)'},

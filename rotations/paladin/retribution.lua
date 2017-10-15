@@ -209,8 +209,8 @@ local Opener = {
 }
 
 local xCombat = {
-	{Interrupts, 'toggle(interrupts)&@Zylla.interruptAt(intat)'},
-	{Interrupts, 'toggle(interrupts)&toggle(xIntRandom)&@Zylla.interruptAt(intat)', 'enemies'},
+	{Interrupts, 'toggle(interrupts)&@Zylla.InterruptAt(intat)'},
+	{Interrupts, 'toggle(interrupts)&toggle(xIntRandom)&@Zylla.InterruptAt(intat)', 'enemies'},
 	{Cooldowns, 'toggle(cooldowns)&inMelee&ttd>10'},
 	{Opener, 'xtime<3&{spell(Judgment).cooldown<=gcd||spell(Blade of Justice).cooldown<=gcd||spell(Wake of Ashes).cooldown<=gcd}'},
 	{Combat, 'inMelee&inFront'},

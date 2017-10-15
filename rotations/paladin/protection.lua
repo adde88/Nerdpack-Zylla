@@ -141,8 +141,8 @@ local ST = {
 }
 
 local xCombat = {
-	{Interrupts, 'toggle(interrupts)&@Zylla.interruptAt(intat)'},
-	{Interrupts, 'toggle(interrupts)&toggle(xIntRandom)&@Zylla.interruptAt(intat)', 'enemies'},
+	{Interrupts, 'toggle(interrupts)&@Zylla.InterruptAt(intat)'},
+	{Interrupts, 'toggle(interrupts)&toggle(xIntRandom)&@Zylla.InterruptAt(intat)', 'enemies'},
 	{Cooldowns, 'toggle(Cooldowns)'},
 	{AoE, 'toggle(AoE)&player.area(8).enemies>=3'},
 	{ST, 'inFront&inMelee'}
