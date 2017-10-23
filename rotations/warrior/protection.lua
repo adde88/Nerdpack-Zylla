@@ -144,11 +144,7 @@ local inCombat = {
 	{Keybinds},
 	{'Taunt', 'toggle(super_taunt)&combat&alive&threat<100', 'enemies'},
 	{Mythic_Plus, 'inMelee'},
-	{xCombat, 'inMelee&inFront&UI(target)==normal', 'target'},
-	{xCombat, 'combat&alive&inMelee&inFront&UI(target)==lowest', 'lowestenemy'},
-	{xCombat, 'combat&alive&inMelee&inFront&UI(target)==highest', 'highestenemy'},
-	{xCombat, 'combat&alive&inMelee&inFront&UI(target)==nearest', 'nearestenemy'},
-	{xCombat, 'combat&alive&inMelee&inFront&UI(target)==furthest', 'furthestenemy'},
+	{xCombat, 'combat&alive&range<41&inFront', (function() return NeP.DSL:Get("UI")(nil, 'target') end)}, --TODO: TEST! ALOT MORE TESTING!
 }
 
 local outCombat = {

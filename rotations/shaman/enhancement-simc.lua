@@ -135,6 +135,8 @@ local Interrupts = {
 }
 
 local xCombat = {
+	{Interrupts, 'toggle(Interrupts)&@Zylla.InterruptAt(intat)&range<=35'},
+	{Interrupts, 'toggle(Interrupts)&@Zylla.InterruptAt(intat)&range<=35', 'enemies'},
 	{Cooldowns, 'toggle(Cooldowns)&ttd>12'},
 	--XXX: Crash Lightning
 	{'Crash Lightning', 'player.lastcast(Feral Spirit)'},
@@ -181,17 +183,10 @@ local xCombat = {
 local inCombat = {
 	{'Heroism', 'toggle(xHeroism)&!hashero', 'player'},
 	{Keybinds},
-	{Interrupts, 'toggle(Interrupts)&@Zylla.InterruptAt(intat)&range<=35', 'target'},
-	{Interrupts, 'toggle(Interrupts)&@Zylla.InterruptAt(intat)&range<=35', 'enemies'},
 	{Survival, nil, 'player'},
 	{Party, 'ingroup', 'lowest'},
 	{Mythic_Plus, 'ui(mythic_fel)&inMelee'},
-	{xCombat, 'target.inMelee&target.inFront'},
-	{xCombat, 'UI(target)==normal', 'target'},
-	{xCombat, 'combat&alive&UI(target)==lowest', 'lowestenemy'},
-	{xCombat, 'combat&alive&UI(target)==highest', 'highestenemy'},
-	{xCombat, 'combat&alive&UI(target)==nearest', 'nearestenemy'},
-	{xCombat, 'combat&alive&UI(target)==furthest', 'furthestenemy'},
+	{xCombat, 'combat&alive&range<41&inFront', (function() return NeP.DSL:Get("UI")(nil, 'target') end)}, --TODO: TEST! ALOT MORE TESTING!
 	{'Ghost Wolf', 'movingfor>0.75&target.range>=12!buff', 'player'}
 }
 

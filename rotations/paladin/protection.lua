@@ -153,11 +153,7 @@ local inCombat = {
   {Survival, nil, 'player'},
   {'%taunt(Hand of Reckoning)', 'toggle(aoe)'},
   {'Shield of the Righteous', '!player.buff&{player.health<60||spell.count>1}', 'target'},
-	{xCombat, 'inMelee&UI(target)==normal', 'target'},
-	{xCombat, 'combat&alive&inMelee&UI(target)==highest', 'highestenemy'},
-	{xCombat, 'combat&alive&inMelee&UI(target)==lowest', 'lowestenemy'},
-	{xCombat, 'combat&alive&inMelee&UI(target)==nearest', 'nearestenemy'},
-	{xCombat, 'combat&alive&inMelee&UI(target)==furthest', 'furthestenemy'},
+	{xCombat, 'combat&alive&range<41&inFront', (function() return NeP.DSL:Get("UI")(nil, 'target') end)}, --TODO: TEST! ALOT MORE TESTING!
 	{Mythic_Plus, 'inMelee'},
 }
 

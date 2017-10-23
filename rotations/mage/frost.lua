@@ -9,8 +9,8 @@ local GUI = {
 	{type = 'header',  	size = 16, text = 'Keybinds:',	 																	align = 'center'},
 	{type = 'checkbox',	text = 'Left Shift: '..Zylla.ClassColor..'Pause|r',								align = 'left', 			key = 'lshift', 	default = true},
 	{type = 'checkbox',	text = 'Left Ctrl: '..Zylla.ClassColor..'Blizzard|r',							align = 'left', 			key = 'lcontrol',	default = true},
-	{type = 'checkbox',	text = 'Left Alt: '..Zylla.ClassColor..'Frost Nova|r',						align = 'left', 			key = 'lalt', 		default = true},
-	{type = 'checkbox',	text = 'Right Alt: '..Zylla.ClassColor..'|r',											align = 'left', 			key = 'ralt', 		default = true},
+	{type = 'checkbox',	text = 'Left Alt: '..Zylla.ClassColor..'|r',											align = 'left', 			key = 'lalt', 		default = true},
+	{type = 'checkbox',	text = 'Right Alt: '..Zylla.ClassColor..'Frost Nova|r',						align = 'left', 			key = 'ralt', 		default = true},
 	{type = 'spacer'},
 --{type = 'checkbox', text = 'Enable Chatoverlay', 																			key = 'chat', 				width = 55, 			default = true, desc = Zylla.ClassColor..'This will enable some messages as an overlay!|r'},
 	unpack(Zylla.PayPal_GUI),
@@ -19,13 +19,13 @@ local GUI = {
 	{type = 'spacer'},	{type = 'ruler'},	 	{type = 'spacer'},
 	--TODO: Targetting: Use, or NOT use?! We'll see....
 	{type = 'header', 	size = 16, text = 'Targetting:',																	align = 'center'},
-	{type = 'combo',		default = 'normal',																								key = 'target', 					list = Zylla.faketarget, 	width = 75},
+	{type = 'combo',		default = 'target',																								key = 'target', 	list = Zylla.faketarget, 	width = 75},
 	{type = 'spacer'},
 	{type = 'text', 		text = Zylla.ClassColor..'Only one can be enabled.\nChose between normal targetting, or hitting the highest/lowest enemy.|r'},
 	{type = 'spacer'},	{type = 'ruler'},	 	{type = 'spacer'},
 	-- Settings
 	{type = 'header', 	size = 16, text = 'Class Settings:',															align = 'center'},
-	{type = 'spinner',	size = 11, text = 'Interrupt at percentage:', 										key = 'intat',				default = 60,	step = 5, shiftStep = 10,	max = 100, min = 1},
+	{type = 'spinner',	size = 11, text = 'Interrupt at percentage:', 										key = 'intat',		default = 60,	step = 5, shiftStep = 10,	max = 100, min = 1},
 	{type = 'checkbox', text = 'Enable DBM Integration',																	key = 'kDBM', 		default = true},
 	{type = 'checkbox', text = 'Enable \'pre-potting\', flasks and Legion-rune',					key = 'prepot', 	default = false},
 	{type = 'checkbox', text = 'Enable \'pre-cast Flurry\'',															key = 'precast', 	default = false},
@@ -67,13 +67,6 @@ local exeOnLoad = function()
 	print('|cffFFFB2F Configuration: |rRight-click MasterToggle and go to Combat Routines Settings!|r')
 
 	NeP.Interface:AddToggle({
-		key = 'xTimeWarp',
-		name = 'Time Warp',
-		text = 'Automatically use Time Warp.',
-		icon = 'Interface\\Icons\\ability_mage_timewarp',
-	})
-
-	NeP.Interface:AddToggle({
 		key = 'xIntRandom',
 		name = 'Interrupt Anyone',
 		text = 'Interrupt all nearby enemies, without targeting them.',
@@ -83,6 +76,7 @@ local exeOnLoad = function()
 end
 
 local PreCombat = {
+	{'Ice Barrier', 'UI(ibarr)&!buff'},
 	{'Summon Water Elemental', '!talent(1,2)&{!pet.exists||!pet.alive}'},
 	-- Pots
 	{'#127844', 'UI(list)==1&item(127844).usable&item(127844).count>0&UI(kDBM)&UI(prepot)&!buff(Potion of the Old War)&dbm(pull in)<5'}, 			--XXX: Potion of the Old War
@@ -98,7 +92,7 @@ local Keybinds = {
 	-- Pause
 	{'%pause', 'keybind(lshift)&UI(lshift)'},
 	{'Blizzard', 'keybind(lcontrol)&UI(lcontrol)', 'cursor.ground'},
-	{'Frost Nova', 'keybind(lalt)&UI(lalt)'}
+	{'Frost Nova', 'keybind(ralt)&UI(ralt)'}
 }
 
 local Interrupts = {
@@ -154,12 +148,11 @@ local xCombat = {
 	{'Frozen Touch', 'player.buff(Fingers of Frost).stack<={0+artifact(Icy Hand).zenabled}'},
 	{'Frost Bomb', 'debuff(Frost Bomb).remains<action(Ice Lance).travel_time&player.buff(Fingers of Frost).stack>0'},
 	{'Ice Lance', '{player.buff(Fingers of Frost).stack>0&cooldown(Icy Veins).remains>10}||player.buff(Fingers of Frost).stack>2'},
-	{'Frozen Orb'},
-	{'Frozen Orb',  'advanced&honortalent(6,1)', 'target.ground'},
+	{'Frozen Orb', 'ttd>10&toggle(cooldowns)'},
+	{'Frozen Orb',  'advanced&honortalent(6,1)&ttd>10&toggle(cooldowns)', 'target.ground'},
 	{'Comet Storm', 'range<41&combat&alive&infront&advanced&UI(cstorm_check)&area(6).enemies>=UI(cstorm_spin)', 'enemies.ground'},
 	{'Blizzard', 'range<41&combat&alive&advanced&{{UI(blizze_check)&talent(6,3)&area(10).enemies>=UI(blizze_spin})||{UI(blizz_check)!talent(6,3)&area(8).enemies>=UI(blizz_spin)}}', 'enemies.ground'},
-	{'Ebonbolt', 'player.buff(Fingers of Frost).stack<={0+artifact(Icy Hand).zenabled}'},
-	{'Ice Barrier', '!buff&!buff(Rune of Power)', 'player'},
+	{'Ebonbolt', 'player.buff(Fingers of Frost).stack<={0+artifact(Icy Hand).zenabled}&ttd>10&toggle(cooldowns)'},
 	{'Ice Floes', 'gcd.remains<0.2&movingfor>0.75&!lastcast(Ice Floes)&!buff', 'player'},
 	{'Frostbolt', '!player.moving||player.buff(Ice Floes)'},
 	{'Glacial Spike'},
@@ -171,11 +164,7 @@ local inCombat = {
 	{'Time Warp', 'UI(kTW)&!hashero', 'player'},
 	{Keybinds},
 	{Survival, nil, 'player'},
-	{xCombat, 'range<41&inFront&UI(target)==normal', 'target'},
-	{xCombat, 'combat&alive&range<41&inFront&combat&alive&UI(target)==lowest', 'lowestenemy'},
-	{xCombat, 'combat&alive&range<41&inFrontcombat&alive&UI(target)==highest', 'highestenemy'},
-	{xCombat, 'combat&alive&range<41&inFrontcombat&alive&UI(target)==nearest', 'nearestenemy'},
-	{xCombat, 'combat&alive&range<41&inFrontcombat&alive&UI(target)==furthest', 'furthestenemy'},
+	{xCombat, 'combat&alive&range<41&inFront', (function() return NeP.DSL:Get("UI")(nil, 'target') end)}, --TODO: TEST! ALOT MORE TESTING!
 	{Mythic_Plus, 'range<41'},
 	{xPvP},
 }

@@ -39,7 +39,7 @@ local GUI = {
 	{type = 'checkspin',text = 'Kil\'Jaeden\'s Burning Wish - Units', 										key = 'kj', 					align = 'left', width = 55, step = 1, shiftStep = 2, spin = 4, max = 20, min = 1, check = true, desc = Zylla.ClassColor..'Legendary will be used only on selected amount of units!|r'},
 	{type = 'ruler'},		{type = 'spacer'},
 	-- Survival
-	{type = 'header', 	size = 16, text = 'Survival',																			align = 'center'},
+	{type = 'header', 	size = 16, text = 'Survival',																			align = 'center',			size = 16},
 	{type = 'checkspin',text = 'Dancing Rune Weapon',																			key = 'drw', 					spin = 70, step = 5, shiftStep = 10, max = 100, min = 1},
 	{type = 'checkspin',text = 'Death Strike - Min. HP%',																	key = 'DSA', 					spin = 70, step = 5, shiftStep = 10, max = 100, min = 1},
 	{type = 'checkspin',text = 'Death Strike - Runic Power cap',													key = 'DSb', 					spin = 85, step = 5, shiftStep = 10, max = 100, min = 1},
@@ -145,12 +145,7 @@ local inCombat = {
 	{Survival, nil, 'player'},
 	{Mythic_Plus, 'inMelee'},
 	{xTaunts, 'toggle(super_taunt)', 'enemies'},
-	{xCombat, 'UI(target)==normal', 'target'},
-	{xCombat, 'UI(target)==lowest', 'lowestenemy'},
-	{xCombat, 'UI(target)==highest', 'highestenemy'},
-	{xCombat, 'UI(target)==nearest', 'nearestenemy'},
-	{xCombat, 'UI(target)==furthest', 'furthestenemy'},
-
+	{xCombat, 'combat&alive&range<41&inFront', (function() return NeP.DSL:Get("UI")(nil, 'target') end)}, --TODO: TEST! ALOT MORE TESTING!
 }
 
 local outCombat = {

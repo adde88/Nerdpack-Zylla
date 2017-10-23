@@ -34,7 +34,7 @@ local GUI = {
 	{type='checkbox', text='Use Trinket #1', 																							key='trinket1',			align='left', default=false},
 	{type='checkbox', text='Use Trinket #2', 																							key='trinket2', 		align='left', default=false, desc=Zylla.ClassColor..'Trinkets will be used whenever possible!|r'},
 	{type='spacer'},
-	{type='checkspin', 	text='Kil\'Jaeden\'s Burning Wish - Units', 											key='kj', 					align='left', width=55, step=1, shiftStep=2, spin=4, max=20, min=1, check=true, desc=Zylla.ClassColor..'Legendary will be used only on selected amount of units!|r'},
+	{type='checkspin', 	text='Kil\'Jaeden\'s Burning Wish - Units', 											key='kj', 					align='left', width=55, step=1, shiftStep=2, spin==4, max=20, min=1, check=true, desc=Zylla.ClassColor..'Legendary will be used only on selected amount of units!|r'},
 	{type='ruler'},	  {type='spacer'},
 	-- Survival
 	{type='header', 	size=16, text='Survival',																						align='center'},
@@ -157,11 +157,7 @@ local inCombat = {
 	{'Evocation', 'UI(evocation_check)&mana<=UI(evocation_spin)', 'player'},
 	{'Arcane Familiar', '!buff', 'player'},
 	{Survival, nil, 'player'},
-	{xCombat, 'range<41&inFront&UI(target)==normal', 'target'},
-	{xCombat, 'combat&alive&range<41&inFront&combat&alive&UI(target)==lowest', 'lowestenemy'},
-	{xCombat, 'combat&alive&range<41&inFrontcombat&alive&UI(target)==highest', 'highestenemy'},
-	{xCombat, 'combat&alive&range<41&inFrontcombat&alive&UI(target)==nearest', 'nearestenemy'},
-	{xCombat, 'combat&alive&range<41&inFrontcombat&alive&UI(target)==furthest', 'furthestenemy'},
+	{xCombat, 'combat&alive&range<41&inFront', (function() return NeP.DSL:Get("UI")(nil, 'target') end)}, --TODO: TEST! ALOT MORE TESTING!
 	{Mythic_Plus, 'range<=40'}
 }
 

@@ -243,11 +243,7 @@ local inCombat = {
 	{Survival, nil, 'player'},
 	{Player, '!player.moving', 'player'},
 	{Emergency, '!player.moving', 'lowest'},
-	{xCombat, 'inFront&range<=40&UI(target)==normal', 'target'},
-	{xCombat, 'inFront&range<=40&combat&alive&UI(target)==lowest', 'lowestenemy'},
-	{xCombat, 'inFront&range<=40&combat&alive&UI(target)==highest', 'highestenemy'},
-	{xCombat, 'inFront&range<=40&combat&alive&UI(target)==nearest', 'nearestenemy'},
-	{xCombat, 'inFront&range<=40&combat&alive&UI(target)==furthest', 'furthestenemy'},
+	{xCombat, 'combat&alive&range<41&inFront', (function() return NeP.DSL:Get("UI")(nil, 'target') end)}, --TODO: TEST! ALOT MORE TESTING!
 	{Mythic_Plus, 'range<=40'},
 }
 

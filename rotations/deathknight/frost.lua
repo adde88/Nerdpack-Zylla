@@ -35,7 +35,7 @@ local GUI = {
 	{type = 'checkspin',text = 'Kil\'Jaeden\'s Burning Wish - Units', 						key = 'kj', 					align = 'left', width = 55, step = 1, shiftStep = 2, spin = 4, max = 20, min = 1, check = true, desc = Zylla.ClassColor..'Legendary will be used only on selected amount of units!|r'},
 	{type = 'ruler'},		{type = 'spacer'},
 	-- Survival
-	{type = 'header', 	size = 16, text = 'Survival',															align = 'center'},
+	{type = 'header', 	size = 16, text = 'Survival',															align = 'center',			size = 16},
 	{type = 'checkspin',text = 'Death Strike',																		key = 'ds', 					align = 'left', width = 55,  spin = 80, step = 5, shiftStep = 10, max = 100, min = 1, check = true},
 	{type = 'checkspin',text = 'Healthstone',																			key = 'HS',						align = 'left', width = 55, step = 5, shiftStep = 10, spin = 45, max = 100, min = 1, check = true},
 	{type = 'checkspin',text = 'Healing Potion',																	key = 'AHP',					align = 'left', width = 55, step = 5, shiftStep = 10, spin = 45, max = 100, min = 1, check = true},
@@ -195,7 +195,7 @@ local inCombat = {
 	{Survival, nil, 'player'},
 	{Mythic_Plus, 'inMelee'},
 	{MACHINEGUN, 'toggle(xMACHINEGUN)&inMelee&inFront', 'target'},
-	{xCombat, '!toggle(xMACHINEGUN)&inMelee&inFront', 'target'},
+	{xCombat, 'combat&alive&range<41&inFront', (function() return NeP.DSL:Get("UI")(nil, 'target') end)}, --TODO: TEST! ALOT MORE TESTING!}
 }
 
 local outCombat = {

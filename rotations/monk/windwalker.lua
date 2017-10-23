@@ -212,10 +212,7 @@ local inCombat = {
 	{Interrupts, 'toggle(Interrupts)&toggle(xIntRandom)&@Zylla.InterruptAt(intat)', 'enemies'},
 	{Cooldowns, 'toggle(cooldowns)&target.ttd>10'},
 	{Mythic_Plus, 'inMelee'},
-	{xCombat, 'UI(target)==normal', 'target'},
-	{xCombat, 'combat&alive&UI(target)==lowest', 'lowestenemy'},
-	{xCombat, 'combat&alive&UI(target)==highest', 'highestenemy'},
-	{xCombat, 'combat&alive&UI(target)==nearest', 'nearestenemy'},
+	{xCombat, 'combat&alive&range<41&inFront', (function() return NeP.DSL:Get("UI")(nil, 'target') end)}, --TODO: TEST! ALOT MORE TESTING!
 }
 
 local outCombat = {

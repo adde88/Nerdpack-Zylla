@@ -11,7 +11,7 @@ local GUI = {
 	{type = 'checkbox',	text = 'Left Ctrl: '..Zylla.ClassColor..'Tar Trap|r',			align = 'left', 			key = 'lcontrol',	default = true},
 	{type = 'checkbox',	text = 'Left Alt: '..Zylla.ClassColor..'Binding Shot|r',	align = 'left', 			key = 'lalt', 		default = true},
 	{type = 'checkbox',	text = 'Right Alt: '..Zylla.ClassColor..'Freezing Trap|r',align = 'left', 			key = 'ralt', 		default = true},
-	{type = 'checkbox', size = 10, text = Zylla.ClassColor..'Use Call Pet                                  Select Pet: |r',		align = 'right', 	key = 'pets', 		default = true},
+	{type = 'checkbox', size = 10, text = Zylla.ClassColor..'Use Call Pet                                  Select Pet: |r',		align = 'right', 	key = 'epets', 		default = true},
 	{type = 'combo',		default = '1',																						key = 'pets', 				list = Zylla.pets, 	width = 50},
 	{type = 'spacer'},	{type = 'spacer'},
 	{type = 'checkbox', text = 'Enable Chatoverlay', 															key = 'chat', 				width = 55, 			default = true, desc = Zylla.ClassColor..'This will enable some messages as an overlay!|r'},
@@ -184,11 +184,7 @@ local inCombat = {
 	{Interrupts, '@Zylla.InterruptAt(intat)&toggle(Interrupts)&range<=40', 'target'},
 	{Cooldowns, 'toggle(Cooldowns)'},
 	{Mythic_Plus, 'range<=40'},
-	{xCombat, 'range<=40&UI(target)==normal', 'target'},
-	{xCombat, 'combat&alive&range<=40&UI(target)==highest', 'highestenemy'},
-	{xCombat, 'combat&alive&range<=40&UI(target)==lowest', 'lowestenemy'},
-	{xCombat, 'combat&alive&range<=40&UI(target)==nearest', 'nearestenemy'},
-	{xCombat, 'combat&alive&range<=40&UI(target)==furthest', 'furthestenemy'},
+	{xCombat, 'combat&alive&range<41&inFront', (function() return NeP.DSL:Get("UI")(nil, 'target') end)}, --TODO: TEST! ALOT MORE TESTING!
 	{xPet}
 }
 

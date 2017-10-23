@@ -109,7 +109,7 @@ local Survival = {
 	{'Evasion', 'UI(evasion_check)&health<=UI(evasion_spin)'},
 	{'#152615', 'item(152615).usable&item(152615).count>0&health<=UI(AHP_spin)&UI(AHP_check)'}, 													--XXX: Astral Healing Potion
 	{'#127834', 'item(152615).count==0&item(127834).usable&item(127834).count>0&health<=UI(AHP_spin)&UI(AHP_check)'}, 		--XXX: Ancient Healing Potion
-	{'#5512', 'item(5512).usable&item(5512).count>0&health<=UI(HS_spin)&UI(HS_check)'},																		--XXX: Health Stone
+	{'#5512', 'item(5512).usable&item(5512).count>0&health<=UI(HS_spin)&UI(HS_check)'}, 																	--XXX: Health Stone
 	{'Cloak of Shadows', 'incdmg(3).magic>health.max*0.25'},
 }
 
@@ -145,6 +145,7 @@ local Poisons = {
 local xCombat = {
 	{Interrupts, '@Zylla.InterruptAt(intat)&toggle(interrupts)'},
 	{Interrupts, '@Zylla.InterruptAt(intat)&toggle(interrupts)&toggle(xIntRandom)', 'enemies'},
+	{Ranged, '!inMelee&inRanged'},
 	{Cooldowns, 'toggle(cooldowns)'},
 	--XXX: Rupture
 	{'Rupture', 'player.buff(Vanish)'},
@@ -173,12 +174,7 @@ local inCombat = {
 	{Stealthed},
 	{Survival, nil, 'player'},
 	{Mythic_Plus, 'inMelee'},
-	{xCombat, 'inMelee&!player.buff(Stealth)&UI(target)==normal', 'target'},
-	{xCombat, 'inMelee&!player.buff(Stealth)&combat&alive&UI(target)==lowest', 'lowestenemy'},
-	{xCombat, 'inMelee&!player.buff(Stealth)&combat&alive&UI(target)==highest', 'highestenemy'},
-	{xCombat, 'inMelee&!player.buff(Stealth)&combat&alive&UI(target)==nearest', 'nearestenemy'},
-	{xCombat, 'inMelee&!player.buff(Stealth)&combat&alive&UI(target)==furthest', 'furthestenemy'},
-	{Ranged, '!inMelee&inRanged'},
+	{xCombat, 'combat&alive&range<41&inFront', (function() return NeP.DSL:Get("UI")(nil, 'target') end)}, --TODO: TEST! ALOT MORE TESTING!
 }
 
 local outCombat= {

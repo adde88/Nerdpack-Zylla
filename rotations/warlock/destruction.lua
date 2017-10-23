@@ -117,18 +117,15 @@ local Cooldowns = {
 }
 
 local Interrupts = {
-	{'!Fear', 'player.movingfor<0.75&interruptAt(12)&inFront&range<41&UI(k_FEAR)', 'target'},
+	{'!Fear', 'player.movingfor<0.75&inFront&range<41&UI(k_FEAR)'},
 	{'!Shadowfury', 'player.movingfor<0.75&advanced&interruptAt(12)&inFront&range<31', 'target.ground'},
-	{'!Mortal Coil', 'interruptat(70)&inFront&range<21', 'target'},
-}
-
-local Interrupts_Random = {
-	{'!Fear', 'player.movingfor<0.75&interruptAt(12)&inFront&range<41&UI(k_FEAR)&combat&alive', 'enemies'},
-	{'!Shadowfury', 'player.movingfor<0.75&interruptAt(70)&advanced&range<31&combat&alive', 'enemies.ground'},
-	{'!Mortal Coil', 'interruptAt(5)&inFront&range<21&UI(xIntRandom)&combat&alive', 'enemies'},
+	{'!Shadowfury', 'toggle(xIntRandom)&player.movingfor<0.75&advanced&interruptAt(10)&inFront&range<31', 'enemies.ground'},
+	{'!Mortal Coil', 'inFront&range<21'},
 }
 
 local xCombat = {
+	{Interrupts, 'toggle(interrupts)&@Zylla.InterruptAt(intat)'},
+	{Interrupts, 'toggle(interrrupts)&toggle(xIntRandom)&@Zylla.InterruptAt(intat)', 'enemies'},
 	{'Shadowburn', 'player.buff(Conflagration of Chaos).duration<=action(Chaos Bolt.cast_time)'},
 	{'Shadowburn', 'player.soul_shard<5&{{spell(Shadowburn).charges==1&set_bonus(T19)==4&spell(Shadowburn).recharge<action(Chaos Bolt).cast_time}||{spell(Shadowburn).charges==2}&set_bonus(T19)==4}}'},
 	{'Havoc', 'toggle(aoe)&player.area(40).enemies.infront>1&!debuff&!is(target)&combat&alive', 'enemies'},
@@ -148,19 +145,15 @@ local xCombat = {
 
 local inCombat = {
 	{Keybinds},
-	{Interrupts, 'toggle(interrupts)'},
-	{Interrupts_Random, 'toggle(xIntRandom)'},
 	{Survival, 'player.health<100'},
 	{Cooldowns, 'toggle(Cooldowns)'},
 	{Mythic_Plus, 'range<41'},
-	{xCombat, 'range<41&inFront'},
+	{xCombat, 'combat&alive&range<41&inFront', (function() return NeP.DSL:Get("UI")(nil, 'target') end)}, --TODO: TEST! ALOT MORE TESTING!
 }
 
 local outCombat = {
 	{PreCombat, nil, 'player'},
 	{Keybinds},
-	{Interrupts, 'toggle(interrupts)'},
-	{Interrupts_Random, 'toggle(xIntRandom)'},
 	{Pets},
 	{'Create Healthstone', 'item(5512).count==0&!lastcast(Create Healthstone)'},
 	{'Soulstone', 'UI(ss_enable)&!buff', 'player'},
