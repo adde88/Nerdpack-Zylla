@@ -70,9 +70,9 @@ Zylla.wpets = {
 }
 
 Zylla.faketarget = {
-	{key = 'normal', text = 'Normal'},
-	{key = 'lowest', text = 'Lowest'},
-	{key = 'highest', text = 'Highest'},
-	{key = 'nearest', text = 'Nearest'},
-	{key = 'furthest', text = 'Furthest'}
+	{key = 'target', 				text = 'Normal'},
+	{key = 'lowestenemy', 	text = 'Lowest'},
+	{key = 'highestenemy', 	text = 'Highest'},
+	{key = 'nearestenemy', 	text = 'Nearest'},
+	{key = 'furthestenemy', text = 'Furthest'}
 }
