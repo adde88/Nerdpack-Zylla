@@ -131,9 +131,10 @@ local Survival = {
 }
 
 local Keybinds = {
-	{'!Healing Rain', 'UI(lshift)&keybind(lshift)'},
-	{'!Lightning Surge Totem', 'UI(lcontrol)&keybind(lcontrol)'},
-	{'!Cloudburst Totem', 'UI(lalt)&keybind(lalt)'},
+	{'%pause', 'keybind(lshift)&UI(lshift)'},
+	{'!Healing Rain', 'UI(lcontrol)&keybind(lcontrol)'},
+	{'!Lightning Surge Totem', 'UI(lalt)&keybind(lalt)'},
+	{'!Cloudburst Totem', 'UI(ralt)&keybind(ralt)'},
 }
 
 local Totems = {
