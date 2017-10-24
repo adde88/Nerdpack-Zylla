@@ -223,7 +223,7 @@ local inCombat = {
 	{Blessings, nil, 'player'},
 	{Mythic_Plus, 'inMelee'},
 	{Group, 'player.movingfor<0.75&inGroup&toggle(groupAssist)', 'lowest'},
-	{xCombat, 'combat&alive&range<41&inFront', (function() return NeP.DSL:Get("UI")(nil, 'target') end)}, --TODO: TEST! ALOT MORE TESTING!
+	{xCombat, 'combat&alive&inMelee&inFront', (function() return NeP.DSL:Get("UI")(nil, 'target') end)}, --TODO: TEST! ALOT MORE TESTING!
 }
 
 local outCombat = {

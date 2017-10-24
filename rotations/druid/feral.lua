@@ -197,7 +197,7 @@ local inCombat = {
 	{Keybinds},
 	{Survival, nil, 'player'},
 	{Mythic_Plus, 'inMelee&inFront'},
-	{xCombat, 'combat&alive&range<41&inFront', (function() return NeP.DSL:Get("UI")(nil, 'target') end)}, --TODO: TEST! ALOT MORE TESTING!
+	{xCombat, 'combat&alive&inMelee&inFront', (function() return NeP.DSL:Get("UI")(nil, 'target') end)}, --TODO: TEST! ALOT MORE TESTING!
 	{AoE_PTF, 'inmelee&infront', 'enemies'}
 }
 

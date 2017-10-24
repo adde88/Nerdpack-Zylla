@@ -181,7 +181,7 @@ local inCombat = {
 	{RollingBones, nil, 'player'},
 	{Blade_Flurry, nil, 'player'},
 	{Mythic_Plus, 'inMelee'},
-	{xCombat, 'combat&alive&range<41&inFront', (function() return NeP.DSL:Get("UI")(nil, 'target') end)}, --TODO: TEST! ALOT MORE TESTING!
+	{xCombat, 'combat&alive&inMelee&inFront', (function() return NeP.DSL:Get("UI")(nil, 'target') end)}, --TODO: TEST! ALOT MORE TESTING!
 	{TricksofTrade},
 }
 

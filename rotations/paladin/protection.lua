@@ -153,7 +153,7 @@ local inCombat = {
   {Survival, nil, 'player'},
   {'%taunt(Hand of Reckoning)', 'toggle(aoe)'},
   {'Shield of the Righteous', '!player.buff&{player.health<60||spell.count>1}', 'target'},
-	{xCombat, 'combat&alive&range<41&inFront', (function() return NeP.DSL:Get("UI")(nil, 'target') end)}, --TODO: TEST! ALOT MORE TESTING!
+	{xCombat, 'combat&alive&inMelee&inFront', (function() return NeP.DSL:Get("UI")(nil, 'target') end)}, --TODO: TEST! ALOT MORE TESTING!
 	{Mythic_Plus, 'inMelee'},
 }
 

@@ -180,7 +180,7 @@ local inCombat = {
 	{Dispel, 'toggle(dispels)&spell(Detox).cooldown<gcd'},
 	{Snares, nil, 'player'},
 	{Survival, nil, 'player'},
-	{xCombat, 'combat&alive&range<41&inFront', (function() return NeP.DSL:Get("UI")(nil, 'target') end)}, --TODO: TEST! ALOT MORE TESTING!
+	{xCombat, 'combat&alive&inMelee&inFront', (function() return NeP.DSL:Get("UI")(nil, 'target') end)}, --TODO: TEST! ALOT MORE TESTING!
 	{Mythic_Plus, 'inMelee'},
 }
 
