@@ -38,8 +38,8 @@ local GUI = {
 	{type = 'checkbox',	text = 'Stop Casting Ray of Frost (Target in Melee range)',				key = 'RoFstop', 	default = true},
 	{type = 'checkbox',	text = 'Polymorph (Backup Interrupt)',														key = 'Pol_Int',	default = false},
 	{type = 'spacer'},
-	{type = 'checkspin',text = 'Blizzard (normal) - Units',																key = 'blizz',		min = 1,	spin = 3,	step = 1,	max = 20,	check = true,		desc = Zylla.ClassColor..'How many units to hit with normal Blizzard.|r'},
-	{type = 'checkspin',text = 'Blizzard + Arctic Gale - Units',													key = 'blizze',		min = 1,	spin = 2,	step = 1,	max = 20,	check = false,	desc = Zylla.ClassColor..'How many units to hit with Blizzard + Arctic Gale.|r'},
+	{type = 'checkspin',text = 'Blizzard (normal) - Units',																key = 'normalblizz',		min = 1,	spin = 3,	step = 1,	max = 20,	check = true,		desc = Zylla.ClassColor..'How many units to hit with normal Blizzard.|r'},
+	{type = 'checkspin',text = 'Blizzard + Arctic Gale - Units',													key = 'arcticblizz',		min = 1,	spin = 2,	step = 1,	max = 20,	check = false,	desc = Zylla.ClassColor..'How many units to hit with Blizzard + Arctic Gale.|r'},
 	{type = 'spacer'},
 	{type = 'checkspin',text = 'Comet Storm - Units',																			key = 'cstorm',		min = 1,	spin = 4,	step = 1,	max = 20,	check = true,		desc = Zylla.ClassColor..'How many units to hit with Comet Storm.|r'},
 	{type = 'spacer'},
@@ -126,8 +126,8 @@ local xPvP = {
 }
 
 local Blizzard = {
-	{'Blizzard', 'UI(blizze_check)&talent(6,3)&area(10).enemies>=UI(blizze_spin)'},
-	{'Blizzard', 'UI(blizz_check)!talent(6,3)&area(8).enemies>=UI(blizz_spin)'}
+	{'Blizzard', 'UI(arcticblizz_check)&talent(6,3)&area(10).enemies>=UI(arcticblizz_spin)'},
+	{'Blizzard', 'UI(normalblizz_check)!talent(6,3)&area(8).enemies>=UI(normalblizz_spin)'}
 }
 
 local Cooldowns = {
@@ -149,7 +149,7 @@ local xCombat = {
 	{Interrupts, 'toggle(Interrupts)&@Zylla.InterruptAt(intat)&inFront&range<41'},
 	{Interrupts, 'toggle(Interrupts)&@Zylla.InterruptAt(intat)&inFront&range<41', 'enemies'},
 	{'Ice Lance', '!player.buff(Fingers of Frost)&player.lastcast(Flurry)'},
-	{'Blizzard', 'advanced&{{UI(blizze_check)||UI(blizz_check)}&player.buff(Potion of Deadly Grace)&!debuff(Water Jet)}', 'target.ground'},
+	{'Blizzard', 'advanced&{{UI(arcticblizz_check)||UI(normalblizz_check)}&player.buff(Potion of Deadly Grace)&!debuff(Water Jet)}', 'target.ground'},
 	{'!Ice Nova', 'debuff(Winter\'s Chill)'},
 	{'Frostbolt', 'debuff(Water Jet).remains>action(228597).cast_time&player.buff(Fingers of Frost).stack<2'},
 	{'&Water Jet', 'pet.exists&petrange<46&!talent(1,2)&player.lastcast(Frostbolt)&player.buff(Fingers of Frost).stack<{2+artifact(Icy Hand).zenabled}&!player.buff(Brain Freeze)'},
