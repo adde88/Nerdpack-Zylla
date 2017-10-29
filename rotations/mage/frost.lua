@@ -31,6 +31,9 @@ local GUI = {
 	{type = 'checkbox', text = 'Enable \'pre-cast Flurry\'',															key = 'precast', 	default = false},
 	{type = 'combo',		default = '3',																										key = 'list', 		list = Zylla.prepots, 	width = 175},
 	{type = 'spacer'},	{type = 'spacer'},
+	{type = 'checkbox', text = 'Spellsteal',																							key = 'spellsteal', 				default = false},
+	{type = 'checkbox', text = 'Spellsteal Every Enemy in Combat',												key = 'spellsteal_all', 		default = false},
+	{type = 'spacer'},
 	{type = 'checkbox',	text = 'Use Timewarp',																						key = 'kTW', 			default = false},
 	{type = 'checkbox',	text = 'Stop Casting Ray of Frost (Target in Melee range)',				key = 'RoFstop', 	default = true},
 	{type = 'checkbox',	text = 'Polymorph (Backup Interrupt)',														key = 'Pol_Int',	default = false},
@@ -122,6 +125,11 @@ local xPvP = {
 	{'Ice Form'}
 }
 
+local Blizzard = {
+	{'Blizzard', 'UI(blizze_check)&talent(6,3)&area(10).enemies>=UI(blizze_spin)'},
+	{'Blizzard', 'UI(blizz_check)!talent(6,3)&area(8).enemies>=UI(blizz_spin)'}
+}
+
 local Cooldowns = {
 	{'Rune of Power', '!buff&{{cooldown(Icy Veins).remains<spell(116011).cast_time}||{cooldown.charges<1.9&cooldown(Icy Veins).remains>10}||buff(Icy Veins)||{target.ttd+5<cooldown.charges*10}}', 'player'},	--TODO: Fix SpellID issue (spell.casttime)
 	{'Icy Veins', '!buff', 'player'},
@@ -135,6 +143,8 @@ local Cooldowns = {
 }
 
 local xCombat = {
+	{"%dispel", 'UI(spellsteal)'},
+	{"%dispel", 'UI(spellsteal_all)', 'enemies'},
 	{Cooldowns, 'toggle(Cooldowns)'},
 	{Interrupts, 'toggle(Interrupts)&@Zylla.InterruptAt(intat)&inFront&range<41'},
 	{Interrupts, 'toggle(Interrupts)&@Zylla.InterruptAt(intat)&inFront&range<41', 'enemies'},
@@ -151,7 +161,7 @@ local xCombat = {
 	{'Frozen Orb', 'ttd>10&toggle(cooldowns)'},
 	{'Frozen Orb',  'advanced&honortalent(6,1)&ttd>10&toggle(cooldowns)', 'target.ground'},
 	{'Comet Storm', 'range<41&combat&alive&infront&advanced&UI(cstorm_check)&area(6).enemies>=UI(cstorm_spin)', 'enemies.ground'},
-	{'Blizzard', 'range<41&combat&alive&advanced&{{UI(blizze_check)&talent(6,3)&area(10).enemies>=UI(blizze_spin})||{UI(blizz_check)!talent(6,3)&area(8).enemies>=UI(blizz_spin)}}', 'enemies.ground'},
+	{Blizzard, 'range<41&combat&alive&advanced', 'enemies.ground'},
 	{'Ebonbolt', 'player.buff(Fingers of Frost).stack<={0+artifact(Icy Hand).zenabled}&ttd>10&toggle(cooldowns)'},
 	{'Ice Floes', 'gcd.remains<0.2&movingfor>0.75&!lastcast(Ice Floes)&!buff', 'player'},
 	{'Frostbolt', '!player.moving||player.buff(Ice Floes)'},
