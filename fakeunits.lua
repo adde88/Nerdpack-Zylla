@@ -3,7 +3,7 @@ local _G = _G
 local NeP = _G.NeP
 
 -- Healing stuff
-NeP.FakeUnits:Add('healingCandidate', function(nump)
+NeP.Units:Add('healingCandidate', function(nump)
       local tempTable = {}
       local num = nump or 1
       for _, Obj in pairs(NeP.OM:Get('Friendly')) do
@@ -23,7 +23,7 @@ NeP.FakeUnits:Add('healingCandidate', function(nump)
 end)
 
 -- Customized for Windwalker Rotation
-NeP.FakeUnits:Add('Zylla_sck', function(debuff)
+NeP.Units:Add('Zylla_sck', function(debuff)
       for _, Obj in pairs(NeP.OM:Get('Enemy')) do
          if _G.UnitExists(Obj.key) then
             if (NeP.DSL:Get('combat')(Obj.key) or Obj.isdummy) then
@@ -40,7 +40,7 @@ NeP.FakeUnits:Add('Zylla_sck', function(debuff)
 end)
 
 -- Highest Health Enemy
-NeP.FakeUnits:Add({'highestenemy', 'higheste', 'he'}, function(num)
+NeP.Units:Add({'highestenemy', 'higheste', 'he'}, function(num)
       local tempTable = {}
       for _, Obj in pairs(NeP.OM:Get('Enemy')) do
          if _G.UnitExists(Obj.key) then
@@ -55,7 +55,7 @@ NeP.FakeUnits:Add({'highestenemy', 'higheste', 'he'}, function(num)
 end)
 
 -- Feral Druid Stuff         XXX: Remember to set the 'ptf_timer' variable in your UI Settings.
-NeP.FakeUnits:Add({'nobleedenemy', 'nobleede'}, function()
+NeP.Units:Add({'nobleedenemy', 'nobleede'}, function()
       local ptf_timer    = tonumber(NeP.DSL:Get('UI')(nil, 'ptftimer_spin'))
       for _, Obj in pairs(NeP.OM:Get('Enemy')) do
          if _G.UnitExists(Obj.key) then
@@ -73,7 +73,7 @@ NeP.FakeUnits:Add({'nobleedenemy', 'nobleede'}, function()
 end)
 
 -- Nearest Enemy
-NeP.FakeUnits:Add({'nearestenemy', 'neareste', 'ne'}, function(num)
+NeP.Units:Add({'nearestenemy', 'neareste', 'ne'}, function(num)
       local tempTable = {}
       for _, Obj in pairs(NeP.OM:Get('Enemy')) do
          if _G.UnitExists(Obj.key) then
@@ -88,7 +88,7 @@ NeP.FakeUnits:Add({'nearestenemy', 'neareste', 'ne'}, function(num)
 end)
 
 -- Furthest Enemy (Within 60 yd)
-NeP.FakeUnits:Add({'furthestenemy', 'furtheste', 'fe'}, function(num)
+NeP.Units:Add({'furthestenemy', 'furtheste', 'fe'}, function(num)
       local tempTable = {}
       for _, Obj in pairs(NeP.OM:Get('Enemy')) do
          if _G.UnitExists(Obj.key) and

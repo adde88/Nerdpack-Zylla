@@ -3,14 +3,14 @@ local _G = _G
 local NeP = _G.NeP
 _G.Zylla = Zylla
 
-Zylla.Version = '2.6'
-Zylla.Branch = 'RELEASE'
+Zylla.Version = '2.7'
+Zylla.Branch = 'DEV'
 Zylla.Name = 'NerdPack - Zylla\'s Rotations'
 Zylla.Author = 'Zylla'
 Zylla.addonColor = '8801C0'
 Zylla.ClassColor = '|cff'..NeP.Core:ClassColor('player', 'hex')..''
 Zylla.wow_ver = '7.3.2'
-Zylla.nep_ver = '1.11'
+Zylla.nep_ver = '2'
 Zylla.timer = {}
 Zylla.spell_timers = {}
 Zylla.isAFK = false;

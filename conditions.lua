@@ -4,7 +4,7 @@ local NeP = _G.NeP
 
 --XXX: Miscellaneous conditions
 
-NeP.DSL:Register('isflyable', function()
+NeP.Condition:Register('isflyable', function()
       if _G.IsFlyableArea() then
          local _, _, _, _, _, _, _, instanceMapID = _G.GetInstanceInfo()
          local reqSpell = Zylla.flySpells[instanceMapID]
@@ -16,15 +16,15 @@ NeP.DSL:Register('isflyable', function()
       end
 end)
 
-NeP.DSL:Register('nfly', function()
+NeP.Condition:Register('nfly', function()
   return _G.IsFlying()
 end)
 
-NeP.DSL:Register('map_area_id', function()
+NeP.Condition:Register('map_area_id', function()
     return  _G.GetCurrentMapAreaID()
 end)
 
-NeP.DSL:Register('casting.left', function(target, spell)
+NeP.Condition:Register('casting.left', function(target, spell)
     local reverse = NeP.DSL:Get('casting.percent')(target, spell)
     if reverse ~= 0 then
         return 100 - reverse
@@ -32,13 +32,13 @@ NeP.DSL:Register('casting.left', function(target, spell)
     return 0
 end)
 
-NeP.DSL:Register('indoors', function()
+NeP.Condition:Register('indoors', function()
     return _G.IsIndoors()
 end)
 
 --XXX: SimulationCraft Conditions
 
-NeP.DSL:Register('buff.react', function(target, spell)
+NeP.Condition:Register('buff.react', function(target, spell)
   local x = NeP.DSL:Get('buff.count')(target, spell)
   if x == 1 then
     return true
@@ -49,7 +49,7 @@ NeP.DSL:Register('buff.react', function(target, spell)
   end
 end)
 
-NeP.DSL:Register('xmoving', function()
+NeP.Condition:Register('xmoving', function()
     local speed = _G.GetUnitSpeed('player')
     if speed ~= 0 then
         return 1
@@ -67,7 +67,7 @@ local PowerT = {
 		[5] = ('^.-Runic Power'),
 }
 
-NeP.DSL:Register('action.cost', function(_, spell)
+NeP.Condition:Register('action.cost', function(_, spell)
     local costText = Zylla.Scan_SpellCost(spell)
     local numcost = 0
     for i = 0, 5 do
@@ -83,7 +83,7 @@ NeP.DSL:Register('action.cost', function(_, spell)
     end
 end)
 
-NeP.DSL:Register('dot.refreshable', function(_, spell)
+NeP.Condition:Register('dot.refreshable', function(_, spell)
     local _,_,_,_,_,duration,expires,_,_,_,spellID = _G.UnitDebuff('target', spell, nil, 'PLAYER|HARMFUL')
     if spellID and expires then
         local time_left = expires - _G.GetTime()
@@ -94,7 +94,7 @@ NeP.DSL:Register('dot.refreshable', function(_, spell)
     return false
 end)
 
-NeP.DSL:Register('dot.duration', function(target, spell)
+NeP.Condition:Register('dot.duration', function(target, spell)
     local debuff,_,duration,_,caster = Zylla.UnitDot(target, spell, _)
     if debuff and (caster == 'player' or caster == 'pet') then
         return duration
@@ -102,7 +102,7 @@ NeP.DSL:Register('dot.duration', function(target, spell)
     return 0
 end)
 
-NeP.DSL:Register('dot.ticking', function(target, spell)
+NeP.Condition:Register('dot.ticking', function(target, spell)
     if NeP.DSL:Get('debuff')(target, spell) then
         return true
     else
@@ -110,12 +110,12 @@ NeP.DSL:Register('dot.ticking', function(target, spell)
     end
 end)
 
-NeP.DSL:Register('dot.remains', function(target, spell)
+NeP.Condition:Register('dot.remains', function(target, spell)
     return NeP.DSL:Get('debuff.duration')(target, spell)
 end)
 
 
-NeP.DSL:Register('buff.down', function(target, spell)
+NeP.Condition:Register('buff.down', function(target, spell)
     local x = NeP.DSL:Get('buff.count')(target, spell)
     if x == 0 then
         return true
@@ -126,7 +126,7 @@ NeP.DSL:Register('buff.down', function(target, spell)
     end
 end)
 
-NeP.DSL:Register('buff.up', function(target, spell)
+NeP.Condition:Register('buff.up', function(target, spell)
     local x = NeP.DSL:Get('buff.count')(target, spell)
     if x == 1 then
         return true
@@ -137,15 +137,15 @@ NeP.DSL:Register('buff.up', function(target, spell)
     end
 end)
 
-NeP.DSL:Register('buff.stack', function(target, spell)
+NeP.Condition:Register('buff.stack', function(target, spell)
     return NeP.DSL:Get('buff.count')(target, spell)
 end)
 
-NeP.DSL:Register('buff.remains', function(target, spell)
+NeP.Condition:Register('buff.remains', function(target, spell)
     return NeP.DSL:Get('buff.duration')(target, spell)
 end)
 
-NeP.DSL:Register('debuff.up', function(target, spell)
+NeP.Condition:Register('debuff.up', function(target, spell)
     local x = NeP.DSL:Get('debuff.count')(target, spell)
     if x == 1 then
         return true
@@ -156,38 +156,38 @@ NeP.DSL:Register('debuff.up', function(target, spell)
     end
 end)
 
-NeP.DSL:Register('debuff.stack', function(target, spell)
+NeP.Condition:Register('debuff.stack', function(target, spell)
     return NeP.DSL:Get('debuff.count')(target, spell)
 end)
 
-NeP.DSL:Register('debuff.remains', function(target, spell)
+NeP.Condition:Register('debuff.remains', function(target, spell)
     return NeP.DSL:Get('debuff.duration')(target, spell)
 end)
 
 --TODO: (Work out off gcd/gcd only skills. Now all of this is just like SiMC 'prev')
 
-NeP.DSL:Register('prev_off_gcd', function(_, spell)
+NeP.Condition:Register('prev_off_gcd', function(_, spell)
     return NeP.DSL:Get('lastcast')('player', spell)
 end)
 
-NeP.DSL:Register('prev_gcd', function(_, spell)
+NeP.Condition:Register('prev_gcd', function(_, spell)
     return NeP.DSL:Get('lastgcd')('player', spell)
 end)
 
-NeP.DSL:Register('prev', function(_, spell)
+NeP.Condition:Register('prev', function(_, spell)
     return NeP.DSL:Get('lastcast')('player', spell)
         --end
 end)
 
-NeP.DSL:Register('time_to_die', function(target)
+NeP.Condition:Register('time_to_die', function(target)
     return NeP.DSL:Get('deathin')(target)
 end)
 
-NeP.DSL:Register('xtime', function()
+NeP.Condition:Register('xtime', function()
     return NeP.DSL:Get('combat.time')('player')
 end)
 
-NeP.DSL:Register('cooldown.remains', function(_, spell)
+NeP.Condition:Register('cooldown.remains', function(_, spell)
     if NeP.DSL:Get('spell.exists')(_, spell) then
         return NeP.DSL:Get('spell.cooldown')(_, spell)
     else
@@ -195,7 +195,7 @@ NeP.DSL:Register('cooldown.remains', function(_, spell)
     end
 end)
 
-NeP.DSL:Register('cooldown.up', function(_, spell)
+NeP.Condition:Register('cooldown.up', function(_, spell)
     if NeP.DSL:Get('spell.exists')(_, spell) then
         if NeP.DSL:Get('spell.cooldown')(_, spell) == 0 then
             return true
@@ -205,7 +205,7 @@ NeP.DSL:Register('cooldown.up', function(_, spell)
     end
 end)
 
-NeP.DSL:Register('action.cooldown_to_max', function(_, spell)
+NeP.Condition:Register('action.cooldown_to_max', function(_, spell)
     local charges, maxCharges, start, duration = _G.GetSpellCharges(spell)
     if duration and charges ~= maxCharges then
         local charges_to_max = maxCharges - ( charges + ((_G.GetTime() - start) / duration))
@@ -216,7 +216,7 @@ NeP.DSL:Register('action.cooldown_to_max', function(_, spell)
     end
 end)
 
-NeP.DSL:Register('action.cooldown', function(_, spell)
+NeP.Condition:Register('action.cooldown', function(_, spell)
     if NeP.DSL:Get('spell.exists')(_, spell) then
         return NeP.DSL:Get('spell.cooldown')(_, spell)
     else
@@ -224,7 +224,7 @@ NeP.DSL:Register('action.cooldown', function(_, spell)
     end
 end)
 
-NeP.DSL:Register('action.charges', function(_, spell)
+NeP.Condition:Register('action.charges', function(_, spell)
     if NeP.DSL:Get('spell.exists')(_, spell) then
         return NeP.DSL:Get('spell.charges')(_, spell)
     else
@@ -232,7 +232,7 @@ NeP.DSL:Register('action.charges', function(_, spell)
     end
 end)
 
-NeP.DSL:Register('cooldown.charges', function(_, spell)
+NeP.Condition:Register('cooldown.charges', function(_, spell)
     if NeP.DSL:Get('spell.exists')(_, spell) then
         return NeP.DSL:Get('spell.charges')(_, spell)
     else
@@ -240,7 +240,7 @@ NeP.DSL:Register('cooldown.charges', function(_, spell)
     end
 end)
 
-NeP.DSL:Register('cooldown.recharge_time', function(_, spell)
+NeP.Condition:Register('cooldown.recharge_time', function(_, spell)
     if NeP.DSL:Get('spell.exists')(_, spell) then
         return NeP.DSL:Get('spell.recharge')(_, spell)
     else
@@ -248,7 +248,7 @@ NeP.DSL:Register('cooldown.recharge_time', function(_, spell)
     end
 end)
 
-NeP.DSL:Register('charges_fractional', function(_, spell)
+NeP.Condition:Register('charges_fractional', function(_, spell)
     if NeP.DSL:Get('spell.exists')(_, spell) then
         return NeP.DSL:Get('spell.charges')(_, spell)
     else
@@ -256,24 +256,24 @@ NeP.DSL:Register('charges_fractional', function(_, spell)
     end
 end)
 
-NeP.DSL:Register('spell_haste', function()
+NeP.Condition:Register('spell_haste', function()
     local shaste = NeP.DSL:Get('haste')('player')
     return math.floor((100 / ( 100 + shaste )) * 10^3 ) / 10^3
 end)
 
-NeP.DSL:Register('gcd.remains', function()
+NeP.Condition:Register('gcd.remains', function()
     return NeP.DSL:Get('spell.cooldown')('player', '61304')
 end)
 
-NeP.DSL:Register('gcd.max', function()
+NeP.Condition:Register('gcd.max', function()
     return NeP.DSL:Get('gcd')()
 end)
 
-NeP.DSL:Register('action.execute_time', function(_, spell)
+NeP.Condition:Register('action.execute_time', function(_, spell)
     return NeP.DSL:Get('execute_time')(_, spell)
 end)
 
-NeP.DSL:Register('execute_time', function(_, spell)
+NeP.Condition:Register('execute_time', function(_, spell)
     if NeP.DSL:Get('spell.exists')(_, spell) then
         local GCD = NeP.DSL:Get('gcd')()
         local CTT = NeP.DSL:Get('spell.casttime')(_, spell)
@@ -286,47 +286,47 @@ NeP.DSL:Register('execute_time', function(_, spell)
     return false
 end)
 
-NeP.DSL:Register('deficit', function()
+NeP.Condition:Register('deficit', function()
     local max = _G.UnitPowerMax('player')
     local curr = _G.UnitPower('player')
     return (max - curr)
 end)
 
-NeP.DSL:Register('energy.deficit', function()
+NeP.Condition:Register('energy.deficit', function()
     return NeP.DSL:Get('deficit')()
 end)
 
-NeP.DSL:Register('focus.deficit', function()
+NeP.Condition:Register('focus.deficit', function()
     return NeP.DSL:Get('deficit')()
 end)
 
-NeP.DSL:Register('rage.deficit', function()
+NeP.Condition:Register('rage.deficit', function()
     return NeP.DSL:Get('deficit')()
 end)
 
-NeP.DSL:Register('astralpower.deficit', function()
+NeP.Condition:Register('astralpower.deficit', function()
     return NeP.DSL:Get('deficit')()
 end)
 
-NeP.DSL:Register('combo_points.deficit', function(target)
+NeP.Condition:Register('combo_points.deficit', function(target)
     return (_G.UnitPowerMax(target, _G.SPELL_POWER_COMBO_POINTS)) - (_G.UnitPower(target, _G.SPELL_POWER_COMBO_POINTS))
 end)
 
-NeP.DSL:Register('combo_points', function()
+NeP.Condition:Register('combo_points', function()
     return _G.GetComboPoints('player', 'target')
 end)
 
-NeP.DSL:Register('cast_regen', function(target, spell)
+NeP.Condition:Register('cast_regen', function(target, spell)
     local regen = select(2, _G.GetPowerRegen(target))
     local _, _, _, cast_time = _G.GetSpellInfo(spell)
     return math.floor(((regen * cast_time) / 1000) * 10^3 ) / 10^3
 end)
 
-NeP.DSL:Register('mana.pct', function()
+NeP.Condition:Register('mana.pct', function()
     return NeP.DSL:Get('mana')('player')
 end)
 
-NeP.DSL:Register('max_energy', function()             --XXX: max_energy=1, this means that u will get energy cap in less than one GCD
+NeP.Condition:Register('max_energy', function()             --XXX: max_energy=1, this means that u will get energy cap in less than one GCD
     local ttm = NeP.DSL:Get('energy.time_to_max')()
     local GCD = NeP.DSL:Get('gcd')()
     if GCD > ttm then
@@ -336,41 +336,41 @@ NeP.DSL:Register('max_energy', function()             --XXX: max_energy=1, this 
     end
 end)
 
-NeP.DSL:Register('energy.regen', function()
+NeP.Condition:Register('energy.regen', function()
     local eregen = select(2, _G.GetPowerRegen('player'))
     return eregen
 end)
 
-NeP.DSL:Register('energy.time_to_max', function()
+NeP.Condition:Register('energy.time_to_max', function()
     local deficit = NeP.DSL:Get('deficit')()
     local eregen = NeP.DSL:Get('energy.regen')()
     return deficit / eregen
 end)
 
-NeP.DSL:Register('focus.regen', function()
+NeP.Condition:Register('focus.regen', function()
     local fregen = select(2, _G.GetPowerRegen('player'))
     return fregen
 end)
 
-NeP.DSL:Register('focus.time_to_max', function()
+NeP.Condition:Register('focus.time_to_max', function()
     local deficit = NeP.DSL:Get('deficit')()
     local fregen = NeP.DSL:Get('focus.regen')('player')
     return deficit / fregen
 end)
 
-NeP.DSL:Register('astralpower', function()
+NeP.Condition:Register('astralpower', function()
     return NeP.DSL:Get('lunarpower')('player')
 end)
 
-NeP.DSL:Register('runic_power', function()
+NeP.Condition:Register('runic_power', function()
     return NeP.DSL:Get('runicpower')('player')
 end)
 
-NeP.DSL:Register('holy_power', function()
+NeP.Condition:Register('holy_power', function()
     return NeP.DSL:Get('holypower')('player')
 end)
 
-NeP.DSL:Register('action.cast_time', function(_, spell)
+NeP.Condition:Register('action.cast_time', function(_, spell)
     if NeP.DSL:Get('spell.exists')(_, spell) then
         return NeP.DSL:Get('spell.casttime')(_, spell)
     else
@@ -378,15 +378,15 @@ NeP.DSL:Register('action.cast_time', function(_, spell)
     end
 end)
 
-NeP.DSL:Register('health.pct', function(target)
+NeP.Condition:Register('health.pct', function(target)
     return NeP.DSL:Get('health')(target)
 end)
 
-NeP.DSL:Register('active_enemies', function(unit, distance)
+NeP.Condition:Register('active_enemies', function(unit, distance)
     return NeP.DSL:Get('area.enemies')(unit, distance)
 end)
 
-NeP.DSL:Register('talent.enabled', function(_, x,y)
+NeP.Condition:Register('talent.enabled', function(_, x,y)
     if NeP.DSL:Get('talent')(_, x,y) then
         return 1
     else
@@ -394,7 +394,7 @@ NeP.DSL:Register('talent.enabled', function(_, x,y)
     end
 end)
 
-NeP.DSL:Register('xequipped', function(item)
+NeP.Condition:Register('xequipped', function(item)
     if _G.IsEquippedItem(item) then
         return 1
     else
@@ -402,7 +402,7 @@ NeP.DSL:Register('xequipped', function(item)
     end
 end)
 
-NeP.DSL:Register('line_cd', function(_, spell)
+NeP.Condition:Register('line_cd', function(_, spell)
     local spellID = NeP.Core:GetSpellID(spell)
     if Zylla.spell_timers[spellID] then
         return _G.GetTime() - Zylla.spell_timers[spellID].time
@@ -412,11 +412,11 @@ end)
 
 --XXX: Protection Warrior Conditions
 
-NeP.DSL:Register('ignorepain_cost', function()
+NeP.Condition:Register('ignorepain_cost', function()
     return Zylla.Scan_IgnorePain()
 end)
 
-NeP.DSL:Register('ignorepain_max', function()
+NeP.Condition:Register('ignorepain_max', function()
     local ss = NeP.DSL:Get('health.max')('player')
     if _G.HasTalent(5,2) then
         return NeP.Core.Round((((77.86412474516502 * 1.70) * ss) / 100))
@@ -442,7 +442,7 @@ local DotTicks = {
     },
 }
 
-NeP.DSL:Register('dot.tick_time', function(_, spell)
+NeP.Condition:Register('dot.tick_time', function(_, spell)
     spell = NeP.Core:GetSpellID(spell)
     if not spell then return end
     local class = select(3,_G.UnitClass('player'))
@@ -462,55 +462,55 @@ NeP.DSL:Register('dot.tick_time', function(_, spell)
     end
 end)
 
-NeP.DSL:Register('dot.pmultiplier', function(_, spell)
+NeP.Condition:Register('dot.pmultiplier', function(_, spell)
   return Zylla.f_Snapshots[spell:lower()][_G.UnitGUID('target')] or 0
 end)
 
-NeP.DSL:Register('persistent_multiplier', function(_, spell)
+NeP.Condition:Register('persistent_multiplier', function(_, spell)
   return Zylla.f_Snapshots[spell:lower()].current or 1
 end)
 
-NeP.DSL:Register('f_test', function()	-- This is for debugging purposes.
+NeP.Condition:Register('f_test', function()	-- This is for debugging purposes.
 	return Zylla.f_Snapshots
 end)
 
 --XXX: Warlock Conditions
 
-NeP.DSL:Register('petexists', function()
+NeP.Condition:Register('petexists', function()
   return NeP.DSL:Get('exists')('pet')
 end)
 
-NeP.DSL:Register('warlock.remaining_duration', function(demon)
+NeP.Condition:Register('warlock.remaining_duration', function(demon)
     return Zylla.remaining_duration(demon)
 end)
 
-NeP.DSL:Register('warlock.count', function(demon)
+NeP.Condition:Register('warlock.count', function(demon)
     return Zylla.count_active_demon_type(demon)
 end)
 
-NeP.DSL:Register('warlock.active_pets_list', function()
+NeP.Condition:Register('warlock.active_pets_list', function()
     return Zylla.active_demons
 end)
 
-NeP.DSL:Register('warlock.sorted_pets_list', function()
+NeP.Condition:Register('warlock.sorted_pets_list', function()
     return Zylla.demons_sorted
 end)
 
-NeP.DSL:Register('warlock.demon_count', function()
+NeP.Condition:Register('warlock.demon_count', function()
     return Zylla.demon_count
 end)
 
---NeP.DSL:Register('warlock.no_de', function(demon)
+--NeP.Condition:Register('warlock.no_de', function(demon)
 -- return Zylla.Empower_no_de(demon)
 --end)
 
-NeP.DSL:Register('soul_shard', function()
+NeP.Condition:Register('soul_shard', function()
     return NeP.DSL:Get('soulshards')('player')
 end)
 
 --XXX: Priest Conditions
 
-NeP.DSL:Register('variable.actors_fight_time_mod', function()
+NeP.Condition:Register('variable.actors_fight_time_mod', function()
     local time = NeP.DSL:Get('xtime')()
     local target_time_to_die = NeP.DSL:Get('time_to_die')('target')
     -- time+target.time_to_die>450&time+target.time_to_die<600
@@ -525,15 +525,15 @@ NeP.DSL:Register('variable.actors_fight_time_mod', function()
     return 0
 end)
 
-NeP.DSL:Register('shadowy_apparitions_in_flight', function()
+NeP.Condition:Register('shadowy_apparitions_in_flight', function()
     return Zylla.SA_TOTAL
 end)
 
-NeP.DSL:Register('insanity_drain_stacks', function()
+NeP.Condition:Register('insanity_drain_stacks', function()
     return Zylla.Voidform_Drain_Stacks
 end)
 
-NeP.DSL:Register('current_insanity_drain', function()
+NeP.Condition:Register('current_insanity_drain', function()
     return Zylla.Voidform_Current_Drain_Rate
 end)
 
@@ -541,7 +541,7 @@ end)
 
 --XXX: Rogue Conditions
 
-NeP.DSL:Register('stealthed', function()
+NeP.Condition:Register('stealthed', function()
     if NeP.DSL:Get('buff')('player', 'Shadow Dance') or NeP.DSL:Get('buff')('player', 'Stealth') or NeP.DSL:Get('buff')('player', 'Subterfuge') or NeP.DSL:Get('buff')('player', 'Shadowmeld') or NeP.DSL:Get('buff')('player', 'Prowl') then
         return true
     else
@@ -549,7 +549,7 @@ NeP.DSL:Register('stealthed', function()
     end
 end)
 
-NeP.DSL:Register('variable.ssw_er', function()
+NeP.Condition:Register('variable.ssw_er', function()
     local range_check
     if NeP.DSL:Get('range')('target') then
         range_check = NeP.DSL:Get('range')('target')
@@ -560,12 +560,12 @@ NeP.DSL:Register('variable.ssw_er', function()
     return x
 end)
 
-NeP.DSL:Register('variable.ed_threshold', function()
+NeP.Condition:Register('variable.ed_threshold', function()
     local x = (NeP.DSL:Get('energy.deficit')()<=((20 + NeP.DSL:Get('talent.enabled')(nil, '3,3')) * (35 + NeP.DSL:Get('talent.enabled')(nil, '7,1')) * (25 + NeP.DSL:Get('variable.ssw_er')())))
     return x
 end)
 
-NeP.DSL:Register('RtB', function()
+NeP.Condition:Register('RtB', function()
     local int = 0
     local bearing = false
     local shark = false
@@ -631,13 +631,13 @@ end)
 
 --XXX: Hunter Conditions
 
-NeP.DSL:Register('maxRange', function(spell)
+NeP.Condition:Register('maxRange', function(spell)
     local _, _, _, _, _, maxRange = _G.GetSpellInfo(spell)
     if maxRange == nil then return false end
     return maxRange
 end)
 
-NeP.DSL:Register('variable.safe_to_build', function()
+NeP.Condition:Register('variable.safe_to_build', function()
     local x = NeP.DSL:Get('debuff')('target','Hunter\'s Mark')
     local y = NeP.DSL:Get('buff')('player','Trueshot')
     local z = NeP.DSL:Get('buff')('player','Marking Targets')
@@ -647,7 +647,7 @@ NeP.DSL:Register('variable.safe_to_build', function()
     return false
 end)
 
-NeP.DSL:Register('variable.use_multishot', function()
+NeP.Condition:Register('variable.use_multishot', function()
     local x = NeP.DSL:Get('buff')('player','Marking Targets')
     local y = NeP.DSL:Get('buff')('player','Trueshot')
     local z = NeP.DSL:Get('area.enemies')('target','8')
@@ -657,15 +657,15 @@ NeP.DSL:Register('variable.use_multishot', function()
     return false
 end)
 
-NeP.DSL:Register('travel_time', function(unit, spell)
+NeP.Condition:Register('travel_time', function(unit, spell)
     return Zylla.TravelTime(unit, spell)
 end)
 
-NeP.DSL:Register('inareaid', function()
+NeP.Condition:Register('inareaid', function()
     return  _G.GetCurrentMapAreaID()
 end)
 
-NeP.DSL:Register("set_bonus", function(_, set)
+NeP.Condition:Register("set_bonus", function(_, set)
 	local class = select(2,_G.UnitClass('player'))
 	local pieces = Zylla.setsTable[class][set] or {}
 	local counter = 0
@@ -678,7 +678,7 @@ NeP.DSL:Register("set_bonus", function(_, set)
 	return counter
 end)
 
-NeP.DSL:Register('partycheck', function()
+NeP.Condition:Register('partycheck', function()
   if _G.IsInRaid() then
     return 3
   elseif _G.IsInGroup() then
@@ -688,7 +688,7 @@ NeP.DSL:Register('partycheck', function()
   end
 end)
 
-NeP.DSL:Register('artifact.zenabled', function(_, spell)
+NeP.Condition:Register('artifact.zenabled', function(_, spell)
     if select(10,NeP.Artifact:TraitInfo(spell)) then
         return 1
     else
