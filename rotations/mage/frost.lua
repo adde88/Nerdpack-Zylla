@@ -38,8 +38,7 @@ local GUI = {
 	{type = 'checkbox',	text = 'Stop Casting Ray of Frost (Target in Melee range)',				key = 'RoFstop', 	default = true},
 	{type = 'checkbox',	text = 'Polymorph (Backup Interrupt)',														key = 'Pol_Int',	default = false},
 	{type = 'spacer'},
-	{type = 'checkspin',text = 'Blizzard (normal) - Units',																key = 'normalblizz',		min = 1,	spin = 3,	step = 1,	max = 20,	check = true,		desc = Zylla.ClassColor..'How many units to hit with normal Blizzard.|r'},
-	{type = 'checkspin',text = 'Blizzard + Arctic Gale - Units',													key = 'arcticblizz',		min = 1,	spin = 2,	step = 1,	max = 20,	check = false,	desc = Zylla.ClassColor..'How many units to hit with Blizzard + Arctic Gale.|r'},
+	{type = 'checkspin',text = 'Blizzard - Units',																				key = 'blizz',		min = 1,	spin = 3,	step = 1,	max = 20,	check = true,		desc = Zylla.ClassColor..'How many units to hit with normal Blizzard.|r'},
 	{type = 'spacer'},
 	{type = 'checkspin',text = 'Comet Storm - Units',																			key = 'cstorm',		min = 1,	spin = 4,	step = 1,	max = 20,	check = true,		desc = Zylla.ClassColor..'How many units to hit with Comet Storm.|r'},
 	{type = 'spacer'},
@@ -126,8 +125,8 @@ local xPvP = {
 }
 
 local Blizzard = {
-	{'Blizzard', 'UI(arcticblizz_check)&talent(6,3)&area(10).enemies>=UI(arcticblizz_spin)'},
-	{'Blizzard', 'UI(normalblizz_check)!talent(6,3)&area(8).enemies>=UI(normalblizz_spin)'}
+	{'Blizzard', 'advanced&UI(blizz_check)&talent(6,3)&area(10).enemies>=UI(blizz_spin)'},
+	{'Blizzard', 'advanced&UI(blizz_check)!talent(6,3)&area(8).enemies>=UI(blizz_spin)'}
 }
 
 local Cooldowns = {
@@ -139,17 +138,17 @@ local Cooldowns = {
 	{'#trinket1', 'UI(trinket1)'},
 	{'#trinket2', 'UI(trinket2)'},
 	{'Light\'s Judgment', 'UI(LJ_check)&range<61&area(15).enemies>=UI(LJ_spin)', 'enemies.ground'},
-	{'&#144259', 'UI(kj_check)&range<41&area(10).enemies>=UI(kj_spin)&equipped(144259)'}, --XXX: Kil'jaeden's Burning Wish (Legendary)
+	{'&#144259', 'UI(kj_check)&area(10).enemies>=UI(kj_spin)&equipped(144259)'}, --XXX: Kil'jaeden's Burning Wish (Legendary)
 }
 
 local xCombat = {
 	{"%dispel", 'UI(spellsteal)'},
 	{"%dispel", 'UI(spellsteal_all)', 'enemies'},
 	{Cooldowns, 'toggle(Cooldowns)'},
-	{Interrupts, 'toggle(Interrupts)&@Zylla.InterruptAt(intat)&inFront&range<41'},
-	{Interrupts, 'toggle(Interrupts)&@Zylla.InterruptAt(intat)&inFront&range<41', 'enemies'},
+	{Interrupts, 'toggle(Interrupts)&@Zylla.InterruptAt(intat)'},
+	{Interrupts, 'toggle(Interrupts)&@Zylla.InterruptAt(intat)', 'enemies'},
 	{'Ice Lance', '!player.buff(Fingers of Frost)&player.lastcast(Flurry)'},
-	{'Blizzard', 'advanced&{{UI(arcticblizz_check)||UI(normalblizz_check)}&player.buff(Potion of Deadly Grace)&!debuff(Water Jet)}', 'target.ground'},
+	{'Blizzard', 'advanced&UI(blizz_check)&player.buff(Potion of Deadly Grace)&!debuff(Water Jet)', 'target.ground'},
 	{'!Ice Nova', 'debuff(Winter\'s Chill)'},
 	{'Frostbolt', 'debuff(Water Jet).remains>action(228597).cast_time&player.buff(Fingers of Frost).stack<2'},
 	{'&Water Jet', 'pet.exists&petrange<46&!talent(1,2)&player.lastcast(Frostbolt)&player.buff(Fingers of Frost).stack<{2+artifact(Icy Hand).zenabled}&!player.buff(Brain Freeze)'},
@@ -160,8 +159,8 @@ local xCombat = {
 	{'Ice Lance', '{player.buff(Fingers of Frost).stack>0&cooldown(Icy Veins).remains>10}||player.buff(Fingers of Frost).stack>2'},
 	{'Frozen Orb', 'ttd>10&toggle(cooldowns)'},
 	{'Frozen Orb',  'advanced&honortalent(6,1)&ttd>10&toggle(cooldowns)', 'target.ground'},
-	{'Comet Storm', 'range<41&combat&alive&infront&advanced&UI(cstorm_check)&area(6).enemies>=UI(cstorm_spin)', 'enemies.ground'},
-	{Blizzard, 'range<41&combat&alive&advanced', 'enemies.ground'},
+	{'Comet Storm', 'advanced&UI(cstorm_check)&area(6).enemies>=UI(cstorm_spin)', 'enemies.ground'},
+	{Blizzard, nil, 'enemies.ground'},
 	{'Ebonbolt', 'player.buff(Fingers of Frost).stack<={0+artifact(Icy Hand).zenabled}&ttd>10&toggle(cooldowns)'},
 	{'Ice Floes', 'gcd.remains<0.2&movingfor>0.75&!lastcast(Ice Floes)&!buff', 'player'},
 	{'Frostbolt', '!player.moving||player.buff(Ice Floes)'},
