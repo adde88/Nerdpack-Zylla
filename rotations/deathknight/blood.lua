@@ -145,7 +145,7 @@ local inCombat = {
 	{Survival, nil, 'player'},
 	{Mythic_Plus, 'inMelee'},
 	{xTaunts, 'toggle(super_taunt)', 'enemies'},
-	{xCombat, 'combat&alive&inMelee&inFront', (function() return NeP.DSL:Get("UI")(nil, 'target') end)}, --TODO: TEST! ALOT MORE TESTING!
+	{xCombat, 'combat&alive&inMelee&inFront', (function() return NeP.Condition:Get("UI")(nil, 'target') end)}, --TODO: TEST! ALOT MORE TESTING!
 }
 
 local outCombat = {

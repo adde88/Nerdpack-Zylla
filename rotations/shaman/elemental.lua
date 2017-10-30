@@ -243,7 +243,7 @@ local inCombat = {
 	{Survival, nil, 'player'},
 	{Player, '!player.moving', 'player'},
 	{Emergency, '!player.moving', 'lowest'},
-	{xCombat, 'combat&alive&range<41&inFront', (function() return NeP.DSL:Get("UI")(nil, 'target') end)}, --TODO: TEST! ALOT MORE TESTING!
+	{xCombat, 'combat&alive&range<41&inFront', (function() return NeP.Condition:Get("UI")(nil, 'target') end)}, --TODO: TEST! ALOT MORE TESTING!
 	{Mythic_Plus, 'range<=40'},
 }
 

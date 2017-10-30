@@ -218,7 +218,7 @@ local inCombat = {
 	{Survival, nil, 'player'},
 	{Cooldowns, 'toggle(Cooldowns)'},
 	{Mythic_Plus, 'range<51'},
-	{xCombat, 'combat&alive&range<41&inFront', (function() return NeP.DSL:Get("UI")(nil, 'target') end)}, --TODO: TEST! ALOT MORE TESTING!
+	{xCombat, 'combat&alive&range<41&inFront', (function() return NeP.Condition:Get("UI")(nil, 'target') end)}, --TODO: TEST! ALOT MORE TESTING!
 	{xPet, 'UI(kPet)&!talent(1,1)'},
 }
 

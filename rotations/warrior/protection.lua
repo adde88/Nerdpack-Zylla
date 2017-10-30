@@ -144,7 +144,7 @@ local inCombat = {
 	{Keybinds},
 	{'Taunt', 'toggle(super_taunt)&combat&alive&threat<100', 'enemies'},
 	{Mythic_Plus, 'inMelee'},
-	{xCombat, 'combat&alive&inMelee&inFront', (function() return NeP.DSL:Get("UI")(nil, 'target') end)}, --TODO: TEST! ALOT MORE TESTING!
+	{xCombat, 'combat&alive&inMelee&inFront', (function() return NeP.Condition:Get("UI")(nil, 'target') end)}, --TODO: TEST! ALOT MORE TESTING!
 }
 
 local outCombat = {

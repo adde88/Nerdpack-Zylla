@@ -26,8 +26,8 @@ end)
 NeP.Units:Add('Zylla_sck', function(debuff)
       for _, Obj in pairs(NeP.OM:Get('Enemy')) do
          if _G.UnitExists(Obj.key) then
-            if (NeP.DSL:Get('combat')(Obj.key) or Obj.isdummy) then
-               if (NeP.DSL:Get('infront')(Obj.key) and NeP.DSL:Get('inMelee')(Obj.key)) then
+            if (NeP.Condition:Get('combat')(Obj.key) or Obj.isdummy) then
+               if (NeP.Condition:Get('infront')(Obj.key) and NeP.Condition:Get('inMelee')(Obj.key)) then
                   local _,_,_,_,_,_,debuffDuration = _G.UnitDebuff(Obj.key, debuff, nil, 'PLAYER')
                   if not debuffDuration or debuffDuration - _G.GetTime() < 1.5 then
                      --print("Zylla_sck: returning "..Obj.name.." ("..Obj.key.." - "..Obj.guid..' :'..time()..")");
@@ -46,7 +46,7 @@ NeP.Units:Add({'highestenemy', 'higheste', 'he'}, function(num)
          if _G.UnitExists(Obj.key) then
             tempTable[#tempTable+1] = {
                key = Obj.key,
-               health = NeP.DSL:Get("health")(Obj.key)
+               health = NeP.Condition:Get("health")(Obj.key)
             }
          end
       end
@@ -56,13 +56,13 @@ end)
 
 -- Feral Druid Stuff         XXX: Remember to set the 'ptf_timer' variable in your UI Settings.
 NeP.Units:Add({'nobleedenemy', 'nobleede'}, function()
-      local ptf_timer    = tonumber(NeP.DSL:Get('UI')(nil, 'ptftimer_spin'))
+      local ptf_timer    = tonumber(NeP.Condition:Get('UI')(nil, 'ptftimer_spin'))
       for _, Obj in pairs(NeP.OM:Get('Enemy')) do
          if _G.UnitExists(Obj.key) then
-            local rip_duration         = tonumber(NeP.DSL:Get('debuff.duration')(Obj.key, 'Rip'))
-            local rake_duration     = tonumber(NeP.DSL:Get('debuff.duration')(Obj.key, 'Rake'))
-            local thrash_duration = tonumber(NeP.DSL:Get('debuff.duration')(Obj.key, 'Thrash'))
-            if (NeP.DSL:Get('inFront')(Obj.key) and NeP.DSL:Get('inMelee')(Obj.key)) and
+            local rip_duration         = tonumber(NeP.Condition:Get('debuff.duration')(Obj.key, 'Rip'))
+            local rake_duration     = tonumber(NeP.Condition:Get('debuff.duration')(Obj.key, 'Rake'))
+            local thrash_duration = tonumber(NeP.Condition:Get('debuff.duration')(Obj.key, 'Thrash'))
+            if (NeP.Condition:Get('inFront')(Obj.key) and NeP.Condition:Get('inMelee')(Obj.key)) and
             rip_duration         < ptf_timer and
             rake_duration     < ptf_timer and
             thrash_duration < ptf_timer then
@@ -79,7 +79,7 @@ NeP.Units:Add({'nearestenemy', 'neareste', 'ne'}, function(num)
          if _G.UnitExists(Obj.key) then
             tempTable[#tempTable+1] = {
                key = Obj.key,
-               range = NeP.DSL:Get("range")(Obj.key)
+               range = NeP.Condition:Get("range")(Obj.key)
             }
          end
       end
@@ -92,10 +92,10 @@ NeP.Units:Add({'furthestenemy', 'furtheste', 'fe'}, function(num)
       local tempTable = {}
       for _, Obj in pairs(NeP.OM:Get('Enemy')) do
          if _G.UnitExists(Obj.key) and
-				 NeP.DSL:Get("range")(Obj.key) <= 60 then
+				 NeP.Condition:Get("range")(Obj.key) <= 60 then
             tempTable[#tempTable+1] = {
                key = Obj.key,
-               range = NeP.DSL:Get("range")(Obj.key)
+               range = NeP.Condition:Get("range")(Obj.key)
             }
          end
       end

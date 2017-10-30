@@ -173,7 +173,7 @@ local inCombat = {
 	{'Time Warp', 'UI(kTW)&!hashero', 'player'},
 	{Keybinds},
 	{Survival, nil, 'player'},
-	{xCombat, 'combat&alive&range<41&inFront', (function() return NeP.DSL:Get("UI")(nil, 'target') end)}, --TODO: TEST! ALOT MORE TESTING!
+	{xCombat, 'combat&alive&range<41&inFront', (function() return NeP.Condition:Get("UI")(nil, 'target') end)}, --TODO: TEST! ALOT MORE TESTING!
 	{Mythic_Plus, 'range<41'},
 	{xPvP},
 }
