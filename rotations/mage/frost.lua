@@ -92,7 +92,7 @@ local PreCombat = {
 
 local Keybinds = {
 	-- Pause
-	{'%pause', 'keybind(lshift)&UI(lshift)'},
+	{'%pause', 'UI(lshift)&{keybind(lshift)||player.buff(Shadowmeld)||player.buff(Sapped Soul)}'},
 	{'Blizzard', 'keybind(lcontrol)&UI(lcontrol)', 'cursor.ground'},
 	{'Frost Nova', 'keybind(ralt)&UI(ralt)'}
 }
