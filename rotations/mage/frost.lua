@@ -38,7 +38,7 @@ local GUI = {
 	{type = 'checkbox',	text = 'Stop Casting Ray of Frost (Target in Melee range)',				key = 'RoFstop', 	default = true},
 	{type = 'checkbox',	text = 'Polymorph (Backup Interrupt)',														key = 'Pol_Int',	default = false},
 	{type = 'spacer'},
-	{type = 'checkspin',text = 'Blizzard - Units',																				key = 'blizz',		min = 1,	spin = 3,	step = 1,	max = 20,	check = true,		desc = Zylla.ClassColor..'How many units to hit with normal Blizzard.|r'},
+	{type = 'checkspin',text = 'Blizzard - Units',																				key = 'blizzard',		min = 1,	spin = 3,	step = 1,	max = 20,	check = true,		desc = Zylla.ClassColor..'How many units to hit with normal Blizzard.|r'},
 	{type = 'spacer'},
 	{type = 'checkspin',text = 'Comet Storm - Units',																			key = 'cstorm',		min = 1,	spin = 4,	step = 1,	max = 20,	check = true,		desc = Zylla.ClassColor..'How many units to hit with Comet Storm.|r'},
 	{type = 'spacer'},
@@ -124,15 +124,12 @@ local xPvP = {
 	{'Ice Form'}
 }
 
-local Blizzard = {
-	{'Blizzard', 'advanced&UI(blizz_check)&talent(6,3)&area(10).enemies>=UI(blizz_spin)'},
-	{'Blizzard', 'advanced&UI(blizz_check)!talent(6,3)&area(8).enemies>=UI(blizz_spin)'}
-}
-
 local Cooldowns = {
 	{'Rune of Power', '!buff&{{cooldown(Icy Veins).remains<spell(116011).cast_time}||{cooldown.charges<1.9&cooldown(Icy Veins).remains>10}||buff(Icy Veins)||{target.ttd+5<cooldown.charges*10}}', 'player'},	--TODO: Fix SpellID issue (spell.casttime)
 	{'Icy Veins', '!buff', 'player'},
 	{'Mirror Image', nil, 'player'},
+	{'Frozen Orb', '!player.moving&!target.moving'},
+	{'Frozen Orb',  '!player.moving&!target.moving&advanced&honortalent(6,1)', 'target.ground'},
 	{'Blood Fury', nil, 'player'},
 	{'Berserking', nil, 'player'},
 	{'#trinket1', 'UI(trinket1)'},
@@ -142,13 +139,13 @@ local Cooldowns = {
 }
 
 local xCombat = {
-	{"%dispel", 'UI(spellsteal)'},
-	{"%dispel", 'UI(spellsteal_all)', 'enemies'},
-	{Cooldowns, 'toggle(Cooldowns)'},
+	{'%dispel', 'UI(spellsteal)'},
+	{'%dispel', 'UI(spellsteal_all)', 'enemies'},
+	{Cooldowns, 'toggle(Cooldowns)&ttd>10'},
 	{Interrupts, 'toggle(Interrupts)&@Zylla.InterruptAt(intat)'},
 	{Interrupts, 'toggle(Interrupts)&@Zylla.InterruptAt(intat)', 'enemies'},
 	{'Ice Lance', '!player.buff(Fingers of Frost)&player.lastcast(Flurry)'},
-	{'Blizzard', 'advanced&UI(blizz_check)&player.buff(Potion of Deadly Grace)&!debuff(Water Jet)', 'target.ground'},
+	{'Blizzard', 'advanced&UI(blizzard_check)&player.buff(Potion of Deadly Grace)&!debuff(Water Jet)', 'target.ground'},
 	{'!Ice Nova', 'debuff(Winter\'s Chill)'},
 	{'Frostbolt', 'debuff(Water Jet).remains>action(228597).cast_time&player.buff(Fingers of Frost).stack<2'},
 	{'&Water Jet', 'pet.exists&petrange<46&!talent(1,2)&player.lastcast(Frostbolt)&player.buff(Fingers of Frost).stack<{2+artifact(Icy Hand).zenabled}&!player.buff(Brain Freeze)'},
@@ -157,10 +154,9 @@ local xCombat = {
 	{'Frozen Touch', 'player.buff(Fingers of Frost).stack<={0+artifact(Icy Hand).zenabled}'},
 	{'Frost Bomb', 'debuff(Frost Bomb).remains<action(Ice Lance).travel_time&player.buff(Fingers of Frost).stack>0'},
 	{'Ice Lance', '{player.buff(Fingers of Frost).stack>0&cooldown(Icy Veins).remains>10}||player.buff(Fingers of Frost).stack>2'},
-	{'Frozen Orb', 'ttd>10&toggle(cooldowns)'},
-	{'Frozen Orb',  'advanced&honortalent(6,1)&ttd>10&toggle(cooldowns)', 'target.ground'},
 	{'Comet Storm', 'advanced&UI(cstorm_check)&area(6).enemies>=UI(cstorm_spin)', 'enemies.ground'},
-	{Blizzard, nil, 'enemies.ground'},
+	{'Blizzard', '!player.moving&advanced&talent(6,3)&UI(blizzard_check)&area(10).enemies>=UI(blizzard_spin)', 'enemies.ground'},
+	{'Blizzard', '!player.moving&advanced&!talent(6,3)&UI(blizzard_check)&area(8).enemies>=UI(blizzard_spin)', 'enemies.ground'},
 	{'Ebonbolt', 'player.buff(Fingers of Frost).stack<={0+artifact(Icy Hand).zenabled}&ttd>10&toggle(cooldowns)'},
 	{'Ice Floes', 'gcd.remains<0.2&movingfor>0.75&!lastcast(Ice Floes)&!buff', 'player'},
 	{'Frostbolt', '!player.moving||player.buff(Ice Floes)'},
@@ -173,7 +169,7 @@ local inCombat = {
 	{'Time Warp', 'UI(kTW)&!hashero', 'player'},
 	{Keybinds},
 	{Survival, nil, 'player'},
-	{xCombat, 'combat&alive&range<41&inFront', (function() return NeP.DSL:Get("UI")(nil, 'target') end)}, --TODO: TEST! ALOT MORE TESTING!
+	{xCombat, nil, (function() return NeP.DSL:Get("UI")(nil, 'target') end)},
 	{Mythic_Plus, 'range<41'},
 	{xPvP},
 }
