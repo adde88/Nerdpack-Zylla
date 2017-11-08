@@ -57,7 +57,7 @@ local exeOnLoad = function()
 	Zylla.AFKCheck()
 
 	print('|cff0070de ----------------------------------------------------------------------|r')
-	print('|cff0070de --- |rShaman: |cff0070deELEMENTAL|r')
+	print('|cff0070de --- |rShaman: |cff0070deElemental|r')
 	print('|cff0070de --- |rLightning Rod: 1/3 - 2/1 - 3/1 - 4/2 - 5/3||5/2 (Tyrannical) - 6/1 - 7/2|r')
 	print('|cff0070de --- |rIcefury: 1/3 - 2/1 - 3/1 - 4/2 - 5/3 - 6/3||6/1 (Mythic+ AoE) - 7/3|r')
 	print('|cff0070de --- |rAscendance: 1/1 - 2/1 - 3/1 - 4/2 - 5/3 - 6/3||6/1 (Mythic+ AoE)- 7/1|r')
@@ -65,7 +65,14 @@ local exeOnLoad = function()
 	print('|cffff0000 Configuration: |rRight-click the MasterToggle and go to Combat Routines Settings|r')
 
 	NeP.Interface:AddToggle({
-		key = 'yuPS',
+		key = 'xIntRandom',
+		name = 'Interrupt Anyone',
+		text = 'Interrupt all nearby enemies, without targeting them.',
+		icon = 'Interface\\Icons\\inv_ammo_arrow_04',
+	})
+
+	NeP.Interface:AddToggle({
+		key = 'dispels',
 		name = 'Cleanse Spirit',
 		text = 'Enable/Disable: Automatic removal of curses',
 		icon = 'Interface\\ICONS\\ability_shaman_cleansespirit',
@@ -80,7 +87,7 @@ local PreCombat = {
 	{'#142117', 'UI(list)==3&item(142117).usable&item(142117).count>0&UI(kDBM)&UI(prepot)&!buff(Potion of Prolonged Power)&dbm(pull in)<3'}, 	--XXX: Potion of Prolonged Power
 	-- Flasks
 	{'#127847', 'ingroup&item(127847).usable&item(127847).count>0&UI(prepot)&!buff(Flask of the Whispered Pact)'},	--XXX: Flask of the Whispered Pact
-	{'#153023', 'ingroup&item(153023).usable&item(153023).count>0&UI(prepot)&!buff(Defiled Augmentation)'},				--XXX: Lightforged Augment Rune
+	{'#153023', 'ingroup&item(153023).usable&item(153023).count>0&UI(prepot)&!buff(Defiled Augmentation)'},					--XXX: Lightforged Augment Rune
 }
 
 local Survival = {
@@ -223,33 +230,34 @@ local ASSingle = {
 }
 
 local Cooldowns = {
-	{ASCooldowns, 'talent(7,1)'},
+	{ASCooldowns, 'talent(7,1)||player.level~=110'},
 	{LRCooldowns, 'talent(7,2)'},
 	{IFCooldowns, 'talent(7,3)'},
 }
 
 local xCombat ={
 	{Interrupts, 'toggle(Interrupts)&@Zylla.InterruptAt(intat)&inFront&range<40'},
+	{Interrupts, 'toggle(xIntRandom)&toggle(Interrupts)&@Zylla.InterruptAt(intat)&inFront&range<40', 'enemies'},
 	{Cooldowns, 'toggle(Cooldowns)', 'player'},
 	{AoE, 'toggle(aoe)&player.area(40).enemies>=3'},
-	{ASSingle, 'talent(7,1)'},
+	{ASSingle, 'talent(7,1)||player.level~=110'},
 	{LRSingle, 'talent(7,2)'},
 	{IFSingle, 'talent(7,3)'},
 }
 
 local inCombat = {
 	{Keybinds},
-	{Dispel, 'toggle(yuPS)&spell(Cleanse Spirit).cooldown<gcd'},
+	{Dispel, 'toggle(dispels)&spell(Cleanse Spirit).cooldown<gcd'},
 	{Survival, nil, 'player'},
 	{Player, '!player.moving', 'player'},
 	{Emergency, '!player.moving', 'lowest'},
-	{xCombat, 'combat&alive&range<41&inFront', (function() return NeP.DSL:Get("UI")(nil, 'target') end)}, --TODO: TEST! ALOT MORE TESTING!
+	{xCombat, nil, (function() return NeP.Condition:Get("UI")(nil, 'target') end)},
 	{Mythic_Plus, 'range<=40'},
 }
 
 local outCombat = {
 	{PreCombat, nil, 'player'},
-	{Dispel, 'toggle(yuPS)&spell(Cleanse Spirit).cooldown<gcd'},
+	{Dispel, 'toggle(dispels)&spell(Cleanse Spirit).cooldown<gcd'},
 	{Emergency, '!moving&ingroup', 'lowest'},
 	{'Healing Surge', '!moving&player.health<80', 'player'},
 	{'Ghost Wolf', 'movingfor>0.75&!buff', 'player'},
