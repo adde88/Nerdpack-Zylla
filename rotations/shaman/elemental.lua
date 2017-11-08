@@ -251,7 +251,7 @@ local inCombat = {
 	{Survival, nil, 'player'},
 	{Player, '!player.moving', 'player'},
 	{Emergency, '!player.moving', 'lowest'},
-	{xCombat, nil, (function() return NeP.Condition:Get("UI")(nil, 'target') end)},
+	{xCombat, nil, (function() return NeP.DSL:Get("UI")(nil, 'target') end)},
 	{Mythic_Plus, 'range<=40'},
 }
 
