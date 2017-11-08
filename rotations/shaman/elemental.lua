@@ -151,7 +151,7 @@ local LRCooldowns = {
 
 local LRSingle = {
 	{'Totem Mastery', 'talent(1,3)&{totem(Totem Mastery).duration<1||!player.buff(Tailwind Totem)||!player.buff(Storm Totem)||!player.buff(Resonance Totem)||!player.buff(Ember Totem)}'},
-	{'Flame Shock', '!debuff(Flame Shock)||debuff(Flame Shock).duration<=gcd'},
+	{'Flame Shock', 'debuff(Flame Shock).duration<=gcd'},
 	{'Earthquake', 'player.buff(Echoes of the Great Sundering)&player.maelstrom>76&advanced', 'target.ground'},
 	{'Earth Shock', 'player.maelstrom>82'},
 	{'Stormkeeper'},
@@ -179,7 +179,7 @@ local IFCooldowns = {
 
 local IFSingle = {
 	{'Totem Mastery', 'talent(1,3)&{totem(Totem Mastery).duration<1||!player.buff(Tailwind Totem)||!player.buff(Storm Totem)||!player.buff(Resonance Totem)||!player.buff(Ember Totem)}'},
-	{'Flame Shock', '!debuff(Flame Shock)||debuff(Flame Shock).duration<=gcd'},
+	{'Flame Shock', 'debuff(Flame Shock).duration<=gcd'},
 	{'Earthquake', 'player.buff(Echoes of the Great Sundering)&player.maelstrom>76&advanced', 'target.ground'},
 	{'Frost Shock', 'player.buff(Icefury)&player.maelstrom>76'},
 	{'Earth Shock', 'player.maelstrom>82'},
@@ -211,7 +211,7 @@ local ASCooldowns = {
 }
 
 local ASSingle = {
-	{'Flame Shock', '!debuff(Flame Shock)||debuff(Flame Shock).duration<=gcd'},
+	{'Flame Shock', 'debuff(Flame Shock).duration<=gcd'},
 	{'Flame Shock', 'player.maelstrom>10&debuff(Flame Shock).duration<=player.buff(Ascendance).duration&spell(Ascendance).cooldown+player.buff(Ascendance).duration<=debuff(Flame Shock).duration'},
 	{'Earthquake', 'player.buff(Echoes of the Great Sundering)&!player.buff(Ascendance)&player.maelstrom>76&advanced', 'target.ground'},
 	{'Earth Shock', 'player.maelstrom>82&!player.buff(Ascendance)'},
