@@ -48,7 +48,9 @@ NeP.Units:Add({'highestenemy', 'higheste', 'he'}, function(num)
       for i=1, NeP.Protected.GetObjectCount() do
 				local Obj = NeP.Protected.GetObjectWithIndex(i)
 				if NeP.Protected.omVal(Obj)
-				and _G.UnitCanAttack('player', Obj) then
+				and _G.UnitCanAttack('player', Obj)
+				and NeP.Condition:Get('combat')(Obj)
+				and NeP.Condition:Get('alive')(Obj) then
 					tmp[#tmp+1] = {
 						key = Obj,
 						prio = _G.UnitHealthMax(Obj)
@@ -79,11 +81,14 @@ end)
 end)
 
 -- Nearest Enemy
-NeP.Units:Add({'nearestenemy', 'neareste', 'ne'}, function(wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwnum)
+NeP.Units:Add({'nearestenemy', 'neareste', 'ne'}, function(num)
       local tmp = {}
 			for i=1, NeP.Protected.GetObjectCount() do
 				local Obj = NeP.Protected.GetObjectWithIndex(i)
-				if NeP.Protected.omVal(Obj) then
+				if NeP.Protected.omVal(Obj)
+				and _G.UnitCanAttack('player', Obj)
+				and NeP.Condition:Get('combat')(Obj)
+				and NeP.Condition:Get('alive')(Obj) then
             tmp[#tmp+1] = {
                key = Obj,
                prio = NeP.Condition:Get("range")(Obj)
@@ -99,7 +104,11 @@ NeP.Units:Add({'furthestenemy', 'furtheste', 'fe'}, function(num)
       local tmp = {}
 			for i=1, NeP.Protected.GetObjectCount() do
 				local Obj = NeP.Protected.GetObjectWithIndex(i)
-				if NeP.Protected.omVal(Obj) and NeP.Condition:Get("range")(Obj) <= 60 then
+				if NeP.Protected.omVal(Obj)
+				and _G.UnitCanAttack('player', Obj)
+				and NeP.Condition:Get('combat')(Obj)
+				and NeP.Condition:Get('alive')(Obj)
+				and NeP.Condition:Get("range")(Obj) <= 60 then
 					tmp[#tmp+1] = {
 						key = Obj,
 						prio = NeP.Condition:Get("range")(Obj)
