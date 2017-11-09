@@ -1,8 +1,7 @@
 local _, Zylla = ...
 local unpack = _G.unpack
 local NeP = _G.NeP
-local Mythic_Plus = _G.Mythic_Plus
---local func = function() return ( NeP.DSL:Get('equipped')(nil, 'Zann\'esu Journey') or NeP.DSL:Get('equipped')(nil, '133970') )  and var or {} end
+local Mythic_Plus = _G.Zylla.Mythic_Plus
 
 local GUI = {
 	unpack(Zylla.Logo_GUI),
