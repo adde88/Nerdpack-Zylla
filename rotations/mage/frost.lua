@@ -1,7 +1,8 @@
 local _, Zylla = ...
 local unpack = _G.unpack
 local NeP = _G.NeP
-local Mythic_Plus = _G.Zylla.Mythic_Plus
+local Mythic_Plus = _G.Mythic_Plus
+--local func = function() return ( NeP.DSL:Get('equipped')(nil, 'Zann\'esu Journey') or NeP.DSL:Get('equipped')(nil, '133970') )  and var or {} end
 
 local GUI = {
 	unpack(Zylla.Logo_GUI),
@@ -25,7 +26,7 @@ local GUI = {
 	{type = 'spacer'},	{type = 'ruler'},	 	{type = 'spacer'},
 	-- Settings
 	{type = 'header', 	size = 16, text = 'Class Settings:',															align = 'center'},
-	{type = 'spinner',	size = 11, text = 'Interrupt at percentage:', 										key = 'intat',		default = 60,	step = 5, shiftStep = 10,	max = 100, min = 1},
+	{type = 'spinner',	size = 11, text = 'Interrupt at percentage:', 										key = 'intat',		align = 'left', width = 55, default = 60,	step = 5, shiftStep = 10,	max = 100, min = 1},
 	{type = 'checkbox', text = 'Enable DBM Integration',																	key = 'kDBM', 		default = true},
 	{type = 'checkbox', text = 'Enable \'pre-potting\', flasks and Legion-rune',					key = 'prepot', 	default = false},
 	{type = 'checkbox', text = 'Enable \'pre-cast Flurry\'',															key = 'precast', 	default = false},
@@ -38,22 +39,23 @@ local GUI = {
 	{type = 'checkbox',	text = 'Stop Casting Ray of Frost (Target in Melee range)',				key = 'RoFstop', 	default = true},
 	{type = 'checkbox',	text = 'Polymorph (Backup Interrupt)',														key = 'Pol_Int',	default = false},
 	{type = 'spacer'},
-	{type = 'checkspin',text = 'Blizzard - Units',																				key = 'blizzard',		min = 1,	spin = 3,	step = 1,	max = 20,	check = true,		desc = Zylla.ClassColor..'How many units to hit with normal Blizzard.|r'},
+	{type = 'checkspin',text = 'Blizzard - Units',																				key = 'blizzard',	align = 'left', width = 55, min = 1,	spin = 3,			step = 1,	max = 20,		check = true,		desc = Zylla.ClassColor..'How many units to hit with normal Blizzard.|r'},
+	unpack((NeP.DSL:Get('equipped')(nil, 'Zann\'esu Journey') or NeP.DSL:Get('equipped')(nil, '133970'))  and Zylla.Item_ZJ or {{type="spacer"}}),
 	{type = 'spacer'},
-	{type = 'checkspin',text = 'Comet Storm - Units',																			key = 'cstorm',		min = 1,	spin = 4,	step = 1,	max = 20,	check = true,		desc = Zylla.ClassColor..'How many units to hit with Comet Storm.|r'},
+	{type = 'checkspin',text = 'Comet Storm - Units',																			key = 'cstorm',		align = 'left', width = 55, min = 1,	spin = 4,	step = 1,	max = 20,	check = true,		desc = Zylla.ClassColor..'How many units to hit with Comet Storm.|r'},
 	{type = 'spacer'},
 	{type = 'checkbox', text = 'Use Trinket #1', 																					key = 'trinket1',	default = false},
 	{type = 'checkbox', text = 'Use Trinket #2', 																					key = 'trinket2', default = false,	desc = Zylla.ClassColor..'Trinkets will be used whenever possible!|r'},
-	{type = 'checkspin',text = 'Light\'s Judgment - Units', 															key = 'LJ',				min = 1,	spin = 4,	step = 1,	max = 20,	check = true,		desc = Zylla.ClassColor..'World Spell usable on Argus.|r'},
+	{type = 'checkspin',text = 'Light\'s Judgment - Units', 															key = 'LJ',				align = 'left', width = 55, min = 1,	spin = 4,	step = 1,	max = 20,	check = true,		desc = Zylla.ClassColor..'World Spell usable on Argus.|r'},
 	{type = 'spacer'},
-	{type = 'checkspin', 	text = 'Kil\'Jaeden\'s Burning Wish - Units', 									key = 'kj', 			align = 'left', width = 55, step = 1, spin = 4, max = 20, min = 1, check = true, desc = Zylla.ClassColor..'Legendary will be used only on selected amount of units!|r'},
+	unpack((NeP.DSL:Get('equipped')(nil, 'Kil\'Jaeden\'s Burning Wish') or NeP.DSL:Get('equipped')(nil, '144259'))  and Zylla.Item_KJ or {{type="spacer"}}),
 	{type = 'ruler'},		{type = 'spacer'},
 	-- Survival
 	{type = 'header',		size = 16, text = 'Survival:',									 	 								align = 'center'},
 	{type = 'checkbox',	text = 'Ice Barrier',																							key = 'ibarr',		default = true},
-	{type = 'checkspin',text = 'Healthstone',																							key = 'HS',				spin = 45, check = true},
-	{type = 'checkspin',text = 'Healing Potion',																					key = 'AHP',			spin = 45, check = true},
-	{type = 'checkspin',text = 'Ice Block', 																							key = 'ib'	, 		spin = 20, check = true},
+	{type = 'checkspin',text = 'Healthstone',																							key = 'HS',				align = 'left', width = 55, spin = 45, step = 5, max = 100, min = 1, check = true},
+	{type = 'checkspin',text = 'Healing Potion',																					key = 'AHP',			align = 'left', width = 55, spin = 45, step = 5, max = 100, min = 1, check = true},
+	{type = 'checkspin',text = 'Ice Block', 																							key = 'ib'	, 		align = 'left', width = 55, spin = 20, step = 5, max = 100, min = 1, check = true},
 	{type = 'ruler'},		{type = 'spacer'},
 	unpack(Zylla.Mythic_GUI),
 }
@@ -92,7 +94,7 @@ local PreCombat = {
 
 local Keybinds = {
 	-- Pause
-	{'%pause', 'UI(lshift)&{keybind(lshift)||player.buff(Shadowmeld)||player.buff(Sapped Soul)}'},
+	{'%pause', 'UI(lshift)&{keybind(lshift)||player.buff(Shadowmeld)||player.buff(Sapped Soul)||player.buff(Ice Block)}'},
 	{'Blizzard', 'keybind(lcontrol)&UI(lcontrol)', 'cursor.ground'},
 	{'Frost Nova', 'keybind(ralt)&UI(ralt)'}
 }
@@ -155,8 +157,11 @@ local xCombat = {
 	{'Frost Bomb', 'debuff(Frost Bomb).remains<action(Ice Lance).travel_time&player.buff(Fingers of Frost).stack>0'},
 	{'Ice Lance', '{player.buff(Fingers of Frost).stack>0&cooldown(Icy Veins).remains>10}||player.buff(Fingers of Frost).stack>2'},
 	{'Comet Storm', 'advanced&UI(cstorm_check)&area(6).enemies>=UI(cstorm_spin)', 'enemies.ground'},
-	{'Blizzard', '!player.moving&advanced&talent(6,3)&UI(blizzard_check)&area(10).enemies>=UI(blizzard_spin)', 'enemies.ground'},
-	{'Blizzard', '!player.moving&advanced&!talent(6,3)&UI(blizzard_check)&area(8).enemies>=UI(blizzard_spin)', 'enemies.ground'},
+	{'Blizzard', '!player.moving&advanced&talent(6,3)&UI(blizzard_check)&area(10).enemies>=UI(blizzard_spin)&!equipped(Zann\'esu Journey)', 'enemies.ground'},
+	{'Blizzard', '!player.moving&advanced&!talent(6,3)&UI(blizzard_check)&area(8).enemies>=UI(blizzard_spin)&!equipped(Zann\'esu Journey)', 'enemies.ground'},
+	--XXX: Zann'esu Journey
+	{'Blizzard', '!player.moving&advanced&talent(6,3)&UI(blizzard_check)&area(10).enemies>=UI(blizzard_spin)&equipped(Zann\'esu Journey)&player.buff(Zann\'esu Journey).stack>=UI(zanesu)', 'enemies.ground'},
+	{'Blizzard', '!player.moving&advanced&!talent(6,3)&UI(blizzard_check)&area(8).enemies>=UI(blizzard_spin)&equipped(Zann\'esu Journey)&player.buff(Zann\'esu Journey).stack>=UI(zanesu)', 'enemies.ground'},
 	{'Ebonbolt', 'player.buff(Fingers of Frost).stack<={0+artifact(Icy Hand).zenabled}&ttd>10&toggle(cooldowns)'},
 	{'Ice Floes', 'gcd.remains<0.2&movingfor>0.75&!lastcast(Ice Floes)&!buff', 'player'},
 	{'Frostbolt', '!player.moving||player.buff(Ice Floes)'},
