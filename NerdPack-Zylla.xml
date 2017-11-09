@@ -6,11 +6,10 @@
   <Script file="core.lua" />
   <Script file="conditions.lua" />
   <Script file="splash.lua" />
-  <Script file="fakeunits.lua" />
   <Script file="locale.lua" />
   <Script file="overlay.lua" />
 	<Script file="tables.lua" />
-  <Script file="fakeunits.lua" />
+  <Script file="units.lua" />
   <Script file="lib.lua" />
   <Script file="listeners.lua" />
 
