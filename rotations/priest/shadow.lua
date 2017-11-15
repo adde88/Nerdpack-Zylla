@@ -314,7 +314,7 @@ local inCombat = {
 	{Survival, 'health<100&!buff(Surrender to Madness)', 'player'},
 	{Support, '!player.buff(Surrender to Madness)', 'lowest'},
 	{Keybinds},
-	{xCombat, 'combat&alive&inMelee&inFront', (function() return NeP.DSL:Get("UI")(nil, 'target') end)}, --TODO: TEST! ALOT MORE TESTING!
+	{xCombat, 'combat&alive&inFront', (function() return NeP.DSL:Get("UI")(nil, 'target') end)}, --TODO: TEST! ALOT MORE TESTING!
 	{'%dispelall', 'toggle(disp)'},
 }
 
