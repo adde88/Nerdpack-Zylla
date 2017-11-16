@@ -511,18 +511,18 @@ Zylla.S2M_Summary = true
 function Zylla.SA_Cleanup(guid)
   if _G.Zylla_SA_STATS[guid] then
 	 _G.Zylla.SA_TOTAL = _G.Zylla.SA_TOTAL - _G.Zylla_SA_STATS[guid].Count
-	 if Zylla.SA_TOTAL < 0 then
-		Zylla.SA_TOTAL = 0
+	 if _G.Zylla.SA_TOTAL < 0 then
+		_G.Zylla.SA_TOTAL = 0
 	 end
 	 _G.Zylla_SA_STATS[guid].Count = nil
 	 _G.Zylla_SA_STATS[guid].LastUpdate = nil
 	 _G.Zylla_SA_STATS[guid] = nil
-	 _G.Zylla_SA_NUM_UNITS = _G.Zylla_SA_NUM_UNITS - 1
+	 _G.Zylla_SA_NUM_UNITS = tonumber(_G.Zylla_SA_NUM_UNITS) - 1
 	 if _G.Zylla_SA_NUM_UNITS < 0 then
 		_G.Zylla_SA_NUM_UNITS = 0
 	 end
   end
-end
+end --TODO: Let's go over this in the future and clean it up
 
 --XXX: Druid
 
