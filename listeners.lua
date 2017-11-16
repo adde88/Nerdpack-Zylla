@@ -5,7 +5,7 @@ local NeP = _G.NeP
 NeP.Listener:Add('Zylla_SA', 'COMBAT_LOG_EVENT_UNFILTERED', function(_,combatevent,_,sourceGUID,_,_,_,destGUID,_,_,_,spellid,_,_,_,_,_,_,_,_,_,_,_,_,_)
   if Zylla.Class == 5 then
     local CurrentTime 					= _G.GetTime()
-    local Zylla_SA_NUM_UNITS 		= _G.Zylla_SA_NUM_UNITS or 0
+    local Zylla_SA_NUM_UNITS 		= tonumber(_G.Zylla_SA_NUM_UNITS) or 0
 		_G.Zylla_SA_STATS 					= {}
     Zylla.SA_TOTAL 							= _G.Zylla.SA_TOTAL or 0
     -- Stats buffer
@@ -376,7 +376,7 @@ NeP.Listener:Add('Zylla_Listener_TravelSpeed', 'COMBAT_LOG_EVENT_UNFILTERED', fu
 				Zylla.TTTL_table[uniqID].name = spellName
 				Zylla.TTTL_table[uniqID].spellID = spellID
 				Zylla.TTTL_table[uniqID].start = Zylla.start_timer
-				Zylla.TTTL_table[uniqID].distance = NeP.Condition:Get('range')('target')
+				Zylla.TTTL_table[uniqID].distance = NeP.DSL:Get('range')('target')
 	      Zylla.TTTL_table[uniqID].finish = GetTime()
 	      Zylla.TTTL_table[uniqID].travel_time = 0
 	      Zylla.TTTL_table[uniqID].travel_speed = 0
