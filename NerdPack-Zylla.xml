@@ -12,6 +12,7 @@
   <Script file="units.lua" />
   <Script file="lib.lua" />
   <Script file="listeners.lua" />
+	<Script file="listeners.lua" />
 
   <!-- Rotations -->
   <Script file="rotations\deathknight\frost.lua" />
