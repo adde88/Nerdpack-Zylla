@@ -2,6 +2,14 @@ local _, Zylla = ...
 local _G = _G
 local NeP = _G.NeP
 
+local function ClassRange(target)
+	if ( NeP.DSL:Get('range')(target, 'player') <= NeP.DSL:Get('class_range')() )
+	or ( NeP.DSL:Get('inmelee')(target) and NeP.DSL:Get('class_range')() == 5 ) then
+		return true
+	end
+	return false
+end
+
 -- Healing stuff
 NeP.FakeUnits:Add('healingCandidate', function(nump)
       local tempTable = {}
@@ -44,7 +52,8 @@ NeP.FakeUnits:Add({'highestenemy', 'higheste', 'he'}, function(num)
       for _, Obj in pairs(NeP.OM:Get('Enemy')) do
          if ( _G.UnitExists(Obj.key) and _G.UnitIsVisible(Obj.key) )
 				 and NeP.DSL:Get('combat')(Obj.key)
-				 and NeP.DSL:Get('alive')(Obj.key) then
+				 and NeP.DSL:Get('alive')(Obj.key)
+				 and ClassRange(Obj.key) then
             tempTable[#tempTable+1] = {
 							name = Obj.name,
               key = Obj.key,
@@ -67,7 +76,8 @@ NeP.FakeUnits:Add({'nobleedenemy', 'nobleede'}, function()
             if (NeP.DSL:Get('inFront')(Obj.key) and NeP.DSL:Get('inMelee')(Obj.key))
             and rip_duration < ptf_timer
             and rake_duration < ptf_timer
-            and thrash_duration < ptf_timer then
+            and thrash_duration < ptf_timer
+						and ClassRange(Obj.key) then
                return Obj.key
             end
          end
@@ -78,7 +88,8 @@ end)
 NeP.FakeUnits:Add({'nearestenemy', 'neareste', 'ne'}, function(num)
       local tempTable = {}
       for _, Obj in pairs(NeP.OM:Get('Enemy')) do
-         if ( _G.UnitExists(Obj.key) and _G.UnitIsVisible(Obj.key) ) then
+         if ( _G.UnitExists(Obj.key) and _G.UnitIsVisible(Obj.key) )
+				 and ClassRange(Obj.key) then
             tempTable[#tempTable+1] = {
 							name = Obj.name,
 							key = Obj.key,
@@ -94,7 +105,8 @@ end)
 NeP.FakeUnits:Add({'furthestenemy', 'furtheste', 'fe'}, function(num)
       local tempTable = {}
       for _, Obj in pairs(NeP.OM:Get('Enemy')) do
-         if ( _G.UnitExists(Obj.key) and _G.UnitIsVisible(Obj.key) ) then
+         if ( _G.UnitExists(Obj.key) and _G.UnitIsVisible(Obj.key) )
+				 and ClassRange(Obj.key) then
             tempTable[#tempTable+1] = {
 							name = Obj.name,
 							key = Obj.key,

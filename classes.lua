@@ -1,4 +1,5 @@
 local _, Zylla = ...
+
 Zylla.ClassTable = {}
 
 local rangex = {
@@ -274,10 +275,12 @@ local Classes = {
 }
 
 function Zylla.ClassTable.GetClass(_, classid)
-   return Classes[classid]
+	classid = tonumber(classid)
+  return Classes[classid]
 end
 
 function Zylla.ClassTable.GetSpec(_, specid)
+	specid = tonumber(specid)
    for i=1, #Classes do
       if Classes[i].specs[specid] then
          return Classes[i].specs[specid]
