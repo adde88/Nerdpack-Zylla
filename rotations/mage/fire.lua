@@ -1,7 +1,7 @@
 local _, Zylla = ...
 local unpack = _G.unpack
 local NeP = _G.NeP
-local Mythic_Plus = _G.Mythic_Plus
+local Mythic_Plus = _G.Zylla.Mythic_Plus
 
 local GUI = {
 	unpack(Zylla.Logo_GUI),
@@ -19,7 +19,7 @@ local GUI = {
 	{type = 'ruler'},	 	{type = 'spacer'},
 	--TODO: Targetting: Use, or NOT use?! We'll see....
 	{type = 'header', 	size = 16, text = 'Targetting:',													align = 'center'},
-	{type = 'combo',		default = 'normal',																				key = 'target', 					list = Zylla.faketarget, 	width = 75},
+	{type = 'combo',		default = 'target',																				key = 'target', 					list = Zylla.faketarget, 	width = 75},
 	{type = 'text', 		text = Zylla.ClassColor..'Only one can be enabled.\nChose between normal targetting, or hitting the highest/lowest enemy.|r'},
 	{type = 'spacer'},	{type = 'spacer'},
 	-- Settings
@@ -54,7 +54,7 @@ local exeOnLoad = function()
 
 	print('|cffADFF2F ----------------------------------------------------------------------|r')
 	print('|cffADFF2F --- |rMage |cffADFF2FFire|r')
-	print('|cffADFF2F --- |rBased on SimCraft T20 Fire Mage.r')
+	print('|cffADFF2F --- |rBased on SimCraft T20 Fire Mage')
 	print('|cffADFF2F ----------------------------------------------------------------------|r')
   print('|cffFFFB2F Configuration: |rRight-click MasterToggle and go to Combat Routines Settings!|r')
 
@@ -85,7 +85,7 @@ local Keybinds = {
 }
 
 local PreCombat = {
-	{'Blazing Barrier' , '!buff&area(50).enemies>0&UI(bb)'},
+	{'Blazing Barrier' , '!player.buff&player.area(50).enemies>0&UI(bb)', 'target'},
 	-- Pots
 	{'#127844', 'UI(list)==1&item(127844).usable&item(127844).count>0&UI(kDBM)&UI(prepot)&!buff(Potion of the Old War)&dbm(pull in)<5'}, 			--XXX: Potion of the Old War
 	{'#127843', 'UI(list)==2&item(127843).usable&item(127843).count>0&UI(kDBM)&UI(prepot)&!buff(Potion of Deadly Grace)&dbm(pull in)<5'}, 		--XXX: Potion of Deadly Grace
@@ -196,9 +196,7 @@ local inCombat = {
 	{Interrupts, 'toggle(interrupts)&@Zylla.InterruptAt(intat)&toggle(xIntRandom)&inFront&range<=40', 'enemies'},
 	{Cooldowns, 'toggle(cooldowns)'},
 	{Survival, nil, 'player'},
-	{xCombat, 'range<=40&inFront&UI(target)==normal', 'target'},
-	{xCombat, 'combat&alive&range<=40&inFront&UI(target)==highest', 'highestenemy'},
-	{xCombat, 'combat&alive&range<=40&inFront&UI(target)==lowest', 'lowestenemy'},
+	{xCombat, 'combat&alive&range<41&inFront', (function() return NeP.DSL:Get("UI")(nil, 'target') end)}, --TODO: TEST! ALOT MORE TESTING!
 	{Mythic_Plus, 'range<=40'},
 }
 

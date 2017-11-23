@@ -41,9 +41,10 @@ Zylla.Mythic_Plus = {
 	{'%pause', 'player.debuff(200904)||player.debuff(Sapped Soul)'},															--XXX: Vault of the Wardens - Sapped Soul Encounter
 }
 
-Zylla.KilJaedenTrinket ={
-	{type = 'checkspin', 	text = 'Kil\'Jaeden\'s Burning Wish - Units', 						key = 'kj', 				align = 'left', width = 55, step = 1, spin = 4, max = 20, min = 1, check = true, desc = Zylla.ClassColor..'Legendary will be used only when selected amount of units are present!|r'},
-}
+Zylla.Item_KJ =	{{type = 'checkspin', text = 'Kil\'Jaeden\'s Burning Wish - Units', 								key = 'kj', 		align = 'left', width = 55, step = 1, shiftStep = 2, 	spin = 4, 	 max = 20, 	min = 1, check = true, desc = Zylla.ClassColor..'Legendary will be used only on selected amount of units!|r'}}
+Zylla.Item_HS = {{type = 'checkspin',	text = 'Healthstone', 																				key = 'HS', 		align = 'left', width = 55, step = 5, shiftStep = 10, spin = 45, 	 max = 100, min = 1, check = true}}
+Zylla.Item_HP = {{type = 'checkspin',	text = 'Healing Potion', 																			key = 'AHP', 		align = 'left', width = 55, step = 5, shiftStep = 10, spin = 45, 	 max = 100, min = 1, check = true}}
+Zylla.Item_ZJ = {{type = 'spinner',		text = '|cffff8000(LEGENDARY:)|r\nZann\'esu Journey Stacks',	key = 'zanesu',	align = 'left', width = 55, step = 1, shiftStep = 2,  default = 3, max = 5, 	min = 1, desc = Zylla.ClassColor..'How many stacks needed to  cast Blizzard with Zann\'esu Journey .|r'}}
 
 Zylla.prepots = {
 	{key = '1', text = 'Potion of the Old War'},
@@ -70,9 +71,9 @@ Zylla.wpets = {
 }
 
 Zylla.faketarget = {
-	{key = 'normal', text = 'Normal'},
-	{key = 'lowest', text = 'Lowest'},
-	{key = 'highest', text = 'Highest'},
-	{key = 'nearest', text = 'Nearest'},
-	{key = 'furthest', text = 'Furthest'}
+	{key = 'target', 				text = 'Normal'},
+	{key = 'lowestenemy', 	text = 'Lowest'},
+	{key = 'highestenemy', 	text = 'Highest'},
+	{key = 'nearestenemy', 	text = 'Nearest'},
+	{key = 'furthestenemy', text = 'Furthest'}
 }

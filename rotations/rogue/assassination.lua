@@ -1,7 +1,7 @@
 local _, Zylla = ...
 local unpack = _G.unpack
 local NeP = _G.NeP
-local Mythic_Plus = _G.Mythic_Plus
+local Mythic_Plus = _G.Zylla.Mythic_Plus
 
 local GUI = {
 	unpack(Zylla.Logo_GUI),
@@ -19,7 +19,7 @@ local GUI = {
 	{type = 'spacer'},	{type = 'ruler'},	 	{type = 'spacer'},
 	--TODO: Targetting: Use, or NOT use?! We'll see....
 	{type = 'header', 	size = 16, text = 'Targetting:',													align = 'center'},
-	{type = 'combo',		default = 'normal',																				key = 'target', 			list = Zylla.faketarget, 	width = 75},
+	{type = 'combo',		default = 'target',																				key = 'target', 			list = Zylla.faketarget, 	width = 75},
 	{type = 'spacer'},
 	{type = 'text', 		text = Zylla.ClassColor..'Only one can be enabled.\nChose between normal targetting, or hitting the highest/lowest enemy.|r'},
 	{type = 'spacer'},	{type = 'ruler'},	 	{type = 'spacer'},
@@ -109,7 +109,7 @@ local Survival = {
 	{'Evasion', 'UI(evasion_check)&health<=UI(evasion_spin)'},
 	{'#152615', 'item(152615).usable&item(152615).count>0&health<=UI(AHP_spin)&UI(AHP_check)'}, 													--XXX: Astral Healing Potion
 	{'#127834', 'item(152615).count==0&item(127834).usable&item(127834).count>0&health<=UI(AHP_spin)&UI(AHP_check)'}, 		--XXX: Ancient Healing Potion
-	{'#5512', 'item(5512).usable&item(5512).count>0&health<=UI(HS_spin)&UI(HS_check)'}, 																		--XXX: Health Stone
+	{'#5512', 'item(5512).usable&item(5512).count>0&health<=UI(HS_spin)&UI(HS_check)'}, 																	--XXX: Health Stone
 	{'Cloak of Shadows', 'incdmg(3).magic>health.max*0.25'},
 }
 
@@ -128,9 +128,9 @@ local Ranged = {
 }
 
 local Stealthed = {
-	{'Rupture', 'player.lastcast(Vanish)&player.combopoints>4'},
-	{'Garrote', 'player.buff(Stealth)&player.combopoints<5&debuff.duration<6.4'},
-	{'Cheap Shot', '!toggle(xPickPock)&toggle(CS)&inMelee&enemy&player.buff(Stealth)'},
+	{'Rupture', 'player.lastcast(Vanish)&player.combopoints>4&enemy'},
+	{'Garrote', 'player.buff(Stealth)&player.combopoints<5&debuff.duration<6.4&enemy'},
+	{'Cheap Shot', '!toggle(xPickPock)&toggle(CS)&inMelee&enemy&player.buff(Stealth)&enemy'},
 	{'Stealth', 'toggle(xStealth)&!player.buff&!player.buff(Vanish)&!nfly&!combat', 'player'},
 	{'Pick Pocket', 'toggle(xPickPock)&enemy&alive&range<=10&player.buff(Stealth)' ,'enemies'},
 }
@@ -145,14 +145,15 @@ local Poisons = {
 local xCombat = {
 	{Interrupts, '@Zylla.InterruptAt(intat)&toggle(interrupts)'},
 	{Interrupts, '@Zylla.InterruptAt(intat)&toggle(interrupts)&toggle(xIntRandom)', 'enemies'},
+	{Ranged, '!inMelee&inRanged'},
 	{Cooldowns, 'toggle(cooldowns)'},
 	--XXX: Rupture
 	{'Rupture', 'player.buff(Vanish)'},
 	{'Rupture', 'debuff.duration<8.2&player.combopoints>3&spell(Vanish).cooldown>gcd&ttd>5'},
 	--XXX: Multi DoT Rupture
 	{'Rupture', 'debuff.duration<8.2&player.combopoints>3'},
-	{'Rupture', 'combat&alive&enemy&debuff.duration<8.2&player.combopoints>3&enemy&UI(multi)', 'enemies'},
-	{'Garrote', 'debuff.duration<6.4&player.combopoints<5'},
+	{'Rupture', 'inMelee&combat&alive&enemy&debuff.duration<8.2&player.combopoints>3&enemy&UI(multi)', 'enemies'},
+	{'Garrote', 'inMelee&debuff.duration<6.4&player.combopoints<5'},
 	--XXX: Use Mutilate till 4/5 combopoints for rupture
 	{'Mutilate', '!debuff(Rupture)&player.combopoints<4'},
 	{'Kingsbane', '!talent(6,3)&player.buff(Envenom)&debuff(Vendetta)&debuff(Surge of Toxins)&ttd>10'},
@@ -173,12 +174,7 @@ local inCombat = {
 	{Stealthed},
 	{Survival, nil, 'player'},
 	{Mythic_Plus, 'inMelee'},
-	{xCombat, 'inMelee&!player.buff(Stealth)&UI(target)==normal', 'target'},
-	{xCombat, 'inMelee&!player.buff(Stealth)&combat&alive&UI(target)==lowest', 'lowestenemy'},
-	{xCombat, 'inMelee&!player.buff(Stealth)&combat&alive&UI(target)==highest', 'highestenemy'},
-	{xCombat, 'inMelee&!player.buff(Stealth)&combat&alive&UI(target)==nearest', 'nearestenemy'},
-	{xCombat, 'inMelee&!player.buff(Stealth)&combat&alive&UI(target)==furthest', 'furthestenemy'},
-	{Ranged, '!inMelee&inRanged'},
+	{xCombat, 'combat&alive&inMelee&inFront', (function() return NeP.DSL:Get("UI")(nil, 'target') end)}, --TODO: TEST! ALOT MORE TESTING!
 }
 
 local outCombat= {

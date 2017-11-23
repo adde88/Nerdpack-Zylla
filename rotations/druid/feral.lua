@@ -1,7 +1,7 @@
 local _, Zylla = ...
 local unpack = _G.unpack
 local NeP = _G.NeP
-local Mythic_Plus = _G.Mythic_Plus
+local Mythic_Plus = _G.Zylla.Mythic_Plus
 
 local GUI = {
 	unpack(Zylla.Logo_GUI),
@@ -19,7 +19,7 @@ local GUI = {
 	{type = 'ruler'},	 	{type = 'spacer'},
 	--TODO: Targetting: Use, or NOT use?! We'll see....
 	{type = 'header', 	size = 16, text = 'Targetting:',													align = 'center'},
-	{type = 'combo',		default = 'normal',																				key = 'target', 					list = Zylla.faketarget, 	width = 75},
+	{type = 'combo',		default = 'target',																				key = 'target', 					list = Zylla.faketarget, 	width = 75},
 	{type = 'spacer'},
 	{type = 'text', 		text = Zylla.ClassColor..'Only one can be enabled.\nChose between normal targetting, or hitting the highest/lowest enemy.|r'},
 	{type = 'spacer'},	{type = 'spacer'},
@@ -150,7 +150,7 @@ local SBT_Opener = {
 
 local Cooldowns = {
 	{'Berserk', 'buff(Tiger\'s Fury)', 'player'},
-	{'Incarnation: King of the Jungle', 'talent(5,2)&{spell(Tiger\'s Fury).cooldown<gcd||{energy.time_to_max>1&energy>25}}', 'player'},
+	{'Incarnation: King of the Jungle', '{spell(Tiger\'s Fury).cooldown<gcd||{energy.time_to_max>1&energy>25}}', 'player'},
 	{SBT_Opener, 'talent(6,1)&xtime<20'},
 	{'#trinket1', 'UI(trinket1)'},
 	{'#trinket2', 'UI(trinket2)'},
@@ -192,16 +192,12 @@ local xCombat = {
 }
 
 local inCombat = {
-	{Keybinds},
 	{'Cat Form', '!buff(Frenzied Regeneration)&{!buff(Cat Form)&{!buff(Travel Form)||area(8).enemies>0}}', 'player'},
 	{'Rake', 'inMelee&inFront&{player.buff(Prowl)||player.buff(Shadowmeld)}', 'target'},
+	{Keybinds},
 	{Survival, nil, 'player'},
 	{Mythic_Plus, 'inMelee&inFront'},
-	{xCombat, '!player.buff(Frenzied Regeneration)&inFront&UI(target)==normal&{talent(3,1)&range<=10||!talent(3,1)&inMelee}', 'target'},
-	{xCombat, 'combat&alive&!player.buff(Frenzied Regeneration)&inFront&UI(target)==highest&{talent(3,1)&range<=10||!talent(3,1)&inMelee}', 'highestenemy'},
-	{xCombat, 'combat&alive&!player.buff(Frenzied Regeneration)&inFront&UI(target)==lowest&{talent(3,1)&range<=10||!talent(3,1)&inMelee}', 'lowestenemy'},
-	{xCombat, 'combat&alive&!player.buff(Frenzied Regeneration)&inFront&UI(target)==nearest&{talent(3,1)&range<=10||!talent(3,1)&inMelee}', 'nearestenemy'},
-	{xCombat, 'combat&alive&!player.buff(Frenzied Regeneration)&inFront&UI(target)==furthest&{talent(3,1)&range<=10||!talent(3,1)&inMelee}', 'furthestenemy'},
+	{xCombat, 'combat&alive&inMelee&inFront', (function() return NeP.DSL:Get("UI")(nil, 'target') end)}, --TODO: TEST! ALOT MORE TESTING!
 	{AoE_PTF, 'inmelee&infront', 'enemies'}
 }
 

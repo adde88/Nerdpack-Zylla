@@ -1,7 +1,7 @@
 local _, Zylla = ...
 local unpack = _G.unpack
 local NeP = _G.NeP
-local Mythic_Plus = _G.Mythic_Plus
+local Mythic_Plus = _G.Zylla.Mythic_Plus
 
 local GUI = {
 	unpack(Zylla.Logo_GUI),
@@ -19,7 +19,7 @@ local GUI = {
 	{type = 'spacer'},		{type = 'ruler'},	 	{type = 'spacer'},
 	--TODO: Targetting: Use, or NOT use?! We'll see....
 	{type = 'header', 	size = 16, text = 'Targetting:',																		align = 'center'},
-	{type = 'combo',		default = 'normal',																									key = 'target', 					list = Zylla.faketarget, 	width = 75},
+	{type = 'combo',		default = 'target',																									key = 'target', 					list = Zylla.faketarget, 	width = 75},
 	{type = 'spacer'},
 	{type = 'text', 		text = Zylla.ClassColor..'Only one can be enabled.\nChose between normal targetting, or hitting the highest/lowest enemy.|r'},
 	{type = 'spacer'},		{type = 'ruler'},	 	{type = 'spacer'},
@@ -287,6 +287,8 @@ local Zek_Support = {
 }
 
 local xCombat= {
+	{Interrupts, 'toggle(Interrupts)&@Zylla.InterruptAt(intat)&inFront&&range<40', 'target'},
+	{Interrupts, 'toggle(Interrupts)&toggle(xIntRandom)&@Zylla.InterruptAt(intat)&inFront&range<40', 'enemies'},
 	{SWP_MASS, 'UI(SWP_UNITS_check)', 'enemies'},
 	{'Shadowform', '!buff(Voidform)&!buff', 'player'},
 	{'Mind Bomb', '{toggle(abc)&area(8).enemies>2&!player.buff(Surrender To Madness)&!talent(7,2)}||{toggle(abc)&area(8).enemies>2&talent(7,2)&spell(Shadow Crash).cooldown==0&player.buff(Voidform)}'},
@@ -312,13 +314,7 @@ local inCombat = {
 	{Survival, 'health<100&!buff(Surrender to Madness)', 'player'},
 	{Support, '!player.buff(Surrender to Madness)', 'lowest'},
 	{Keybinds},
-	{Interrupts, 'toggle(Interrupts)&@Zylla.InterruptAt(intat)&inFront&&range<40', 'target'},
-	{Interrupts, 'toggle(Interrupts)&toggle(xIntRandom)&@Zylla.InterruptAt(intat)&inFront&range<40', 'enemies'},
-	{xCombat, 'UI(target)==normal', 'target'},
-	{xCombat, 'UI(target)==lowest', 'lowestenemy'},
-	{xCombat, 'UI(target)==highest', 'highestenemy'},
-	{xCombat, 'UI(target)==nearest', 'nearestenemy'},
-	{xCombat, 'UI(target)==furthest', 'furthestenemy'},
+	{xCombat, 'combat&alive&range<40&inFront', (function() return NeP.DSL:Get("UI")(nil, 'target') end)}, --TODO: TEST! ALOT MORE TESTING!
 	{'%dispelall', 'toggle(disp)'},
 }
 

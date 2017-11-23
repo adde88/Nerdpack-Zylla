@@ -1,7 +1,7 @@
 local _, Zylla = ...
 local unpack = _G.unpack
 local NeP = _G.NeP
-local Mythic_Plus = _G.Mythic_Plus
+local Mythic_Plus = _G.Zylla.Mythic_Plus
 
 local GUI = {
 	unpack(Zylla.Logo_GUI),
@@ -157,11 +157,7 @@ local inCombat = {
 	{'Evocation', 'UI(evocation_check)&mana<=UI(evocation_spin)', 'player'},
 	{'Arcane Familiar', '!buff', 'player'},
 	{Survival, nil, 'player'},
-	{xCombat, 'range<41&inFront&UI(target)==normal', 'target'},
-	{xCombat, 'combat&alive&range<41&inFront&combat&alive&UI(target)==lowest', 'lowestenemy'},
-	{xCombat, 'combat&alive&range<41&inFrontcombat&alive&UI(target)==highest', 'highestenemy'},
-	{xCombat, 'combat&alive&range<41&inFrontcombat&alive&UI(target)==nearest', 'nearestenemy'},
-	{xCombat, 'combat&alive&range<41&inFrontcombat&alive&UI(target)==furthest', 'furthestenemy'},
+	{xCombat, 'combat&alive&range<41&inFront', (function() return NeP.DSL:Get("UI")(nil, 'target') end)}, --TODO: TEST! ALOT MORE TESTING!
 	{Mythic_Plus, 'range<=40'}
 }
 

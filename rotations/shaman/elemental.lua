@@ -1,7 +1,7 @@
 local _, Zylla = ...
 local unpack = _G.unpack
 local NeP = _G.NeP
-local Mythic_Plus = _G.Mythic_Plus
+local Mythic_Plus = _G.Zylla.Mythic_Plus
 
 local GUI = {
 	unpack(Zylla.Logo_GUI),
@@ -19,7 +19,7 @@ local GUI = {
 	{type = 'spacer'},	{type = 'ruler'},	 	{type = 'spacer'},
 	--TODO: Targetting: Use, or NOT use?! We'll see....
 	{type = 'header', 	size = 16, text = 'Targetting:',																		align = 'center'},
-	{type = 'combo',		default = 'normal',																									key = 'target', 			list = Zylla.faketarget, 	width = 75},
+	{type = 'combo',		default = 'target',																									key = 'target', 			list = Zylla.faketarget, 	width = 75},
 	{type = 'spacer'},
 	{type = 'text', 		text = Zylla.ClassColor..'Only one can be enabled.\nChose between normal targetting, or hitting the highest/lowest enemy.|r'},
 	{type = 'spacer'},	{type = 'ruler'},	 	{type = 'spacer'},
@@ -28,7 +28,7 @@ local GUI = {
 	{type = 'spinner',	size = 11, text = 'Interrupt at percentage:', 											key = 'intat',				default = 60,	step = 5, shiftStep = 10,	max = 100, min = 1},
 	{type = 'checkbox', text = 'Enable DBM Integration',																		key = 'kDBM', 				default = true},
 	{type = 'checkbox', text = 'Enable \'pre-potting\', flasks and Legion-rune',						key = 'prepot', 			default = false},
-	{type = 'combo',		default = '1',																											key = 'list', 				list = Zylla.prepots, 	width = 175},
+	{type = 'combo',		default = '3',																											key = 'list', 				list = Zylla.prepots, 	width = 175},
 	{type = 'spacer'},	{type = 'spacer'},
 	{type = 'checkspin',text = 'Light\'s Judgment - Units', 																key = 'LJ',						spin = 4,	step = 1,	max = 20, min = 1,	check = true,	desc = Zylla.ClassColor..'World Spell usable on Argus.|r'},
 	{type = 'checkbox', text = 'Use Trinket #1', 																						key = 'trinket1',			default = false},
@@ -47,7 +47,7 @@ local GUI = {
 	{type = 'ruler'},		{type = 'spacer'},
 	-- GUI Emergency Group Healing
 	{type = 'header', 	text = 'Emergency Group Healing', 																	align = 'center'},
-	{type = 'checkspin', text = 'Healing Surge'																							key = 'hs_p',					spin = 35, check = true},},
+	{type = 'checkspin',text = 'Healing Surge',																							key = 'hs_p',					spin = 35, check = true},
 	{type = 'ruler'},		{type = 'spacer'},
 	unpack(Zylla.Mythic_GUI),
 }
@@ -57,7 +57,7 @@ local exeOnLoad = function()
 	Zylla.AFKCheck()
 
 	print('|cff0070de ----------------------------------------------------------------------|r')
-	print('|cff0070de --- |rShaman: |cff0070deELEMENTAL|r')
+	print('|cff0070de --- |rShaman: |cff0070deElemental|r')
 	print('|cff0070de --- |rLightning Rod: 1/3 - 2/1 - 3/1 - 4/2 - 5/3||5/2 (Tyrannical) - 6/1 - 7/2|r')
 	print('|cff0070de --- |rIcefury: 1/3 - 2/1 - 3/1 - 4/2 - 5/3 - 6/3||6/1 (Mythic+ AoE) - 7/3|r')
 	print('|cff0070de --- |rAscendance: 1/1 - 2/1 - 3/1 - 4/2 - 5/3 - 6/3||6/1 (Mythic+ AoE)- 7/1|r')
@@ -65,13 +65,30 @@ local exeOnLoad = function()
 	print('|cffff0000 Configuration: |rRight-click the MasterToggle and go to Combat Routines Settings|r')
 
 	NeP.Interface:AddToggle({
-		key = 'yuPS',
+		key = 'xIntRandom',
+		name = 'Interrupt Anyone',
+		text = 'Interrupt all nearby enemies, without targeting them.',
+		icon = 'Interface\\Icons\\inv_ammo_arrow_04',
+	})
+
+	NeP.Interface:AddToggle({
+		key = 'dispels',
 		name = 'Cleanse Spirit',
 		text = 'Enable/Disable: Automatic removal of curses',
 		icon = 'Interface\\ICONS\\ability_shaman_cleansespirit',
 	})
 
 end
+
+local PreCombat = {
+	-- Pots
+	{'#127844', 'UI(list)==1&item(127844).usable&item(127844).count>0&UI(kDBM)&UI(prepot)&!buff(Potion of the Old War)&dbm(pull in)<3'}, 			--XXX: Potion of the Old War
+	{'#127843', 'UI(list)==2&item(127843).usable&item(127843).count>0&UI(kDBM)&UI(prepot)&!buff(Potion of Deadly Grace)&dbm(pull in)<3'}, 		--XXX: Potion of Deadly Grace
+	{'#142117', 'UI(list)==3&item(142117).usable&item(142117).count>0&UI(kDBM)&UI(prepot)&!buff(Potion of Prolonged Power)&dbm(pull in)<3'}, 	--XXX: Potion of Prolonged Power
+	-- Flasks
+	{'#127847', 'ingroup&item(127847).usable&item(127847).count>0&UI(prepot)&!buff(Flask of the Whispered Pact)'},	--XXX: Flask of the Whispered Pact
+	{'#153023', 'ingroup&item(153023).usable&item(153023).count>0&UI(prepot)&!buff(Defiled Augmentation)'},					--XXX: Lightforged Augment Rune
+}
 
 local Survival = {
 	{'&Astral Shift', 'UI(AS_check)&health<=UI(AS_spin)'},
@@ -107,25 +124,25 @@ local Dispel = {
 }
 
 local AoE = {
-	{'Totem Mastery', '{!moving||moving}&talent(1,3)&{totem(Totem Mastery).duration<1||!player.buff(Tailwind Totem)||!player.buff(Storm Totem)||!player.buff(Resonance Totem)||!player.buff(Ember Totem)}'},
+	{'Totem Mastery', 'talent(1,3)&{totem(Totem Mastery).duration<1||!player.buff(Tailwind Totem)||!player.buff(Storm Totem)||!player.buff(Resonance Totem)||!player.buff(Ember Totem)}'},
 	{'Stormkeeper'},
-	{'Liquid Magma Totem', '{!moving||moving}&talent(6,1)&advanced', 'target.ground'},
-	--XXX: Flame Shock according to AoE Lightning Rod Rotaion from Storm, Earth and Lava***
-	{'Flame Shock', '{!moving||moving}&!talent(7,2)&player.maelstrom>10&debuff(Flame Shock).duration<gcd'},
-	{'Flame Shock', '{!moving||moving}&talent(7,2)&area(10).enemies<4&!debuff(Flame Shock)'},
-	{'Earthquake', '{!moving||moving}&player.maelstrom>40&advanced', 'target.ground'},
-	{'Lava Burst', '{!moving||moving}&player.buff(Lava Surge)||!moving&!talent(7,2)&debuff(Flame Shock).duration>spell(Lava Burst).casttime'},
-	--XXX: Elemental Blast according to Fortified affix Lightning Rod Rotaion from Storm, Earth and Lava***
-	{'Elemental Blast', 'talent(5,3)'},
+	{'Liquid Magma Totem', 'advanced', 'target.ground'},
+	--XXX: Flame Shock according to AoE Lightning Rod Rotation from Storm, Earth and Lava***
+	{'Flame Shock', '!talent(7,2)&player.maelstrom>10&debuff(Flame Shock).duration<=gcd'},
+	{'Flame Shock', 'talent(7,2)&area(10).enemies<4&!debuff(Flame Shock)'},
+	{'Earthquake', 'player.maelstrom>40&advanced', 'target.ground'},
+	{'Lava Burst', 'player.buff(Lava Surge)||!moving&!talent(7,2)&debuff(Flame Shock).duration>spell(Lava Burst).casttime'},
+	--XXX: Elemental Blast according to Fortified affix Lightning Rod Rotation from Storm, Earth and Lava***
+	{'Elemental Blast'},
 	{'Lava Beam', 'talent(7,1)&player.buff(Ascendance)'},
-	--XXX: Chain Lightning according to AoE Lightning Rod Rotaion from Storm, Earth and Lava***
+	--XXX: Chain Lightning according to AoE Lightning Rod Rotation from Storm, Earth and Lava***
 	{'Chain Lightning', 'talent(7,2)&{!debuff(Lightning Rod)||player.buff(Stormkeeper)}'},
 	{'Chain Lightning', nil, 'target'},
 }
 
 --XXX: Lightning Rod Rotation
 local LRCooldowns = {
-	{'Totem Mastery', '{!moving||moving}&talent(1,3)&{totem(Totem Mastery).duration<1||!buff(Tailwind Totem)||!buff(Storm Totem)||!buff(Resonance Totem)||!buff(Ember Totem)}'},
+	{'Totem Mastery', 'talent(1,3)&{totem(Totem Mastery).duration<1||!buff(Tailwind Totem)||!buff(Storm Totem)||!buff(Resonance Totem)||!buff(Ember Totem)}'},
 	{'Stormkeeper'},
 	{'Fire Elemental', '!talent(6,2)'},
 	{'&Blood Fury', 'lastcast(Fire Elemental)'},
@@ -133,19 +150,19 @@ local LRCooldowns = {
 }
 
 local LRSingle = {
-	{'Totem Mastery', '{!moving||moving}&talent(1,3)&{totem(Totem Mastery).duration<1||!player.buff(Tailwind Totem)||!player.buff(Storm Totem)||!player.buff(Resonance Totem)||!player.buff(Ember Totem)}'},
-	{'Flame Shock', '{!moving||moving}&!debuff(Flame Shock)||debuff(Flame Shock).duration<=gcd'},
-	{'Earthquake', '{!moving||moving}&player.buff(Echoes of the Great Sundering)&player.maelstrom>76&advanced', 'target.ground'},
-	{'Earth Shock', '{!moving||moving}&player.maelstrom>82'},
+	{'Totem Mastery', 'talent(1,3)&{totem(Totem Mastery).duration<1||!player.buff(Tailwind Totem)||!player.buff(Storm Totem)||!player.buff(Resonance Totem)||!player.buff(Ember Totem)}'},
+	{'Flame Shock', 'debuff(Flame Shock).duration<=gcd'},
+	{'Earthquake', 'player.buff(Echoes of the Great Sundering)&player.maelstrom>76&advanced', 'target.ground'},
+	{'Earth Shock', 'player.maelstrom>82'},
 	{'Stormkeeper'},
-	{'Elemental Blast', 'talent(5,3)'},
-	--XXX: Lava Burst according to Lightning Rod Rotaion from Storm, Earth and Lava***
-	{'Lava Burst', '{!moving||moving}&player.buff(Lava Surge)||debuff(Flame Shock).duration>spell(Lava Burst).casttime&spell(Lava Burst).cooldown==0&{!player.buff(Stormkeeper)||player.buff(Stormkeeper).duration>spell(Lava Burst).casttime+{1.5*{spell_haste}*player.buff(Stormkeeper).count+1}}'},
-	{'Flame Shock', '{!moving||moving}&player.maelstrom>10&player.buff(Elemental Focus)&debuff(Flame Shock).duration<9'},
-	--XXX: Earth Shock according to Lightning Rod Rotaion from Storm, Earth and Lava***
-	{'Earth Shock', '{!moving||moving}&player.maelstrom>76&!player.buff(Lava Surge)'},
-	{'Earthquake', '{!moving||moving}&player.buff(Echoes of the Great Sundering)&advanced', 'target.ground'},
-	--XXX: Lightning Bolt according to Lightning Rod Rotaion from Storm, Earth and Lava***
+	{'Elemental Blast'},
+	--XXX: Lava Burst according to Lightning Rod Rotation from Storm, Earth and Lava***
+	{'Lava Burst', 'player.buff(Lava Surge)||debuff(Flame Shock).duration>spell(Lava Burst).casttime&spell(Lava Burst).cooldown<=gcd&{!player.buff(Stormkeeper)||player.buff(Stormkeeper).duration>spell(Lava Burst).casttime+{1.5*{spell_haste}*player.buff(Stormkeeper).count+1}}'},
+	{'Flame Shock', 'player.maelstrom>10&player.buff(Elemental Focus)&debuff(Flame Shock).duration<9'},
+	--XXX: Earth Shock according to Lightning Rod Rotation from Storm, Earth and Lava***
+	{'Earth Shock', 'player.maelstrom>76&!player.buff(Lava Surge)'},
+	{'Earthquake', 'player.buff(Echoes of the Great Sundering)&advanced', 'target.ground'},
+	--XXX: Lightning Bolt according to Lightning Rod Rotation from Storm, Earth and Lava***
 	{'Lightning Bolt', 'player.buff(Power of the Maelstrom)&{!debuff(Lightning Rod)||player.buff(Stormkeeper)&!toggle(aoe)}'},
 	{'Lightning Bolt', 'player.buff(Power of the Maelstrom)'},
 	{'Lightning Bolt', '!debuff(Lightning Rod)'},
@@ -154,30 +171,30 @@ local LRSingle = {
 
 --XXX: Icefury Rotation
 local IFCooldowns = {
-	{'Totem Mastery', '{!moving||moving}&talent(1,3)&{totem(Totem Mastery).duration<1||!buff(Tailwind Totem)||!buff(Storm Totem)||!buff(Resonance Totem)||!buff(Ember Totem)}'},
+	{'Totem Mastery', 'talent(1,3)&{totem(Totem Mastery).duration<1||!buff(Tailwind Totem)||!buff(Storm Totem)||!buff(Resonance Totem)||!buff(Ember Totem)}'},
 	{'Fire Elemental', '!talent(6,2)'},
 	{'&Blood Fury', 'lastcast(Fire Elemental)'},
 	{'&Berserking', 'lastcast(Fire Elemental)'},
 }
 
 local IFSingle = {
-	{'Totem Mastery', '{!moving||moving}&talent(1,3)&{totem(Totem Mastery).duration<1||!player.buff(Tailwind Totem)||!player.buff(Storm Totem)||!player.buff(Resonance Totem)||!player.buff(Ember Totem)}'},
-	{'Flame Shock', '{!moving||moving}&!debuff(Flame Shock)||debuff(Flame Shock).duration<=gcd'},
-	{'Earthquake', '{!moving||moving}&player.buff(Echoes of the Great Sundering)&player.maelstrom>76&advanced', 'target.ground'},
+	{'Totem Mastery', 'talent(1,3)&{totem(Totem Mastery).duration<1||!player.buff(Tailwind Totem)||!player.buff(Storm Totem)||!player.buff(Resonance Totem)||!player.buff(Ember Totem)}'},
+	{'Flame Shock', 'debuff(Flame Shock).duration<=gcd'},
+	{'Earthquake', 'player.buff(Echoes of the Great Sundering)&player.maelstrom>76&advanced', 'target.ground'},
 	{'Frost Shock', 'player.buff(Icefury)&player.maelstrom>76'},
-	{'Earth Shock', '{!moving||moving}&player.maelstrom>82'},
+	{'Earth Shock', 'player.maelstrom>82'},
 	{'Stormkeeper', '!player.buff(Icefury)'},
-	{'Elemental Blast', 'talent(5,3)'},
+	{'Elemental Blast'},
 	{'Icefury', 'player.maelstrom<86&!player.buff(Stormkeeper)'},
 	{'Lightning Bolt', 'player.buff(Power of the Maelstrom)&player.buff(Stormkeeper)'},
-	--XXX: Lava Burst according to Icefury Rotaion from Storm, Earth and Lava***
-	{'Lava Burst', '{!moving||moving}&player.buff(Lava Surge)||debuff(Flame Shock).duration>spell(Lava Burst).casttime&{spell(Lava Burst).cooldown==0||player.maelstrom<98&spell(Lava Burst).charges<3}'},
-	--XXX: Frost Shock according to Icefury Rotaion from Storm, Earth and Lava***
-	{'Frost Shock', '{!moving||moving}&player.buff(Icefury)&{lastcast(Icefury)||player.maelstrom>10||player.buff(Icefury).duration<{1.5*{spell_haste}*player.buff(Icefury).count+1}}'},
-	{'Flame Shock', '{!moving||moving}&player.maelstrom>10&player.buff(Elemental Focus)&debuff(Flame Shock).duration<9'},
-	{'Frost Shock', '{!moving||moving}&player.buff(Icefury)'},
-	{'Earth Shock', '{!moving||moving}&player.maelstrom>76'},
-	{'Earthquake', '{!moving||moving}&player.buff(Echoes of the Great Sundering)&advanced', 'target.ground'},
+	--XXX: Lava Burst according to Icefury Rotation from Storm, Earth and Lava***
+	{'Lava Burst', 'player.buff(Lava Surge)||debuff(Flame Shock).duration>spell(Lava Burst).casttime&{spell(Lava Burst).cooldown<=gcd||player.maelstrom<98&spell(Lava Burst).charges<3}'},
+	--XXX: Frost Shock according to Icefury Rotation from Storm, Earth and Lava***
+	{'Frost Shock', 'player.buff(Icefury)&{lastcast(Icefury)||player.maelstrom>10||player.buff(Icefury).duration<{1.5*{spell_haste}*player.buff(Icefury).count+1}}'},
+	{'Flame Shock', 'player.maelstrom>10&player.buff(Elemental Focus)&debuff(Flame Shock).duration<9'},
+	{'Frost Shock', 'player.buff(Icefury)'},
+	{'Earth Shock', 'player.maelstrom>76'},
+	{'Earthquake', 'player.buff(Echoes of the Great Sundering)&advanced', 'target.ground'},
 	{'Lightning Bolt', 'player.buff(Power of the Maelstrom)'},
 	{'Lightning Bolt', nil, 'target'},
 }
@@ -194,58 +211,55 @@ local ASCooldowns = {
 }
 
 local ASSingle = {
-	{'Flame Shock', '{!moving||moving}&!debuff(Flame Shock)||debuff(Flame Shock).duration<=gcd'},
-	{'Flame Shock', 'player.maelstrom>10&debuff(Flame Shock).duration<=player.buff(Ascendance).duration&spell(Ascendance).cooldown+player.buff(Ascendance).duration<=debuff(Flame Shock).duration'},
-	{'Earthquake', '{!moving||moving}&player.buff(Echoes of the Great Sundering)&!player.buff(Ascendance)&player.maelstrom>76&advanced', 'target.ground'},
- 	{'Earth Shock', '{!moving||moving}&player.maelstrom>82&!player.buff(Ascendance)'},
+	{'Flame Shock', 'debuff(Flame Shock).duration<=gcd'},
+	{'Flame Shock', 'player.maelstrom>10&debuff(Flame Shock).duration<=player.buff(Ascendance).duration&spell(Ascendance).cooldown+player.buff(Ascendance).duration<=debuff(Flame Shock).duration&talent(7,1)'},
+	{'Earthquake', 'player.buff(Echoes of the Great Sundering)&!player.buff(Ascendance)&player.maelstrom>76&advanced', 'target.ground'},
+	{'Earth Shock', 'player.maelstrom>82&!player.buff(Ascendance)&talent(7,1)'},
 	{'Stormkeeper', '!player.buff(Ascendance)'},
-	{'Elemental Blast', 'talent(5,3)'},
-	--XXX: Lightning Bolt according to Ascendance Rotaion from Storm, Earth and Lava***
+	{'Elemental Blast'},
+	--XXX: Lightning Bolt according to Ascendance Rotation from Storm, Earth and Lava***
 	{'Lightning Bolt', 'player.buff(Power of the Maelstrom)&{player.buff(Stormkeeper)||spell(Lava Burst).charges<3}'},
-	--XXX: Lava Burst according to Ascendance Rotaion from Storm, Earth and Lava***
-	{'Lava Burst', '{!moving||moving}&player.buff(Lava Surge)||debuff(Flame Shock).duration>spell(Lava Burst).casttime&{spell(Lava Burst).cooldown==0||player.buff(Ascendance)||!player.buff(Ascendance)&player.buff(Stormkeeper).duration>spell(Lava Burst).casttime+{1.5*{spell_haste}*player.buff(Stormkeeper).count+1}}'},
-	{'Flame Shock', '{!moving||moving}&player.maelstrom>10&player.buff(Elemental Focus)&debuff(Flame Shock).duration<9'},
-	--XXX: Earth Shock according to Ascendance Rotaion from Storm, Earth and Lava***
-	{'Earth Shock', '{!moving||moving}&player.maelstrom>76&{!player.buff(Lava Surge)||!player.buff(Ascendance)}'},
-	{'Earthquake', '{!moving||moving}&player.buff(Echoes of the Great Sundering)&!player.buff(Ascendance)&advanced', 'target.ground'},
+	--XXX: Lava Burst according to Ascendance Rotation from Storm, Earth and Lava***
+	{'Lava Burst', 'player.buff(Lava Surge)||debuff(Flame Shock).duration>spell(Lava Burst).casttime&{spell(Lava Burst).cooldown<=gcd||player.buff(Ascendance)||!player.buff(Ascendance)&player.buff(Stormkeeper).duration>spell(Lava Burst).casttime+{1.5*{spell_haste}*player.buff(Stormkeeper).count+1}}'},
+	{'Flame Shock', 'player.maelstrom>10&player.buff(Elemental Focus)&debuff(Flame Shock).duration<9'},
+	--XXX: Earth Shock according to Ascendance Rotation from Storm, Earth and Lava***
+	{'Earth Shock', 'player.maelstrom>76&{!player.buff(Lava Surge)||!player.buff(Ascendance)}'},
+	{'Earthquake', 'player.buff(Echoes of the Great Sundering)&!player.buff(Ascendance)&advanced', 'target.ground'},
 	{'Lightning Bolt', 'player.buff(Power of the Maelstrom)'},
 	{'Lightning Bolt'},
 }
 
 local Cooldowns = {
-	{ASCooldowns, 'talent(7,1)'},
+	{ASCooldowns, 'talent(7,1)||player.level~=110'},
 	{LRCooldowns, 'talent(7,2)'},
 	{IFCooldowns, 'talent(7,3)'},
 }
 
 local xCombat ={
 	{Interrupts, 'toggle(Interrupts)&@Zylla.InterruptAt(intat)&inFront&range<40'},
+	{Interrupts, 'toggle(xIntRandom)&toggle(Interrupts)&@Zylla.InterruptAt(intat)&inFront&range<40', 'enemies'},
 	{Cooldowns, 'toggle(Cooldowns)', 'player'},
 	{AoE, 'toggle(aoe)&player.area(40).enemies>=3'},
-	{ASSingle, 'talent(7,1)'},
+	{ASSingle, 'talent(7,1)||player.level~=110'},
 	{LRSingle, 'talent(7,2)'},
 	{IFSingle, 'talent(7,3)'},
 }
 
 local inCombat = {
 	{Keybinds},
-	{Dispel, 'toggle(yuPS)&spell(Cleanse Spirit).cooldown==0'},
+	{Dispel, 'toggle(dispels)&spell(Cleanse Spirit).cooldown<=gcd'},
 	{Survival, nil, 'player'},
 	{Player, '!player.moving', 'player'},
 	{Emergency, '!player.moving', 'lowest'},
-	{xCombat, 'inFront&range<=40&UI(target)==normal', 'target'}
-	{xCombat, 'inFront&range<=40&combat&alive&UI(target)==lowest', 'lowestenemy'}
-	{xCombat, 'inFront&range<=40&combat&alive&UI(target)==highest', 'highestenemy'}
-	{xCombat, 'inFront&range<=40&combat&alive&UI(target)==nearest', 'nearestenemy'}
-	{xCombat, 'inFront&range<=40&combat&alive&UI(target)==furthest', 'furthestenemy'}
+	{xCombat, nil, (function() return NeP.DSL:Get("UI")(nil, 'target') end)},
 	{Mythic_Plus, 'range<=40'},
 }
 
 local outCombat = {
-	{PreCombat, nil, 'player'}
-	{Dispel, 'toggle(yuPS)&spell(Cleanse Spirit).cooldown<gcd'},
+	{PreCombat, nil, 'player'},
+	{Dispel, 'toggle(dispels)&spell(Cleanse Spirit).cooldown<=gcd'},
 	{Emergency, '!moving&ingroup', 'lowest'},
-	{'Healing Surge', '!moving&player.health<80', 'player'},
+	{'Healing Surge', 'UI(HSP_check)&!moving&player.health<80', 'player'},
 	{'Ghost Wolf', 'movingfor>0.75&!buff', 'player'},
 }
 

@@ -1,7 +1,7 @@
 local _, Zylla = ...
 local unpack = _G.unpack
 local NeP = _G.NeP
-local Mythic_Plus = _G.Mythic_Plus
+local Mythic_Plus = _G.Zylla.Mythic_Plus
 
 local GUI = {
 	unpack(Zylla.Logo_GUI),
@@ -131,9 +131,10 @@ local Survival = {
 }
 
 local Keybinds = {
-	{'!Healing Rain', 'UI(lshift)&keybind(lshift)'},
-	{'!Lightning Surge Totem', 'UI(lcontrol)&keybind(lcontrol)'},
-	{'!Cloudburst Totem', 'UI(lalt)&keybind(lalt)'},
+	{'%pause', 'keybind(lshift)&UI(lshift)'},
+	{'!Healing Rain', 'UI(lcontrol)&keybind(lcontrol)'},
+	{'!Lightning Surge Totem', 'UI(lalt)&keybind(lalt)'},
+	{'!Cloudburst Totem', 'UI(ralt)&keybind(ralt)'},
 }
 
 local Totems = {
@@ -208,6 +209,8 @@ local inCombat = {
 }
 
 local outCombat = {
+	{PreCombat},
+	{Keybinds},
 	{'%dispelall', 'toggle(disp)&spell(Purify Spirit).cooldown<=gcd'},
 	{Lowest, 'range<=40&&health<=99', 'lowest'},
 	{'Riptide', 'health<=99', 'lnbuff(Riptide)'},
