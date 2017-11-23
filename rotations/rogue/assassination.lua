@@ -136,10 +136,10 @@ local Stealthed = {
 }
 
 local Poisons = {
-	{'Deadly Poison', 'duration<70&!player.lastcast&!talent(6,1)'},
-	{'Agonizing Poison', 'duration<70&!player.lastcast&talent(6,1)'},
-	{'Leeching Poison', 'duration<70&!player.lastcast&talent(4,1)'},
-	{'Crippling Poison', 'duration<70&!player.lastcast&!talent(4,1)'},
+	{'Deadly Poison', 'buff.duration<70&!player.lastcast&!talent(6,1)'},
+	{'Agonizing Poison', 'buff.duration<70&!player.lastcast&talent(6,1)'},
+	{'Leeching Poison', 'buff.duration<70&!player.lastcast&talent(4,1)'},
+	{'Crippling Poison', 'buff.duration<70&!player.lastcast&!talent(4,1)'},
 }
 
 local xCombat = {
