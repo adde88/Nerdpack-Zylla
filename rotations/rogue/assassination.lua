@@ -128,9 +128,9 @@ local Ranged = {
 }
 
 local Stealthed = {
-	{'Rupture', 'player.lastcast(Vanish)&player.combopoints>4'},
-	{'Garrote', 'player.buff(Stealth)&player.combopoints<5&debuff.duration<6.4'},
-	{'Cheap Shot', '!toggle(xPickPock)&toggle(CS)&inMelee&enemy&player.buff(Stealth)'},
+	{'Rupture', 'player.lastcast(Vanish)&player.combopoints>4&enemy'},
+	{'Garrote', 'player.buff(Stealth)&player.combopoints<5&debuff.duration<6.4&enemy'},
+	{'Cheap Shot', '!toggle(xPickPock)&toggle(CS)&inMelee&enemy&player.buff(Stealth)&enemy'},
 	{'Stealth', 'toggle(xStealth)&!player.buff&!player.buff(Vanish)&!nfly&!combat', 'player'},
 	{'Pick Pocket', 'toggle(xPickPock)&enemy&alive&range<=10&player.buff(Stealth)' ,'enemies'},
 }
@@ -152,8 +152,8 @@ local xCombat = {
 	{'Rupture', 'debuff.duration<8.2&player.combopoints>3&spell(Vanish).cooldown>gcd&ttd>5'},
 	--XXX: Multi DoT Rupture
 	{'Rupture', 'debuff.duration<8.2&player.combopoints>3'},
-	{'Rupture', 'combat&alive&enemy&debuff.duration<8.2&player.combopoints>3&enemy&UI(multi)', 'enemies'},
-	{'Garrote', 'debuff.duration<6.4&player.combopoints<5'},
+	{'Rupture', 'inMelee&combat&alive&enemy&debuff.duration<8.2&player.combopoints>3&enemy&UI(multi)', 'enemies'},
+	{'Garrote', 'inMelee&debuff.duration<6.4&player.combopoints<5'},
 	--XXX: Use Mutilate till 4/5 combopoints for rupture
 	{'Mutilate', '!debuff(Rupture)&player.combopoints<4'},
 	{'Kingsbane', '!talent(6,3)&player.buff(Envenom)&debuff(Vendetta)&debuff(Surge of Toxins)&ttd>10'},
