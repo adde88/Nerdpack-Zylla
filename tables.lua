@@ -36,9 +36,9 @@ Zylla.Mythic_Plus = {
 	{{
 			{'%target', 'id(120651)&inFront', 'enemies'},
 			{'%target', 'id(121499)&inFront', 'enemies'},
-	},	'UI(mythic_fel)'}, 																																				--XXX: Fel Explosives Mythic+ Affix
-	{'&/stopcasting', 'debuff(Quake).any.duration<gcd&UI(quaking)', 'player'},										--XXX: Quaking Mythic+ Affix
-	{'%pause', 'player.debuff(200904)||player.debuff(Sapped Soul)'},															--XXX: Vault of the Wardens - Sapped Soul Encounter
+	},	'UI(mythic_fel)'}, 																																																						--XXX: Fel Explosives Mythic+ Affix
+	{'&/stopcasting', 'casting.percent>0&debuff(Quake)&debuff(Quake).any.duration<gcd*1.5&UI(quaking)', 'player'},										--XXX: Quaking Mythic+ Affix
+	{'%pause', 'player.debuff(200904)||player.debuff(Sapped Soul)'},																																	--XXX: Vault of the Wardens - Sapped Soul Encounter
 }
 
 Zylla.Item_KJ =	{{type = 'checkspin', text = 'Kil\'Jaeden\'s Burning Wish - Units', 								key = 'kj', 		align = 'left', width = 55, step = 1, shiftStep = 2, 	spin = 4, 	 max = 20, 	min = 1, check = true, desc = Zylla.ClassColor..'Legendary will be used only on selected amount of units!|r'}}
