@@ -179,7 +179,7 @@ local outCombat = {
 	{'Soulstone', 'UI(ss)&!buff', 'player'}
 }
 
-NeP.CR:Add(266, {
+NeP.CR.Add(266, {
 	name = '[|cff'..Zylla.addonColor..'Zylla\'s|r] Warlock - Demonology',
 	ic = inCombat,
 	ooc = outCombat,

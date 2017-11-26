@@ -235,7 +235,7 @@ local inCombat = {
 	{Keybinds},
 	{Survival, nil, 'player'},
 	{Mythic_Plus, 'range<=40'},
-	{xCombat, 'combat&alive&range<41&inFront', (function() return NeP.Condition:Get("UI")(nil, 'target') end)}, --TODO: TEST! ALOT MORE TESTING!
+	{xCombat, 'combat&alive&range<41&inFront', (function() return NeP.Condition.Get("UI")(nil, 'target') end)}, --TODO: TEST! ALOT MORE TESTING!
 }
 
 local outCombat = {
@@ -244,7 +244,7 @@ local outCombat = {
 	{MoonkinForm, nil, 'player'},
 }
 
-NeP.CR:Add(102, {
+NeP.CR.Add(102, {
 	name = '[|cff'..Zylla.addonColor..'Zylla\'s|r] Druid - Balance',
 	pooling = true,
 	ic = inCombat,

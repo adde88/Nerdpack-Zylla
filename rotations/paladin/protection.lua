@@ -153,7 +153,7 @@ local inCombat = {
   {Survival, nil, 'player'},
   {'%taunt(Hand of Reckoning)', 'toggle(aoe)'},
   {'Shield of the Righteous', '!player.buff&{player.health<60||spell.count>1}', 'target'},
-	{xCombat, 'combat&alive&inMelee&inFront', (function() return NeP.Condition:Get("UI")(nil, 'target') end)}, --TODO: TEST! ALOT MORE TESTING!
+	{xCombat, 'combat&alive&inMelee&inFront', (function() return NeP.Condition.Get("UI")(nil, 'target') end)}, --TODO: TEST! ALOT MORE TESTING!
 	{Mythic_Plus, 'inMelee'},
 }
 
@@ -162,7 +162,7 @@ local outCombat = {
   {PreCombat, nil, 'player'}
 }
 
-NeP.CR:Add(66, {
+NeP.CR.Add(66, {
   name = '[|cff'..Zylla.addonColor..'Zylla\'s|r] Paladin - Protection',
 	ic = inCombat,
 	ooc = outCombat,

@@ -90,7 +90,7 @@ local outCombat = {
 		{'Plea', '!buff(Atonement)&health<105', 'lowest'}
 }
 
-NeP.CR:Add(256, {
+NeP.CR.Add(256, {
 	name = '[|cff'..Zylla.addonColor..'Zylla\'s|r] Priest - Discipline',
 	ic = inCombat,
 	ooc = outCombat,

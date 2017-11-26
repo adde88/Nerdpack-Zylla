@@ -197,7 +197,7 @@ local inCombat = {
 	{Keybinds},
 	{Survival, nil, 'player'},
 	{Mythic_Plus, 'inMelee&inFront'},
-	{xCombat, 'combat&alive&inMelee&inFront', (function() return NeP.Condition:Get("UI")(nil, 'target') end)}, --TODO: TEST! ALOT MORE TESTING!
+	{xCombat, 'combat&alive&inMelee&inFront', (function() return NeP.Condition.Get("UI")(nil, 'target') end)}, --TODO: TEST! ALOT MORE TESTING!
 	{AoE_PTF, 'inmelee&infront', 'enemies'}
 }
 
@@ -206,7 +206,7 @@ local outCombat = {
 	{PreCombat, nil, 'player'},
 }
 
-NeP.CR:Add(103, {
+NeP.CR.Add(103, {
 	name = '[|cff'..Zylla.addonColor..'Zylla\'s|r] Druid - Feral',
 	pooling = true,
 	ic = inCombat,

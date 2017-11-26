@@ -167,7 +167,7 @@ local inCombat = {
 	{Survival, nil, 'player'},
 	{Party, 'ingroup', 'lowest'},
 	{Mythic_Plus, 'ui(mythic_fel)&inMelee'},
-	{xCombat, 'combat&alive&inMelee&inFront', (function() return NeP.Condition:Get("UI")(nil, 'target') end)}, --TODO: TEST! ALOT MORE TESTING!
+	{xCombat, 'combat&alive&inMelee&inFront', (function() return NeP.Condition.Get("UI")(nil, 'target') end)}, --TODO: TEST! ALOT MORE TESTING!
 	{'Ghost Wolf', 'movingfor>0.75&target.range>=12!buff', 'player'}
 }
 
@@ -177,7 +177,7 @@ local outCombat = {
 	{Survival, nil, 'player'},
 }
 
-NeP.CR:Add(263, {
+NeP.CR.Add(263, {
 	name = '[|cff'..Zylla.addonColor..'Zylla\'s|r] Shaman - Enhancement (default)',
 	ic = {
 		{inCombat, '!player.lastcast(Feral Spirit)'},

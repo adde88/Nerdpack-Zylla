@@ -158,7 +158,7 @@ local inCombat = {
 	{Survival, nil, 'player'},
 	{Mythic_Plus, 'inMelee'},
 	{'Fel Rush', 'UI(felrush)&target.range>=13&target.range<=40&target.inFront', 'player'},
-	{xCombat, 'combat&alive&inMelee&inFront', (function() return NeP.Condition:Get("UI")(nil, 'target') end)}, --TODO: TEST! ALOT MORE TESTING!
+	{xCombat, 'combat&alive&inMelee&inFront', (function() return NeP.Condition.Get("UI")(nil, 'target') end)}, --TODO: TEST! ALOT MORE TESTING!
 }
 
 local outCombat = {
@@ -166,7 +166,7 @@ local outCombat = {
 	{PreCombat, nil, 'player'}
 }
 
-NeP.CR:Add(577, {
+NeP.CR.Add(577, {
 	name = '[|cff'..Zylla.addonColor..'Zylla\'s|r] Demon Hunter - Havoc',
 	ic = {
 		{inCombat, '!player.channeling(Eye Beam)'}

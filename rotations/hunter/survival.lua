@@ -182,7 +182,7 @@ local outCombat = {
 	{PreCombat},
 }
 
-NeP.CR:Add(255, {
+NeP.CR.Add(255, {
 	name = '[|cff'..Zylla.addonColor..'Zylla\'s|r] Hunter - Survival (DEV)',
 	ic = inCombat,
 	ooc = outCombat,

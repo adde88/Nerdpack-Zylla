@@ -144,7 +144,7 @@ local inCombat = {
 	{Keybinds},
 	{'Taunt', 'toggle(super_taunt)&combat&alive&threat<100', 'enemies'},
 	{Mythic_Plus, 'inMelee'},
-	{xCombat, 'combat&alive&inMelee&inFront', (function() return NeP.Condition:Get("UI")(nil, 'target') end)}, --TODO: TEST! ALOT MORE TESTING!
+	{xCombat, 'combat&alive&inMelee&inFront', (function() return NeP.Condition.Get("UI")(nil, 'target') end)}, --TODO: TEST! ALOT MORE TESTING!
 	{"Shield Slam"},
 	{"Devastate"},
 }
@@ -154,7 +154,7 @@ local outCombat = {
 	{PreCombat, nil, 'player'},
 }
 
-NeP.CR:Add(73, {
+NeP.CR.Add(73, {
 	name = '[|cff'..Zylla.addonColor..'Zylla\'s|r] Warrior - Protection',
 	ic = inCombat,
 	ooc = outCombat,

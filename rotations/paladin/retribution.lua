@@ -223,7 +223,7 @@ local inCombat = {
 	{Blessings, nil, 'player'},
 	{Mythic_Plus, 'inMelee'},
 	{Group, 'player.movingfor<0.75&inGroup&toggle(groupAssist)', 'lowest'},
-	{xCombat, 'combat&alive&inMelee&inFront', (function() return NeP.Condition:Get("UI")(nil, 'target') end)}, --TODO: TEST! ALOT MORE TESTING!
+	{xCombat, 'combat&alive&inMelee&inFront', (function() return NeP.Condition.Get("UI")(nil, 'target') end)}, --TODO: TEST! ALOT MORE TESTING!
 }
 
 local outCombat = {
@@ -235,7 +235,7 @@ local outCombat = {
 	{'Flash of Light', 'movingfor<0.75&health<90&UI(FoL_check)', 'player'}
 }
 
-NeP.CR:Add(70, {
+NeP.CR.Add(70, {
 	name = '[|cff'..Zylla.addonColor..'Zylla\'s|r] Paladin - Retribution',
 --pooling = true, --TODO: TEST!!!
 	ic = inCombat,

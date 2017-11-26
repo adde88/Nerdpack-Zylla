@@ -1,5 +1,5 @@
 local _, Zylla = ...
-local _G = _G
+
 local NeP = Zylla.NeP
 
 --XXX: Splash logo for the combat-routine

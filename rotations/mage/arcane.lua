@@ -157,7 +157,7 @@ local inCombat = {
 	{'Evocation', 'UI(evocation_check)&mana<=UI(evocation_spin)', 'player'},
 	{'Arcane Familiar', '!buff', 'player'},
 	{Survival, nil, 'player'},
-	{xCombat, 'combat&alive&range<41&inFront', (function() return NeP.Condition:Get("UI")(nil, 'target') end)}, --TODO: TEST! ALOT MORE TESTING!
+	{xCombat, 'combat&alive&range<41&inFront', (function() return NeP.Condition.Get("UI")(nil, 'target') end)}, --TODO: TEST! ALOT MORE TESTING!
 	{Mythic_Plus, 'range<=40'}
 }
 
@@ -167,7 +167,7 @@ local outCombat = {
 	{'Arcane Familiar', 'talent(1,1)&!player.buff(Arcane Familiar)'},
 }
 
-NeP.CR:Add(62, {
+NeP.CR.Add(62, {
 	name='[|cff'..Zylla.addonColor..'Zylla\'s|r] Mage - Arcane',
 	--pooling = true,
 	ic=inCombat,

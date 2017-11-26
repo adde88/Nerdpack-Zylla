@@ -150,7 +150,7 @@ local inCombat = {
   {Survival, nil, 'player'},
 	{Mitigations, nil, 'player'},
 	{Mythic_Plus, 'inMelee'},
-	{xCombat, 'combat&alive&inMelee&inFront', (function() return NeP.Condition:Get("UI")(nil, 'target') end)}, --TODO: TEST! ALOT MORE TESTING!
+	{xCombat, 'combat&alive&inMelee&inFront', (function() return NeP.Condition.Get("UI")(nil, 'target') end)}, --TODO: TEST! ALOT MORE TESTING!
 }
 
 local outCombat = {
@@ -158,7 +158,7 @@ local outCombat = {
 		{Keybinds},
 }
 
-NeP.CR:Add(581, {
+NeP.CR.Add(581, {
 	name = '[|cff'..Zylla.addonColor..'Zylla\'s|r] Demon Hunter - Vengeance',
 	pooling = true,
 	ic = inCombat,

@@ -153,7 +153,7 @@ local outCombat={
 	{PreCombat},
 }
 
-NeP.CR:Add(268, {
+NeP.CR.Add(268, {
 	name='[|cff'..Zylla.addonColor..'Zylla\'s|r] Monk - Mistweaver',
 	ic = inCombat,
 	ooc = outCombat,

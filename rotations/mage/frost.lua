@@ -39,7 +39,7 @@ local GUI = {
 	{type = 'checkbox',	text = 'Polymorph (Backup Interrupt)',														key = 'Pol_Int',	default = false},
 	{type = 'spacer'},
 	{type = 'checkspin',text = 'Blizzard - Units',																				key = 'blizzard',	align = 'left', width = 55, min = 1,	spin = 3,			step = 1,	max = 20,		check = true,		desc = Zylla.ClassColor..'How many units to hit with normal Blizzard.|r'},
-	unpack((NeP.Condition:Get('equipped')(nil, 'Zann\'esu Journey') or NeP.Condition:Get('equipped')(nil, '133970'))  and Zylla.Item_ZJ or {{type="spacer"}}),
+	unpack((NeP.Condition.Get('equipped')(nil, 'Zann\'esu Journey') or NeP.Condition.Get('equipped')(nil, '133970'))  and Zylla.Item_ZJ or {{type="spacer"}}),
 	{type = 'spacer'},
 	{type = 'checkspin',text = 'Comet Storm - Units',																			key = 'cstorm',		align = 'left', width = 55, min = 1,	spin = 4,	step = 1,	max = 20,	check = true,		desc = Zylla.ClassColor..'How many units to hit with Comet Storm.|r'},
 	{type = 'spacer'},
@@ -47,7 +47,7 @@ local GUI = {
 	{type = 'checkbox', text = 'Use Trinket #2', 																					key = 'trinket2', default = false,	desc = Zylla.ClassColor..'Trinkets will be used whenever possible!|r'},
 	{type = 'checkspin',text = 'Light\'s Judgment - Units', 															key = 'LJ',				align = 'left', width = 55, min = 1,	spin = 4,	step = 1,	max = 20,	check = true,		desc = Zylla.ClassColor..'World Spell usable on Argus.|r'},
 	{type = 'spacer'},
-	unpack((NeP.Condition:Get('equipped')(nil, 'Kil\'Jaeden\'s Burning Wish') or NeP.Condition:Get('equipped')(nil, '144259'))  and Zylla.Item_KJ or {{type="spacer"}}),
+	unpack((NeP.Condition.Get('equipped')(nil, 'Kil\'Jaeden\'s Burning Wish') or NeP.Condition.Get('equipped')(nil, '144259'))  and Zylla.Item_KJ or {{type="spacer"}}),
 	{type = 'ruler'},		{type = 'spacer'},
 	-- Survival
 	{type = 'header',		size = 16, text = 'Survival:',									 	 								align = 'center'},
@@ -173,7 +173,7 @@ local inCombat = {
 	{'Time Warp', 'UI(kTW)&!hashero', 'player'},
 	{Keybinds},
 	{Survival, nil, 'player'},
-	{xCombat, nil, (function() return NeP.Condition:Get("UI")(nil, 'target') end)},
+	{xCombat, nil, (function() return NeP.Condition.Get("UI")(nil, 'target') end)},
 	{Mythic_Plus, 'range<41'},
 	{xPvP},
 }
@@ -183,7 +183,7 @@ local outCombat = {
 	{PreCombat, nil, 'player'},
 }
 
-NeP.CR:Add(64, {
+NeP.CR.Add(64, {
 	name = '[|cff'..Zylla.addonColor..'Zylla\'s|r] Mage - Frost',
 	pooling = true,
 	ic = {

@@ -181,7 +181,7 @@ local inCombat = {
 	{RollingBones, nil, 'player'},
 	{Blade_Flurry, nil, 'player'},
 	{Mythic_Plus, 'inMelee'},
-	{xCombat, 'combat&alive&inMelee&inFront', (function() return NeP.Condition:Get("UI")(nil, 'target') end)}, --TODO: TEST! ALOT MORE TESTING!
+	{xCombat, 'combat&alive&inMelee&inFront', (function() return NeP.Condition.Get("UI")(nil, 'target') end)}, --TODO: TEST! ALOT MORE TESTING!
 	{TricksofTrade},
 }
 
@@ -194,7 +194,7 @@ local outCombat = {
 	{TricksofTrade},
 }
 
-NeP.CR:Add(260, {
+NeP.CR.Add(260, {
 	name = '[|cff'..Zylla.addonColor..'Zylla\'s|r] Rogue - Outlaw',
 	ic = inCombat,
 	ooc = outCombat,

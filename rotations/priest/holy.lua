@@ -50,7 +50,7 @@ local outCombat = {
 
 }
 
-NeP.CR:Add(256, {
+NeP.CR.Add(256, {
 	name = '[|cff'..Zylla.addonColor..'Zylla\'s|r] Priest - Holy',
 	ic = inCombat,
 	ooc = outCombat,

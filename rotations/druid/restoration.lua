@@ -251,7 +251,7 @@ local outCombat = {
 	{Keybinds},
 }
 
-NeP.CR:Add(105, {
+NeP.CR.Add(105, {
 	name='[|cff'..Zylla.addonColor..'Zylla\'s|r] Druid - Restoration',
 	ic =  {{inCombat, '!player.channeling(Tranquility)'}},
 	ooc = outCombat,

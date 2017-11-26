@@ -145,7 +145,7 @@ local inCombat = {
 	{Survival, nil, 'player'},
 	{Mythic_Plus, 'inMelee'},
 	{xTaunts, 'toggle(super_taunt)', 'enemies'},
-	{xCombat, 'combat&alive&inMelee&inFront', (function() return NeP.Condition:Get("UI")(nil, 'target') end)}, --TODO: TEST! ALOT MORE TESTING!
+	{xCombat, 'combat&alive&inMelee&inFront', (function() return NeP.Condition.Get("UI")(nil, 'target') end)}, --TODO: TEST! ALOT MORE TESTING!
 }
 
 local outCombat = {
@@ -153,7 +153,7 @@ local outCombat = {
 	{PreCombat, nil, 'player'}
 }
 
-NeP.CR:Add(250, {
+NeP.CR.Add(250, {
 	name = '[|cff'..Zylla.addonColor..'Zylla\'s|r] Death-Knight - Blood',
 	ic = inCombat,
 	ooc = outCombat,

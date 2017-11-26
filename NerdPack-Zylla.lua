@@ -1,5 +1,5 @@
 local _, Zylla = ...
-local _G = _G
+
 local NeP = _G["NerdPack"]
 _G.Zylla = Zylla
 

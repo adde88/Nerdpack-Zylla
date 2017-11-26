@@ -217,7 +217,7 @@ local outCombat = {
 	{'Ghost Wolf', 'UI(gwolf)&movingfor>0.5&!buff', 'player'},
 }
 
-NeP.CR:Add(264, {
+NeP.CR.Add(264, {
 	name = '[|cff'..Zylla.addonColor..'Zylla\'s|r] Shaman - Restoration',
 	ic = inCombat,
 	ooc = outCombat,

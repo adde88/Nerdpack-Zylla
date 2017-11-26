@@ -175,7 +175,7 @@ local inCombat = {
 	{Keybinds},
 	{Survival, nil, 'player'},
 	{Mythic_Plus, 'inMelee'},
-	{xCombat, 'combat&alive&inMelee&inFront', (function() return NeP.Condition:Get("UI")(nil, 'target') end)}, --TODO: TEST! ALOT MORE TESTING!
+	{xCombat, 'combat&alive&inMelee&inFront', (function() return NeP.Condition.Get("UI")(nil, 'target') end)}, --TODO: TEST! ALOT MORE TESTING!
 }
 
 local outCombat = {
@@ -183,7 +183,7 @@ local outCombat = {
 	{PreCombat, nil, 'player'},
 }
 
-NeP.CR:Add(261, {
+NeP.CR.Add(261, {
 	name = '[|cff'..Zylla.addonColor..'Zylla\'s|r] Rogue - Subtlety',
 	ic = inCombat,
 	ooc = outCombat,

@@ -196,7 +196,7 @@ local inCombat = {
 	{Interrupts, 'toggle(interrupts)&@Zylla.InterruptAt(intat)&toggle(xIntRandom)&inFront&range<=40', 'enemies'},
 	{Cooldowns, 'toggle(cooldowns)'},
 	{Survival, nil, 'player'},
-	{xCombat, 'combat&alive&range<41&inFront', (function() return NeP.Condition:Get("UI")(nil, 'target') end)}, --TODO: TEST! ALOT MORE TESTING!
+	{xCombat, 'combat&alive&range<41&inFront', (function() return NeP.Condition.Get("UI")(nil, 'target') end)}, --TODO: TEST! ALOT MORE TESTING!
 	{Mythic_Plus, 'range<=40'},
 }
 
@@ -206,7 +206,7 @@ local outCombat = {
 	{Survival, nil, 'player'},
 }
 
-NeP.CR:Add(63, {
+NeP.CR.Add(63, {
 	name = '[|cff'..Zylla.addonColor..'Zylla\'s|r] Mage - Fire',
 	ic = {
 		{inCombat, '!player.casting(Rune of Power)'},

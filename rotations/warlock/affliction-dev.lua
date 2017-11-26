@@ -178,7 +178,7 @@ local inCombat = {
 	{Survival, nil, 'player'},
 	{Pets, 'UI(epets)'},
 	{Keybinds},
-	{xCombat, 'combat&alive&range<41&inFront', (function() return NeP.Condition:Get("UI")(nil, 'target') end)}, --TODO: TEST! ALOT MORE TESTING!
+	{xCombat, 'combat&alive&range<41&inFront', (function() return NeP.Condition.Get("UI")(nil, 'target') end)}, --TODO: TEST! ALOT MORE TESTING!
 }
 
 local outCombat = {
@@ -189,7 +189,7 @@ local outCombat = {
 	{'Soulstone', 'UI(ss)&!buff', 'player'}
 }
 
-NeP.CR:Add(265, {
+NeP.CR.Add(265, {
 	name = '[|cff'..Zylla.addonColor..'Zylla\'s|r] Warlock - Affliction (DEV)',
 	ic =  {{inCombat, '!player.casting(Summon Succubus)&!player.casting(Summon Voidwalker)&!player.casting(Summon Felhunter)&!player.casting(Summon Imp)&!player.casting(Summon Infernal)&!player.casting(Summon Doomguard)&!player.casting(Unstable Affliction)&!player.casting(Seed of Corruption)'}},
 	ooc = outCombat,

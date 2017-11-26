@@ -314,7 +314,7 @@ local inCombat = {
 	{Survival, 'health<100&!buff(Surrender to Madness)', 'player'},
 	{Support, '!player.buff(Surrender to Madness)', 'lowest'},
 	{Keybinds},
-	{xCombat, 'combat&alive&inMelee&inFront', (function() return NeP.Condition:Get("UI")(nil, 'target') end)}, --TODO: TEST! ALOT MORE TESTING!
+	{xCombat, 'combat&alive&inMelee&inFront', (function() return NeP.Condition.Get("UI")(nil, 'target') end)}, --TODO: TEST! ALOT MORE TESTING!
 	{'%dispelall', 'toggle(disp)'},
 }
 
@@ -325,7 +325,7 @@ local outCombat = {
 	{Movement, '!player.buff(Body and Soul)&!inareaid==1040'},
 }
 
-NeP.CR:Add(258, {
+NeP.CR.Add(258, {
 	name='[|cff'..Zylla.addonColor..'Zylla\'s|r] Priest - Shadow',
 	ic = {{inCombat, '!player.channeling(Void Torrent)'}},
 	ooc = outCombat,

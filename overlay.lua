@@ -1,5 +1,5 @@
 local _, Zylla = ...
-local _G = _G
+
 local NeP = Zylla.NeP
 
 local function onUpdate(self,_)
@@ -24,7 +24,7 @@ Zylla.Overlay.texture:SetTexture(0,0,0,.50)
 Zylla.Overlay.time = 0
 
 function Zylla.ChatOverlay(Message, FadingTime)
-	if NeP.Condition:Get('UI')(nil, 'chat') then
+	if NeP.Condition.Get('UI')(nil, 'chat') then
 		Zylla.Overlay:SetSize(_G.ChatFrame1:GetWidth(),50)
 		Zylla.Overlay.text:SetText(Message)
 		Zylla.Overlay:SetAlpha(1)

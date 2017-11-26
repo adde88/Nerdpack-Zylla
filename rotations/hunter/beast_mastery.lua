@@ -176,7 +176,7 @@ local xPet = {
 }
 
 local inCombat = {
-	{(function() _G.RunMacroText('/petassist\n/petattack') print('Pet set to Assist')	_G.Zylla.PetMode = 1 end), (function() if _G.Zylla.PetMode == 0 and NeP.Condition:Get('UI')(nil, 'passist') then return true end end)},
+	{(function() _G.RunMacroText('/petassist\n/petattack') print('Pet set to Assist')	_G.Zylla.PetMode = 1 end), (function() if _G.Zylla.PetMode == 0 and NeP.Condition.Get('UI')(nil, 'passist') then return true end end)},
 	{'Volley', '{UI(kVolley)&toggle(aoe)&!buff}||{{buff&{!toggle(aoe)||!UI(kVolley)}}}', 'player'},
 	{Keybinds},
 	{Survival, nil, 'player'},
@@ -184,7 +184,7 @@ local inCombat = {
 	{Interrupts, '@Zylla.InterruptAt(intat)&toggle(Interrupts)&range<=40', 'target'},
 	{Cooldowns, 'toggle(Cooldowns)'},
 	{Mythic_Plus, 'range<=40'},
-	{xCombat, 'combat&alive&range<41&inFront', (function() return NeP.Condition:Get("UI")(nil, 'target') end)}, --TODO: TEST! ALOT MORE TESTING!
+	{xCombat, 'combat&alive&range<41&inFront', (function() return NeP.Condition.Get("UI")(nil, 'target') end)}, --TODO: TEST! ALOT MORE TESTING!
 	{xPet}
 }
 
@@ -194,7 +194,7 @@ local outCombat = {
 	{PreCombat, nil, 'player'},
 }
 
-NeP.CR:Add(253, {
+NeP.CR.Add(253, {
 	name = '[|cff'..Zylla.addonColor..'Zylla\'s|r] Hunter - Beast Mastery',
 	pooling = true,
 	ic = inCombat,

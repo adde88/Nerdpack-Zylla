@@ -212,7 +212,7 @@ local inCombat = {
 	{Interrupts, 'toggle(Interrupts)&toggle(xIntRandom)&@Zylla.InterruptAt(intat)', 'enemies'},
 	{Cooldowns, 'toggle(cooldowns)&target.ttd>10'},
 	{Mythic_Plus, 'inMelee'},
-	{xCombat, 'combat&alive&inMelee&inFront', (function() return NeP.Condition:Get("UI")(nil, 'target') end)}, --TODO: TEST! ALOT MORE TESTING!
+	{xCombat, 'combat&alive&inMelee&inFront', (function() return NeP.Condition.Get("UI")(nil, 'target') end)}, --TODO: TEST! ALOT MORE TESTING!
 }
 
 local outCombat = {
@@ -223,7 +223,7 @@ local outCombat = {
 	{'%ressdead(Resuscitate)', 'UI(auto_res)'},
 }
 
-NeP.CR:Add(269, {
+NeP.CR.Add(269, {
 	name='[|cff'..Zylla.addonColor..'Zylla\'s|r] Monk - Windwalker',
 	ic = {
 		{inCombat, '!player.channeling(Fists of Fury)'},
