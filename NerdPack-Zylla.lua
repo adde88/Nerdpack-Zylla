@@ -3,7 +3,7 @@ local _G = _G
 local NeP = _G.NeP
 _G.Zylla = Zylla
 
-Zylla.Version = '2.7'
+Zylla.Version = '2.8'
 Zylla.Branch = 'DEV'
 Zylla.Name = 'NerdPack - Zylla\'s Rotations'
 Zylla.Author = 'Zylla'
