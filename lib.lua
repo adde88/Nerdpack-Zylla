@@ -1,6 +1,6 @@
 local _, Zylla = ...
 local _G = _G
-local NeP = _G.NeP
+local NeP = Zylla.NeP
 
 NeP.Library:Add('Zylla', {
 

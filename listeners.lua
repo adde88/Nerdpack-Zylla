@@ -1,6 +1,6 @@
 local _, Zylla = ...
 local _G = _G
-local NeP = _G.NeP
+local NeP = Zylla.NeP
 
 NeP.Listener:Add('Zylla_SA', 'COMBAT_LOG_EVENT_UNFILTERED', function(_,combatevent,_,sourceGUID,_,_,_,destGUID,_,_,_,spellid,_,_,_,_,_,_,_,_,_,_,_,_,_)
   if Zylla.Class == 5 then

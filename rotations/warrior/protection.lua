@@ -1,6 +1,6 @@
 local _, Zylla = ...
 local unpack = _G.unpack
-local NeP = _G.NeP
+local NeP = Zylla.NeP
 local Mythic_Plus = _G.Mythic_Plus
 
 local GUI = {
@@ -145,6 +145,8 @@ local inCombat = {
 	{'Taunt', 'toggle(super_taunt)&combat&alive&threat<100', 'enemies'},
 	{Mythic_Plus, 'inMelee'},
 	{xCombat, 'combat&alive&inMelee&inFront', (function() return NeP.Condition:Get("UI")(nil, 'target') end)}, --TODO: TEST! ALOT MORE TESTING!
+	{"Shield Slam"},
+	{"Devastate"},
 }
 
 local outCombat = {

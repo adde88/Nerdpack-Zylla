@@ -1,6 +1,6 @@
 local _, Zylla = ...
 local _G = _G
-local NeP = _G.NeP
+local NeP = Zylla.NeP
 
 local function onUpdate(self,_)
 	if self.time < _G.GetTime() - 2.0 then

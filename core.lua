@@ -1,6 +1,6 @@
 local _, Zylla = ...
 local _G = _G
-local NeP = _G.NeP
+local NeP = Zylla.NeP
 
 local Parse = NeP.Condition.Parse
 local Zframe = _G.CreateFrame('GameTooltip', 'Zylla_ScanningTooltip', _G.UIParent, 'GameTooltipTemplate')

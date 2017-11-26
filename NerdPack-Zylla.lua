@@ -1,6 +1,6 @@
 local _, Zylla = ...
 local _G = _G
-local NeP = _G.NeP
+local NeP = _G["NerdPack"]
 _G.Zylla = Zylla
 
 Zylla.Version = '2.8'
@@ -24,3 +24,4 @@ Zylla.GuiSettings = {
   height='960',
   color='A330C9'
 }
+Zylla.NeP = NeP
