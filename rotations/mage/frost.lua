@@ -39,7 +39,7 @@ local GUI = {
 	{type = 'checkbox',	text = 'Polymorph (Backup Interrupt)',														key = 'Pol_Int',	default = false},
 	{type = 'spacer'},
 	{type = 'checkspin',text = 'Blizzard - Units',																				key = 'blizzard',	align = 'left', width = 55, min = 1,	spin = 3,			step = 1,	max = 20,		check = true,		desc = Zylla.ClassColor..'How many units to hit with normal Blizzard.|r'},
-	unpack((NeP.Condition:Get('equipped')(nil, 'Zann\'esu Journey') or NeP.DSL:Get('equipped')(nil, '133970'))  and Zylla.Item_ZJ or {{type="spacer"}}),
+	unpack((NeP.Condition:Get('equipped')(nil, 'Zann\'esu Journey') or NeP.Condition:Get('equipped')(nil, '133970'))  and Zylla.Item_ZJ or {{type="spacer"}}),
 	{type = 'spacer'},
 	{type = 'checkspin',text = 'Comet Storm - Units',																			key = 'cstorm',		align = 'left', width = 55, min = 1,	spin = 4,	step = 1,	max = 20,	check = true,		desc = Zylla.ClassColor..'How many units to hit with Comet Storm.|r'},
 	{type = 'spacer'},

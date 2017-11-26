@@ -3,7 +3,7 @@ local _G = _G
 local NeP = _G.NeP
 
 -- Healing stuff
-NeP.Units:Add('healingCandidate', function(nump)
+NeP.Unit:Add('healingCandidate', function(nump)
       local tmp = {}
       local num = nump or 1
 			for i=1, NeP.Protected.GetObjectCount() do
@@ -26,7 +26,7 @@ NeP.Units:Add('healingCandidate', function(nump)
 end)
 
 -- Customized for Windwalker Rotation
-NeP.Units:Add('Zylla_sck', function(debuff)
+NeP.Unit:Add('Zylla_sck', function(debuff)
 	for i=1, NeP.Protected.GetObjectCount() do
 		local Obj = NeP.Protected.GetObjectWithIndex(i)
 		if NeP.Protected.omVal(Obj)
@@ -43,7 +43,7 @@ NeP.Units:Add('Zylla_sck', function(debuff)
 end)
 
 -- Highest Health Enemy
-NeP.Units:Add({'highestenemy', 'higheste', 'he'}, function(num)
+NeP.Unit:Add({'highestenemy', 'higheste', 'he'}, function(num)
       local tmp = {}
       for i=1, NeP.Protected.GetObjectCount() do
 				local Obj = NeP.Protected.GetObjectWithIndex(i)
@@ -62,7 +62,7 @@ NeP.Units:Add({'highestenemy', 'higheste', 'he'}, function(num)
 end)
 
 -- Feral Druid Stuff         XXX: Remember to set the 'ptf_timer' variable in your UI Settings.
-	NeP.Units:Add({'nobleedenemy', 'nobleede'}, function()
+	NeP.Unit:Add({'nobleedenemy', 'nobleede'}, function()
       local ptf_timer = tonumber(NeP.Condition:Get('UI')(nil, 'ptftimer_spin'))
       for i=1, NeP.Protected.GetObjectCount() do
 				local Obj = NeP.Protected.GetObjectWithIndex(i)
@@ -81,7 +81,7 @@ end)
 end)
 
 -- Nearest Enemy
-NeP.Units:Add({'nearestenemy', 'neareste', 'ne'}, function(num)
+NeP.Unit:Add({'nearestenemy', 'neareste', 'ne'}, function(num)
       local tmp = {}
 			for i=1, NeP.Protected.GetObjectCount() do
 				local Obj = NeP.Protected.GetObjectWithIndex(i)
@@ -100,7 +100,7 @@ NeP.Units:Add({'nearestenemy', 'neareste', 'ne'}, function(num)
 end)
 
 -- Furthest Enemy (Within 60 yd)
-NeP.Units:Add({'furthestenemy', 'furtheste', 'fe'}, function(num)
+NeP.Unit:Add({'furthestenemy', 'furtheste', 'fe'}, function(num)
       local tmp = {}
 			for i=1, NeP.Protected.GetObjectCount() do
 				local Obj = NeP.Protected.GetObjectWithIndex(i)

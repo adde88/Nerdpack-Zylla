@@ -2,7 +2,7 @@ local _, Zylla = ...
 local _G = _G
 local NeP = _G.NeP
 
-local Parse = NeP.DSL.Parse
+local Parse = NeP.Condition.Parse
 local Zframe = _G.CreateFrame('GameTooltip', 'Zylla_ScanningTooltip', _G.UIParent, 'GameTooltipTemplate')
 
 function Zylla.timer:useTimer(timerName, interval)
@@ -97,22 +97,22 @@ end
 function Zylla.AutoDoT(debuff,spellx)
   for _, Obj in pairs(NeP.OM:Get('Enemy')) do
 	 if _G.UnitExists(Obj.key) then
-		if (NeP.DSL:Get('combat')(Obj.key) or Obj.isdummy) then
-		  local objRange = NeP.DSL:Get('range')(Obj.key)
+		if (NeP.Condition:Get('combat')(Obj.key) or Obj.isdummy) then
+		  local objRange = NeP.Condition:Get('range')(Obj.key)
 		  local _,_,_, cast_time_ms, minRange, maxRange = _G.GetSpellInfo(spellx)
 		  local cast_time_sec = cast_time_ms / 1000
 		  if maxRange == 0 then maxRange = 5 end
 		  --print('spell: '..spellx..' skill range: '..minRange..', '..maxRange..' obj range: '..objRange)
-		  if (NeP.DSL:Get('infront')(Obj.key) and objRange >= minRange and objRange <= maxRange) then
-			 local Travel_Times = Zylla.Round((NeP.DSL:Get('travel_time')(Obj.key, spellx)), 3)
+		  if (NeP.Condition:Get('infront')(Obj.key) and objRange >= minRange and objRange <= maxRange) then
+			 local Travel_Times = Zylla.Round((NeP.Condition:Get('travel_time')(Obj.key, spellx)), 3)
 			 local _, _, _, lagWorld = _G.GetNetStats()
 			 local latency = ((((lagWorld / 1000) * 1.1) + (Travel_Times * 1.25)))
-			 local debuffDuration = NeP.DSL:Get('debuff.duration')(Obj.key, debuff)
-			 if (debuffDuration < (NeP.DSL:Get('gcd')() + latency + cast_time_sec)) then
+			 local debuffDuration = NeP.Condition:Get('debuff.duration')(Obj.key, debuff)
+			 if (debuffDuration < (NeP.Condition:Get('gcd')() + latency + cast_time_sec)) then
 				--print('debuff: '..debuff..' key: '..Obj.key..' duration: '..debuffDuration)
 				--print(' lag: '..(lagWorld / 1000)..' traveltime: '..Travel_Times..' latency: '..latency)
 				_G.C_Timer.After(latency, function ()
-				  if (debuffDuration < (NeP.DSL:Get('gcd')() + cast_time_sec)) then
+				  if (debuffDuration < (NeP.Condition:Get('gcd')() + cast_time_sec)) then
 					 --print('/run CastSpellByName("'..spellx..'","'..Obj.key..'")')
 					 _G.RunMacroText('/run CastSpellByName("'..spellx..'","'..Obj.key..'")')
 					 --NeP:Queue(debuff, Obj.key)
@@ -129,15 +129,15 @@ end
 function Zylla.AutoDoT2(debuff)
 	for _, Obj in pairs(NeP.OM:Get('Enemy')) do
 		if _G.UnitExists(Obj.key) then
-			if (NeP.DSL:Get('combat')(Obj.key) or Obj.isdummy) then
-				local objRange = NeP.DSL:Get('range')(Obj.key)
+			if (NeP.Condition:Get('combat')(Obj.key) or Obj.isdummy) then
+				local objRange = NeP.Condition:Get('range')(Obj.key)
 				local _,_,_,_, minRange, maxRange = _G.GetSpellInfo(debuff)
-				if (NeP.DSL:Get('infront')(Obj.key) and objRange >= minRange and objRange <= maxRange) then
-					if (NeP.DSL:Get('debuff.duration')(Obj.key, debuff) < NeP.DSL:Get('gcd')()) then
+				if (NeP.Condition:Get('infront')(Obj.key) and objRange >= minRange and objRange <= maxRange) then
+					if (NeP.Condition:Get('debuff.duration')(Obj.key, debuff) < NeP.Condition:Get('gcd')()) then
 						local _, _, _, lagWorld = _G.GetNetStats()
 						local latency = lagWorld / 1000
 						_G.C_Timer.After(latency, function ()
-							if (NeP.DSL:Get('debuff.duration')(Obj.key, debuff) < NeP.DSL:Get('gcd')()) then
+							if (NeP.Condition:Get('debuff.duration')(Obj.key, debuff) < NeP.Condition:Get('gcd')()) then
 								_G.RunMacroText('/run CastSpellByName("'..debuff..'","'..Obj.key..'")')
 								--NeP:Queue(debuff, Obj.key)
 								return true
@@ -677,7 +677,7 @@ function Zylla.TravelTime(unit, spell)
   local spellID = NeP.Core:GetSpellID(spell)
   if Zylla.Travel_Times[spellID] then
 	 local Travel_Speed = Zylla.Travel_Times[spellID]
-	 return NeP.DSL:Get("distance")(unit) / Travel_Speed
+	 return NeP.Condition:Get("distance")(unit) / Travel_Speed
   else
 	 return 0
   end
@@ -718,13 +718,13 @@ function Zylla.NrHealsAroundFriendly(healthp, distance, unit)
 end
 
 function Zylla.tt()
-  if NeP.Unlocked and _G.UnitAffectingCombat('player') and not NeP.DSL:Get('casting')('player', 'Fists of Fury') then
+  if NeP.Unlocked and _G.UnitAffectingCombat('player') and not NeP.Condition:Get('casting')('player', 'Fists of Fury') then
 	 NeP:Queue('Transcendence: Transfer', 'player')
   end
 end
 
 function Zylla.ts()
-  if NeP.Unlocked and _G.UnitAffectingCombat('player') and not NeP.DSL:Get('casting')('player', 'Fists of Fury') then
+  if NeP.Unlocked and _G.UnitAffectingCombat('player') and not NeP.Condition:Get('casting')('player', 'Fists of Fury') then
 	 NeP:Queue('Transcendence', 'player')
   end
 end

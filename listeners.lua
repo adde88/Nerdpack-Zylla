@@ -376,7 +376,7 @@ NeP.Listener:Add('Zylla_Listener_TravelSpeed', 'COMBAT_LOG_EVENT_UNFILTERED', fu
 				Zylla.TTTL_table[uniqID].name = spellName
 				Zylla.TTTL_table[uniqID].spellID = spellID
 				Zylla.TTTL_table[uniqID].start = Zylla.start_timer
-				Zylla.TTTL_table[uniqID].distance = NeP.DSL:Get('range')('target')
+				Zylla.TTTL_table[uniqID].distance = NeP.Condition:Get('range')('target')
 	      Zylla.TTTL_table[uniqID].finish = GetTime()
 	      Zylla.TTTL_table[uniqID].travel_time = 0
 	      Zylla.TTTL_table[uniqID].travel_speed = 0
