@@ -154,7 +154,7 @@ end
 
 --/dump Zylla.Scan_SpellCost('Rake')
 function Zylla.Scan_SpellCost(spell)
-  local spellID = NeP.Core:GetSpellID(spell)
+  local spellID = NeP.Core.GetSpellID(spell)
   Zframe:SetOwner(_G.UIParent, 'ANCHOR_NONE')
   Zframe:SetSpellByID(spellID)
   for i = 2, Zframe:NumLines() do	-- luacheck: ignore
@@ -674,7 +674,7 @@ Zylla.Travel_Times = {
 
 -- Return the time a spell will need to travel to the current target
 function Zylla.TravelTime(unit, spell)
-  local spellID = NeP.Core:GetSpellID(spell)
+  local spellID = NeP.Core.GetSpellID(spell)
   if Zylla.Travel_Times[spellID] then
 	 local Travel_Speed = Zylla.Travel_Times[spellID]
 	 return NeP.Condition:Get("distance")(unit) / Travel_Speed

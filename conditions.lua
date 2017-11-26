@@ -403,7 +403,7 @@ NeP.Condition:Register('xequipped', function(item)
 end)
 
 NeP.Condition:Register('line_cd', function(_, spell)
-    local spellID = NeP.Core:GetSpellID(spell)
+    local spellID = NeP.Core.GetSpellID(spell)
     if Zylla.spell_timers[spellID] then
         return _G.GetTime() - Zylla.spell_timers[spellID].time
     end
@@ -443,7 +443,7 @@ local DotTicks = {
 }
 
 NeP.Condition:Register('dot.tick_time', function(_, spell)
-    spell = NeP.Core:GetSpellID(spell)
+    spell = NeP.Core.GetSpellID(spell)
     if not spell then return end
     local class = select(3,_G.UnitClass('player'))
     if class == 11 and _G.GetSpecialization() == 2 then
