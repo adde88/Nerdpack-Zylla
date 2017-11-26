@@ -7,3 +7,4 @@
 ## OptionalDeps: NerdPack-CombatHelper, NerdPack-Overlays, NerdPack-CustomKeybinds
 
 NerdPack-Zylla.xml
+playground.xml
