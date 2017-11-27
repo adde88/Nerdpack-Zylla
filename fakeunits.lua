@@ -65,6 +65,24 @@ NeP.FakeUnits:Add({'highestenemy', 'higheste', 'he'}, function(num)
       return tempTable[num] and tempTable[num].key
 end)
 
+-- Lowest Enemy (CUSTOMIZED TO WORK WITH MY CR'S)
+NeP.FakeUnits:Add({'z.lowestenemy', 'z.loweste', 'z.le'}, function(num)
+	local tempTable = {}
+	for _, Obj in pairs(NeP.OM:Get('Enemy')) do
+		if ( _G.UnitExists(Obj.key) and _G.UnitIsVisible(Obj.key) )
+		and NeP.DSL:Get('combat')(Obj.key)
+		and NeP.DSL:Get('alive')(Obj.key)
+		and ClassRange(Obj.key) then
+			tempTable[#tempTable+1] = {
+				key = Obj.key,
+				health = NeP.DSL:Get("health")(Obj.key)
+			}
+		end
+	end
+	table.sort( tempTable, function(a,b) return a.health < b.health end )
+	return tempTable[num] and tempTable[num].key
+end)
+
 -- Feral Druid Stuff         XXX: Remember to set the 'ptf_timer' variable in your UI Settings.
 NeP.FakeUnits:Add({'nobleedenemy', 'nobleede'}, function()
       local ptf_timer = tonumber(NeP.DSL:Get('UI')(nil, 'ptftimer_spin'))
