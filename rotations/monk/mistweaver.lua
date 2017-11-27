@@ -1,6 +1,6 @@
 local _, Zylla = ...
 local unpack = _G.unpack
-local NeP = _G.NeP
+local NeP = Zylla.NeP
 local Mythic_Plus = _G.Zylla.Mythic_Plus
 
 local GUI = {
@@ -153,7 +153,7 @@ local outCombat={
 	{PreCombat},
 }
 
-NeP.CR:Add(268, {
+NeP.CR.Add(268, {
 	name='[|cff'..Zylla.addonColor..'Zylla\'s|r] Monk - Mistweaver',
 	ic = inCombat,
 	ooc = outCombat,

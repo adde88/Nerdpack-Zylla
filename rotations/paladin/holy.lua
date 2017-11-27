@@ -1,6 +1,6 @@
 local _, Zylla = ...
 local unpack = _G.unpack
-local NeP = _G.NeP
+local NeP = Zylla.NeP
 local Mythic_Plus = _G.Zylla.Mythic_Plus
 
 local GUI = {
@@ -242,7 +242,7 @@ local outCombat = {
 	{'Holy Shock', 'UI(occ_HS_check)&health<=UI(occ_HS_spin)', 'lowest'},
 }
 
-NeP.CR:Add(65, {
+NeP.CR.Add(65, {
 	name='[|cff'..Zylla.addonColor..'Zylla\'s|r] Paladin - Holy',
 	ic = inCombat,
 	ooc = outCombat,

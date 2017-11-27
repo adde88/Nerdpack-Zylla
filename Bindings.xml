@@ -1,5 +1,5 @@
 <Bindings>
     <Binding name="Master Toggle" description="Toggle ON/OFF" header="Zylla" category="NerdPack-Zylla">
-        NeP.Interface:toggleToggle('mastertoggle')
+        NerdPack.Interface:toggleToggle('mastertoggle')
     </Binding>
 </Bindings>

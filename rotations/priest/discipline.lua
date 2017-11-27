@@ -1,6 +1,6 @@
 local _, Zylla = ...
 local unpack = _G.unpack
-local NeP = _G.NeP
+local NeP = Zylla.NeP
 local Mythic_Plus = _G.Zylla.Mythic_Plus
 
 local GUI = {
@@ -90,7 +90,7 @@ local outCombat = {
 		{'Plea', '!buff(Atonement)&health<105', 'lowest'}
 }
 
-NeP.CR:Add(256, {
+NeP.CR.Add(256, {
 	name = '[|cff'..Zylla.addonColor..'Zylla\'s|r] Priest - Discipline',
 	ic = inCombat,
 	ooc = outCombat,

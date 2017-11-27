@@ -1,6 +1,6 @@
 local _, Zylla = ...
 local unpack = _G.unpack
-local NeP = _G.NeP
+local NeP = Zylla.NeP
 local Mythic_Plus = _G.Zylla.Mythic_Plus
 
 local GUI = {
@@ -19,7 +19,7 @@ local GUI = {
 	{type = 'spacer'},		{type = 'ruler'},	 	{type = 'spacer'},
 	--TODO: Targetting: Use, or NOT use?! We'll see....
 	{type = 'header', 		size = 16, text = 'Targetting:',															align = 'center'},
-	{type = 'combo',			default = 'target',																						key = 'target', 					list = Zylla.faketarget, 	width = 75},
+	{type = 'combo',			default = 'normal',																						key = 'target', 					list = Zylla.faketarget, 	width = 75},
 	{type = 'spacer'},
 	{type = 'text', 			text = Zylla.ClassColor..'Only one can be enabled.\nChose between normal targetting, or hitting the highest/lowest enemy.|r'},
 	{type = 'spacer'},		{type = 'ruler'},	 	{type = 'spacer'},
@@ -118,7 +118,7 @@ local Cooldowns = {
 
 local Mitigations = {
 	{'!Metamorphosis', 'toggle(cooldowns)&UI(meta_check)&!buff(Demon Spikes)&!target.debuff(Fiery Brand)&!buff&{{health<75&incdmg(1)>=health.max*0.50}||health<=UI(meta_spin)}'},
-	{'!Demon Spikes', 'spell.exists&player.pain>21&spell.charges>0&!buff&!target.debuff(Fiery Brand)&!buff(Metamorphosis)'},
+	{'!Demon Spikes', 'player.pain>21&spell.charges>0&!buff&!target.debuff(Fiery Brand)&!buff(Metamorphosis)'},
 	{'!Empower Wards', 'incdmg(3).magic>player.health.max*0.1&health<75'},
 	{'!Soul Barrier', 'buff(Soul Fragments).count>UI(sb_spin)&UI(sb_check)&health<=UI(sbhp)'},
 	{'Immolation Aura', 'area(8).enemies>0'},
@@ -128,7 +128,7 @@ local xCombat = {
 	{Cooldowns},
 	{Interrupts, '@Zylla.InterruptAt(intat)&toggle(Interrupts)'},
 	{Interrupts, '@Zylla.InterruptAt(intat)&toggle(Interrupts)&toggle(xIntRandom)', 'enemies'},
-	{'Fiery Brand', 'spell.exists&inFront&inMelee&!player.buff(Demon Spikes)&!player.buff(Metamorphosis)'},
+	{'Fiery Brand', 'inFront&inMelee&!player.buff(Demon Spikes)&!player.buff(Metamorphosis)'},
 	{'Soul Carver', 'inFront&inMelee&{spell(Fiery Brand).cooldown>50||player.incdmg(3)>player.health.max*0.2}'},
 	{'Shear', 'inFront&inMelee&player.pain<90'},
 	{'Sever', 'inFront&inMelee'},
@@ -150,7 +150,7 @@ local inCombat = {
   {Survival, nil, 'player'},
 	{Mitigations, nil, 'player'},
 	{Mythic_Plus, 'inMelee'},
-	{xCombat, 'combat&alive&inMelee&inFront', (function() return NeP.Condition:Get("UI")(nil, 'target') end)}, --TODO: TEST! ALOT MORE TESTING!
+	{xCombat, 'combat&alive&inMelee&inFront', (function() return NeP.Condition.Get("UI")(nil, 'target') end)}, --TODO: TEST! ALOT MORE TESTING!
 }
 
 local outCombat = {
@@ -158,7 +158,7 @@ local outCombat = {
 		{Keybinds},
 }
 
-NeP.CR:Add(581, {
+NeP.CR.Add(581, {
 	name = '[|cff'..Zylla.addonColor..'Zylla\'s|r] Demon Hunter - Vengeance',
 	pooling = true,
 	ic = inCombat,

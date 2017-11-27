@@ -1,4 +1,4 @@
-local _G = _G
+
 local CreateFrame = _G.CreateFrame
 local GetSetting = _G.GetSetting
 local FireHack = _G.FireHack

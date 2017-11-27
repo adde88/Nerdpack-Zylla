@@ -1,6 +1,6 @@
 local _, Zylla = ...
 local unpack = _G.unpack
-local NeP = _G.NeP
+local NeP = Zylla.NeP
 local Mythic_Plus = _G.Zylla.Mythic_Plus
 
 local GUI = {
@@ -19,7 +19,7 @@ local GUI = {
 	{type = 'spacer'},	{type = 'ruler'},	 	{type = 'spacer'},
 	--TODO: Targetting: Use, or NOT use?! We'll see....
 	{type = 'header', 	size = 16, text = 'Targetting:',																				align = 'center'},
-	{type = 'combo',		default = 'target',																											key = 'target', 					list = Zylla.faketarget, 	width = 75},
+	{type = 'combo',		default = 'normal',																											key = 'target', 					list = Zylla.faketarget, 	width = 75},
 	{type = 'spacer'},
 	{type = 'text', 		text = Zylla.ClassColor..'Only one can be enabled.\nChose between normal targetting, or hitting the highest/lowest enemy.|r'},
 	{type = 'spacer'},	{type = 'ruler'},	 	{type = 'spacer'},
@@ -180,7 +180,7 @@ local inCombat = {
 	{Dispel, 'toggle(dispels)&spell(Detox).cooldown<gcd'},
 	{Snares, nil, 'player'},
 	{Survival, nil, 'player'},
-	{xCombat, 'combat&alive&inMelee&inFront', (function() return NeP.Condition:Get("UI")(nil, 'target') end)}, --TODO: TEST! ALOT MORE TESTING!
+	{xCombat, 'combat&alive&inMelee&inFront', (function() return NeP.Condition.Get("UI")(nil, 'target') end)}, --TODO: TEST! ALOT MORE TESTING!
 	{Mythic_Plus, 'inMelee'},
 }
 
@@ -191,7 +191,7 @@ local outCombat = {
 	{'Effuse', 'UI(kEffuse)&health<90&lastmoved>0.25', 'player'},
 }
 
-NeP.CR:Add(268, {
+NeP.CR.Add(268, {
 	name='[|cff'..Zylla.addonColor..'Zylla\'s|r] Monk - Brewmaster',
 	ic = inCombat,
 	ooc = outCombat,

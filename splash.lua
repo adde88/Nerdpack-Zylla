@@ -1,6 +1,6 @@
 local _, Zylla = ...
-local _G = _G
-local NeP = _G.NeP
+
+local NeP = Zylla.NeP
 
 --XXX: Splash logo for the combat-routine
 local Splash_Frame = _G.CreateFrame("Frame", "Zylla_SPLASH", _G.UIParent)
@@ -42,7 +42,7 @@ function Zylla.Splash()
 	Splash_Frame:SetAlpha(1)
 	Splash_Frame:Show()
 	_G.PlaySound(124, "SFX");
-	local color = NeP.Core:ClassColor('player', 'hex')
+	local color = NeP.Core.ClassColor('player', 'hex')
 	local currentSpec = _G.GetSpecialization()
 	local _, SpecName, _, icon, _ = _G.GetSpecializationInfo(currentSpec)
 	local class = _G.UnitClass('player')

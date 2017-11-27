@@ -1,6 +1,6 @@
 local _, Zylla = ...
 local unpack = _G.unpack
-local NeP = _G.NeP
+local NeP = Zylla.NeP
 local Mythic_Plus = _G.Zylla.Mythic_Plus
 
 local GUI = {
@@ -19,7 +19,7 @@ local GUI = {
 	{type = 'spacer'},	{type = 'ruler'},	 	{type = 'spacer'},
 		--TODO: Targetting: Use, or NOT use?! We'll see....
 	{type = 'header', 	size = 16, text = 'Targetting:',													align = 'center'},
-	{type = 'combo',		default = 'target',																				key = 'target', 					list = Zylla.faketarget, 	width = 75},
+	{type = 'combo',		default = 'normal',																				key = 'target', 					list = Zylla.faketarget, 	width = 75},
 	{type = 'spacer'},
 	{type = 'text', 		text = Zylla.ClassColor..'Only one can be enabled.\nChose between normal targetting, or hitting the highest/lowest enemy.|r'},
 	{type = 'spacer'},	{type = 'ruler'},	 	{type = 'spacer'},
@@ -175,7 +175,7 @@ local inCombat = {
 	{Keybinds},
 	{Survival, nil, 'player'},
 	{Mythic_Plus, 'inMelee'},
-	{xCombat, 'combat&alive&inMelee&inFront', (function() return NeP.Condition:Get("UI")(nil, 'target') end)}, --TODO: TEST! ALOT MORE TESTING!
+	{xCombat, 'combat&alive&inMelee&inFront', (function() return NeP.Condition.Get("UI")(nil, 'target') end)}, --TODO: TEST! ALOT MORE TESTING!
 }
 
 local outCombat = {
@@ -183,7 +183,7 @@ local outCombat = {
 	{PreCombat, nil, 'player'},
 }
 
-NeP.CR:Add(261, {
+NeP.CR.Add(261, {
 	name = '[|cff'..Zylla.addonColor..'Zylla\'s|r] Rogue - Subtlety',
 	ic = inCombat,
 	ooc = outCombat,

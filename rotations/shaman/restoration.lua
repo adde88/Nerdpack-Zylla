@@ -1,6 +1,6 @@
 local _, Zylla = ...
 local unpack = _G.unpack
-local NeP = _G.NeP
+local NeP = Zylla.NeP
 local Mythic_Plus = _G.Zylla.Mythic_Plus
 
 local GUI = {
@@ -217,7 +217,7 @@ local outCombat = {
 	{'Ghost Wolf', 'UI(gwolf)&movingfor>0.5&!buff', 'player'},
 }
 
-NeP.CR:Add(264, {
+NeP.CR.Add(264, {
 	name = '[|cff'..Zylla.addonColor..'Zylla\'s|r] Shaman - Restoration',
 	ic = inCombat,
 	ooc = outCombat,

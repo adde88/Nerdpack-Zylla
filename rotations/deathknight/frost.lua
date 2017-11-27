@@ -1,6 +1,6 @@
 local _, Zylla = ...
 local unpack = _G.unpack
-local NeP = _G.NeP
+local NeP = Zylla.NeP
 local Mythic_Plus = _G.Zylla.Mythic_Plus
 
 local GUI = {
@@ -195,14 +195,14 @@ local inCombat = {
 	{Survival, nil, 'player'},
 	{Mythic_Plus, 'inMelee'},
 	{MACHINEGUN, 'toggle(xMACHINEGUN)&inMelee&inFront', 'target'},
-	{xCombat, 'combat&alive&inMelee&inFront', (function() return NeP.Condition:Get("UI")(nil, 'target') end)}, --TODO: TEST! ALOT MORE TESTING!}
+	{xCombat, 'combat&alive&inMelee&inFront', (function() return NeP.Condition.Get("UI")(nil, 'target') end)}, --TODO: TEST! ALOT MORE TESTING!}
 }
 
 local outCombat = {
 	{Keybinds},
 	{PreCombat, nil, 'player'},
 }
-NeP.CR:Add(251, {
+NeP.CR.Add(251, {
 	name = '[|cff'..Zylla.addonColor..'Zylla\'s|r] Death Knight - Frost',
 	ic = inCombat,
 	ooc = outCombat,

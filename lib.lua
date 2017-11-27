@@ -1,14 +1,14 @@
 local _, Zylla = ...
-local _G = _G
-local NeP = _G.NeP
 
-NeP.Library:Add('Zylla', {
+local NeP = Zylla.NeP
+
+NeP.Library.Add('Zylla', {
 
   hitcombo = function(_, spell)
     local HitComboLastCast = ''
     if not spell then return true end
     local _, _, _, _, _, _, spellID = _G.GetSpellInfo(spell)
-    if NeP.Condition:Get('buff')('player', 'Hit Combo') then
+    if NeP.Condition.Get('buff')('player', 'Hit Combo') then
       -- We're using hit-combo and we need to check if the spell we've passed is in the list
       if HitComboLastCast == spellID then
         -- If the passed spell is in the list as flagged, we need to return false and exit
@@ -43,10 +43,10 @@ NeP.Library:Add('Zylla', {
 
   purifyingCapped = function()
     local MaxBrewCharges = 3
-    if NeP.Condition:Get('talent')(nil, '3,1') then
+    if NeP.Condition.Get('talent')(nil, '3,1') then
       MaxBrewCharges = MaxBrewCharges + 1
     end
-    if (NeP.Condition:Get('spell.charges')('player', 'Purifying Brew') == MaxBrewCharges) or ((NeP.Condition:Get('spell.charges')('player', 'Purifying Brew') == MaxBrewCharges - 1) and NeP.Condition:Get('spell.recharge')('player', 'Purifying Brew') < 3 ) then
+    if (NeP.Condition.Get('spell.charges')('player', 'Purifying Brew') == MaxBrewCharges) or ((NeP.Condition.Get('spell.charges')('player', 'Purifying Brew') == MaxBrewCharges - 1) and NeP.Condition.Get('spell.recharge')('player', 'Purifying Brew') < 3 ) then
       return true
     end
     return false
@@ -127,10 +127,10 @@ NeP.Library:Add('Zylla', {
 	areaHeal = function(target, args)
 		args = args:gsub("%s+", "")
 		local a, b, c = _G.strsplit(",", args, 3)
-		a = tonumber(a) or NeP.Condition:Get("ui")(nil, a)	--XXX: Range
-		b = tonumber(b) or NeP.Condition:Get("ui")(nil, b)	--XXX: HP%
-		c = tonumber(c) or NeP.Condition:Get("ui")(nil, c)	--XXX: Units
-		return a and b and c and NeP.Condition:Get("area.heal")(target, a..","..b) >= c - 1	--TODO: Check if it's inheriting unit correctly.
+		a = tonumber(a) or NeP.Condition.Get("ui")(nil, a)	--XXX: Range
+		b = tonumber(b) or NeP.Condition.Get("ui")(nil, b)	--XXX: HP%
+		c = tonumber(c) or NeP.Condition.Get("ui")(nil, c)	--XXX: Units
+		return a and b and c and NeP.Condition.Get("area.heal")(target, a..","..b) >= c - 1	--TODO: Check if it's inheriting unit correctly.
 	end,
 
 	--usage "@Zylla.felExplosive()"
@@ -140,7 +140,7 @@ NeP.Library:Add('Zylla', {
       local unit = _G.GetObjectWithIndex(i)
       if _G.ObjectName(unit) == "Fel Explosives"
       and not _G.UnitIsDead(unit)
-      and NeP.Condition:Get('range')(unit) < 40 then
+      and NeP.Condition.Get('range')(unit) < 40 then
       count = count + 1
       _G.Zylla.FelUnit = unit
       print('FEL EXPLOSIVES UP: ', count)
@@ -154,7 +154,7 @@ NeP.Library:Add('Zylla', {
     local unit = _G.Zylla.FelUnit
     if _G.ObjectName(unit) == "Fel Explosives"
     and not _G.UnitIsDead(unit)
-    and NeP.Condition:Get('range')(unit) < 40 then
+    and NeP.Condition.Get('range')(unit) < 40 then
       _G.TargetUnit(unit)
       _G.StartAttack(unit)
       print('Attacking Fel Explosive!')
@@ -165,9 +165,9 @@ NeP.Library:Add('Zylla', {
 	--usage "@Zylla.InterruptAt(VAR1)"
 	InterruptAt = function(target, args)
 		local a = args
-		a = tonumber(a) or NeP.Condition:Get("ui")(nil, a)	--XXX: InterruptAt
-		--print(a and NeP.Condition:Get("interruptAt")(target, a))
-		return a and NeP.Condition:Get("interruptAt")(target, a) --TODO: Test it + Make function inherit UNIT from DSL if specified, otherwise resort to lowest/player?
+		a = tonumber(a) or NeP.Condition.Get("ui")(nil, a)	--XXX: InterruptAt
+		--print(a and NeP.Condition.Get("interruptAt")(target, a))
+		return a and NeP.Condition.Get("interruptAt")(target, a) --TODO: Test it + Make function inherit UNIT from DSL if specified, otherwise resort to lowest/player?
 	end,
 
 })

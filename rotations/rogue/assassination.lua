@@ -1,6 +1,6 @@
 local _, Zylla = ...
 local unpack = _G.unpack
-local NeP = _G.NeP
+local NeP = Zylla.NeP
 local Mythic_Plus = _G.Zylla.Mythic_Plus
 
 local GUI = {
@@ -19,7 +19,7 @@ local GUI = {
 	{type = 'spacer'},	{type = 'ruler'},	 	{type = 'spacer'},
 	--TODO: Targetting: Use, or NOT use?! We'll see....
 	{type = 'header', 	size = 16, text = 'Targetting:',													align = 'center'},
-	{type = 'combo',		default = 'target',																				key = 'target', 			list = Zylla.faketarget, 	width = 75},
+	{type = 'combo',		default = 'normal',																				key = 'target', 			list = Zylla.faketarget, 	width = 75},
 	{type = 'spacer'},
 	{type = 'text', 		text = Zylla.ClassColor..'Only one can be enabled.\nChose between normal targetting, or hitting the highest/lowest enemy.|r'},
 	{type = 'spacer'},	{type = 'ruler'},	 	{type = 'spacer'},
@@ -136,10 +136,10 @@ local Stealthed = {
 }
 
 local Poisons = {
-	{'Deadly Poison', 'buff.duration<70&!player.lastcast&!talent(6,1)'},
-	{'Agonizing Poison', 'buff.duration<70&!player.lastcast&talent(6,1)'},
-	{'Leeching Poison', 'buff.duration<70&!player.lastcast&talent(4,1)'},
-	{'Crippling Poison', 'buff.duration<70&!player.lastcast&!talent(4,1)'},
+	{'Deadly Poison', 'duration<70&!player.lastcast&!talent(6,1)'},
+	{'Agonizing Poison', 'duration<70&!player.lastcast&talent(6,1)'},
+	{'Leeching Poison', 'duration<70&!player.lastcast&talent(4,1)'},
+	{'Crippling Poison', 'duration<70&!player.lastcast&!talent(4,1)'},
 }
 
 local xCombat = {
@@ -174,7 +174,7 @@ local inCombat = {
 	{Stealthed},
 	{Survival, nil, 'player'},
 	{Mythic_Plus, 'inMelee'},
-	{xCombat, 'combat&alive&inMelee&inFront', (function() return NeP.Condition:Get("UI")(nil, 'target') end)}, --TODO: TEST! ALOT MORE TESTING!
+	{xCombat, 'combat&alive&inMelee&inFront', (function() return NeP.Condition.Get("UI")(nil, 'target') end)}, --TODO: TEST! ALOT MORE TESTING!
 }
 
 local outCombat= {
@@ -184,7 +184,7 @@ local outCombat= {
 	{Poisons, nil, 'player'},
 }
 
-NeP.CR:Add(259, {
+NeP.CR.Add(259, {
 	name='[|cff'..Zylla.addonColor..'Zylla\'s|r] Rogue - Assassination',
 	ic = inCombat,
 	ooc = outCombat,

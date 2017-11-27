@@ -1,8 +1,8 @@
 local _, Zylla = ...
-local _G = _G
-local NeP = _G.NeP
 
-NeP.Listener:Add('Zylla_SA', 'COMBAT_LOG_EVENT_UNFILTERED', function(_,combatevent,_,sourceGUID,_,_,_,destGUID,_,_,_,spellid,_,_,_,_,_,_,_,_,_,_,_,_,_)
+local NeP = Zylla.NeP
+
+NeP.Listener.Add('Zylla_SA', 'COMBAT_LOG_EVENT_UNFILTERED', function(_,combatevent,_,sourceGUID,_,_,_,destGUID,_,_,_,spellid,_,_,_,_,_,_,_,_,_,_,_,_,_)
   if Zylla.Class == 5 then
     local CurrentTime 					= _G.GetTime()
     local Zylla_SA_NUM_UNITS 		= tonumber(_G.Zylla_SA_NUM_UNITS) or 0
@@ -85,7 +85,7 @@ NeP.Listener:Add('Zylla_SA', 'COMBAT_LOG_EVENT_UNFILTERED', function(_,combateve
   end
 end)
 
-NeP.Listener:Add('Zylla_VF_S2M', 'COMBAT_LOG_EVENT_UNFILTERED', function(_,combatevent,_,sourceGUID,_,_,_,destGUID,_,_,_,spellid,_,_,_,_,_,_,_,_,_,_,_,_,_)
+NeP.Listener.Add('Zylla_VF_S2M', 'COMBAT_LOG_EVENT_UNFILTERED', function(_,combatevent,_,sourceGUID,_,_,_,destGUID,_,_,_,spellid,_,_,_,_,_,_,_,_,_,_,_,_,_)
   if Zylla.Class == 5 then
     local CurrentTime = _G.GetTime()
     Zylla.Voidform_Total_Stacks        = Zylla.Voidform_Total_Stacks or 0
@@ -210,19 +210,19 @@ NeP.Listener:Add('Zylla_VF_S2M', 'COMBAT_LOG_EVENT_UNFILTERED', function(_,comba
   end
 end)
 
-NeP.Listener:Add('Zylla_f_update1', 'ZONE_CHANGED_NEW_AREA', function()
+NeP.Listener.Add('Zylla_f_update1', 'ZONE_CHANGED_NEW_AREA', function()
 	  if Zylla.Class == 11 then
     Zylla.f_update()
   end
 end)
 
-NeP.Listener:Add('Zylla_f_update2', 'ACTIVE_TALENT_GROUP_CHANGED', function()
+NeP.Listener.Add('Zylla_f_update2', 'ACTIVE_TALENT_GROUP_CHANGED', function()
   if Zylla.Class == 11 then
     Zylla.f_update()
   end
 end)
 
-NeP.Listener:Add('Zylla_f_updateDmg', 'UNIT_POWER', function(unit, type)
+NeP.Listener.Add('Zylla_f_updateDmg', 'UNIT_POWER', function(unit, type)
   if Zylla.Class == 11 then
     if unit == "player" and type == "COMBO_POINTS" then
       Zylla.f_updateDmg()
@@ -230,7 +230,7 @@ NeP.Listener:Add('Zylla_f_updateDmg', 'UNIT_POWER', function(unit, type)
   end
 end)
 
-NeP.Listener:Add('Zylla_f_Snapshot', 'COMBAT_LOG_EVENT_UNFILTERED', function(_, combatevent, _, sourceGUID, _,_,_, destGUID, _,_,_, spellID)
+NeP.Listener.Add('Zylla_f_Snapshot', 'COMBAT_LOG_EVENT_UNFILTERED', function(_, combatevent, _, sourceGUID, _,_,_, destGUID, _,_,_, spellID)
 	if Zylla.Class == 11 then
     --This trigger listens for bleed events to record snapshots.
     --This trigger also listens for changes in buffs to recalculate bleed damage.
@@ -318,7 +318,7 @@ NeP.Listener:Add('Zylla_f_Snapshot', 'COMBAT_LOG_EVENT_UNFILTERED', function(_, 
   end
 end)
 
-NeP.Listener:Add('Zylla_OutOfCombat', 'PLAYER_REGEN_ENABLED', function()
+NeP.Listener.Add('Zylla_OutOfCombat', 'PLAYER_REGEN_ENABLED', function()
   if Zylla.Class == 9 then
     --This trigger manages clean up of snapshots when it is safe to do so
     --1. Schedule cleanup of snapshots when combat ends
@@ -326,7 +326,7 @@ NeP.Listener:Add('Zylla_OutOfCombat', 'PLAYER_REGEN_ENABLED', function()
   end
 end)
 
-NeP.Listener:Add('Zylla_InCombat', 'PLAYER_REGEN_DISABLED', function()
+NeP.Listener.Add('Zylla_InCombat', 'PLAYER_REGEN_DISABLED', function()
   if Zylla.Class == 9 then
     --2. Check for and cancel scheduled cleanup when combat starts
     Zylla.f_cancelCleanUp()
@@ -346,7 +346,7 @@ NeP.Listener:Add('Zylla_InCombat', 'PLAYER_REGEN_DISABLED', function()
   end
 end)
 
-NeP.Listener:Add('Zylla_Listener4', 'COMBAT_LOG_EVENT_UNFILTERED', function(_, combatevent, _, _, sourceName, _, _, _, _, _, _, spellID, spellName, _, _)
+NeP.Listener.Add('Zylla_Listener4', 'COMBAT_LOG_EVENT_UNFILTERED', function(_, combatevent, _, _, sourceName, _, _, _, _, _, _, spellID, spellName, _, _)
   if (combatevent == "SPELL_CAST_SUCCESS" and sourceName == _G.UnitName("player")) then
     Zylla.spell_timers[spellID]      = {}
     Zylla.spell_timers[spellID].name = spellName
@@ -359,7 +359,7 @@ NeP.Listener:Add('Zylla_Listener4', 'COMBAT_LOG_EVENT_UNFILTERED', function(_, c
 end)
 
 --[[
-NeP.Listener:Add('Zylla_Listener_TravelSpeed', 'COMBAT_LOG_EVENT_UNFILTERED', function(timestamp, combatevent, hideCaster, sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags, spellID, spellName, spellSchool, amount, ...)
+NeP.Listener.Add('Zylla_Listener_TravelSpeed', 'COMBAT_LOG_EVENT_UNFILTERED', function(timestamp, combatevent, hideCaster, sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags, spellID, spellName, spellSchool, amount, ...)
   if Zylla.TTTL_enable == true then
     if (combatevent == "SPELL_CAST_SUCCESS" and sourceName == UnitName("player")) then
 			if spellID ~= 228597 then
@@ -376,7 +376,7 @@ NeP.Listener:Add('Zylla_Listener_TravelSpeed', 'COMBAT_LOG_EVENT_UNFILTERED', fu
 				Zylla.TTTL_table[uniqID].name = spellName
 				Zylla.TTTL_table[uniqID].spellID = spellID
 				Zylla.TTTL_table[uniqID].start = Zylla.start_timer
-				Zylla.TTTL_table[uniqID].distance = NeP.Condition:Get('range')('target')
+				Zylla.TTTL_table[uniqID].distance = NeP.Condition.Get('range')('target')
 	      Zylla.TTTL_table[uniqID].finish = GetTime()
 	      Zylla.TTTL_table[uniqID].travel_time = 0
 	      Zylla.TTTL_table[uniqID].travel_speed = 0

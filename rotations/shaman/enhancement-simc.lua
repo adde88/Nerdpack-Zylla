@@ -1,6 +1,6 @@
 local _, Zylla = ...
 local unpack = _G.unpack
-local NeP = _G.NeP
+local NeP = Zylla.NeP
 local Mythic_Plus = _G.Zylla.Mythic_Plus
 
 local GUI = {
@@ -19,7 +19,7 @@ local GUI = {
 	{type = 'spacer'},		{type = 'ruler'},	 	{type = 'spacer'},
 	--XXX:TODO: Targetting: Use, or NOT use?! We'll see....
 	{type = 'header', 	size = 16, text = 'Targetting:',																		align = 'center'},
-	{type = 'combo',		default = 'target',																									key = 'target', 					list = Zylla.faketarget, 	width = 75},
+	{type = 'combo',		default = 'normal',																									key = 'target', 					list = Zylla.faketarget, 	width = 75},
 	{type = 'spacer'},
 	{type = 'text', 		text = Zylla.ClassColor..'Only one can be enabled.\nChose between normal targetting, or hitting the highest/lowest enemy.|r'},
 	{type = 'spacer'},		{type = 'ruler'},	 	{type = 'spacer'},
@@ -186,7 +186,7 @@ local inCombat = {
 	{Survival, nil, 'player'},
 	{Party, 'ingroup', 'lowest'},
 	{Mythic_Plus, 'ui(mythic_fel)&inMelee'},
-	{xCombat, 'combat&alive&inMelee&inFront', (function() return NeP.Condition:Get("UI")(nil, 'target') end)}, --TODO: TEST! ALOT MORE TESTING!
+	{xCombat, 'combat&alive&inMelee&inFront', (function() return NeP.Condition.Get("UI")(nil, 'target') end)}, --TODO: TEST! ALOT MORE TESTING!
 	{'Ghost Wolf', 'movingfor>0.75&target.range>=12!buff', 'player'}
 }
 
@@ -196,7 +196,7 @@ local outCombat = {
 	{Survival, nil, 'player'},
 }
 
-NeP.CR:Add(263, {
+NeP.CR.Add(263, {
 	name = '[|cff'..Zylla.addonColor..'Zylla\'s|r] Shaman - Enhancement (SimCraft)',
 	ic = inCombat,
 	ooc = outCombat,

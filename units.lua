@@ -1,17 +1,17 @@
 local _, Zylla = ...
-local _G = _G
-local NeP = _G.NeP
+
+local NeP = Zylla.NeP
 
 local function ClassRange(target)
-	if ( NeP.Condition:Get('range')(target, 'player') <= NeP.Condition:Get('class_range')() )
-	or ( NeP.Condition:Get('inmelee')(target) and NeP.Condition:Get('class_range')() == 5 ) then
+	if ( NeP.Condition.Get('range')(target, 'player') <= NeP.Condition.Get('class_range')() )
+	or ( NeP.Condition.Get('inmelee')(target) and NeP.Condition.Get('class_range')() == 5 ) then
 		return true
 	end
 	return false
 end
 
 -- Healing stuff
-NeP.Unit:Add('healingCandidate', function(nump)
+NeP.Unit.Add('healingCandidate', function(nump)
       local tmp = {}
       local num = nump or 1
 			for i=1, NeP.Protected.GetObjectCount() do
@@ -34,13 +34,13 @@ NeP.Unit:Add('healingCandidate', function(nump)
 end)
 
 -- Customized for Windwalker Rotation
-NeP.Unit:Add('Zylla_sck', function(debuff)
+NeP.Unit.Add('Zylla_sck', function(debuff)
 	for i=1, NeP.Protected.GetObjectCount() do
 		local Obj = NeP.Protected.GetObjectWithIndex(i)
 		if NeP.Protected.omVal(Obj)
-		and NeP.Condition:Get('combat')(Obj)
-		and (NeP.Condition:Get('infront')(Obj)
-		and NeP.Condition:Get('inMelee')(Obj)) then
+		and NeP.Condition.Get('combat')(Obj)
+		and (NeP.Condition.Get('infront')(Obj)
+		and NeP.Condition.Get('inMelee')(Obj)) then
 			local _,_,_,_,_,_,debuffDuration = _G.UnitDebuff(Obj, debuff, nil, 'PLAYER')
 			if not debuffDuration or debuffDuration - _G.GetTime() < 1.5 then
 				print("Zylla_sck: returning "..Obj.name.." ("..Obj.." - "..Obj.guid..' :'.._G.time()..")");
@@ -51,14 +51,14 @@ NeP.Unit:Add('Zylla_sck', function(debuff)
 end)
 
 -- Highest Health Enemy
-NeP.Unit:Add({'highestenemy', 'higheste', 'he'}, function(num)
+NeP.Unit.Add({'highestenemy', 'higheste', 'he'}, function(num)
       local tmp = {}
       for i=1, NeP.Protected.GetObjectCount() do
 				local Obj = NeP.Protected.GetObjectWithIndex(i)
 				if NeP.Protected.omVal(Obj)
 				and _G.UnitCanAttack('player', Obj)
-				and NeP.Condition:Get('combat')(Obj)
-				and NeP.Condition:Get('alive')(Obj)
+				and NeP.Condition.Get('combat')(Obj)
+				and NeP.Condition.Get('alive')(Obj)
 				and ClassRange(Obj) then
 					tmp[#tmp+1] = {
 						key = Obj,
@@ -71,18 +71,18 @@ NeP.Unit:Add({'highestenemy', 'higheste', 'he'}, function(num)
 end)
 
 -- Lowest Enemy (CUSTOMIZED TO WORK WITH MY CR'S)
-NeP.Unit:Add({'z.lowestenemy', 'z.loweste', 'z.le'}, function(num)
+NeP.Unit.Add({'z.lowestenemy', 'z.loweste', 'z.le'}, function(num)
 	local tmp = {}
 	for i=1, NeP.Protected.GetObjectCount() do
 		local Obj = NeP.Protected.GetObjectWithIndex(i)
 		if NeP.Protected.omVal(Obj)
 		and _G.UnitCanAttack('player', Obj)
-		and NeP.Condition:Get('combat')(Obj)
-		and NeP.Condition:Get('alive')(Obj)
+		and NeP.Condition.Get('combat')(Obj)
+		and NeP.Condition.Get('alive')(Obj)
 		and ClassRange(Obj.key) then
 			tmp[#tmp+1] = {
 				key = Obj,
-				health = NeP.Condition:Get("health")(Obj)
+				health = NeP.Condition.Get("health")(Obj)
 			}
 		end
 	end
@@ -91,15 +91,15 @@ NeP.Unit:Add({'z.lowestenemy', 'z.loweste', 'z.le'}, function(num)
 end)
 
 -- Feral Druid Stuff         XXX: Remember to set the 'ptf_timer' variable in your UI Settings.
-	NeP.Unit:Add({'nobleedenemy', 'nobleede'}, function()
-      local ptf_timer = tonumber(NeP.Condition:Get('UI')(nil, 'ptftimer_spin'))
+	NeP.Unit.Add({'nobleedenemy', 'nobleede'}, function()
+      local ptf_timer = tonumber(NeP.Condition.Get('UI')(nil, 'ptftimer_spin'))
       for i=1, NeP.Protected.GetObjectCount() do
 				local Obj = NeP.Protected.GetObjectWithIndex(i)
         if NeP.Protected.omVal(Obj) then
-					local rip_duration = tonumber(NeP.Condition:Get('debuff.duration')(Obj, 'Rip'))
-          local rake_duration = tonumber(NeP.Condition:Get('debuff.duration')(Obj, 'Rake'))
-          local thrash_duration = tonumber(NeP.Condition:Get('debuff.duration')(Obj, 'Thrash'))
-          if (NeP.Condition:Get('inFront')(Obj) and NeP.Condition:Get('inMelee')(Obj))
+					local rip_duration = tonumber(NeP.Condition.Get('debuff.duration')(Obj, 'Rip'))
+          local rake_duration = tonumber(NeP.Condition.Get('debuff.duration')(Obj, 'Rake'))
+          local thrash_duration = tonumber(NeP.Condition.Get('debuff.duration')(Obj, 'Thrash'))
+          if (NeP.Condition.Get('inFront')(Obj) and NeP.Condition.Get('inMelee')(Obj))
           and rip_duration < ptf_timer
           and rake_duration < ptf_timer
           and thrash_duration < ptf_timer
@@ -111,18 +111,18 @@ end)
 end)
 
 -- Nearest Enemy
-NeP.Unit:Add({'nearestenemy', 'neareste', 'ne'}, function(num)
+NeP.Unit.Add({'nearestenemy', 'neareste', 'ne'}, function(num)
       local tmp = {}
 			for i=1, NeP.Protected.GetObjectCount() do
 				local Obj = NeP.Protected.GetObjectWithIndex(i)
 				if NeP.Protected.omVal(Obj)
 				and _G.UnitCanAttack('player', Obj)
-				and NeP.Condition:Get('combat')(Obj)
-				and NeP.Condition:Get('alive')(Obj)
+				and NeP.Condition.Get('combat')(Obj)
+				and NeP.Condition.Get('alive')(Obj)
 				and ClassRange(Obj.key) then
             tmp[#tmp+1] = {
                key = Obj,
-               prio = NeP.Condition:Get("range")(Obj)
+               prio = NeP.Condition.Get("range")(Obj)
             }
          end
       end
@@ -131,18 +131,18 @@ NeP.Unit:Add({'nearestenemy', 'neareste', 'ne'}, function(num)
 end)
 
 -- Furthest Enemy
-NeP.Unit:Add({'furthestenemy', 'furtheste', 'fe'}, function(num)
+NeP.Unit.Add({'furthestenemy', 'furtheste', 'fe'}, function(num)
       local tmp = {}
 			for i=1, NeP.Protected.GetObjectCount() do
 				local Obj = NeP.Protected.GetObjectWithIndex(i)
 				if NeP.Protected.omVal(Obj)
 				and _G.UnitCanAttack('player', Obj)
-				and NeP.Condition:Get('combat')(Obj)
-				and NeP.Condition:Get('alive')(Obj)
+				and NeP.Condition.Get('combat')(Obj)
+				and NeP.Condition.Get('alive')(Obj)
 				and ClassRange(Obj.key) then
 					tmp[#tmp+1] = {
 						key = Obj,
-						prio = NeP.Condition:Get("range")(Obj)
+						prio = NeP.Condition.Get("range")(Obj)
 					}
 				end
 			end
