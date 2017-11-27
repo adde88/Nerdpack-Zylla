@@ -2,6 +2,14 @@ local _, Zylla = ...
 local _G = _G
 local NeP = _G.NeP
 
+local function ClassRange(target)
+	if ( NeP.Condition:Get('range')(target, 'player') <= NeP.Condition:Get('class_range')() )
+	or ( NeP.Condition:Get('inmelee')(target) and NeP.Condition:Get('class_range')() == 5 ) then
+		return true
+	end
+	return false
+end
+
 -- Healing stuff
 NeP.Unit:Add('healingCandidate', function(nump)
       local tmp = {}
@@ -50,7 +58,8 @@ NeP.Unit:Add({'highestenemy', 'higheste', 'he'}, function(num)
 				if NeP.Protected.omVal(Obj)
 				and _G.UnitCanAttack('player', Obj)
 				and NeP.Condition:Get('combat')(Obj)
-				and NeP.Condition:Get('alive')(Obj) then
+				and NeP.Condition:Get('alive')(Obj)
+				and ClassRange(Obj) then
 					tmp[#tmp+1] = {
 						key = Obj,
 						prio = _G.UnitHealthMax(Obj)
@@ -59,6 +68,26 @@ NeP.Unit:Add({'highestenemy', 'higheste', 'he'}, function(num)
 			end
 			table.sort( tmp, function(a,b) return a.prio > b.prio end )
 			return tmp
+end)
+
+-- Lowest Enemy (CUSTOMIZED TO WORK WITH MY CR'S)
+NeP.Unit:Add({'z.lowestenemy', 'z.loweste', 'z.le'}, function(num)
+	local tmp = {}
+	for i=1, NeP.Protected.GetObjectCount() do
+		local Obj = NeP.Protected.GetObjectWithIndex(i)
+		if NeP.Protected.omVal(Obj)
+		and _G.UnitCanAttack('player', Obj)
+		and NeP.Condition:Get('combat')(Obj)
+		and NeP.Condition:Get('alive')(Obj)
+		and ClassRange(Obj.key) then
+			tmp[#tmp+1] = {
+				key = Obj,
+				health = NeP.Condition:Get("health")(Obj)
+			}
+		end
+	end
+	table.sort( tmp, function(a,b) return a.health < b.health end )
+	return tmp
 end)
 
 -- Feral Druid Stuff         XXX: Remember to set the 'ptf_timer' variable in your UI Settings.
@@ -73,7 +102,8 @@ end)
           if (NeP.Condition:Get('inFront')(Obj) and NeP.Condition:Get('inMelee')(Obj))
           and rip_duration < ptf_timer
           and rake_duration < ptf_timer
-          and thrash_duration < ptf_timer then
+          and thrash_duration < ptf_timer
+					and ClassRange(Obj.key) then
 						return Obj
 					end
 				end
@@ -88,7 +118,8 @@ NeP.Unit:Add({'nearestenemy', 'neareste', 'ne'}, function(num)
 				if NeP.Protected.omVal(Obj)
 				and _G.UnitCanAttack('player', Obj)
 				and NeP.Condition:Get('combat')(Obj)
-				and NeP.Condition:Get('alive')(Obj) then
+				and NeP.Condition:Get('alive')(Obj)
+				and ClassRange(Obj.key) then
             tmp[#tmp+1] = {
                key = Obj,
                prio = NeP.Condition:Get("range")(Obj)
@@ -99,7 +130,7 @@ NeP.Unit:Add({'nearestenemy', 'neareste', 'ne'}, function(num)
       return tmp
 end)
 
--- Furthest Enemy (Within 60 yd)
+-- Furthest Enemy
 NeP.Unit:Add({'furthestenemy', 'furtheste', 'fe'}, function(num)
       local tmp = {}
 			for i=1, NeP.Protected.GetObjectCount() do
@@ -108,7 +139,7 @@ NeP.Unit:Add({'furthestenemy', 'furtheste', 'fe'}, function(num)
 				and _G.UnitCanAttack('player', Obj)
 				and NeP.Condition:Get('combat')(Obj)
 				and NeP.Condition:Get('alive')(Obj)
-				and NeP.Condition:Get("range")(Obj) <= 60 then
+				and ClassRange(Obj.key) then
 					tmp[#tmp+1] = {
 						key = Obj,
 						prio = NeP.Condition:Get("range")(Obj)

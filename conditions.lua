@@ -4,6 +4,10 @@ local NeP = _G.NeP
 
 --XXX: Miscellaneous conditions
 
+NeP.DSL:Register('class_range', function()
+  return Zylla.ClassTable:GetRange(Zylla.Spec)
+end)
+
 NeP.Condition:Register('isflyable', function()
       if _G.IsFlyableArea() then
          local _, _, _, _, _, _, _, instanceMapID = _G.GetInstanceInfo()

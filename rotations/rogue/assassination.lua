@@ -1,7 +1,7 @@
 local _, Zylla = ...
 local unpack = _G.unpack
 local NeP = _G.NeP
-local Mythic_Plus = _G.Mythic_Plus
+local Mythic_Plus = _G.Zylla.Mythic_Plus
 
 local GUI = {
 	unpack(Zylla.Logo_GUI),
@@ -19,7 +19,7 @@ local GUI = {
 	{type = 'spacer'},	{type = 'ruler'},	 	{type = 'spacer'},
 	--TODO: Targetting: Use, or NOT use?! We'll see....
 	{type = 'header', 	size = 16, text = 'Targetting:',													align = 'center'},
-	{type = 'combo',		default = 'normal',																				key = 'target', 			list = Zylla.faketarget, 	width = 75},
+	{type = 'combo',		default = 'target',																				key = 'target', 			list = Zylla.faketarget, 	width = 75},
 	{type = 'spacer'},
 	{type = 'text', 		text = Zylla.ClassColor..'Only one can be enabled.\nChose between normal targetting, or hitting the highest/lowest enemy.|r'},
 	{type = 'spacer'},	{type = 'ruler'},	 	{type = 'spacer'},
@@ -136,10 +136,10 @@ local Stealthed = {
 }
 
 local Poisons = {
-	{'Deadly Poison', 'duration<70&!player.lastcast&!talent(6,1)'},
-	{'Agonizing Poison', 'duration<70&!player.lastcast&talent(6,1)'},
-	{'Leeching Poison', 'duration<70&!player.lastcast&talent(4,1)'},
-	{'Crippling Poison', 'duration<70&!player.lastcast&!talent(4,1)'},
+	{'Deadly Poison', 'buff.duration<70&!player.lastcast&!talent(6,1)'},
+	{'Agonizing Poison', 'buff.duration<70&!player.lastcast&talent(6,1)'},
+	{'Leeching Poison', 'buff.duration<70&!player.lastcast&talent(4,1)'},
+	{'Crippling Poison', 'buff.duration<70&!player.lastcast&!talent(4,1)'},
 }
 
 local xCombat = {
