@@ -29,7 +29,7 @@ Zylla.GuiSettings = {
 
 _G.C_Timer.NewTicker(1, function()
 	local specid = Zylla.Spec
-	if specid == 0 then
+	if specid == 0 or nil then
 		Zylla.Spec = _G.GetInspectSpecialization('player')
 	end
 end)
