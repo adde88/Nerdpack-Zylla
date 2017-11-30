@@ -89,7 +89,7 @@ local PreCombat ={
 	{'#127843', 'UI(list)==2&item(127843).usable&item(127843).count>0&UI(kDBM)&UI(prepot)&!buff(Potion of Deadly Grace)&dbm(pull in)<3'}, 		--XXX: Potion of Deadly Grace
 	{'#142117', 'UI(list)==3&item(142117).usable&item(142117).count>0&UI(kDBM)&UI(prepot)&!buff(Potion of Prolonged Power)&dbm(pull in)<3'}, 	--XXX: Potion of Prolonged Power
 	-- Flasks
-	{'#127849', 'item(127849).usable&item(127849).count>0&UI(prepot)&!buff(Flask of the Whispered Pact	)'},	--XXX: Flask of the Whispered Pact
+	{'#127847', 'item(127847).usable&item(127847).count>0&UI(prepot)&!buff(Flask of the Whispered Pact	)'},	--XXX: Flask of the Countless Armies
 	{'#153023', 'item(153023).usable&item(153023).count>0&UI(prepot)&!buff(Defiled Augmentation)'},						--XXX: Lightforged Augment Rune
 }
 
